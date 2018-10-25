@@ -1,5 +1,5 @@
 # run desktop builds
-cmake .
+cmake . -DCMAKE_BUILD_TYPE=Coverage
 cmake --build .
 
 # run Gtest
