@@ -58,8 +58,52 @@ jobs:
       - run:
           name: Build
           command: ./travis/script_desktop.sh
-
-          
+  build-macos-9-2:
+    macos:
+      xcode: "9.2.0"
+    steps:
+      - checkout
+      - run: COMPILER=clang++
+      - run:
+          name: Install dependencies
+          command: brew install cmake lcov
+      - run:
+          name: Make scripts executable 
+          command: sudo chmod -R +x ./travis/*.sh
+      - run:
+          name: Build
+          command: ./travis/script_desktop.sh
+  build-macos-9-3:
+    macos:
+      xcode: "9.3.0"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: brew install cmake lcov
+      - run:
+          name: Make scripts executable 
+          command: sudo chmod -R +x ./travis/*.sh
+      - run:
+          name: Build
+          command: ./travis/script_desktop.sh
+  build-macos-9-3-platformio:
+    macos:
+      xcode: "9.3.0"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: brew install cmake lcov
+      - run:
+          name: Make scripts executable 
+          command: sudo chmod -R +x ./travis/*.sh
+      - run:
+          name: Install
+          command: ./travis/install_platform_io.sh
+      - run:
+          name: Build
+          command: ./travis/script_platform_io.sh
 
 workflows:
   version: 2
@@ -68,3 +112,6 @@ workflows:
       - build-linux-default
       - build-linux-gcc7
       - build-linux-clang-5
+      - build-macos-9-2
+      - build-macos-9-3
+      - build-macos-9-3-platformio
