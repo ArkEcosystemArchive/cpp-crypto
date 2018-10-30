@@ -86,7 +86,7 @@ namespace date
 
 // Always use C locale to ensure maximum support for different compilers
 // https ://github.com/HowardHinnant/date/issues/264
-#define ONLY_C_LOCAL 1
+#define ONLY_C_LOCALE 1
 
 #if defined(_MSC_VER) && (!defined(__clang__) || (_MSC_VER < 1910))
 // MSVC
