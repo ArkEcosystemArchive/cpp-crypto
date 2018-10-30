@@ -2,28 +2,39 @@
 #include "gtest/gtest.h"
 #include "arkCrypto.h"
 
-TEST(utils, slot_epoch)
-{
-    const auto devnet = Ark::Crypto::Networks::Devnet;
-    const auto epoch = Ark::Crypto::Utils::Slot::epoch(devnet);
+TEST(utilities, slots_time) {
+  const auto devnet = Ark::Crypto::Networks::Devnet;
+  
 #ifdef USE_IOT
-    /* most Arduino do not have 64-bit precision */
-    /* measured in seconds vs ms */
-    ASSERT_EQ(1490101200, epoch );
+  // IoT does not support 64 bit in unit tests yet
+  //ASSERT_EQ(10ull, ARK::Utilities::slots::time(1490101210000, devnet));
+  ASSERT_TRUE(Ark::Crypto::Utils::Slot::time(1490101210000, devnet) == 10ull);
 #else
-    ASSERT_EQ(1490101200000ull, epoch );
+  ASSERT_EQ(10ull, Ark::Crypto::Utils::Slot::time(1490101210000, devnet));
 #endif
 }
 
-TEST(utils, slot_time)
-{
-    const auto devnet = Ark::Crypto::Networks::Devnet;
-    const auto time = Ark::Crypto::Utils::Slot::time(devnet);
+TEST(utilities, slots_begin_epoch_time) {
+  const auto devnet = Ark::Crypto::Networks::Devnet;
+
 #ifdef USE_IOT
-    /* most Arduino do not have 64-bit precision */
-    /* measured in seconds vs ms */
-    // ASSERT_TRUE(time > 46000000);
+  // IoT does not support 64 bit in unit tests yet
+  //ASSERT_EQ(1490101200ull, ARK::Utilities::slots::begin_epoch_time(devnet));
+  ASSERT_TRUE(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::milliseconds(Ark::Crypto::Utils::Slot::begin_epoch_time(devnet))).count() == 1490101200ull);
 #else
-    ASSERT_TRUE(time > 46000000000);
+  ASSERT_EQ(1490101200ull, std::chrono::duration_cast<std::chrono::seconds>(std::chrono::milliseconds(Ark::Crypto::Utils::Slot::begin_epoch_time(devnet))).count());
 #endif
 }
+
+TEST(utilities, slots_get_real_time) {
+  const auto devnet = Ark::Crypto::Networks::Devnet;
+
+#ifdef USE_IOT
+  // IoT does not support 64 bit in unit tests yet
+  //ASSERT_EQ(1490101210000ull, ARK::Utilities::slots::get_real_time(10));
+  ASSERT_TRUE(Ark::Crypto::Utils::Slot::real_time(10, devnet) == 1490101210000ull);
+#else
+  ASSERT_EQ(1490101210000ull, Ark::Crypto::Utils::Slot::real_time(10, devnet));
+#endif
+}
+

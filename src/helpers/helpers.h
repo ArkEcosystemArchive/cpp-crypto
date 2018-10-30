@@ -18,6 +18,8 @@ const auto WIF_SIZE = 52u;
 
 #define USE_IOT
 
+#include "arduino/stl/details/to_string.h"
+
 #include <Arduino.h>
 #include <pgmspace.h>
 
@@ -59,20 +61,20 @@ const auto WIF_SIZE = 52u;
 
     // Write data into dst
     template <typename T>
-    static inline void pack (std::vector<uint8_t>& dst, T& data) {
+    inline void pack (std::vector<uint8_t>& dst, T& data) {
         const uint8_t * src = reinterpret_cast<const uint8_t* >(&data);
         dst.insert(dst.end(), src, src + sizeof (T));
     }
 
     // Read size bytes into dst from src
     template <typename T>
-    static inline void unpack (T* dst, uint8_t* src, size_t size = -1) {
+    inline void unpack (T* dst, uint8_t* src, size_t size = -1) {
         memcpy(dst, src, size == -1 ? sizeof(*dst) : size);
     }
 
 
     // Join string vector
-    static std::string join(const std::vector<std::string>& strings) {
+    inline std::string join(const std::vector<std::string>& strings) {
         return std::accumulate(strings.begin(), strings.end(), std::string(),
             [](const std::string& a, const std::string& b) -> std::string {
                 return a + b;
