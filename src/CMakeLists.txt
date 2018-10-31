@@ -28,16 +28,17 @@ set(uECC_SRC
 set(COMMON_SRC
 	${PROJECT_SOURCE_DIR}/configuration/fee.cpp
 	${PROJECT_SOURCE_DIR}/configuration/network.cpp
+  ${PROJECT_SOURCE_DIR}/helpers/helpers.cpp
 	${PROJECT_SOURCE_DIR}/identities/address.cpp
 	${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
 	${PROJECT_SOURCE_DIR}/identities/publickey.cpp
 	${PROJECT_SOURCE_DIR}/identities/wif.cpp
 	${PROJECT_SOURCE_DIR}/networks/abstractnetwork.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
-        ${PROJECT_SOURCE_DIR}/utils/message.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
+  ${PROJECT_SOURCE_DIR}/utils/message.cpp
 )
 
 add_library(Ark-Cpp-Crypto-lib
