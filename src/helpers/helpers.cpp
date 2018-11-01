@@ -25,4 +25,9 @@ void __throw_runtime_error(const char* str)
 
 }
 
+#if (defined PLATFORMIO && !defined UNIT_TEST)
+
+void setup() {}
+void loop() { delay(1000); }
+
 #endif
