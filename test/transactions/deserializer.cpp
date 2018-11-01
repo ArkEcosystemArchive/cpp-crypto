@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "arkCrypto.h"
-#if 0
+
 TEST(transactions, deserialize_transfer)
 {
     // transfer/passphrase-with-vendor-field.json
@@ -22,7 +22,6 @@ TEST(transactions, deserialize_transfer)
     ASSERT_STREQ("304402205616d6e361439d67a5c2067bbfc8fce61b93061a4fa113315a1c5cf965ff6f3202200a1d99caaa98aeebcec04edd5365352500addb830c79f49b9de484ec616bb1e1", actual.signature.c_str());
     ASSERT_TRUE(actual.verify());
 }
-#endif
 
 TEST(transactions, deserialize_second_signature_registration)
 {
