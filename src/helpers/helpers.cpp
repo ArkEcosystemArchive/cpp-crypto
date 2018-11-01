@@ -25,6 +25,8 @@ void __throw_runtime_error(const char* str)
 
 }
 
+#endif
+
 #if (defined PLATFORMIO && !defined UNIT_TEST)
 
 void setup() {}
