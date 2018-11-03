@@ -31,6 +31,7 @@ const auto WIF_SIZE = 52u;
 
 #endif
 
+
 // Write data into dst
 template <typename T>
 inline void pack (std::vector<uint8_t>& dst, T& data) {
