@@ -6,13 +6,13 @@ jobs:
       - checkout
       - run:
           name: Make scripts executable 
-          command: sudo chmod -R +x ./travis/*.sh
+          command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Install
-          command: ./travis/install_platform_io.sh
+          command: ./.circleci/install_platform_io.sh
       - run:
           name: Build
-          command: ./travis/script_platform_io.sh
+          command: ./.circleci/script_platform_io.sh
   build-linux-gcc7:
     machine: true
     steps:
@@ -27,13 +27,13 @@ jobs:
             sudo apt-get -y install g++-7 lcov cmake
       - run:
           name: Make scripts executable 
-          command: sudo chmod -R +x ./travis/*.sh
+          command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Environment variables
           command: CC=gcc-7 && CXX=g++-7
       - run:
           name: Build
-          command: ./travis/script_desktop.sh
+          command: ./.circleci/script_desktop.sh
       - run:
           name: Codecov upload
           command: bash <(curl -s https://codecov.io/bash)
@@ -51,13 +51,13 @@ jobs:
             sudo apt-get -y install clang-5.0 lcov cmake
       - run:
           name: Make scripts executable 
-          command: sudo chmod -R +x ./travis/*.sh
+          command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Environment variables
           command: CC=clang-5.0 && CXX=clang++-5.0
       - run:
           name: Build
-          command: ./travis/script_desktop.sh
+          command: ./.circleci/script_desktop.sh
   build-macos-9-2:
     macos:
       xcode: "9.2.0"
@@ -69,10 +69,10 @@ jobs:
           command: brew install cmake lcov
       - run:
           name: Make scripts executable 
-          command: sudo chmod -R +x ./travis/*.sh
+          command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Build
-          command: ./travis/script_desktop.sh
+          command: ./.circleci/script_desktop.sh
   build-macos-9-3:
     macos:
       xcode: "9.3.0"
@@ -83,27 +83,10 @@ jobs:
           command: brew install cmake lcov
       - run:
           name: Make scripts executable 
-          command: sudo chmod -R +x ./travis/*.sh
+          command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Build
-          command: ./travis/script_desktop.sh
-  build-macos-9-3-platformio:
-    macos:
-      xcode: "9.3.0"
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: brew install cmake lcov
-      - run:
-          name: Make scripts executable 
-          command: sudo chmod -R +x ./travis/*.sh
-      - run:
-          name: Install
-          command: ./travis/install_platform_io.sh
-      - run:
-          name: Build
-          command: ./travis/script_platform_io.sh
+          command: ./.circleci/script_desktop.sh
 
 workflows:
   version: 2
@@ -114,4 +97,3 @@ workflows:
       - build-linux-clang-5
       - build-macos-9-2
       - build-macos-9-3
-      - build-macos-9-3-platformio
