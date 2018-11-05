@@ -68,5 +68,5 @@ TEST(utils, message_verify)
         signature
     );
 
-    ASSERT_EQ(1, message.verify());
+    ASSERT_TRUE(message.verify());
 }
