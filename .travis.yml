@@ -22,6 +22,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
+            - lcov
             
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
@@ -37,6 +38,8 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
+            - lcov
+
       env:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
         - INSTALL_SCRIPT=""
@@ -52,6 +55,10 @@ matrix:
     - os: osx
       osx_image: xcode9.2
       compiler: clang
+      addons:
+        homebrew:
+          packages:
+            - lcov
       env:
         - COMPILER=clang++
         - INSTALL_SCRIPT=""
@@ -59,6 +66,10 @@ matrix:
         
     - os: osx
       osx_image: xcode9.3beta
+      addons:
+        homebrew:
+          packages:
+            - lcov
       env:
         - MATRIX_EVAL=""
         - INSTALL_SCRIPT=""
@@ -75,5 +86,6 @@ script:
   - ${BUILD_SCRIPT}
   
 after_success:
-  #- coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
+  # Uploading report to CodeCov
+  - bash <(curl -s https://codecov.io/bash)
   

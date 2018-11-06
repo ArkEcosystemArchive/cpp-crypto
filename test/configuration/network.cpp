@@ -10,7 +10,7 @@ TEST(configuration, network_get)
     ASSERT_EQ(0xaa, network.getBase58Prefix(BASE58_WIF));
     ASSERT_EQ(46090600, network.getBIP32Prefix(BIP32_PREFIX_XPUB));
     ASSERT_EQ(46089520, network.getBIP32Prefix(BIP32_PREFIX_XPRV));
-    ASSERT_STREQ("2017-03-21T13:00:00.000Z", network.epoch());
+    ASSERT_STREQ("2017-03-21T13:00:00Z", network.epoch());
     ASSERT_EQ(true, network.isLocked());
     ASSERT_EQ(30, network.version());
 }
@@ -25,7 +25,7 @@ TEST(configuration, network_set)
     ASSERT_EQ(0xba, testnet.getBase58Prefix(BASE58_WIF));
     ASSERT_EQ(70617039, testnet.getBIP32Prefix(BIP32_PREFIX_XPUB));
     ASSERT_EQ(70615956, testnet.getBIP32Prefix(BIP32_PREFIX_XPRV));
-    ASSERT_STREQ("2017-03-21T13:00:00.000Z", testnet.epoch());
+    ASSERT_STREQ("2017-03-21T13:00:00Z", testnet.epoch());
     ASSERT_EQ(true, testnet.isLocked());
     ASSERT_EQ(23, testnet.version());
 }
