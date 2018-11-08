@@ -161,15 +161,16 @@ bool Ark::Crypto::Identities::Address::validate(
  * @return std::string
  **/
 std::string Ark::Crypto::Identities::Address::base58encode(const uint8_t* source) {
-    // Magic numbers from Base58Check::pubkeyHashToBase58Check
-    uint8_t temp[21 + 4];
-    char out[21 + 4];
+  // Magic numbers from Base58Check::pubkeyHashToBase58Check
+  uint8_t temp[21 + 4] = {};
+  char out[ADDRESS_LENGTH + 1] = {};
 
-    std::vector<uint8_t> buf;
-    std::copy(source, source + 21, std::back_inserter(buf));
-    Base58Check::bytesToBase58Check(&buf[0], temp, 21, out);
+  uint8_t buf[21 + 4] = {};
+  std::memcpy(buf, source, 21);
 
-    return std::string(out);
+  Base58Check::bytesToBase58Check(buf, temp, 21, out);
+
+  return std::string(out);
 }
 
 /**
