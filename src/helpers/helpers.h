@@ -29,7 +29,22 @@ const auto WIF_SIZE = 52u;
 #undef min
 #undef max
 
+inline uint32_t generate_random_number(uint32_t min, uint32_t max, bool /* static_seed */ = false) {
+  return random(min, max);
+}
+
+#else
+
+#define PROGMEM
+#define PGM_P const char*
+
+#define pgm_read_ptr_far(p) (*p)
+#define strcpy_P strcpy
+
+uint32_t generate_random_number(uint32_t min, uint32_t max, bool static_seed = false);
+
 #endif
+
 
 
 // Write data into dst
