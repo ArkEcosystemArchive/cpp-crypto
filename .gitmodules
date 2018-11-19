@@ -1,3 +1,6 @@
 [submodule "include/uECC"]
 	path = include/uECC
 	url = https://github.com/kmackay/micro-ecc
+[submodule "include/bip39"]
+	path = include/bip39
+	url = https://github.com/ciband/bip39.git

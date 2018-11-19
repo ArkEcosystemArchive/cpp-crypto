@@ -25,7 +25,7 @@ include_directories(${PROJECT_INCLUDE_DIR}/rfc6979)
 
 # clone submodules
 execute_process(
-	COMMAND git submodule update --init
+	COMMAND git submodule update --init --recursive
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
@@ -42,5 +42,6 @@ endif()
 include_directories("${PROJECT_INCLUDE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}")
 
+add_subdirectory(include/bip39/src)
 add_subdirectory(src)
 add_subdirectory(test)
