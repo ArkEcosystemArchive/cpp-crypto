@@ -2,6 +2,9 @@
 #include "gtest/gtest.h"
 #include "arkCrypto.h"
 
+#include <set>
+#include <string>
+
 TEST(mnemonic, generate_mnemonic_valid)
 {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
