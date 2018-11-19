@@ -29,7 +29,6 @@ set(uECC_SRC
 )
 
 set(COMMON_SRC
-  ${PROJECT_SOURCE_DIR}/bip39/bip39.cpp
   ${PROJECT_SOURCE_DIR}/configuration/fee.cpp
 	${PROJECT_SOURCE_DIR}/configuration/network.cpp
   ${PROJECT_SOURCE_DIR}/helpers/helpers.cpp
