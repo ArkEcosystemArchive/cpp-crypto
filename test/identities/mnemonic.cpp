@@ -20,6 +20,8 @@ TEST(mnemonic, generate_mnemonic_valid)
   }
 }
 
+// These tests depend on the library asserting, disable this test for Release builds
+#ifdef DEBUG
 TEST(mnemonic, generate_mnemonic_invalid)
 {
   for (auto num_words = 0u; num_words <= 100u; ++num_words) {
@@ -29,3 +31,4 @@ TEST(mnemonic, generate_mnemonic_invalid)
     ASSERT_DEATH(Ark::Crypto::Identities::Mnemonic::generate(num_words), "");
   }
 }
+#endif
