@@ -32,6 +32,7 @@ set(COMMON_SRC
   ${PROJECT_SOURCE_DIR}/configuration/fee.cpp
 	${PROJECT_SOURCE_DIR}/configuration/network.cpp
   ${PROJECT_SOURCE_DIR}/helpers/helpers.cpp
+  ${PROJECT_SOURCE_DIR}/helpers/encoding/der.cpp
 	${PROJECT_SOURCE_DIR}/identities/address.cpp
   ${PROJECT_SOURCE_DIR}/identities/mnemonic.cpp
 	${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
