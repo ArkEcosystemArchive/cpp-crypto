@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  **/
 
-#include "mnemonic.h"
+#include "identities/mnemonic.h"
 
-#include "bip39.h"
+#include "bip39/bip39.h"
 
 #include <cassert>
 

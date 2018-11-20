@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.2.2)
 
-project(Ark-Cpp-Crypto-tests)
+project(Ark-Cpp-Crypto-tests C CXX)
 
-hunter_add_package(GTest)
-find_package(GTest CONFIG REQUIRED)
+set(BUILD_GMOCK OFF FORCE)
+
+add_subdirectory(lib/googletest)
 
 include(CTest)
 enable_testing()
@@ -38,17 +39,11 @@ set (TEST_SRC
 	${PROJECT_SOURCE_DIR}/utils/slot.cpp
 )
 
-find_library(Ark-Cpp-Crypto-tests
-	NAMES Ark-Cpp-Crypto-lib
-	PATHS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-)
+find_library(Ark-Cpp-Crypto-tests PUBLIC)
 
 add_executable(Ark-Cpp-Crypto-tests ${TEST_SRC})
 
-target_link_libraries(Ark-Cpp-Crypto-tests Ark-Cpp-Crypto-lib)
-
-target_link_libraries(Ark-Cpp-Crypto-tests GTest::main) # GTest::gtest will be linked automatically
-target_link_libraries(Ark-Cpp-Crypto-tests GTest::gtest)
+target_link_libraries(Ark-Cpp-Crypto-tests Ark-Cpp-Crypto-lib gtest gtest_main)
 
 add_test(NAME test COMMAND Ark-Cpp-Crypto-tests)
 

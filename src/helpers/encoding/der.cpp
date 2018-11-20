@@ -7,11 +7,13 @@
  * file that was distributed with this source code.
  **/
 
-#include "der.h"
+#include "helpers/encoding/der.h"
 
 #include <cassert>
 #include <string>
+#include <vector>
 #include <cstring>
+
 
 /**
  * DER Encode/Decode Helpers

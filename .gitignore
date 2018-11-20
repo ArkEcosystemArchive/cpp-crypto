@@ -47,3 +47,9 @@
 /Ark-Cpp-Crypto.sln
 /ALL_BUILD.vcxproj.filters
 /ALL_BUILD.vcxproj
+/src/INSTALL.vcxproj.filters
+/src/INSTALL.vcxproj
+/INSTALL.vcxproj.filters
+/INSTALL.vcxproj
+/src/Debug
+/test/Debug

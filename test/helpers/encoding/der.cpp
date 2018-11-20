@@ -9,7 +9,8 @@
 
 #include "gtest/gtest.h"
 
-#include "arkCrypto.h"
+#include "helpers/encoding/der.h"
+#include "helpers/encoding/hex.h"
 
 TEST(helpers_encoding_der, decodeDER) {
   auto signature = HexToBytes("3044022033a69cd2065432a30f3d1ce4eb0d59b8ab58c74f27c41a7fdb5696ad4e6108c902206f807982866f785d3f6418d24163ddae117b7db4d5fdf0071de069fa54342262");

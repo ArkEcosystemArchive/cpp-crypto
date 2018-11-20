@@ -1,50 +1,45 @@
 
 cmake_minimum_required(VERSION 3.2.2)
 
-project(Ark-Cpp-Crypto-lib)
+project(Ark-Cpp-Crypto-lib C CXX)
 
-set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-
-include_directories(
-  ${PROJECT_SOURCE_DIR}
-  ${PROJECT_INCLUDE_DIR}
-  ${PROJECT_INCLUDE_DIR}/bip39/src
-)
+add_subdirectory(lib/bip39/src)
 
 set(BCL_SRC
-	${PROJECT_INCLUDE_DIR}/bcl/Base58Check.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/CurvePoint.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/Ecdsa.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/FieldInt.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/Ripemd160.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/Sha256Hash.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/Sha256.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/Sha512.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/Uint256.cpp
-	${PROJECT_INCLUDE_DIR}/bcl/Utils.cpp
+	bcl/Base58Check.cpp
+	bcl/CurvePoint.cpp
+	bcl/Ecdsa.cpp
+	bcl/FieldInt.cpp
+	bcl/Ripemd160.cpp
+	bcl/Sha256Hash.cpp
+	bcl/Sha256.cpp
+	bcl/Sha512.cpp
+	bcl/Uint256.cpp
+	bcl/Utils.cpp
 )
 
 set(uECC_SRC
-	${PROJECT_INCLUDE_DIR}/uECC/uECC.c
+	lib/uECC/uECC.c
 )
 
 set(COMMON_SRC
-  ${PROJECT_SOURCE_DIR}/configuration/fee.cpp
-	${PROJECT_SOURCE_DIR}/configuration/network.cpp
-  ${PROJECT_SOURCE_DIR}/helpers/helpers.cpp
-  ${PROJECT_SOURCE_DIR}/helpers/encoding/der.cpp
-	${PROJECT_SOURCE_DIR}/identities/address.cpp
-  ${PROJECT_SOURCE_DIR}/identities/mnemonic.cpp
-	${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
-	${PROJECT_SOURCE_DIR}/identities/publickey.cpp
-	${PROJECT_SOURCE_DIR}/identities/wif.cpp
-	${PROJECT_SOURCE_DIR}/networks/abstractnetwork.cpp
-  ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
-  ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
-  ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
-  ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
-  ${PROJECT_SOURCE_DIR}/utils/message.cpp
-  ${PROJECT_SOURCE_DIR}/utils/slot.cpp
+  configuration/fee.cpp
+	configuration/network.cpp
+  helpers/crypto.cpp
+  helpers/helpers.cpp
+  helpers/encoding/der.cpp
+	identities/address.cpp
+  identities/mnemonic.cpp
+	identities/privatekey.cpp
+	identities/publickey.cpp
+	identities/wif.cpp
+	networks/abstractnetwork.cpp
+  transactions/builder.cpp
+  transactions/deserializer.cpp
+  transactions/serializer.cpp
+  transactions/transaction.cpp
+  utils/message.cpp
+  utils/slot.cpp
 )
 
 add_library(Ark-Cpp-Crypto-lib
@@ -52,6 +47,17 @@ add_library(Ark-Cpp-Crypto-lib
 	${BCL_SRC}
 	${uECC_SRC}
 	${COMMON_SRC}
+)
+
+set(cpp_crypto_build_include_dirs
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR}/include/cpp-crypto
+)
+include_directories(${cpp_crypto_build_include_dirs})
+include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
+
+target_include_directories( ${PROJECT_NAME}
+    PUBLIC ${cpp_crypto_build_include_dirs}
 )
 
 target_link_libraries(Ark-Cpp-Crypto-lib PRIVATE bip39)
