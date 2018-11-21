@@ -1,6 +1,8 @@
 
 #include "gtest/gtest.h"
-#include "arkCrypto.h"
+
+#include "helpers\helpers.h"
+#include "utils/slot.h"
 
 TEST(utilities, slots_time) {
   const auto devnet = Ark::Crypto::Networks::Devnet;

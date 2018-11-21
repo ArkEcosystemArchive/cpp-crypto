@@ -26,7 +26,6 @@ set(COMMON_SRC
   configuration/fee.cpp
 	configuration/network.cpp
   helpers/crypto.cpp
-  helpers/helpers.cpp
   helpers/encoding/der.cpp
 	identities/address.cpp
   identities/mnemonic.cpp
@@ -42,7 +41,7 @@ set(COMMON_SRC
   utils/slot.cpp
 )
 
-add_library(Ark-Cpp-Crypto-lib
+add_library(${PROJECT_NAME}
 	STATIC
 	${BCL_SRC}
 	${uECC_SRC}
@@ -60,8 +59,8 @@ target_include_directories( ${PROJECT_NAME}
     PUBLIC ${cpp_crypto_build_include_dirs}
 )
 
-target_link_libraries(Ark-Cpp-Crypto-lib PRIVATE bip39)
+target_link_libraries(${PROJECT_NAME} PRIVATE bip39)
 
 if (MSVC)
-	target_link_libraries(Ark-Cpp-Crypto-lib PUBLIC crypt32)
+	target_link_libraries(${PROJECT_NAME} PUBLIC crypt32)
 endif()

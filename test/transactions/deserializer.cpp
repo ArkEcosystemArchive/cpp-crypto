@@ -1,5 +1,9 @@
 #include "gtest/gtest.h"
-#include "arkCrypto.h"
+
+#include "enums/types.h"
+#include "identities/address.h"
+#include "identities/publickey.h"
+#include "transactions/deserializer.h"
 
 TEST(transactions, deserialize_transfer)
 {

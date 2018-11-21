@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "arkCrypto.h"
+#include "networks/devnet.h"
+using namespace Ark::Crypto::Networks;
 
 TEST(networks, devnet_base58_prefix_get)
 {
