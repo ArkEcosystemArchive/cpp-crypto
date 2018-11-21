@@ -27,7 +27,7 @@ Ark::Crypto::Networks::AbstractNetwork Ark::Crypto::Configuration::Network::get(
  *
  * @param AbstractNetwork network
  **/
-void Ark::Crypto::Configuration::Network::set(AbstractNetwork network)
+void Ark::Crypto::Configuration::Network::set(Ark::Crypto::Networks::AbstractNetwork network)
 {
     this->network_ = network;
 };

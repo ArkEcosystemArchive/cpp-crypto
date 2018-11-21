@@ -45,7 +45,8 @@ std::string Ark::Crypto::Transactions::Transaction::secondSign(const char* passp
     std::vector<uint8_t> buffer;
     cryptoSign(hash, privateKey, buffer);
 
-    return BytesToHex(buffer.begin(), buffer.end());
+    this->secondSignature = BytesToHex(buffer.begin(), buffer.end());
+    return this->secondSignature;
 }
 
 bool Ark::Crypto::Transactions::Transaction::verify() const

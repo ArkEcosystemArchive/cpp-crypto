@@ -5,8 +5,11 @@ project(Ark-Cpp-Crypto-lib)
 
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_INCLUDE_DIR})
+include_directories(
+  ${PROJECT_SOURCE_DIR}
+  ${PROJECT_INCLUDE_DIR}
+  ${PROJECT_INCLUDE_DIR}/bip39/src
+)
 
 set(BCL_SRC
 	${PROJECT_INCLUDE_DIR}/bcl/Base58Check.cpp
@@ -26,18 +29,22 @@ set(uECC_SRC
 )
 
 set(COMMON_SRC
-	${PROJECT_SOURCE_DIR}/configuration/fee.cpp
+  ${PROJECT_SOURCE_DIR}/configuration/fee.cpp
 	${PROJECT_SOURCE_DIR}/configuration/network.cpp
+  ${PROJECT_SOURCE_DIR}/helpers/helpers.cpp
+  ${PROJECT_SOURCE_DIR}/helpers/encoding/der.cpp
 	${PROJECT_SOURCE_DIR}/identities/address.cpp
+  ${PROJECT_SOURCE_DIR}/identities/mnemonic.cpp
 	${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
 	${PROJECT_SOURCE_DIR}/identities/publickey.cpp
 	${PROJECT_SOURCE_DIR}/identities/wif.cpp
 	${PROJECT_SOURCE_DIR}/networks/abstractnetwork.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
-        ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
-        ${PROJECT_SOURCE_DIR}/utils/message.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
+  ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
+  ${PROJECT_SOURCE_DIR}/utils/message.cpp
+  ${PROJECT_SOURCE_DIR}/utils/slot.cpp
 )
 
 add_library(Ark-Cpp-Crypto-lib
@@ -46,6 +53,8 @@ add_library(Ark-Cpp-Crypto-lib
 	${uECC_SRC}
 	${COMMON_SRC}
 )
+
+target_link_libraries(Ark-Cpp-Crypto-lib PRIVATE bip39)
 
 if (MSVC)
 	target_link_libraries(Ark-Cpp-Crypto-lib PUBLIC crypt32)

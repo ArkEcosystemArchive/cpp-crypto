@@ -74,7 +74,7 @@ Transaction Builder::buildMultiSignatureRegistration(uint8_t min, uint8_t lifeti
 
 Transaction Builder::sign(Transaction transaction, std::string passphrase, std::string secondPassphrase)
 {
-    transaction.timestamp = static_cast<uint32_t>(Utils::Slot().time(Configuration::Network().get()));
+    transaction.timestamp = static_cast<uint32_t>(Utils::Slot::time(Configuration::Network().get()));
     transaction.sign(passphrase.c_str());
 
     if (secondPassphrase.length() > 0) {

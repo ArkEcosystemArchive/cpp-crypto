@@ -68,6 +68,18 @@ message.verify();
 
 ## Identities
 
+### Passphrase
+
+#### Generate a default passphrase with 12 words in English
+```cpp
+const auto passphrase = Ark::Crypto::Identies::Mnemonic::generate();
+```
+
+#### Generate a passphrase with the given language and 24 words
+```cpp
+const auto passphrase = Ark::Crypto::Identies::Mnemonic::generate(24, Ark::Crypto::Identies::Language::en);
+```
+
 ### Address
 
 #### Get an address from a passphrase

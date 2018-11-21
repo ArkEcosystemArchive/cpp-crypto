@@ -25,6 +25,7 @@
 #include "identities/wif.h"
 #include "identities/publickey.h"
 #include "identities/address.h"
+#include "identities/mnemonic.h"
 
 #include "networks/abstractnetwork.h"
 #include "networks/devnet.h"

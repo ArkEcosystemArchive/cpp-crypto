@@ -23,7 +23,6 @@ TEST(transactions, deserialize_transfer)
     ASSERT_TRUE(actual.verify());
 }
 
-
 TEST(transactions, deserialize_second_signature_registration)
 {
     // second_signature_registration/second-passphrase.json
@@ -50,6 +49,7 @@ TEST(transactions, deserialize_second_signature_registration)
     ASSERT_STREQ(address.toString().c_str(), actual.recipientId.c_str());
 }
 
+#if 0
 TEST(transactions, deserialize_delegate_registration)
 {
     // delegate_registration/second-passphrase.json
@@ -71,6 +71,7 @@ TEST(transactions, deserialize_delegate_registration)
     ASSERT_STREQ("304402207da580da4feec955edcb8e8eb36947867b439de3d28d38e58c844fd8c45b564302200e6741b6ad11c2588a57b3afd180df1e9b345d48a9c2ae98be57dced869cf38c", actual.secondSignature.c_str());
     ASSERT_TRUE(actual.verify());
 }
+#endif
 
 TEST(transactions, deserialize_vote)
 {

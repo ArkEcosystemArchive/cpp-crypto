@@ -17,7 +17,7 @@ TEST(networks, mainnet_bip32_prefix_get)
 
 TEST(networks, mainnet_epoch)
 {
-    ASSERT_STREQ("2017-03-21T13:00:00.000Z", Mainnet.epoch());
+    ASSERT_STREQ("2017-03-21T13:00:00Z", Mainnet.epoch());
 }
 
 TEST(networks, mainnet_is_locked)
