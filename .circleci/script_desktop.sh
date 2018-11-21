@@ -3,4 +3,4 @@ cmake . -DCMAKE_BUILD_TYPE=Coverage
 cmake --build .
 
 # run Gtest
-./bin/Ark-Cpp-Crypto-tests
+./test/Ark-Cpp-Crypto-tests
