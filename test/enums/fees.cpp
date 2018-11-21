@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "enums\fees.h"
+#include "enums/fees.h"
 
 TEST(enums, fees)
 {
