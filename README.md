@@ -6,7 +6,7 @@
 
 > A simple Cryptography Implementation in C++ for the Ark Blockchain.
 
-[![Build Status](https://badgen.now.sh/travis/ArkEcosystem/cpp-crypto)](https://travis-ci.org/ArkEcosystem/cpp-crypto)
+[![Build Status](https://badgen.now.sh/circleci/github/ArkEcosystem/cpp-crypto)](https://circleci.com/gh/ArkEcosystem/cpp-crypto)
 [![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/cpp-crypto)](https://codecov.io/gh/arkecosystem/cpp-crypto)
 [![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/cpp-crypto)](https://github.com/ArkEcosystem/cpp-crypto/releases)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
