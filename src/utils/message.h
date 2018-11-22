@@ -30,8 +30,6 @@
 #include <vector>
 #include <map>
 
-#include "uECC.h"
-
 using namespace Ark::Crypto::Identities;
 
 namespace Ark {

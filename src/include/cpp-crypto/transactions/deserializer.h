@@ -14,7 +14,7 @@
 #include "helpers/encoding/hex.h"
 #include "identities/publickey.h"
 #include "identities/privatekey.h"
-#include "transaction.h"
+#include "transactions/transaction.h"
 
 namespace Ark {
 namespace Crypto {

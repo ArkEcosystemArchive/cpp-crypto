@@ -1,6 +1,8 @@
 
 #include "gtest/gtest.h"
-#include "arkCrypto.h"
+
+#include "utils/message.h"
+
 #include <unordered_map>
 
 namespace {

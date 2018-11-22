@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
-#include "arkCrypto.h"
+
+#include "transactions/serializer.h"
 
 TEST(transactions, serialize_transfer)
 {

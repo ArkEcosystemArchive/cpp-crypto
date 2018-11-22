@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "arkCrypto.h"
+#include "enums/types.h"
 
 TEST(enums, types)
 {

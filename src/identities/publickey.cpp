@@ -8,7 +8,7 @@
  **/
 
 #include "identities/publickey.h"
-
+#include "uECC.h"
 /**
  * 
  **/

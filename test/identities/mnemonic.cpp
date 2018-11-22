@@ -1,6 +1,7 @@
 
 #include "gtest/gtest.h"
-#include "arkCrypto.h"
+
+#include "identities/mnemonic.h"
 
 #include <set>
 #include <string>
