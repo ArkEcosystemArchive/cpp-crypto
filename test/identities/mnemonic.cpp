@@ -7,13 +7,16 @@
 #include <string>
 
 namespace {
+
+const auto MAX_WORD_BYTES = ((8 * 4) + 1) * 24;  // ((8 characters per word * 4 potential octets per character) + 1 nul terminator) * maximum of 24 words
+
 void generate_mnemonic_valid(Ark::Crypto::Identities::Language language)
 {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
     auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, language);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
-    char s[256] = {};
+    char s[MAX_WORD_BYTES] = {};
     strncpy(s, passphrase.c_str(), sizeof(s));
     auto pch = strtok(s, " ");
     while (pch != nullptr) {
