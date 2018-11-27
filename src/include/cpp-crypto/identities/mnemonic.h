@@ -17,7 +17,14 @@ namespace Crypto {
 namespace Identities {
 
 enum class Language {
-  en
+  en,
+  es,
+  ja,
+  it,
+  fr,
+  ko,
+  zh_Hans,
+  zh_Hant
 };
 
 class Mnemonic {

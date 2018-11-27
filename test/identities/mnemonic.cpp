@@ -6,10 +6,11 @@
 #include <set>
 #include <string>
 
-TEST(mnemonic, generate_mnemonic_valid)
+namespace {
+void generate_mnemonic_valid(Ark::Crypto::Identities::Language language)
 {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, language);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[256] = {};
@@ -23,6 +24,41 @@ TEST(mnemonic, generate_mnemonic_valid)
     ASSERT_EQ(num_words, words.size());
   }
 }
+
+}
+
+TEST(mnemonic, generate_mnemonic_valid_en) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::en);
+}
+
+TEST(mnemonic, generate_mnemonic_valid_es) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::es);
+}
+
+TEST(mnemonic, generate_mnemonic_valid_ja) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::ja);
+}
+
+TEST(mnemonic, generate_mnemonic_valid_it) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::it);
+}
+
+TEST(mnemonic, generate_mnemonic_valid_fr) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::fr);
+}
+
+TEST(mnemonic, generate_mnemonic_valid_ko) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::ko);
+}
+
+TEST(mnemonic, generate_mnemonic_valid_zh_Hans) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::zh_Hans);
+}
+
+TEST(mnemonic, generate_mnemonic_valid_zh_Hant) {
+  generate_mnemonic_valid(Ark::Crypto::Identities::Language::zh_Hant);
+}
+
 
 // These tests depend on the library asserting, disable this test for Release builds
 #ifdef DEBUG
