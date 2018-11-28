@@ -53,3 +53,16 @@
 /INSTALL.vcxproj
 /src/Debug
 /test/Debug
+/extras/cmake_example/ZERO_CHECK.vcxproj.filters
+/extras/cmake_example/Win32/Debug
+/extras/cmake_example/cmake_example.vcxproj.filters
+/extras/cmake_example/cmake_example.vcxproj
+/extras/cmake_example/cmake_example.sln
+/extras/cmake_example/cmake_example.dir/Debug
+/extras/cmake_example/Debug
+/extras/cmake_example/cmake_install.cmake
+/extras/cmake_example/CMakeFiles
+/extras/cmake_example/CMakeCache.txt
+/extras/cmake_example/ALL_BUILD.vcxproj.filters
+/extras/cmake_example/ALL_BUILD.vcxproj
+/extras/cmake_example/ZERO_CHECK.vcxproj
