@@ -14,6 +14,7 @@ before_build:
     - cmake .
     - cd extras\cmake_example
     - cmake .
+    - cd ..\..\
 
 build_script:
   - cmd: msbuild $(APPVEYOR_BUILD_FOLDER)\Ark-Cpp-Crypto.sln
