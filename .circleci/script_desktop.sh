@@ -8,4 +8,5 @@ cmake .
 cmake --build .
 
 # run Gtest
+cd ../../
 ./test/Ark-Cpp-Crypto-tests
