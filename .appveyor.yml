@@ -17,9 +17,9 @@ before_build:
     - cd ..\..\
 
 build_script:
-  - cmake --build . -DCMAKE_CONFIGURATION_TYPES="%CONFIGURATION%"
+  - cmake --build .
   - cd extras\cmake_example
-  - cmake --build . -DCMAKE_CONFIGURATION_TYPES="%CONFIGURATION%"
+  - cmake --build .
 
 test_script:
 - cmd: '%APPVEYOR_BUILD_FOLDER%\test\%CONFIGURATION%\Ark-Cpp-Crypto-tests.exe'
