@@ -12,7 +12,7 @@ install:
 
 before_build:
     - cmake -G "Visual Studio 15 2017 Win64" .
-    - cmake _G "Visual Studio 15 2017 Win64" .\extras\cmake_example
+    - cmake -G "Visual Studio 15 2017 Win64" .\extras\cmake_example
 
 build_script:
   - cmd: msbuild $(APPVEYOR_BUILD_FOLDER)\Ark-Cpp-Crypto.sln
