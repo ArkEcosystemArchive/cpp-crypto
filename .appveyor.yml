@@ -11,15 +11,15 @@ install:
     - git submodule update --init --recursive
 
 before_build:
-    - cmake .
+    - cmake . -DCMAKE_CONFIGURATION_TYPES="%CONFIGURATION%"
     - cd extras\cmake_example
-    - cmake .
+    - cmake . -DCMAKE_CONFIGURATION_TYPES="%CONFIGURATION%"
     - cd ..\..\
 
 build_script:
-  - cmake --build .
+  - cmake --build . -DCMAKE_CONFIGURATION_TYPES="%CONFIGURATION%"
   - cd extras\cmake_example
-  - cmake --build .
+  - cmake --build . -DCMAKE_CONFIGURATION_TYPES="%CONFIGURATION%"
 
 test_script:
 - cmd: '%APPVEYOR_BUILD_FOLDER%\test\%CONFIGURATION%\Ark-Cpp-Crypto-tests.exe'
