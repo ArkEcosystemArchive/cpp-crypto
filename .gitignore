@@ -66,3 +66,7 @@
 /extras/cmake_example/ALL_BUILD.vcxproj.filters
 /extras/cmake_example/ALL_BUILD.vcxproj
 /extras/cmake_example/ZERO_CHECK.vcxproj
+/extras/cmake_example/Cpp-Crypto-Example.dir/Debug
+/extras/cmake_example/Cpp-Crypto-Example.vcxproj.filters
+/extras/cmake_example/Cpp-Crypto-Example.vcxproj
+/extras/cmake_example/Cpp-Crypto-Example.sln
