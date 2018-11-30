@@ -156,6 +156,12 @@ install the following Libraries:
 ```micro-ecc```  
 ```AUnit```
 
+#### Ensure all git submodules have been cloned
+##### Note that future goals include ensuring that all dependent libaries are registered in the PIO Library Manager to avoid the use of git submodules for PIO builds
+
+    cd Cpp-Crypto
+    git submodule update --init --recursive
+
 #### Arduino Example using the Adafruit Feather ESP8266
 
 ```cpp
@@ -218,9 +224,14 @@ Install AUnit (2778), micro-ecc (1665)
 
     platformio lib -g install 2778 1665
 
+#### Ensure all git submodules have been cloned
+##### Note that future goals include ensuring that all dependent libaries are registered in the PIO Library Manager to avoid the use of git submodules for PIO builds
+
+    cd Cpp-Crypto
+    git submodule update --init --recursive
+
 #### running the tests on an Arduino board
 
-    cd Cpp-Crypto 
     cd test
 
 #### execute the following command to upload test to your board  
@@ -251,5 +262,8 @@ using
     cd cpp-crypto  
     cmake . && cmake --build .
 
-### run tests
-    ./bin/Ark-Cpp-Crypto-tests
+### run tests (Linux, macOS)
+    ./test/Ark-Cpp-Crypto-tests
+
+### run tests (Windows)
+    .\test\Debug\Ark-Cpp-Crypto-tests.exe
