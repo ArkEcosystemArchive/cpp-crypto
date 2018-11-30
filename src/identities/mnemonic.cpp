@@ -26,7 +26,14 @@ std::string Mnemonic::generate(size_t num_words /* = 12u */, Language language /
     { 24, BIP39::entropy_bits_t::_256 }
   };
   static const std::map<Language, BIP39::language> language_map = {
-    { Language::en, BIP39::language::en }
+    { Language::en, BIP39::language::en },
+    { Language::es, BIP39::language::es },
+    { Language::ja, BIP39::language::ja },
+    { Language::it, BIP39::language::it },
+    { Language::fr, BIP39::language::fr },
+    { Language::ko, BIP39::language::ko },
+    { Language::zh_Hans, BIP39::language::zh_Hans },
+    { Language::zh_Hant, BIP39::language::zh_Hant }
   };
 
   const auto entropy_it = words_to_entropy.find(num_words);
