@@ -13,7 +13,6 @@
 #include "helpers/helpers.h"
 #include "helpers/encoding/hex.h"
 #include "identities/privatekey.h"
-#include "uECC.h"
 #include <string>
 
 namespace Ark {

@@ -1,6 +1,8 @@
 
 #include "gtest/gtest.h"
-#include "arkCrypto.h"
+
+#include "identities/publickey.h"
+using namespace Ark::Crypto::Identities;
 
 namespace {
     const auto passphrase = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";

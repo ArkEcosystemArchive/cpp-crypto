@@ -1,5 +1,9 @@
 #include "gtest/gtest.h"
-#include "arkCrypto.h"
+
+#include "configuration/fee.h"
+#include "enums/types.h"
+#include "transactions/builder.h"
+using namespace Ark::Crypto::Transactions;
 
 TEST(transactions, build_transfer)
 {

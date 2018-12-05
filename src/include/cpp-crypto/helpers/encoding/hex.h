@@ -17,7 +17,7 @@
  * Hex Helpers
  **/
 template<typename T>
-static inline std::string BytesToHex(const T itbegin, const T itend, bool fSpaces = false)
+inline std::string BytesToHex(const T itbegin, const T itend, bool fSpaces = false)
 {
     std::string rv;
     static const char hexmap[16] = {
@@ -27,7 +27,7 @@ static inline std::string BytesToHex(const T itbegin, const T itend, bool fSpace
     rv.reserve((itend - itbegin) * 3);
     for (T it = itbegin; it < itend; ++it)
     {
-        unsigned char val = (unsigned char)(*it);
+        const auto val = static_cast<uint8_t>(*it);
         if (fSpaces && it != itbegin)
             rv.push_back(' ');
         rv.push_back(hexmap[val >> 4]);
@@ -35,19 +35,19 @@ static inline std::string BytesToHex(const T itbegin, const T itend, bool fSpace
     }
 
     return rv;
-};
+}
 
 /**/
 
 template<typename T>
-static inline std::string BytesToHex(const T& vch, bool fSpaces = false)
+inline std::string BytesToHex(const T& vch, bool fSpaces = false)
 {
     return BytesToHex(vch.begin(), vch.end(), fSpaces);
-};
+}
 
 /********/
 
-static const signed char p_util_hexdigit[256] = {
+const int8_t p_util_hexdigit[256] = {
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
@@ -68,33 +68,33 @@ static const signed char p_util_hexdigit[256] = {
 
 /**/
 
-static inline signed char HexDigit(char c)
+inline int8_t HexDigit(char c)
 {
-    return p_util_hexdigit[(unsigned char)c];
-};
+    return p_util_hexdigit[static_cast<uint8_t>(c)];
+}
 
 /**/
 
-static inline std::vector<unsigned char> HexToBytes(const char* psz)
+inline std::vector<uint8_t> HexToBytes(const char* psz)
 {
     // convert hex dump to vector
-    std::vector<unsigned char> vch;
-    while (true)
+    std::vector<uint8_t> vch;
+    for(;;)
     {
         while (isspace(*psz))
             psz++;
-        signed char c = HexDigit(*psz++);
-        if (c == (signed char)-1)
+        auto c = HexDigit(*psz++);
+        if (c == static_cast<int8_t>(-1))
             break;
-        unsigned char n = (c << 4);
+        int8_t n = (c << 4);
         c = HexDigit(*psz++);
-        if (c == (signed char)-1)
+        if (c == static_cast<int8_t>(-1))
             break;
         n |= c;
         vch.push_back(n);
     }
     return vch;
-};
+}
 
 /**/
 

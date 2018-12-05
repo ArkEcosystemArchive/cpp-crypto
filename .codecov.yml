@@ -1,0 +1,4 @@
+ignore:
+  - "src/lib"
+  - "test"
+  - "extras"

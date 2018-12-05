@@ -10,7 +10,7 @@
 #ifndef SERIALIZER_H
 #define SERIALIZER_H
 
-#include "transaction.h"
+#include "transactions/transaction.h"
 
 namespace Ark {
 namespace Crypto {

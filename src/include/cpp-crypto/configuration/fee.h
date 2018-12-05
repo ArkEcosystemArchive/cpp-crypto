@@ -12,8 +12,9 @@
 
 #include "enums/types.h"
 #include "enums/fees.h"
-
 using namespace Ark::Crypto::Enums;
+
+#include <cstdint>
 
 namespace Ark {
 namespace Crypto {

@@ -1,33 +1,9 @@
-cmake_minimum_required(VERSION 3.2.2)
-set(HUNTER_STATUS_DEBUG ON)
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/cmake/toolchain.cmake")
-
-include("${CMAKE_SOURCE_DIR}/cmake/HunterGate.cmake")
-
-HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.23.29.tar.gz"
-    SHA1 "797be99a8a4f4666766257563fad8aa3aa032da2"
-)
-
+cmake_minimum_required(VERSION 3.2)
 project(Ark-Cpp-Crypto)
 
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_CXX_STANDARD 11)
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
-
-set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
-
-include_directories(${PROJECT_INCLUDE_DIR}/)
-include_directories(${PROJECT_INCLUDE_DIR}/bcl)
-include_directories(${PROJECT_INCLUDE_DIR}/uECC)
-include_directories(${PROJECT_INCLUDE_DIR}/rfc6979)
-
-# clone submodules
-execute_process(
-	COMMAND git submodule update --init
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
 
 if (MSVC)
 	add_definitions(
@@ -35,12 +11,17 @@ if (MSVC)
 		-D_SCL_SECURE_NO_WARNINGS
 		-DNOMINMAX
 	)
-elseif (UNIX)
-	set (CMAKE_CXX_FLAGS "-std=c++11")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 endif()
 
-include_directories("${PROJECT_INCLUDE_DIR}")
-include_directories("${PROJECT_SOURCE_DIR}")
+# clone submodules
+execute_process(
+	COMMAND git submodule update --init --recursive
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
 
 add_subdirectory(src)
 add_subdirectory(test)
+

@@ -1,4 +1,4 @@
-#include "serializer.h"
+#include "transactions/serializer.h"
 #include "helpers/helpers.h"
 #include "identities/address.h"
 #include "configuration/network.h"

@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "arkCrypto.h"
+#include "networks/abstractnetwork.h"
+using namespace Ark::Crypto::Networks;
+
 #include <string>
 
 AbstractNetwork CUSTOM_NETWORK = {

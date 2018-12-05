@@ -1,1 +1,0 @@
-hunter_config(PocoCpp VERSION 1.7.9-p1 CMAKE_ARGS ENABLE_CRYPTO=ON)
