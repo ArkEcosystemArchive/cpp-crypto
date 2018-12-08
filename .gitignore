@@ -38,6 +38,8 @@
 /test/Ark-Cpp-Crypto-tests.sln
 /test/ALL_BUILD.vcxproj.filters
 /test/ALL_BUILD.vcxproj
+/test/INSTALL.vcxproj.filters
+/test/INSTALL.vcxproj
 /Win32
 /_3rdParty/Hunter
 /ZERO_CHECK.vcxproj.filters
