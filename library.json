@@ -42,5 +42,10 @@
     "flags": [
       "-I src/include/cpp-crypto"
     ]
-  }
+  },
+  "examples": [
+    "[Ee]xamples/platformio_example/*.ino",
+    "[Ee]xamples/platformio_example/*.cpp",
+    "[Ee]xamples/platformio_example/*.c"
+  ]
 }
