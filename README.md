@@ -13,7 +13,7 @@
 
 ## Documentation
 
-You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/api/sdk/cryptography/cpp.html).
+You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/sdk/cryptography/cpp.html).
 
 ## Security
 
