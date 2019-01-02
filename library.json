@@ -1,28 +1,51 @@
 {
-    "name": "Ark-Cpp-Crypto",
-    "keywords": "ark ecosystem, crypto, blockchain, arduino",
-    "description": "Cpp Wrapper for the Ark Ecosystem",
-    "homepage": "https://github.com/ArkEcosystem/Cpp-Crypto",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ArkEcosystem/Cpp-Crypto.git"
+  "name": "Ark-Cpp-Crypto",
+  "keywords": "ark ecosystem, crypto, blockchain, arduino",
+  "description": "Cpp Wrapper for the Ark Ecosystem",
+  "homepage": "https://github.com/ArkEcosystem/Cpp-Crypto",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArkEcosystem/Cpp-Crypto.git"
+  },
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Simon Downey",
+      "email": "simon@ark.io",
+      "url": "https://github.com/sleepdefic1t"
     },
-    "version": "1.0",
-    "authors": [
-        {
-            "name": "Simon Downey",
-            "email": "simon@ark.io",
-            "url": "https://github.com/sleepdefic1t"
-        },
-        {
-            "name": "Chris Johnson",
-            "url": "https://github.com/ciband"
-        },
-        {
-            "name": "supaiku0",
-            "url": "https://github.com/supaiku0"
-        }
-    ],
-    "frameworks": "arduino",
-    "platforms": "*"
+    {
+      "name": "Chris Johnson",
+      "url": "https://github.com/ciband"
+    },
+    {
+      "name": "supaiku0",
+      "url": "https://github.com/supaiku0"
+    }
+  ],
+  "frameworks": "arduino",
+  "platforms": "*",
+  "dependencies": [
+    {
+      "name": "micro-ecc"
+    },
+    {
+      "name": "bip39"
+    }
+  ],
+  "export": {
+    "include": [
+      "src/*"
+    ]
+  },
+  "build": {
+    "flags": [
+      "-I src/include/cpp-crypto"
+    ]
+  },
+  "examples": [
+    "[Ee]xamples/platformio_example/*.ino",
+    "[Ee]xamples/platformio_example/*.cpp",
+    "[Ee]xamples/platformio_example/*.c"
+  ]
 }
