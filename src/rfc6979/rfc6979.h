@@ -14,21 +14,21 @@
 #include <cstdint>
 #include <cstring>
 
-typedef struct {
+struct secp256k1_sha256_t {
     uint32_t s[8];
     uint32_t buf[16]; /* In big endian */
     size_t bytes;
-} secp256k1_sha256_t;
+};
 
-typedef struct {
+struct secp256k1_hmac_sha256_t {
     secp256k1_sha256_t inner, outer;
-} secp256k1_hmac_sha256_t;
+};
 
-typedef struct {
+struct secp256k1_rfc6979_hmac_sha256_t {
     unsigned char v[32];
     unsigned char k[32];
     int retry;
-} secp256k1_rfc6979_hmac_sha256_t;
+};
 
 #define Ch(x,y,z) ((z) ^ ((x) & ((y) ^ (z))))
 #define Maj(x,y,z) (((x) & (y)) | ((z) & ((x) | (y))))
