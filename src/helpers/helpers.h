@@ -35,7 +35,7 @@ const auto WIF_SIZE = 52u;
 // Write data into dst
 template <typename T>
 inline void pack (std::vector<uint8_t>& dst, T& data) {
-    const uint8_t * src = reinterpret_cast<const uint8_t* >(&data);
+    const auto src = reinterpret_cast<const uint8_t*>(&data);
     dst.insert(dst.end(), src, src + sizeof (T));
 }
 
@@ -49,7 +49,7 @@ inline void unpack (T* dst, uint8_t* src, size_t size = -1) {
 // Join string vector
 inline std::string join(const std::vector<std::string>& strings) {
     return std::accumulate(strings.begin(), strings.end(), std::string(),
-        [](const std::string& a, const std::string& b) -> std::string {
+        [] (const std::string& a, const std::string& b) -> std::string {
             return a + b;
         }
     );
