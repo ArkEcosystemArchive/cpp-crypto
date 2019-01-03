@@ -88,7 +88,7 @@ class AbstractNetwork
         };
         /**/
 
-        virtual ~AbstractNetwork() { }
+        virtual ~AbstractNetwork() = default;
 
         uint8_t getBase58Prefix(Base58PrefixType prefix) const;
         void setBase58Prefix(Base58PrefixType prefix, uint8_t newByte);
