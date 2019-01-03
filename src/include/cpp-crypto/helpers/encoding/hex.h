@@ -29,7 +29,9 @@ inline std::string BytesToHex(const T itbegin, const T itend, bool fSpaces = fal
     {
         const auto val = static_cast<uint8_t>(*it);
         if (fSpaces && it != itbegin)
-            rv.push_back(' ');
+        {
+          rv.push_back(' ');
+        }
         rv.push_back(hexmap[val >> 4]);
         rv.push_back(hexmap[val & 15]);
     }
