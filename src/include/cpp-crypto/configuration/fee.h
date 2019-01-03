@@ -45,7 +45,7 @@ class Fee
     public:
         Fee() = default;
         uint64_t get(int type);
-        void set(const int type, const uint64_t fee);
+        void set(int type, uint64_t fee);
 };
 /**/
 
