@@ -87,12 +87,10 @@ inline std::vector<uint8_t> HexToBytes(const char* psz)
           psz++;
         }
         auto c = HexDigit(*psz++);
-        if (c == static_cast<int8_t>(-1))
-            break;
+        if (c == static_cast<int8_t>(-1)) { break; }
         int8_t n = (c << 4);
         c = HexDigit(*psz++);
-        if (c == static_cast<int8_t>(-1))
-            break;
+        if (c == static_cast<int8_t>(-1)) { break; }
         n |= c;
         vch.push_back(n);
     }
