@@ -83,7 +83,7 @@ inline std::vector<uint8_t> HexToBytes(const char* psz)
     std::vector<uint8_t> vch;
     for(;;)
     {
-        while (isspace(*psz)) {
+        while (isspace(*psz) != 0) {
           psz++;
         }
         auto c = HexDigit(*psz++);
