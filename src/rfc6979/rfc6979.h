@@ -10,9 +10,9 @@
 #ifndef RFC6979_H
 #define RFC6979_H
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdint>
+#include <cstring>
 
 typedef struct {
     uint32_t s[8];
