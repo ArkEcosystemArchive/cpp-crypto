@@ -159,7 +159,7 @@ void Serializer::serializeSignatures(std::vector<uint8_t>& bytes)
         bytes.insert(bytes.end(), signSignatureBytes.begin(), signSignatureBytes.end());
     }
 
-    if (_transaction.signatures.size() > 0) {
+    if (!_transaction.signatures.empty()) {
         bytes.push_back(0xff);
         std::string joined = join(_transaction.signatures);
         for (const auto& signature : _transaction.signatures) {
