@@ -301,11 +301,11 @@ inline int nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *m
     */
    memcpy(keydata, key32, 32);
    memcpy(keydata + 32, msg32, 32);
-   if (data != NULL) {
+   if (data != nullptr) {
        memcpy(keydata + 64, data, 32);
        keylen = 96;
    }
-   if (algo16 != NULL) {
+   if (algo16 != nullptr) {
        memcpy(keydata + keylen, algo16, 16);
        keylen += 16;
    }
