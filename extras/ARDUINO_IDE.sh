@@ -12,7 +12,7 @@
 # The Arduino IDE doesn't support extending its search path outside of the 'src' folder.
 # The Ark Cpp-Crypto SDK exposes its public interface via the 'include' folder.
 #
-# This script moves the headers from 'include' into their reletive directories in the 'src' folder;
+# This script moves the headers from 'include' into their relative directories in the 'src' folder;
 # it then delete the 'include' folder.
 #
 # Additionally, once this script has been ran, it can be executed again to undo these changes.
