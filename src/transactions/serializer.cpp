@@ -115,8 +115,8 @@ void Serializer::serializeDelegateRegistration(std::vector<uint8_t>& bytes)
 void Serializer::serializeVote(std::vector<uint8_t>& bytes)
 {
     std::string votes;
-    for (uint8_t i = 0; i < _transaction.asset.votes.size(); i++) {
-        std::string vote = _transaction.asset.votes[i];
+    
+    for (const auto& vote : _transaction.asset.votes) {
         votes += (vote[0] == '+' ? "01" : "00") + vote.substr(1);
     }
 
@@ -129,8 +129,8 @@ void Serializer::serializeMultiSignatureRegistration(std::vector<uint8_t>& bytes
 {
     std::string keysgroup;
     if (_transaction.version == 1) {
-        for (uint8_t i = 0; i < _transaction.asset.multiSignature.keysgroup.size(); i++) {
-            keysgroup += _transaction.asset.multiSignature.keysgroup[i].substr(1);
+        for (const auto& kg : _transaction.asset.multiSignature.keysgroup) {
+            keysgroup += kg.substr(1);
         }
     } else {
         keysgroup = join(_transaction.asset.multiSignature.keysgroup);
