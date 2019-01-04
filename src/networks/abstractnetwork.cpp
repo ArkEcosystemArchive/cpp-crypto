@@ -17,7 +17,7 @@
  **/
 uint8_t Ark::Crypto::Networks::AbstractNetwork::getBase58Prefix(Base58PrefixType prefix) const
 {
-    switch (base58Prefix) {
+    switch (prefix) {
         case 0: return this->base58_.ADDRESS_P2PKH;
         case 1: return this->base58_.ADDRESS_P2SH;
         case 2: return this->base58_.WIF;
@@ -35,7 +35,7 @@ uint8_t Ark::Crypto::Networks::AbstractNetwork::getBase58Prefix(Base58PrefixType
 void Ark::Crypto::Networks::AbstractNetwork::setBase58Prefix(Base58PrefixType prefix, uint8_t newByte)
 {
     if (!isLocked_) {
-        switch (base58Prefix) {
+        switch (prefix) {
             case 0: this->base58_.ADDRESS_P2PKH = newByte;
             case 1: this->base58_.ADDRESS_P2SH = newByte;
             case 2: this->base58_.WIF = newByte;
@@ -52,7 +52,7 @@ void Ark::Crypto::Networks::AbstractNetwork::setBase58Prefix(Base58PrefixType pr
  **/
 long Ark::Crypto::Networks::AbstractNetwork::getBIP32Prefix(BIP32PrefixType prefix) const
 {
-     return (bip32Prefix == 0) ? this->bip32_.PREFIX_XPUB : this->bip32_.PREFIX_XPRV;
+     return (prefix == 0) ? this->bip32_.PREFIX_XPUB : this->bip32_.PREFIX_XPRV;
 }
 /**/
 
@@ -65,7 +65,7 @@ long Ark::Crypto::Networks::AbstractNetwork::getBIP32Prefix(BIP32PrefixType pref
 void Ark::Crypto::Networks::AbstractNetwork::setBIP32Prefix(BIP32PrefixType prefix, long newByte)
 {
     if (!isLocked_) {
-        switch (bip32Prefix) {
+        switch (prefix) {
             case 0: this->bip32_.PREFIX_XPUB = newByte; break;
             case 1: this->bip32_.PREFIX_XPRV = newByte; break;
         };
