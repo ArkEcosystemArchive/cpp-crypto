@@ -156,7 +156,7 @@ inline void secp256k1_sha256_write(secp256k1_sha256_t *hash, const unsigned char
         secp256k1_sha256_transform(hash->s, hash->buf);
         bufsize = 0;
     }
-    if (len) {
+    if (len != 0u) {
         /* Fill the buffer with what remains. */
         memcpy(((unsigned char*)hash->buf) + bufsize, data, len);
     }
