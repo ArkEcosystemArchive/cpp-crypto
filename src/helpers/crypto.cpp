@@ -37,7 +37,7 @@ bool cryptoVerify(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash,
   uint8_t uncompressedPublicKey[64] = {}; // create uncompressed publicKey buffer (uint8_t[64])
   const struct uECC_Curve_t * curve = uECC_secp256k1(); // define the curve-type
   uECC_decompress(publicKeyBytes, uncompressedPublicKey, curve); // decompress the key
-  if (uECC_valid_public_key(uncompressedPublicKey, curve) == 0) { return 0; }; // validate the uncompressed publicKey
+  if (uECC_valid_public_key(uncompressedPublicKey, curve) == 0) { return false; }; // validate the uncompressed publicKey
 
   /* Split uncompressed publicKey into (x,y) coordinate buffers */
   char xBuffer[65] = "\0";

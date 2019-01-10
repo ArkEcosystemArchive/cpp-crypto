@@ -30,11 +30,12 @@ using namespace Ark::Crypto::Networks;
  **/
 class Network
 {
-    private:
-        AbstractNetwork network_;
-    public:
-        AbstractNetwork get();
-        void set(AbstractNetwork network);
+private:
+    AbstractNetwork network_;
+
+public:
+    AbstractNetwork get();
+    void set(const AbstractNetwork& network);
 };
 /**/
 };
