@@ -39,12 +39,12 @@ std::string Serializer::serialize()
 void Serializer::serializeVendorField(std::vector<uint8_t>& bytes)
 {
     if (_transaction.vendorField.length() > 0) {
-        uint8_t vendorFieldLength = static_cast<uint8_t>(_transaction.vendorField.length());
+        auto vendorFieldLength = static_cast<uint8_t>(_transaction.vendorField.length());
         bytes.push_back(vendorFieldLength);
         bytes.insert(bytes.end(), std::begin(_transaction.vendorField), std::end(_transaction.vendorField));
 
     } else if (_transaction.vendorFieldHex.length() > 0) {
-        uint8_t vendorFieldHexLength = static_cast<uint8_t>(_transaction.vendorFieldHex.length() / 2);
+        auto vendorFieldHexLength = static_cast<uint8_t>(_transaction.vendorFieldHex.length() / 2);
         bytes.push_back(vendorFieldHexLength);
         bytes.insert(bytes.end(), std::begin(_transaction.vendorFieldHex), std::end(_transaction.vendorFieldHex));
     } else {
@@ -115,8 +115,8 @@ void Serializer::serializeDelegateRegistration(std::vector<uint8_t>& bytes)
 void Serializer::serializeVote(std::vector<uint8_t>& bytes)
 {
     std::string votes;
-    for (uint8_t i = 0; i < _transaction.asset.votes.size(); i++) {
-        std::string vote = _transaction.asset.votes[i];
+    
+    for (const auto& vote : _transaction.asset.votes) {
         votes += (vote[0] == '+' ? "01" : "00") + vote.substr(1);
     }
 
@@ -129,8 +129,8 @@ void Serializer::serializeMultiSignatureRegistration(std::vector<uint8_t>& bytes
 {
     std::string keysgroup;
     if (_transaction.version == 1) {
-        for (uint8_t i = 0; i < _transaction.asset.multiSignature.keysgroup.size(); i++) {
-            keysgroup += _transaction.asset.multiSignature.keysgroup[i].substr(1);
+        for (const auto& kg : _transaction.asset.multiSignature.keysgroup) {
+            keysgroup += kg.substr(1);
         }
     } else {
         keysgroup = join(_transaction.asset.multiSignature.keysgroup);
@@ -159,11 +159,11 @@ void Serializer::serializeSignatures(std::vector<uint8_t>& bytes)
         bytes.insert(bytes.end(), signSignatureBytes.begin(), signSignatureBytes.end());
     }
 
-    if (_transaction.signatures.size() > 0) {
+    if (!_transaction.signatures.empty()) {
         bytes.push_back(0xff);
         std::string joined = join(_transaction.signatures);
-        for (uint8_t i = 0; i < _transaction.signatures.size(); i++) {
-            std::vector<uint8_t> signatureBytes = HexToBytes(_transaction.signatures[i].c_str());
+        for (const auto& signature : _transaction.signatures) {
+            std::vector<uint8_t> signatureBytes = HexToBytes(signature.c_str());
             bytes.insert(bytes.end(), std::begin(signatureBytes), std::end(signatureBytes));
         }
     }

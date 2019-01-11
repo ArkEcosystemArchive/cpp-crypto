@@ -83,12 +83,12 @@ class AbstractNetwork
             bip32_t bip32,
             const char* epoch,
             bool locked = true
-        ) : base58_(base58), bip32_(bip32), isLocked_(locked) {
+        ) : base58_(base58), bip32_(bip32), epoch_(), isLocked_(locked) {
             std::strncpy(this->epoch_, epoch, 34);
         };
         /**/
 
-        virtual ~AbstractNetwork() { }
+        virtual ~AbstractNetwork() = default;
 
         uint8_t getBase58Prefix(Base58PrefixType prefix) const;
         void setBase58Prefix(Base58PrefixType prefix, uint8_t newByte);

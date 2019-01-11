@@ -10,25 +10,25 @@
 #ifndef RFC6979_H
 #define RFC6979_H
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdint>
+#include <cstring>
 
-typedef struct {
+struct secp256k1_sha256_t {
     uint32_t s[8];
     uint32_t buf[16]; /* In big endian */
     size_t bytes;
-} secp256k1_sha256_t;
+};
 
-typedef struct {
+struct secp256k1_hmac_sha256_t {
     secp256k1_sha256_t inner, outer;
-} secp256k1_hmac_sha256_t;
+};
 
-typedef struct {
+struct secp256k1_rfc6979_hmac_sha256_t {
     unsigned char v[32];
     unsigned char k[32];
     int retry;
-} secp256k1_rfc6979_hmac_sha256_t;
+};
 
 #define Ch(x,y,z) ((z) ^ ((x) & ((y) ^ (z))))
 #define Maj(x,y,z) (((x) & (y)) | ((z) & ((x) | (y))))
@@ -156,7 +156,7 @@ inline void secp256k1_sha256_write(secp256k1_sha256_t *hash, const unsigned char
         secp256k1_sha256_transform(hash->s, hash->buf);
         bufsize = 0;
     }
-    if (len) {
+    if (len != 0u) {
         /* Fill the buffer with what remains. */
         memcpy(((unsigned char*)hash->buf) + bufsize, data, len);
     }
@@ -252,7 +252,7 @@ inline void secp256k1_rfc6979_hmac_sha256_initialize(secp256k1_rfc6979_hmac_sha2
 inline void secp256k1_rfc6979_hmac_sha256_generate(secp256k1_rfc6979_hmac_sha256_t *rng, unsigned char *out, size_t outlen) {
     /* RFC6979 3.2.h. */
     static const unsigned char zero[1] = {0x00};
-    if (rng->retry) {
+    if (rng->retry != 0) {
         secp256k1_hmac_sha256_t hmac;
         secp256k1_hmac_sha256_initialize(&hmac, rng->k, 32);
         secp256k1_hmac_sha256_write(&hmac, rng->v, 32);
@@ -301,11 +301,11 @@ inline int nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *m
     */
    memcpy(keydata, key32, 32);
    memcpy(keydata + 32, msg32, 32);
-   if (data != NULL) {
+   if (data != nullptr) {
        memcpy(keydata + 64, data, 32);
        keylen = 96;
    }
-   if (algo16 != NULL) {
+   if (algo16 != nullptr) {
        memcpy(keydata + keylen, algo16, 16);
        keylen += 16;
    }

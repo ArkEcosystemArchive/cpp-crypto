@@ -43,8 +43,8 @@ class Address
         static Address fromPublicKey(PublicKey publicKey, uint8_t networkVersion);
 
         static bool validate(Address address, uint8_t networkVersion);
-        static bool validate(const char *const address, uint8_t networkVersion);
-        static bool validate(const uint8_t *address, uint8_t networkVersion);
+        static bool validate(const char *const addressStr, uint8_t networkVersion);
+        static bool validate(const uint8_t *addressBytes, uint8_t networkVersion);
         static std::string base58encode(const uint8_t* source);
         static std::vector<uint8_t> bytesFromBase58Check(const char* const address);
 };

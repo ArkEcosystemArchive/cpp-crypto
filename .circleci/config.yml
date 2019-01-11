@@ -49,7 +49,7 @@ jobs:
             sudo apt-add-repository -y ppa:george-edison55/cmake-3.x
             sudo apt-get update
             sudo apt install python-lldb-5.0 lcov cmake
-            sudo apt install clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libllvm5.0 lldb-5.0 llvm-5.0 llvm-5.0-dev
+            sudo apt install clang-5.0 clang-tidy-5.0 clang-format-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libllvm5.0 lldb-5.0 llvm-5.0 llvm-5.0-dev
 
             sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-5.0 60
             sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 50
@@ -63,6 +63,15 @@ jobs:
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
+          
+      - run:
+          name: Clang Tidy
+          command: ./.circleci/clang_tidy.sh
+          
+      - run:
+          name: Clang Format
+          command: ./.circleci/clang_format.sh
+          
   build-macos-9-2:
     macos:
       xcode: "9.2.0"
