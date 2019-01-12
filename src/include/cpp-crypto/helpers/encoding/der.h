@@ -22,14 +22,17 @@ std::vector<uint8_t>& toDER(std::vector<uint8_t>& buffer);
 
 /**/
 
-void decodeDER(std::vector<uint8_t>& signature, std::vector<uint8_t>& r, std::vector<uint8_t>& s);
+void decodeDER(std::vector<uint8_t>& signature, std::vector<uint8_t>& r,
+               std::vector<uint8_t>& s);
 
 /**/
 
-void encodeDER(const std::vector<uint8_t>& r, const std::vector<uint8_t>& s, std::vector<uint8_t>& signature);
+void encodeDER(const std::vector<uint8_t>& r, const std::vector<uint8_t>& s,
+               std::vector<uint8_t>& signature);
 
 /**/
 
-void encodeDER(uint8_t packed_signature[DEFAULT_PRIVATEKEY_SIZE * 2], std::vector<uint8_t>& signature);
+void encodeDER(uint8_t packed_signature[DEFAULT_PRIVATEKEY_SIZE * 2],
+               std::vector<uint8_t>& signature);
 
 #endif

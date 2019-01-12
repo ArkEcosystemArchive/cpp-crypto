@@ -8,15 +8,19 @@
 
 namespace {
 
-const auto MAX_WORD_BYTES = ((8 * 4) + 1) * 24;  // ((8 characters per word * 4 potential octets per character) + 1 nul terminator) * maximum of 24 words
-
+const auto MAX_WORD_BYTES =
+    ((8 * 4) + 1) * 24;  // ((8 characters per word * 4 potential octets per
+                         // character) + 1 nul terminator) * maximum of 24 words
 }
 
-// Note:  generate_mnemonic_valid_[lang] tests could be refactored to use a single helper function with a language argument.
-//        This causes problems with AUnit when building and testing IoT due to ASSERT macros not being available.
+// Note:  generate_mnemonic_valid_[lang] tests could be refactored to use a
+// single helper function with a language argument.
+//        This causes problems with AUnit when building and testing IoT due to
+//        ASSERT macros not being available.
 TEST(mnemonic, generate_mnemonic_valid_en) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::en);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::en);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -33,7 +37,8 @@ TEST(mnemonic, generate_mnemonic_valid_en) {
 
 TEST(mnemonic, generate_mnemonic_valid_es) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::es);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::es);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -50,7 +55,8 @@ TEST(mnemonic, generate_mnemonic_valid_es) {
 
 TEST(mnemonic, generate_mnemonic_valid_ja) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::ja);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::ja);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -67,7 +73,8 @@ TEST(mnemonic, generate_mnemonic_valid_ja) {
 
 TEST(mnemonic, generate_mnemonic_valid_it) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::it);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::it);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -84,7 +91,8 @@ TEST(mnemonic, generate_mnemonic_valid_it) {
 
 TEST(mnemonic, generate_mnemonic_valid_fr) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::fr);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::fr);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -101,7 +109,8 @@ TEST(mnemonic, generate_mnemonic_valid_fr) {
 
 TEST(mnemonic, generate_mnemonic_valid_ko) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::ko);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::ko);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -118,7 +127,8 @@ TEST(mnemonic, generate_mnemonic_valid_ko) {
 
 TEST(mnemonic, generate_mnemonic_valid_zh_Hans) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::zh_Hans);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::zh_Hans);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -135,7 +145,8 @@ TEST(mnemonic, generate_mnemonic_valid_zh_Hans) {
 
 TEST(mnemonic, generate_mnemonic_valid_zh_Hant) {
   for (auto num_words = 12u; num_words <= 24u; num_words += 3) {
-    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(num_words, Ark::Crypto::Identities::Language::zh_Hant);
+    auto passphrase = Ark::Crypto::Identities::Mnemonic::generate(
+        num_words, Ark::Crypto::Identities::Language::zh_Hant);
     // use a set to ensure no duplicate words can be added
     std::set<std::string> words;
     char s[MAX_WORD_BYTES] = {};
@@ -150,14 +161,16 @@ TEST(mnemonic, generate_mnemonic_valid_zh_Hant) {
   }
 }
 
-
-// These tests depend on the library asserting, disable this test for Release builds
+// These tests depend on the library asserting, disable this test for Release
+// builds
 #ifdef DEBUG
-TEST(mnemonic, generate_mnemonic_invalid)
-{
+TEST(mnemonic, generate_mnemonic_invalid) {
   for (auto num_words = 0u; num_words <= 100u; ++num_words) {
     // skip the valid word cases
-    if (num_words == 12u || num_words == 15u || num_words == 18u || num_words == 21u || num_words == 24u) { continue; }
+    if (num_words == 12u || num_words == 15u || num_words == 18u ||
+        num_words == 21u || num_words == 24u) {
+      continue;
+    }
 
     ASSERT_DEATH(Ark::Crypto::Identities::Mnemonic::generate(num_words), "");
   }

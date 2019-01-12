@@ -10,25 +10,25 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "helpers/helpers.h"
-#include "helpers/encoding/hex.h"
 #include "helpers/crypto.h"
+#include "helpers/encoding/hex.h"
+#include "helpers/helpers.h"
 
-#include "identities/publickey.h"
 #include "identities/privatekey.h"
+#include "identities/publickey.h"
 
 #include "bcl/CurvePoint.hpp"
-#include "bcl/Sha256Hash.hpp"
 #include "bcl/Sha256.hpp"
+#include "bcl/Sha256Hash.hpp"
 #include "bcl/Uint256.hpp"
 
 #include "rfc6979/rfc6979.h"
 
 #include <cassert>
 #include <cstring>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 using namespace Ark::Crypto::Identities;
 
@@ -41,26 +41,25 @@ namespace Utils {
  *
  * @author Simon Downey <simon@ark.io>
  **/
-class Message
-{
-    public:
-        std::string message;
-        PublicKey publicKey;
-        std::vector<uint8_t> signature;
+class Message {
+ public:
+  std::string message;
+  PublicKey publicKey;
+  std::vector<uint8_t> signature;
 
-        Message(std::string msg, PublicKey pubKey, std::vector<uint8_t> sig);
-        Message() : signature( std::vector<uint8_t>(142) ) {};
+  Message(std::string msg, PublicKey pubKey, std::vector<uint8_t> sig);
+  Message() : signature(std::vector<uint8_t>(142)){};
 
-        bool sign(std::string newMessage, const char *const passphrase);
-        bool verify();
+  bool sign(std::string newMessage, const char *const passphrase);
+  bool verify();
 
-        std::vector<std::pair<const char *const, std::string>> toArray();
-        std::string toJson();
-        std::string toString();
+  std::vector<std::pair<const char *const, std::string>> toArray();
+  std::string toJson();
+  std::string toString();
 };
 /**/
-};
-};
-};
+};  // namespace Utils
+};  // namespace Crypto
+};  // namespace Ark
 
 #endif
