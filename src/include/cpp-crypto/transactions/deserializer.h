@@ -10,10 +10,10 @@
 #ifndef DESERIALIZER_H
 #define DESERIALIZER_H
 
-#include "helpers/encoding/hex.h"
 #include "helpers/helpers.h"
-#include "identities/privatekey.h"
+#include "helpers/encoding/hex.h"
 #include "identities/publickey.h"
+#include "identities/privatekey.h"
 #include "transactions/transaction.h"
 
 namespace Ark {
@@ -21,32 +21,33 @@ namespace Crypto {
 namespace Transactions {
 
 class Deserializer {
- public:
-  Deserializer(const std::string& serialized);
-  Transaction deserialize();
 
- private:
-  void deserializeHeader(Transaction& transaction);
-  void deserializeType(Transaction& transaction);
-  void deserializeTransfer(Transaction& transaction);
-  void deserializeSecondSignatureRegistration(Transaction& transaction);
-  void deserializeDelegateRegistration(Transaction& transaction);
-  void deserializeVote(Transaction& transaction);
-  void deserializeMultiSignatureRegistration(Transaction& transaction);
-  void deserializeIPFS(Transaction& transaction);
-  void deserializeTimelock(Transaction& transaction);
-  void deserializeMultiPayment(Transaction& transaction);
-  void deserializeDelegateResignation(Transaction& transaction);
-  void deserializeSignatures(Transaction& transaction);
-  void handleVersionOne(Transaction& transaction);
+public:
+    Deserializer(const std::string& serialized);
+    Transaction deserialize();
 
-  std::string _serialized;
-  std::vector<uint8_t> _binary;
-  uint32_t _assetOffset;
+private:
+    void deserializeHeader(Transaction& transaction);
+    void deserializeType(Transaction& transaction);
+    void deserializeTransfer(Transaction& transaction);
+    void deserializeSecondSignatureRegistration(Transaction& transaction);
+    void deserializeDelegateRegistration(Transaction& transaction);
+    void deserializeVote(Transaction& transaction);
+    void deserializeMultiSignatureRegistration(Transaction& transaction);
+    void deserializeIPFS(Transaction& transaction);
+    void deserializeTimelock(Transaction& transaction);
+    void deserializeMultiPayment(Transaction& transaction);
+    void deserializeDelegateResignation(Transaction& transaction);
+    void deserializeSignatures(Transaction& transaction);
+    void handleVersionOne(Transaction& transaction);
+
+    std::string _serialized;
+    std::vector<uint8_t> _binary;
+    uint32_t _assetOffset;
 };
 
-}  // namespace Transactions
-}  // namespace Crypto
-}  // namespace Ark
+}
+}
+}
 
 #endif

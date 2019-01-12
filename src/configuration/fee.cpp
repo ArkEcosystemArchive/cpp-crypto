@@ -15,8 +15,9 @@
  * @param const int type
  * @return uint64_t
  **/
-uint64_t Ark::Crypto::Configuration::Fee::get(int type) {
-  return this->fees_[type];
+uint64_t Ark::Crypto::Configuration::Fee::get(int type)
+{
+    return this->fees_[type];
 };
 /**/
 
@@ -26,7 +27,10 @@ uint64_t Ark::Crypto::Configuration::Fee::get(int type) {
  * @param const int type
  * @param const uint64_t fee
  **/
-void Ark::Crypto::Configuration::Fee::set(int type, uint64_t fee) {
-  this->fees_[type] = fee;
+void Ark::Crypto::Configuration::Fee::set(
+        int type,
+        uint64_t fee
+) {
+    this->fees_[type] = fee;
 };
 /**/

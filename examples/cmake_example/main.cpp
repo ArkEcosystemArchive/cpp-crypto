@@ -1,17 +1,13 @@
 #include "arkCrypto.h"
 
-#include <cstdint>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 int main(int argc, char* argv[]) {
-  const auto text =
-      "Computer science is no more about computers than astronomy is about "
-      "telescopes.";
-  const auto passphrase =
-      "viable weasel wage promote praise inflict jaguar tackle color unusual "
-      "exclude direct";
+  const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
+  const auto passphrase = "viable weasel wage promote praise inflict jaguar tackle color unusual exclude direct";
 
   // Message - sign
   Ark::Crypto::Utils::Message message;
@@ -24,13 +20,14 @@ int main(int argc, char* argv[]) {
   std::cout << '\n';
 
   // Message - verify
-  auto publicKey = PublicKey::fromHex(
-      "0275776018638e5c40f1b922901e96cac2caa734585ef302b4a2801ee9a338a456");
-  auto signature = HexToBytes(
-      "3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d6114"
-      "02200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93");
+  auto publicKey = PublicKey::fromHex("0275776018638e5c40f1b922901e96cac2caa734585ef302b4a2801ee9a338a456");
+  auto signature = HexToBytes("3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d611402200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93");
 
-  message = Ark::Crypto::Utils::Message(text, publicKey, signature);
+  message = Ark::Crypto::Utils::Message(
+    text,
+    publicKey,
+    signature
+  );
 
   std::cout << "Message\n";
   std::cout << "\tJson: " << message.toJson() << '\n';
@@ -47,14 +44,12 @@ int main(int argc, char* argv[]) {
   auto address = Address::fromPassphrase(passphrase, networkVersion);
   std::cout << "Address from passphrase\n";
   std::cout << "\tPassphrase: " << passphrase << '\n';
-  std::cout << "\tNetwork Version: 0x" << std::hex
-            << static_cast<uint16_t>(networkVersion) << '\n';
+  std::cout << "\tNetwork Version: 0x" << std::hex << static_cast<uint16_t>(networkVersion) << '\n';
   std::cout << "\tAddress: " << address.toString() << '\n';
   std::cout << '\n';
 
   // Address - from publickey
-  publicKey = PublicKey(
-      "029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
+  publicKey = PublicKey("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
   address = Address::fromPublicKey(publicKey, networkVersion);
   std::cout << "Address from public key\n";
   std::cout << "\tPublic Key: " << publicKey.toString() << '\n';
@@ -62,8 +57,7 @@ int main(int argc, char* argv[]) {
   std::cout << '\n';
 
   // Address - from privatekey
-  PrivateKey privateKey(
-      "950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
+  PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
   address = Address::fromPrivateKey(privateKey, networkVersion);
   std::cout << "Address from private key\n";
   std::cout << "\tPrivate Key: " << privateKey.toString() << '\n';
@@ -86,12 +80,9 @@ int main(int argc, char* argv[]) {
   std::cout << '\n';
 
   // Private Key - object from hex
-  privateKey = PrivateKey::fromHex(
-      "950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
+  privateKey = PrivateKey::fromHex("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
   std::cout << "Private Key from hex\n";
-  std::cout
-      << "\tHex: "
-         "950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021\n";
+  std::cout << "\tHex: 950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021\n";
   std::cout << "\tPrivate Key: " << privateKey.toString() << '\n';
   std::cout << '\n';
 
@@ -103,12 +94,9 @@ int main(int argc, char* argv[]) {
   std::cout << '\n';
 
   // Public Key - object from hex
-  publicKey = PublicKey::fromHex(
-      "029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
+  publicKey = PublicKey::fromHex("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
   std::cout << "Public Key from hex\n";
-  std::cout
-      << "\tHex: "
-         "029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4\n";
+  std::cout << "\tHex: 029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4\n";
   std::cout << "\tPublic Key: " << publicKey.toString() << '\n';
   std::cout << '\n';
 
@@ -117,8 +105,7 @@ int main(int argc, char* argv[]) {
   auto wif = WIF::fromPassphrase(passphrase, wifByte);
   std::cout << "WIF from passphrase\n";
   std::cout << "\tPassphrase: " << passphrase << '\n';
-  std::cout << "\tWIF Byte: 0x" << std::hex << static_cast<uint16_t>(wifByte)
-            << '\n';
+  std::cout << "\tWIF Byte: 0x" << std::hex << static_cast<uint16_t>(wifByte) << '\n';
   std::cout << "\tWIF: " << wif.toString() << std::endl;
 
   return 0;

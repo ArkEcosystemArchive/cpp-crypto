@@ -10,10 +10,10 @@
 #ifndef PUBLICKEY_H
 #define PUBLICKEY_H
 
-#include <string>
-#include "helpers/encoding/hex.h"
 #include "helpers/helpers.h"
+#include "helpers/encoding/hex.h"
 #include "identities/privatekey.h"
+#include <string>
 
 namespace Ark {
 namespace Crypto {
@@ -23,31 +23,32 @@ namespace Identities {
  *
  * @author Simon Downey <simon@ark.io>
  **/
-class PublicKey {
- protected:
-  uint8_t bytes_[COMPRESSED_PUBLICKEY_SIZE];
+class PublicKey
+{
+    protected:
+        uint8_t bytes_[COMPRESSED_PUBLICKEY_SIZE];
 
- public:
-  PublicKey() : bytes_(){};
-  PublicKey(const char *const newPublicKeyStr);
-  PublicKey(const uint8_t *newPublicKeyBytes);
+    public:
+        PublicKey() : bytes_() {};
+        PublicKey(const char *const newPublicKeyStr);
+        PublicKey(const uint8_t *newPublicKeyBytes);
 
-  const uint8_t *toBytes();
+        const uint8_t *toBytes();
 
-  bool isValid();
-  std::string toString() const;
+        bool isValid();
+        std::string toString() const;
 
-  static PublicKey fromPassphrase(const char *const passphrase);
-  static PublicKey fromPrivateKey(PrivateKey privateKey);
-  static PublicKey fromHex(const char *const publicKey);
+        static PublicKey fromPassphrase(const char *const passphrase);
+        static PublicKey fromPrivateKey(PrivateKey privateKey);
+        static PublicKey fromHex(const char *const publicKey);
 
-  static bool validate(PublicKey publicKey);
-  static bool validate(const char *publicKeyStr);
-  static bool validate(const uint8_t *publicKeyBytes);
+        static bool validate(PublicKey publicKey);
+        static bool validate(const char *publicKeyStr);
+        static bool validate(const uint8_t *publicKeyBytes);
 };
 /**/
-};  // namespace Identities
-};  // namespace Crypto
-};  // namespace Ark
+};
+};
+};
 
 #endif

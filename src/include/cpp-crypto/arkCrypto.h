@@ -13,19 +13,19 @@
 #define HAS_CRYPTO
 
 #if (defined ARDUINO || defined ESP8266 || defined ESP32)
-#define USE_IOT
+    #define USE_IOT
 #endif
 
+#include "enums/types.h"
+#include "enums/fees.h"
 #include "configuration/fee.h"
 #include "configuration/network.h"
-#include "enums/fees.h"
-#include "enums/types.h"
 
+#include "identities/privatekey.h"
+#include "identities/wif.h"
+#include "identities/publickey.h"
 #include "identities/address.h"
 #include "identities/mnemonic.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-#include "identities/wif.h"
 
 #include "networks/abstractnetwork.h"
 #include "networks/devnet.h"
