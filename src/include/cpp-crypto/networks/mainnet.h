@@ -21,20 +21,20 @@ namespace Networks {
  * @author Simon Downey <simon@ark.io>
  **/
 const AbstractNetwork Mainnet = {
-    { 
-        0x17,   // BASE58_ADDRESS_P2PKH
-        0x00,   // BASE58_ADDRESS_P2SH
-        0xaa    // BASE58_WIF
+    {
+        0x17,  // BASE58_ADDRESS_P2PKH
+        0x00,  // BASE58_ADDRESS_P2SH
+        0xaa   // BASE58_WIF
     },
-    { 
-        46090600,   // BIP32_PREFIX_XPUB
-        46089520    // BIP32_PREFIX_XPRV
+    {
+        46090600,  // BIP32_PREFIX_XPUB
+        46089520   // BIP32_PREFIX_XPRV
     },
-    "2017-03-21T13:00:00Z" // Epoch
+    "2017-03-21T13:00:00Z"  // Epoch
 };
 /**/
-};
-};
-};
+};  // namespace Networks
+};  // namespace Crypto
+};  // namespace Ark
 
 #endif

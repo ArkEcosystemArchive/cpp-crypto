@@ -28,18 +28,17 @@ using namespace Ark::Crypto::Networks;
  *
  * @author Simon Downey <simon@ark.io>
  **/
-class Network
-{
-private:
-    AbstractNetwork network_;
+class Network {
+ private:
+  AbstractNetwork network_;
 
-public:
-    AbstractNetwork get();
-    void set(const AbstractNetwork& network);
+ public:
+  AbstractNetwork get();
+  void set(const AbstractNetwork& network);
 };
 /**/
-};
-};
-};
+};  // namespace Configuration
+};  // namespace Crypto
+};  // namespace Ark
 
 #endif

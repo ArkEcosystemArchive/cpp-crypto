@@ -2,34 +2,33 @@
 
 #include "enums/fees.h"
 
-TEST(enums, fees)
-{
-    Ark::Crypto::Enums::Fees fees;
-    
-    auto feeZERO = fees.TRANSFER;
-    ASSERT_TRUE(10000000 == feeZERO);
+TEST(enums, fees) {
+  Ark::Crypto::Enums::Fees fees;
 
-    auto feeONE = fees.SECOND_SIGNATURE_REGISTRATION;
-    ASSERT_TRUE(500000000 == feeONE);
+  auto feeZERO = fees.TRANSFER;
+  ASSERT_TRUE(10000000 == feeZERO);
 
-    auto feeTWO = fees.DELEGATE_REGISTRATION;
-    ASSERT_TRUE(2500000000 == feeTWO);
+  auto feeONE = fees.SECOND_SIGNATURE_REGISTRATION;
+  ASSERT_TRUE(500000000 == feeONE);
 
-    auto feeTHREE = fees.VOTE;
-    ASSERT_TRUE(100000000 == feeTHREE);
+  auto feeTWO = fees.DELEGATE_REGISTRATION;
+  ASSERT_TRUE(2500000000 == feeTWO);
 
-    auto feeFOUR = fees.MULTI_SIGNATURE_REGISTRATION;
-    ASSERT_TRUE(500000000 == feeFOUR);
+  auto feeTHREE = fees.VOTE;
+  ASSERT_TRUE(100000000 == feeTHREE);
 
-    auto feeFIVE = fees.IPFS;
-    ASSERT_TRUE(0 == feeFIVE);
+  auto feeFOUR = fees.MULTI_SIGNATURE_REGISTRATION;
+  ASSERT_TRUE(500000000 == feeFOUR);
 
-    auto feeSIX = fees.TIMELOCK_TRANSFER;
-    ASSERT_TRUE(0 == feeSIX);
+  auto feeFIVE = fees.IPFS;
+  ASSERT_TRUE(0 == feeFIVE);
 
-    auto feeSEVEN = fees.MULTI_PAYMENT;
-    ASSERT_TRUE(0 == feeSEVEN);
+  auto feeSIX = fees.TIMELOCK_TRANSFER;
+  ASSERT_TRUE(0 == feeSIX);
 
-    auto feeEIGHT = fees.DELEGATE_RESIGNATION;
-    ASSERT_TRUE(0 == feeEIGHT);
+  auto feeSEVEN = fees.MULTI_PAYMENT;
+  ASSERT_TRUE(0 == feeSEVEN);
+
+  auto feeEIGHT = fees.DELEGATE_RESIGNATION;
+  ASSERT_TRUE(0 == feeEIGHT);
 }

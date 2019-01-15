@@ -7,130 +7,122 @@ namespace std {
 
 template <typename T>
 struct default_delete {
-	default_delete() { }
+  default_delete() {}
 
-	template <typename U>
-	default_delete(const default_delete<U>&) { }
+  template <typename U>
+  default_delete(const default_delete<U>&) {}
 
-	void operator()(T* ptr) const {
-		delete ptr;
-	}
+  void operator()(T* ptr) const { delete ptr; }
 };
 
 template <typename T>
 struct default_delete<T[]> {
-	void operator()(T* ptr) const {
-		delete [] ptr;
-	}
+  void operator()(T* ptr) const { delete[] ptr; }
 };
 
 template <typename T, typename D = std::default_delete<T> >
 class unique_ptr {
-	typedef T* pointer;
-	typedef T& reference;
+  typedef T* pointer;
+  typedef T& reference;
 
-private:
-	pointer _p;
-	bool _own;
+ private:
+  pointer _p;
+  bool _own;
 
-public:
-	constexpr unique_ptr() noexcept : _p(nullptr), _own(false) { }
+ public:
+  constexpr unique_ptr() noexcept : _p(nullptr), _own(false) {}
 
-	explicit unique_ptr(pointer p) : _p(p), _own(true) { }
+  explicit unique_ptr(pointer p) : _p(p), _own(true) {}
 
-	template <typename U>
-	explicit unique_ptr(U u) : _p(u), _own(true) { }
+  template <typename U>
+  explicit unique_ptr(U u) : _p(u), _own(true) {}
 
-	unique_ptr(unique_ptr&& other) : _p(other._p), _own(other._own) {
-		other._p = nullptr;
-		other._own = false;
-	}
+  unique_ptr(unique_ptr&& other) : _p(other._p), _own(other._own) {
+    other._p = nullptr;
+    other._own = false;
+  }
 
-	unique_ptr& operator=(unique_ptr&& other) {
-		if (this != &other) {
-			_p = other._p;
-			_own = other._own;
+  unique_ptr& operator=(unique_ptr&& other) {
+    if (this != &other) {
+      _p = other._p;
+      _own = other._own;
 
-			other._p = nullptr;
-			other._own = false;
-		}
-		return *this;
-	}
+      other._p = nullptr;
+      other._own = false;
+    }
+    return *this;
+  }
 
-	~unique_ptr() {
-		reset();
-	}
+  ~unique_ptr() { reset(); }
 
-	pointer get() const noexcept { return _p; }
-	pointer release() noexcept { 
-		_own = false; 
-		return _p;
-	}
-	void reset(pointer p = pointer()) noexcept {
-		D d;
-		d(_p);
-		_p = p;
-		_own = true;
-	}
+  pointer get() const noexcept { return _p; }
+  pointer release() noexcept {
+    _own = false;
+    return _p;
+  }
+  void reset(pointer p = pointer()) noexcept {
+    D d;
+    d(_p);
+    _p = p;
+    _own = true;
+  }
 
-	explicit operator bool() const noexcept { return _p != nullptr; }
-	reference operator*() const { return *_p; }
-	pointer operator->() const noexcept { return _p; }
+  explicit operator bool() const noexcept { return _p != nullptr; }
+  reference operator*() const { return *_p; }
+  pointer operator->() const noexcept { return _p; }
 };
 
 template <typename T, typename D>
 class unique_ptr<T[], D> {
-	typedef T* pointer;
-	typedef T& reference;
+  typedef T* pointer;
+  typedef T& reference;
 
-private:
-	pointer _p;
-	bool _own;
+ private:
+  pointer _p;
+  bool _own;
 
-public:
-	constexpr unique_ptr() noexcept : _p(nullptr), _own(false) { }
+ public:
+  constexpr unique_ptr() noexcept : _p(nullptr), _own(false) {}
 
-	explicit unique_ptr(pointer p) : _p(p), _own(true) { }
+  explicit unique_ptr(pointer p) : _p(p), _own(true) {}
 
-	template <typename U>
-	explicit unique_ptr(U u) : _p(u), _own(true) { }
+  template <typename U>
+  explicit unique_ptr(U u) : _p(u), _own(true) {}
 
-	unique_ptr(unique_ptr&& other) : _p(other._p), _own(other._own) {
-		other._p = nullptr;
-		other._own = false;
-	}
+  unique_ptr(unique_ptr&& other) : _p(other._p), _own(other._own) {
+    other._p = nullptr;
+    other._own = false;
+  }
 
-	unique_ptr& operator=(unique_ptr&& other) {
-		if (this != &other) {
-			_p = other._p;
-			_own = other._own;
+  unique_ptr& operator=(unique_ptr&& other) {
+    if (this != &other) {
+      _p = other._p;
+      _own = other._own;
 
-			other._p = nullptr;
-			other._own = false;
-		}
-		return *this;
-	}
+      other._p = nullptr;
+      other._own = false;
+    }
+    return *this;
+  }
 
-	~unique_ptr() {
-		reset();
-	}
+  ~unique_ptr() { reset(); }
 
-	pointer get() const noexcept { return _p; }
-	pointer release() noexcept {
-		_own = false;
-		return _p;
-	}
-	void reset(pointer p = pointer()) noexcept {
-		D d;
-		d(_p);
-		_p = p;
-		_own = true;
-	}
+  pointer get() const noexcept { return _p; }
+  pointer release() noexcept {
+    _own = false;
+    return _p;
+  }
+  void reset(pointer p = pointer()) noexcept {
+    D d;
+    d(_p);
+    _p = p;
+    _own = true;
+  }
 
-	explicit operator bool() const noexcept { return _p != nullptr; }
-	reference operator[](size_t i) const { return _p[i]; }
+  explicit operator bool() const noexcept { return _p != nullptr; }
+  reference operator[](size_t i) const { return _p[i]; }
 };
 
-}
+}  // namespace std
 
 #endif
