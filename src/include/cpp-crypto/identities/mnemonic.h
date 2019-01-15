@@ -16,24 +16,15 @@ namespace Ark {
 namespace Crypto {
 namespace Identities {
 
-enum class Language {
-  en,
-  es,
-  ja,
-  it,
-  fr,
-  ko,
-  zh_Hans,
-  zh_Hant
-};
+enum class Language { en, es, ja, it, fr, ko, zh_Hans, zh_Hant };
 
 class Mnemonic {
-public:
+ public:
   /// Generate a BIP39 passphrase with the given number of words (12,15,18,21,24) and given language
   static std::string generate(size_t num_words = 12u, Language language = Language::en);
 };
 
-}
-}
-}
+}  // namespace Identities
+}  // namespace Crypto
+}  // namespace Ark
 #endif
