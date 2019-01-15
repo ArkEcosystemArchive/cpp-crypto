@@ -1,5 +1,4 @@
 namespace std {
 
 #include <stdint.h>
-
 }

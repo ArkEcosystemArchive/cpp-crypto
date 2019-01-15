@@ -11,8 +11,8 @@
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 #ifndef CRYPTO_H
 #define CRYPTO_H

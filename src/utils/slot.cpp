@@ -5,16 +5,16 @@
 #undef round
 #include "date/date.h"
 
-#include <sstream>
 #include <cmath>
+#include <sstream>
 
 namespace Ark {
 namespace Crypto {
 namespace Utils {
 
 uint64_t Slot::epoch_time(uint64_t time, Crypto::Networks::AbstractNetwork network) {
-	const auto start = Slot::begin_epoch_time(network);
-	return static_cast<uint64_t>(std::floor((time - start) / 1000));
+  const auto start = Slot::begin_epoch_time(network);
+  return static_cast<uint64_t>(std::floor((time - start) / 1000));
 }
 
 uint64_t Slot::begin_epoch_time(Crypto::Networks::AbstractNetwork network) {
@@ -22,8 +22,7 @@ uint64_t Slot::begin_epoch_time(Crypto::Networks::AbstractNetwork network) {
   std::istringstream in(network.epoch());
   date::sys_seconds tp;
   in >> date::parse("%FT%TZ", tp);
-  if (in.fail())
-  {
+  if (in.fail()) {
     in.clear();
     in.str(network.epoch());
     in >> date::parse("%FT%T%z", tp);
@@ -32,14 +31,14 @@ uint64_t Slot::begin_epoch_time(Crypto::Networks::AbstractNetwork network) {
 }
 
 uint64_t Slot::time(uint64_t time, Crypto::Networks::AbstractNetwork network) {
-	return Slot::epoch_time(time, network);
+  return Slot::epoch_time(time, network);
 }
 
 uint64_t Slot::real_time(uint64_t epoch_time, Crypto::Networks::AbstractNetwork network) {
-	const auto start = std::floor(Slot::begin_epoch_time(network) / 1000) * 1000;
-	return static_cast<uint64_t>(start + epoch_time * 1000.0);
+  const auto start = std::floor(Slot::begin_epoch_time(network) / 1000) * 1000;
+  return static_cast<uint64_t>(start + epoch_time * 1000.0);
 }
 
-}
-}
-}
+}  // namespace Utils
+}  // namespace Crypto
+}  // namespace Ark

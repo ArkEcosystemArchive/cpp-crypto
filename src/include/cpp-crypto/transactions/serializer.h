@@ -17,26 +17,25 @@ namespace Crypto {
 namespace Transactions {
 
 class Serializer {
+ public:
+  Serializer(const Transaction& transaction);
+  std::string serialize();
 
-public:
-    Serializer(const Transaction &transaction);
-    std::string serialize();
+ private:
+  void serializeVendorField(std::vector<uint8_t>& bytes);
+  void serializeType(std::vector<uint8_t>& bytes);
+  void serializeTransfer(std::vector<uint8_t>& bytes);
+  void serializeSecondSignatureRegistration(std::vector<uint8_t>& bytes);
+  void serializeDelegateRegistration(std::vector<uint8_t>& bytes);
+  void serializeVote(std::vector<uint8_t>& bytes);
+  void serializeMultiSignatureRegistration(std::vector<uint8_t>& bytes);
+  void serializeSignatures(std::vector<uint8_t>& bytes);
 
-private:
-    void serializeVendorField(std::vector<uint8_t>& bytes);
-    void serializeType(std::vector<uint8_t>& bytes);
-    void serializeTransfer(std::vector<uint8_t>& bytes);
-    void serializeSecondSignatureRegistration(std::vector<uint8_t>& bytes);
-    void serializeDelegateRegistration(std::vector<uint8_t>& bytes);
-    void serializeVote(std::vector<uint8_t>& bytes);
-    void serializeMultiSignatureRegistration(std::vector<uint8_t>& bytes);
-    void serializeSignatures(std::vector<uint8_t>& bytes);
-
-    Transaction _transaction;
+  Transaction _transaction;
 };
 
-}
-}
-}
+}  // namespace Transactions
+}  // namespace Crypto
+}  // namespace Ark
 
 #endif
