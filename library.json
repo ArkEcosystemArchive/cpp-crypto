@@ -1,7 +1,7 @@
 {
   "name": "Ark-Cpp-Crypto",
   "keywords": "ark ecosystem, crypto, blockchain, iot, arduino",
-  "description": "A simple Cryptography Implementation in C++ for the ARK Blockchain..",
+  "description": "A simple Cryptography Implementation in C++ for the ARK Blockchain.",
   "homepage": "https://github.com/ArkEcosystem/Cpp-Crypto",
   "repository": {
     "type": "git",
