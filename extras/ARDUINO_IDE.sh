@@ -5,7 +5,7 @@
 #
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
- 
+
 # #########
 # This script extends support to the Arduino IDE.
 #
@@ -139,8 +139,8 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   sleep 1
 
   echo -e "Backing up and removing the 'lib' directory.\n"
-  mv ${SRC_LIB_DIR} ${EXTRAS_BACKUP_DIR}
-  echo 
+  mv ${SRC_LIB_DIR}/* ${EXTRAS_BACKUP_DIR}
+  echo
   sleep 1
 
   echo -e "Removing old directories 🗑\n"
@@ -223,8 +223,9 @@ else
   sleep 1
 
   echo -e "Restoring the 'lib' directory.\n"
-  mv ${EXTRAS_BACKUP_DIR}/lib ${SRC_DIR} 
-  echo 
+  mkdir ${SRC_DIR}/lib
+  mv ${EXTRAS_BACKUP_DIR}/* ${SRC_DIR}/lib
+  echo
   sleep 1
 
   echo -e "Removing old directories 🗑\n"
