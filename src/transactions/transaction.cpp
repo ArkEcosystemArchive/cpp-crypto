@@ -2,7 +2,7 @@
 #include "bcl/Sha256.hpp"
 #include "enums/types.h"
 #include "helpers/crypto.h"
-#include "helpers/helpers.h"
+#include "helpers/crypto_helpers.h"
 #include "identities/address.h"
 #include "identities/privatekey.h"
 
