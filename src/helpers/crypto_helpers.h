@@ -1,7 +1,7 @@
 
 
-#ifndef HELPERS_H
-#define HELPERS_H
+#ifndef CRYPTO_HELPERS_H
+#define CRYPTO_HELPERS_H
 
 #include <cstring>
 #include <numeric>

@@ -2,7 +2,7 @@
 #include "configuration/fee.h"
 #include "configuration/network.h"
 #include "enums/types.h"
-#include "helpers/helpers.h"
+#include "helpers/crypto_helpers.h"
 #include "identities/address.h"
 #include "utils/slot.h"
 

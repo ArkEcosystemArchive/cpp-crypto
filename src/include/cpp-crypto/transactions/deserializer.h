@@ -11,7 +11,7 @@
 #define DESERIALIZER_H
 
 #include "helpers/encoding/hex.h"
-#include "helpers/helpers.h"
+#include "helpers/crypto_helpers.h"
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
 #include "transactions/transaction.h"
