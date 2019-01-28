@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "gtest/gtest.h"
 
-#include "helpers/helpers.h"
+#include "helpers/crypto_helpers.h"
 #include "utils/slot.h"
 
 TEST(utilities, slots_time) {

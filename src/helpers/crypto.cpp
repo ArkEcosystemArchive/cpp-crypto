@@ -5,7 +5,7 @@
 #include "bcl/Sha256.hpp"
 #include "bcl/Uint256.hpp"
 #include "helpers/encoding/der.h"
-#include "helpers/helpers.h"
+#include "helpers/crypto_helpers.h"
 #include "rfc6979/rfc6979.h"
 #include "uECC.h"
 
