@@ -27,10 +27,11 @@ uint64_t Ark::Crypto::Utils::Slot::epoch(Crypto::Networks::AbstractNetwork netwo
 }
 
 uint64_t Ark::Crypto::Utils::Slot::time(Crypto::Networks::AbstractNetwork network) {
-  return now() - epoch(network);
+  const auto time = now() - epoch(network);
+  return (time > 0) ? time : 0;
 }
 
-#ifdef USE_IOT // ESP32
+#ifdef ESP32
 
 uint64_t Ark::Crypto::Utils::Slot::now() {
   struct tm t;
@@ -44,6 +45,10 @@ uint64_t Ark::Crypto::Utils::Slot::now() {
   ss >> temp;
   return temp;
 };
+
+#elif defined(ESP8266)  //  NOT STABLE/NOT SUPPORTED
+
+uint64_t Ark::Crypto::Utils::Slot::now() { return 0; }
 
 #else // OS Builds
 
