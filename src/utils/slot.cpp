@@ -30,8 +30,27 @@ uint64_t Ark::Crypto::Utils::Slot::time(Crypto::Networks::AbstractNetwork networ
   return now() - epoch(network);
 }
 
+#ifdef USE_IOT // ESP32
+
+uint64_t Ark::Crypto::Utils::Slot::now() {
+  struct tm t;
+  std::stringstream ss;
+  if(getLocalTime(&t)){
+    ss << std::mktime(&t);
+  } else {
+    return 0;
+  };
+  uint64_t temp;
+  ss >> temp;
+  return temp;
+};
+
+#else // OS Builds
+
 uint64_t Ark::Crypto::Utils::Slot::now() {
   return std::chrono::duration_cast<std::chrono::seconds>(
     std::chrono::system_clock::now().time_since_epoch()
   ).count();
 }
+
+#endif  // #ifndef USE_IOT
