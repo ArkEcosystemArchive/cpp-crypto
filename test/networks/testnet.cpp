@@ -15,7 +15,7 @@ TEST(networks, testnet_bip32_prefix_get) {
 }
 
 TEST(networks, testnet_epoch) {
-  ASSERT_STREQ("2017-03-21T13:00:00Z", Testnet.epoch());
+  ASSERT_STREQ("2017-03-21T13:00:00.000Z", Testnet.epoch());
 }
 
 TEST(networks, testnet_is_locked) {

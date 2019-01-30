@@ -30,7 +30,7 @@ const AbstractNetwork Mainnet = {
         46090600,  // BIP32_PREFIX_XPUB
         46089520   // BIP32_PREFIX_XPRV
     },
-    "2017-03-21T13:00:00Z"  // Epoch
+    "2017-03-21T13:00:00.000Z"  // Epoch
 };
 /**/
 };  // namespace Networks
