@@ -8,12 +8,10 @@
 #include "identities/privatekey.h"
 
 #include <sstream>
-#include <iostream>
 
 using namespace Ark::Crypto::Identities;
 
 Ark::Crypto::Transactions::Transaction::Transaction() {}
-
 
 std::string Ark::Crypto::Transactions::Transaction::getId() const {
   auto bytes = this->toBytes(false, false);
