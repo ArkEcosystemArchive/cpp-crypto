@@ -135,7 +135,6 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
   return bytes;
 }
 
-
 std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Transactions::Transaction::toArray() {
   //  buffers for variable and non-string type-values.
   std::stringstream amount, assetName, assetValue, fee, signatures, timestamp;
@@ -251,15 +250,13 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
 
     JsonObject& asset = root.createNestedObject("asset"); 
     JsonArray& votes = asset.createNestedArray(txArray[1].first);
-    for (int i = 0; i < this->asset.votes.size(); ++i) {
 
-      auto vPos1 = std::string::npos;
-      auto vPos2 = std::string::npos;
-      vPos1 = 0;
-      do {
-        votes.add(txArray[1].second.substr(vPos1, vPos2));
-        vPos2 = txArray[1].second.find(",", vPos1);
-      } while (vPos2 < txArray[1].second.back());
+    std::string::size_type lastPos = txArray[1].second.find_first_not_of(",", 0);
+    std::string::size_type pos = txArray[1].second.find_first_of(",", lastPos);
+    while (std::string::npos != pos || std::string::npos != lastPos) {
+      votes.add(txArray[1].second.substr(lastPos, pos - lastPos));
+      lastPos = txArray[1].second.find_first_not_of(",", pos);
+      pos = txArray[1].second.find_first_of(",", lastPos);
     }
 
   // } else if (this->type == 4) {  //  Multisignature Registration
@@ -281,9 +278,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   root[txArray[3].first] = txArray[3].second;
 
   //  Network
-  if (txArray[4].second != "0") {
-    root[txArray[4].first] = txArray[4].second;
-  }
+  root[txArray[4].first] = txArray[4].second;
 
   //  RecipientId
   root[txArray[5].first] = txArray[5].second;
@@ -302,14 +297,12 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   //  Signatures
   if (this->signatures.size() > 0) {
     JsonArray& signatures = root.createNestedArray("signatures");
-    for (int i = 0; i < this->signatures.size(); ++i) {
-      auto sPos1 = std::string::npos;
-      auto sPos2 = std::string::npos;
-      sPos1 = 0;
-      do {
-        signatures.add(txArray[9].second.substr(sPos1, sPos2));
-        sPos2 = txArray[9].second.find(",", sPos1);
-      } while (sPos2 < txArray[9].second.back());
+    std::string::size_type lastPos = txArray[9].second.find_first_not_of(",", 0);
+    std::string::size_type pos = txArray[9].second.find_first_of(",", lastPos);
+    while (std::string::npos != pos || std::string::npos != lastPos) {
+      signatures.add(txArray[9].second.substr(lastPos, pos - lastPos));
+      lastPos = txArray[9].second.find_first_not_of(",", pos);
+      pos = txArray[9].second.find_first_of(",", lastPos);
     }
   }
 

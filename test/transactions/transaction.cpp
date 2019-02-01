@@ -212,7 +212,7 @@ TEST(transactions, transaction_to_json) {
 
 
     //  Type 3
-    std::vector<std::string> votes = { "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6, +0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6" };
+    std::vector<std::string> votes = { "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6,+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6" };
     auto vote = Ark::Crypto::Transactions::Builder::buildVote(votes, "Secret passphrase");
     std::string vJson = vote.toJson();
 
@@ -222,9 +222,10 @@ TEST(transactions, transaction_to_json) {
     JsonObject& vRoot = vJsonBuffer.parseObject(vJson);
 
     ASSERT_EQ(vRoot["amount"], 0);
-    const char* vAsset = vRoot["asset"]["votes"][0];
-    ASSERT_STREQ(vAsset, (const char*)"-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6, +0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6");
-    ASSERT_EQ(vRoot["fee"], 100000000);
+    const char* vAsset1 = vRoot["asset"]["votes"][0];
+    const char* vAsset2 = vRoot["asset"]["votes"][1];
+    ASSERT_STREQ(vAsset1, (const char*)"-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6");
+    ASSERT_STREQ(vAsset2, (const char*)"+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6");    ASSERT_EQ(vRoot["fee"], 100000000);
     ASSERT_STRNE(vRoot["id"], (const char*)"");
     ASSERT_STREQ(vRoot["recipientId"], (const char*)"DPgZq5MK6rm5yVks9b7TrA22F8FwRvkCtF");
     ASSERT_STREQ(vRoot["senderPublicKey"], (const char*)"02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699");
