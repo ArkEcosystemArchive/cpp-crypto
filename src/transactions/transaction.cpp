@@ -281,7 +281,9 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   root["id"] = txArray["id"];
 
   //  Network
-  root["network"] = txArray["network"];
+  if (txArray["network"] != "0") {
+    root["network"] = txArray["network"];
+  }
 
   //  RecipientId
   root["recipientId"] = txArray["recipientId"];
@@ -295,7 +297,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   root["senderPublicKey"] = txArray["senderPublicKey"];
 
   //  Signature
-  root["signatures"] = txArray["signatures"];
+  root["signature"] = txArray["signature"];
 
   //  Signatures
   if (this->signatures.size() > 0) {
