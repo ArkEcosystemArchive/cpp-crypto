@@ -53,7 +53,7 @@ class Message {
   bool sign(std::string newMessage, const char *const passphrase);
   bool verify();
 
-  std::vector<std::pair<const char *const, std::string>> toArray();
+  std::map<std::string, std::string> toArray();
   std::string toJson();
 };
 /**/

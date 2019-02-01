@@ -7,6 +7,7 @@
 #include "identities/address.h"
 #include "identities/privatekey.h"
 
+#include <map>
 #include <sstream>
 
 using namespace Ark::Crypto::Identities;
@@ -135,7 +136,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
   return bytes;
 }
 
-std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Transactions::Transaction::toArray() {
+std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() {
   //  buffers for variable and non-string type-values.
   std::stringstream amount, assetName, assetValue, fee, signatures, timestamp;
   char network[8], type[8], version[8];
@@ -156,7 +157,7 @@ std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Transactions
     assetName << "username";
     assetValue << this->asset.delegate.username;
 
-  }else if (this->type == 3) {  //  Vote
+  } else if (this->type == 3) {  //  Vote
 
     assetName << "votes";
     for (unsigned int i = 0; i < this->asset.votes.size(); ++i) {
@@ -185,7 +186,7 @@ std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Transactions
   for (unsigned int i = 0; i < this->signatures.size(); ++i) {
     signatures << this->signatures[i];
     if (i < this->signatures.size() - 1) {
-      signatures << ",";
+      signatures << "\",\"";
     }
   }
 
@@ -221,7 +222,7 @@ std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Transactions
 }
 
 std::string Ark::Crypto::Transactions::Transaction::toJson() {
-  std::vector<std::pair<const char *const, std::string>>  txArray = this->toArray();
+  std::map<std::string, std::string> txArray = this->toArray();
 
   const size_t capacity = JSON_OBJECT_SIZE(15);
   DynamicJsonBuffer jsonBuffer(capacity);
@@ -229,34 +230,34 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   JsonObject& root = jsonBuffer.createObject();
 
   //  Amount
-  root[txArray[0].first] = txArray[0].second;
+  root["amount"] = txArray["amount"];
 
   //  Asset
   if (this->type == 0) {  //  Transfer
     //do nothing
   } else if (this->type == 1) { //  Second Signature Registration
 
-    JsonObject& asset = root.createNestedObject("asset");
-    JsonObject& signature = asset.createNestedObject("signature");
-    signature[txArray[1].first] = txArray[1].second;
+    JsonObject& tAsset = root.createNestedObject("asset");
+    JsonObject& signature = tAsset.createNestedObject("signature");
+    signature["publicKey"] = txArray["publicKey"];
 
   } else if (this->type == 2) { //  Delegate Registration
 
-    JsonObject& asset = root.createNestedObject("asset"); 
-    JsonObject& delegate = asset.createNestedObject("delegate");
-    delegate[txArray[1].first] = txArray[1].second;
+    JsonObject& dAsset = root.createNestedObject("asset");
+    JsonObject& delegate = dAsset.createNestedObject("delegate");
+    delegate["username"] = txArray["username"];
 
   }else if (this->type == 3) {  //  Vote
 
-    JsonObject& asset = root.createNestedObject("asset"); 
-    JsonArray& votes = asset.createNestedArray(txArray[1].first);
+    JsonObject& vAsset = root.createNestedObject("asset");
+    JsonArray& votes = vAsset.createNestedArray("votes");
 
-    std::string::size_type lastPos = txArray[1].second.find_first_not_of(",", 0);
-    std::string::size_type pos = txArray[1].second.find_first_of(",", lastPos);
+    std::string::size_type lastPos = txArray["votes"].find_first_not_of(",", 0);
+    std::string::size_type pos = txArray["votes"].find_first_of(",", lastPos);
     while (std::string::npos != pos || std::string::npos != lastPos) {
-      votes.add(txArray[1].second.substr(lastPos, pos - lastPos));
-      lastPos = txArray[1].second.find_first_not_of(",", pos);
-      pos = txArray[1].second.find_first_of(",", lastPos);
+      votes.add(txArray["votes"].substr(lastPos, pos - lastPos));
+      lastPos = txArray["votes"].find_first_not_of(",", pos);
+      pos = txArray["votes"].find_first_of(",", lastPos);
     }
 
   // } else if (this->type == 4) {  //  Multisignature Registration
@@ -272,59 +273,59 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   };
 
   //  Fee
-  root[txArray[2].first] = txArray[2].second;
+  root["fee"] = txArray["fee"];
 
   //  Id
-  root[txArray[3].first] = txArray[3].second;
+  root["id"] = txArray["id"];
 
   //  Network
-  root[txArray[4].first] = txArray[4].second;
+  root["network"] = txArray["network"];
 
   //  RecipientId
-  root[txArray[5].first] = txArray[5].second;
+  root["recipientId"] = txArray["recipientId"];
 
   //  SecondSignature
-  if (std::strlen(txArray[6].second.c_str()) > 0) {
-    root[txArray[6].first] = txArray[6].second;
+  if (std::strlen(txArray["secondSignature"].c_str()) > 0) {
+    root["secondSignature"] = txArray["secondSignature"];
   }
 
   //  SenderPublicKey
-  root[txArray[7].first] = txArray[7].second;
+  root["senderPublicKey"] = txArray["senderPublicKey"];
 
   //  Signature
-  root[txArray[8].first] = txArray[8].second;
+  root["signatures"] = txArray["signatures"];
 
   //  Signatures
   if (this->signatures.size() > 0) {
     JsonArray& signatures = root.createNestedArray("signatures");
-    std::string::size_type lastPos = txArray[9].second.find_first_not_of(",", 0);
-    std::string::size_type pos = txArray[9].second.find_first_of(",", lastPos);
+    std::string::size_type lastPos = txArray["signatures"].find_first_not_of(",", 0);
+    std::string::size_type pos = txArray["signatures"].find_first_of(",", lastPos);
     while (std::string::npos != pos || std::string::npos != lastPos) {
-      signatures.add(txArray[9].second.substr(lastPos, pos - lastPos));
-      lastPos = txArray[9].second.find_first_not_of(",", pos);
-      pos = txArray[9].second.find_first_of(",", lastPos);
+      signatures.add(txArray["signatures"].substr(lastPos, pos - lastPos));
+      lastPos = txArray["signatures"].find_first_not_of(",", pos);
+      pos = txArray["signatures"].find_first_of(",", lastPos);
     }
   }
 
   //  SignSignature
-  if (std::strlen(txArray[10].second.c_str()) > 0) {
-    root[txArray[10].first] = txArray[10].second;
+  if (std::strlen(txArray["signSignature"].c_str()) > 0) {
+    root["signSignature"] = txArray["signSignature"];
   }
 
   //  Timestamp
-  root[txArray[11].first] = txArray[11].second;
+  root["timestamp"] = txArray["timestamp"];
 
   //  Type
-  root[txArray[12].first] = txArray[12].second;
+  root["type"] = txArray["type"];
 
   //  VendorField
-  if (std::strlen(txArray[13].second.c_str()) > 0) {
-    root[txArray[13].first] = txArray[13].second;
+  if (std::strlen(txArray["vendorField"].c_str()) > 0) {
+    root["vendorField"] = txArray["vendorField"];
   }
 
   //  Version
-  if (txArray[14].second != "0") {
-    root[txArray[14].first] = txArray[14].second;
+  if (txArray["version"] != "0") {
+    root["version"] = txArray["version"];
   }
 
   char jsonChar[root.measureLength() + 1];

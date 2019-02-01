@@ -71,19 +71,15 @@ bool Ark::Crypto::Utils::Message::verify() {
 /**
  * @brief Convert the message to its array representation using an array of pairs
  *
- * ' messageArray[0].first: "publickey" '
- * ' messageArray[0].second: uint8_t* (ex: { 2, 159, 223 ... 253, 151, 180 })
-    };) '
- *
- * @return std::vector< std::pair<const char *const, std::string> >
+ * @return std::map<std::string, std::string>
  **/
-std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Utils::Message::toArray() {
+std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
   return {
     {"publickey", this->publicKey.toString()},
     {"signature", BytesToHex(this->signature.begin(), this->signature.end())},
     {"message", this->message}
   };
-};
+}
 /**/
 
 /**
@@ -92,15 +88,16 @@ std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Utils::Messa
  * @return std::string
  **/
 std::string Ark::Crypto::Utils::Message::toJson() {
-  const auto messageArray = this->toArray();
+  std::map<std::string, std::string> messageArray = this->toArray();
 
   const size_t capacity = JSON_OBJECT_SIZE(3);
   DynamicJsonBuffer jsonBuffer(capacity);
 
   JsonObject& root = jsonBuffer.createObject();
-  root[messageArray[0].first] = messageArray[0].second;
-  root[messageArray[1].first] = messageArray[1].second;
-  root[messageArray[2].first] = messageArray[2].second;
+
+  root["publickey"] = messageArray["publickey"];
+  root["signature"] = messageArray["signature"];
+  root["message"] = messageArray["message"];
 
   char jsonChar[root.measureLength() + 1];
   root.printTo((char*)jsonChar, sizeof(jsonChar));

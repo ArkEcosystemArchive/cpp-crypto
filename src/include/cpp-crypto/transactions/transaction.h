@@ -10,11 +10,14 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include <string>
 #include "helpers/encoding/hex.h"
 #include "helpers/crypto_helpers.h"
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
+
+#include <map>
+#include <string>
+#include <vector>
 
 namespace Ark {
 namespace Crypto {
@@ -51,7 +54,7 @@ public:
   bool secondVerify(const char* secondPublicKey) const;
 
   std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true) const;
-  std::vector<std::pair<const char *const, std::string>> toArray();
+  std::map<std::string, std::string> toArray();
   std::string toJson();
 
   uint8_t header = 0;
