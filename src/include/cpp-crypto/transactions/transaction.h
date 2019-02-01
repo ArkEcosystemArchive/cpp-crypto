@@ -39,14 +39,21 @@ struct TransactionAsset {
 };
 
 class Transaction {
- public:
+public:
   Transaction();
+
   std::string getId() const;
+
   std::string sign(const char* passphrase);
   std::string secondSign(const char* passphrase);
+
   bool verify() const;
   bool secondVerify(const char* secondPublicKey) const;
+
+  // Transaction fromJson(std::string jsonString);
   std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true) const;
+  std::vector<std::pair<const char *const, std::string>> toArray();
+  std::string toJson();
 
   uint8_t header = 0;
   uint8_t network = 0;
@@ -69,7 +76,7 @@ class Transaction {
   uint64_t fee = 0;
   uint64_t timelock = 0;
 
- private:
+private:
   bool internalVerify(std::string publicKey, std::vector<uint8_t> bytes, std::string signature) const;
 };
 

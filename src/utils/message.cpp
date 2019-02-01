@@ -9,6 +9,8 @@
 
 #include "utils/message.h"
 
+#include "helpers/json.h"
+
 /**
  * @brief Create a message object for checking its validity.
  *
@@ -16,8 +18,13 @@
  * @param PublicKey pubKey
  * @param std::vector<uint8_t> sig
  **/
-Ark::Crypto::Utils::Message::Message(std::string msg, PublicKey pubKey, std::vector<uint8_t> sig)
-    : message(msg), publicKey(pubKey), signature(sig){};
+Ark::Crypto::Utils::Message::Message(
+    std::string msg,
+    PublicKey pubKey,
+    std::vector<uint8_t> sig)
+    : message(msg),
+      publicKey(pubKey),
+      signature(sig){};
 /**/
 
 /**
@@ -54,8 +61,8 @@ bool Ark::Crypto::Utils::Message::sign(std::string newMessage, const char *const
  * @return bool
  **/
 bool Ark::Crypto::Utils::Message::verify() {
-  const auto unsignedMessage =
-      reinterpret_cast<const unsigned char *>(this->message.c_str());  // cast message to unsigned char*
+  // cast message to unsigned char*
+  const auto unsignedMessage = reinterpret_cast<const unsigned char *>(this->message.c_str());
   const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
 
   return cryptoVerify(this->publicKey, hash, this->signature);
@@ -72,9 +79,11 @@ bool Ark::Crypto::Utils::Message::verify() {
  * @return std::vector< std::pair<const char *const, std::string> >
  **/
 std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Utils::Message::toArray() {
-  return {{"publickey", this->publicKey.toString().c_str()},
-          {"signature", BytesToHex(&this->signature[0], &this->signature[0] + this->signature.size())},
-          {"message", this->message}};
+  return {
+    {"publickey", this->publicKey.toString()},
+    {"signature", BytesToHex(this->signature.begin(), this->signature.end())},
+    {"message", this->message}
+  };
 };
 /**/
 
@@ -86,37 +95,17 @@ std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Utils::Messa
 std::string Ark::Crypto::Utils::Message::toJson() {
   const auto messageArray = this->toArray();
 
-  std::string messageJsonString;
-  messageJsonString += "{\"";
-  messageJsonString += messageArray[0].first;
-  messageJsonString += "\":\"";
+  const size_t capacity = JSON_OBJECT_SIZE(3);
+  DynamicJsonBuffer jsonBuffer(capacity);
 
-  messageJsonString += messageArray[0].second;
+  JsonObject& root = jsonBuffer.createObject();
+  root[messageArray[0].first] = messageArray[0].second;
+  root[messageArray[1].first] = messageArray[1].second;
+  root[messageArray[2].first] = messageArray[2].second;
 
-  messageJsonString += "\",\"";
-  messageJsonString += messageArray[1].first;
-  messageJsonString += "\":\"";
+  char jsonChar[root.measureLength() + 1];
+  root.printTo((char*)jsonChar, sizeof(jsonChar));
 
-  messageJsonString += messageArray[1].second;
-
-  messageJsonString += "\",\"";
-  messageJsonString += messageArray[2].first;
-  messageJsonString += "\":\"";
-
-  messageJsonString += messageArray[2].second;
-
-  messageJsonString += "\"}";
-
-  return messageJsonString;
+  return jsonChar;
 }
-/**/
-
-/**
- * @brief Convert the message to its String representation.
- *
- * @return std::string
- **/
-std::string Ark::Crypto::Utils::Message::toString() {
-  return this->toJson();
-};
 /**/

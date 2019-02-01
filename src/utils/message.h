@@ -55,9 +55,9 @@ class Message {
 
   std::vector<std::pair<const char *const, std::string>> toArray();
   std::string toJson();
-  std::string toString();
 };
 /**/
+
 };  // namespace Utils
 };  // namespace Crypto
 };  // namespace Ark

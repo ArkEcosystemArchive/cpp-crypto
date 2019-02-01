@@ -53,14 +53,6 @@ TEST(utils, message_to_json) {
   ASSERT_STREQ(expectedJsonString, message.toJson().c_str());
 }
 
-TEST(utils, message_to_string) {
-  Ark::Crypto::Utils::Message message;
-
-  message.sign(text, passphrase);
-
-  ASSERT_STREQ(expectedJsonString, message.toString().c_str());
-}
-
 TEST(utils, message_verify) {
   PublicKey publicKey = PublicKey::fromHex(expectedPublicKey);
   std::vector<uint8_t> signature = HexToBytes(expectedSignature);

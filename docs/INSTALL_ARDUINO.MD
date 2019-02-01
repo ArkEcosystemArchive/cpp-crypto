@@ -17,6 +17,7 @@ Using the Arduino IDE's built in Library Manager,
 install the following Libraries  
 - micro-ecc
 - AUnit
+- ArduinoJson
 
 #
 
