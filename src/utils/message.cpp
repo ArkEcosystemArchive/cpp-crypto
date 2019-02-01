@@ -8,7 +8,6 @@
  **/
 
 #include "utils/message.h"
-
 #include "helpers/json.h"
 
 /**
