@@ -8,7 +8,6 @@
 #include "identities/privatekey.h"
 
 #include <map>
-#include <sstream>
 
 using namespace Ark::Crypto::Identities;
 
@@ -138,32 +137,33 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
 
 std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() {
   //  buffers for variable and non-string type-values.
-  std::stringstream amount, assetName, assetValue, fee, signatures, timestamp;
-  char network[8], type[8], version[8];
+  char amount[24], assetName[16], assetValue[512], fee[24], network[8], signatures[512], timestamp[36], type[8], version[8];
 
   //  Amount
-  amount << this->amount;
+  sprintf(amount, "%llu", this->amount);
 
   //  Asset
   if (this->type == 0) {  //  Transfer
     //do nothing
   } else if (this->type == 1) { //  Second Signature Registration
 
-    assetName << "publicKey";
-    assetValue << this->asset.signature.publicKey;
+    strcpy(assetName, "publicKey");
+    strcpy(assetValue, this->asset.signature.publicKey.c_str());
 
   } else if (this->type == 2) { //  Delegate Registration
 
-    assetName << "username";
-    assetValue << this->asset.delegate.username;
+    strcpy(assetName, "username");
+    strcpy(assetValue, this->asset.delegate.username.c_str());
 
   } else if (this->type == 3) {  //  Vote
 
-    assetName << "votes";
+    strcpy(assetName, "votes");
+    strcpy(assetValue, "");
     for (unsigned int i = 0; i < this->asset.votes.size(); ++i) {
-      assetValue << this->asset.votes[i];
+      strcat(assetValue, this->asset.votes[i].c_str());
+
       if (i < this->asset.votes.size() - 1) {
-        assetValue << ",";
+        strcat(assetValue, ",");
       }
     }
 
@@ -180,13 +180,15 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   };
 
   //  Fee
-  fee << this->fee;
+  // fee << this->fee;
+  sprintf(fee, "%llu",  this->fee);
 
   //  Signatures
+  strcpy(signatures, "");
   for (unsigned int i = 0; i < this->signatures.size(); ++i) {
-    signatures << this->signatures[i];
+    strcat(signatures, this->signatures[i].c_str());
     if (i < this->signatures.size() - 1) {
-      signatures << "\",\"";
+      strcpy(signatures, ",");
     }
   }
 
@@ -194,7 +196,7 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   sprintf(network, "%d", this->network);
 
   //  Timestamp
-  timestamp << this->timestamp;
+  sprintf(timestamp, "%d", this->timestamp);
 
   //  Type
   sprintf(type, "%d", this->type);
@@ -203,18 +205,18 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   sprintf(version, "%d", this->version);
 
   return {
-    {"amount", amount.str()},
-    {assetName.str().c_str(), assetValue.str()},
-    {"fee", fee.str()},
+    {"amount", amount},
+    {assetName, assetValue},
+    {"fee", fee},
     {"id", this->id},
     {"network", network},
     {"recipientId", this->recipientId},
     {"secondSignature", this->secondSignature},
     {"senderPublicKey", this->senderPublicKey},
     {"signature", this->signature},
-    {"signatures", signatures.str()},
+    {"signatures", signatures},
     {"signSignature", this->signSignature},
-    {"timestamp", timestamp.str()},
+    {"timestamp", timestamp},
     {"type", type},
     {"vendorField", this->vendorField},
     {"version", version}
