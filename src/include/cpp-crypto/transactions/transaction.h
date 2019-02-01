@@ -50,7 +50,6 @@ public:
   bool verify() const;
   bool secondVerify(const char* secondPublicKey) const;
 
-  // Transaction fromJson(std::string jsonString);
   std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true) const;
   std::vector<std::pair<const char *const, std::string>> toArray();
   std::string toJson();
