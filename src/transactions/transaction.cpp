@@ -66,14 +66,6 @@ bool Ark::Crypto::Transactions::Transaction::internalVerify(
   return cryptoVerify(key, hash, signatureBytes);
 }
 
-
-
-//  Ark::Crypto::Transactions::Transaction Ark::Crypto::Transactions::Transaction::fromJson(std::string jsonString) {
-
-//   return Ark::Crypto::Transactions::Transaction();
-//   // return "";
-// }
-
 std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
     bool skipSignature,
     bool skipSecondSignature) const {
