@@ -159,7 +159,7 @@ std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Transactions
   }else if (this->type == 3) {  //  Vote
 
     assetName << "votes";
-    for (int i = 0; i < this->asset.votes.size(); ++i) {
+    for (unsigned int i = 0; i < this->asset.votes.size(); ++i) {
       assetValue << this->asset.votes[i];
       if (i < this->asset.votes.size() - 1) {
         assetValue << ",";
@@ -182,7 +182,7 @@ std::vector<std::pair<const char *const, std::string>> Ark::Crypto::Transactions
   fee << this->fee;
 
   //  Signatures
-  for (int i = 0; i < this->signatures.size(); ++i) {
+  for (unsigned int i = 0; i < this->signatures.size(); ++i) {
     signatures << this->signatures[i];
     if (i < this->signatures.size() - 1) {
       signatures << ",";
