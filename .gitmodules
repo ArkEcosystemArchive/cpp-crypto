@@ -10,3 +10,6 @@
 [submodule "examples/cmake_example/lib/cpp-crypto"]
 	path = examples/cmake_example/lib/cpp-crypto
 	url = https://github.com/ArkEcosystem/cpp-crypto.git
+[submodule "src/lib/ArduinoJson"]
+	path = src/lib/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
