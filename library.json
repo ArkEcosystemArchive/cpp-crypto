@@ -23,6 +23,9 @@
     },
     {
       "name": "bip39"
+    },
+    {
+      "name": "ArduinoJson"
     }
   ],
   "export": {
@@ -36,8 +39,9 @@
     ]
   },
   "examples": [
-    "[Ee]xamples/platformio_example/*.ino",
-    "[Ee]xamples/platformio_example/*.cpp",
-    "[Ee]xamples/platformio_example/*.c"
+    "[Ee]xamples/arduino/*/*.ino",
+    "[Ee]xamples/platformio_example/*/*.ino",
+    "[Ee]xamples/platformio_example/*/*.cpp",
+    "[Ee]xamples/platformio_example/*/*.c"
   ]
 }
