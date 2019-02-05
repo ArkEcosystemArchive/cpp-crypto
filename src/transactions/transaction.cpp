@@ -3,8 +3,11 @@
 #include "enums/types.h"
 #include "helpers/crypto.h"
 #include "helpers/crypto_helpers.h"
+#include "helpers/json.h"
 #include "identities/address.h"
 #include "identities/privatekey.h"
+
+#include <map>
 
 using namespace Ark::Crypto::Identities;
 
@@ -51,8 +54,19 @@ bool Ark::Crypto::Transactions::Transaction::secondVerify(const char* secondPubl
   return this->internalVerify(secondPublicKey, this->toBytes(false), this->secondSignature);
 }
 
-std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSignature,
-                                                                     bool skipSecondSignature) const {
+bool Ark::Crypto::Transactions::Transaction::internalVerify(
+    std::string publicKey,
+    std::vector<uint8_t> bytes,
+    std::string signature) const {
+  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  const auto key = Identities::PublicKey::fromHex(publicKey.c_str());
+  auto signatureBytes = HexToBytes(signature.c_str());
+  return cryptoVerify(key, hash, signatureBytes);
+}
+
+std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
+    bool skipSignature,
+    bool skipSecondSignature) const {
   std::vector<uint8_t> bytes;
 
   pack(bytes, this->type);
@@ -61,8 +75,10 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSi
   const auto senderKeyBytes = HexToBytes(this->senderPublicKey.c_str());
   bytes.insert(std::end(bytes), std::begin(senderKeyBytes), std::end(senderKeyBytes));
 
-  const auto skipRecipientId =
-      type == Enums::Types::SECOND_SIGNATURE_REGISTRATION || type == Enums::Types::MULTI_SIGNATURE_REGISTRATION;
+  const auto skipRecipientId = type
+    == Enums::Types::SECOND_SIGNATURE_REGISTRATION
+    || type == Enums::Types::MULTI_SIGNATURE_REGISTRATION;
+
   if (!this->recipientId.empty() && !skipRecipientId) {
     std::vector<std::uint8_t> recipientIdBytes = Address::bytesFromBase58Check(this->recipientId.c_str());
     bytes.insert(std::end(bytes), std::begin(recipientIdBytes), std::end(recipientIdBytes));
@@ -119,10 +135,205 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSi
   return bytes;
 }
 
-bool Ark::Crypto::Transactions::Transaction::internalVerify(std::string publicKey, std::vector<uint8_t> bytes,
-                                                            std::string signature) const {
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
-  const auto key = Identities::PublicKey::fromHex(publicKey.c_str());
-  auto signatureBytes = HexToBytes(signature.c_str());
-  return cryptoVerify(key, hash, signatureBytes);
+std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() {
+  //  buffers for variable and non-string type-values.
+  char amount[24], assetName[16], assetValue[512], fee[24], network[8], signatures[512], timestamp[36], type[8], version[8];
+
+  //  Amount
+  sprintf(amount, "%llu", this->amount);
+
+  //  Asset
+  if (this->type == 0) {  //  Transfer
+    //do nothing
+  } else if (this->type == 1) { //  Second Signature Registration
+
+    strcpy(assetName, "publicKey");
+    strcpy(assetValue, this->asset.signature.publicKey.c_str());
+
+  } else if (this->type == 2) { //  Delegate Registration
+
+    strcpy(assetName, "username");
+    strcpy(assetValue, this->asset.delegate.username.c_str());
+
+  } else if (this->type == 3) {  //  Vote
+
+    strcpy(assetName, "votes");
+    strcpy(assetValue, "");
+    for (unsigned int i = 0; i < this->asset.votes.size(); ++i) {
+      strcat(assetValue, this->asset.votes[i].c_str());
+
+      if (i < this->asset.votes.size() - 1) {
+        strcat(assetValue, ",");
+      }
+    }
+
+  // } else if (this->type == 4) {  //  Multisignature Registration
+  //   //  TODO
+  // } else if (this->type == 5) {  //  IPFS
+  //   //  TBD
+  // } else if (this->type == 6) {  //  Timelock Registration
+  //   //  TBD
+  // } else if (this->type == 7) {  //  Multi-Payment
+  //   //  TBD
+  // } else if (this->type == 8) {  //  Delegate Resignation
+  //   //  TBD
+  };
+
+  //  Fee
+  // fee << this->fee;
+  sprintf(fee, "%llu",  this->fee);
+
+  //  Signatures
+  strcpy(signatures, "");
+  for (unsigned int i = 0; i < this->signatures.size(); ++i) {
+    strcat(signatures, this->signatures[i].c_str());
+    if (i < this->signatures.size() - 1) {
+      strcpy(signatures, ",");
+    }
+  }
+
+  //  Network
+  sprintf(network, "%d", this->network);
+
+  //  Timestamp
+  sprintf(timestamp, "%d", this->timestamp);
+
+  //  Type
+  sprintf(type, "%d", this->type);
+
+  //  Version
+  sprintf(version, "%d", this->version);
+
+  return {
+    {"amount", amount},
+    {assetName, assetValue},
+    {"fee", fee},
+    {"id", this->id},
+    {"network", network},
+    {"recipientId", this->recipientId},
+    {"secondSignature", this->secondSignature},
+    {"senderPublicKey", this->senderPublicKey},
+    {"signature", this->signature},
+    {"signatures", signatures},
+    {"signSignature", this->signSignature},
+    {"timestamp", timestamp},
+    {"type", type},
+    {"vendorField", this->vendorField},
+    {"version", version}
+  };
+}
+
+std::string Ark::Crypto::Transactions::Transaction::toJson() {
+  std::map<std::string, std::string> txArray = this->toArray();
+
+  const size_t capacity = JSON_OBJECT_SIZE(15);
+  DynamicJsonBuffer jsonBuffer(capacity);
+
+  JsonObject& root = jsonBuffer.createObject();
+
+  //  Amount
+  root["amount"] = txArray["amount"];
+
+  //  Asset
+  if (this->type == 0) {  //  Transfer
+    //do nothing
+  } else if (this->type == 1) { //  Second Signature Registration
+
+    JsonObject& tAsset = root.createNestedObject("asset");
+    JsonObject& signature = tAsset.createNestedObject("signature");
+    signature["publicKey"] = txArray["publicKey"];
+
+  } else if (this->type == 2) { //  Delegate Registration
+
+    JsonObject& dAsset = root.createNestedObject("asset");
+    JsonObject& delegate = dAsset.createNestedObject("delegate");
+    delegate["username"] = txArray["username"];
+
+  }else if (this->type == 3) {  //  Vote
+
+    JsonObject& vAsset = root.createNestedObject("asset");
+    JsonArray& votes = vAsset.createNestedArray("votes");
+
+    std::string::size_type lastPos = txArray["votes"].find_first_not_of(",", 0);
+    std::string::size_type pos = txArray["votes"].find_first_of(",", lastPos);
+    while (std::string::npos != pos || std::string::npos != lastPos) {
+      votes.add(txArray["votes"].substr(lastPos, pos - lastPos));
+      lastPos = txArray["votes"].find_first_not_of(",", pos);
+      pos = txArray["votes"].find_first_of(",", lastPos);
+    }
+
+  // } else if (this->type == 4) {  //  Multisignature Registration
+  //   //  TODO
+  // } else if (this->type == 5) {  //  IPFS
+  //   //  TBD
+  // } else if (this->type == 6) {  //  Timelock Registration
+  //   //  TBD
+  // } else if (this->type == 7) {  //  Multi-Payment
+  //   //  TBD
+  // } else if (this->type == 8) {  //  Delegate Resignation
+  //   //  TBD
+  };
+
+  //  Fee
+  root["fee"] = txArray["fee"];
+
+  //  Id
+  root["id"] = txArray["id"];
+
+  //  Network
+  if (txArray["network"] != "0") {
+    root["network"] = txArray["network"];
+  }
+
+  //  RecipientId
+  root["recipientId"] = txArray["recipientId"];
+
+  //  SecondSignature
+  if (std::strlen(txArray["secondSignature"].c_str()) > 0) {
+    root["secondSignature"] = txArray["secondSignature"];
+  }
+
+  //  SenderPublicKey
+  root["senderPublicKey"] = txArray["senderPublicKey"];
+
+  //  Signature
+  root["signature"] = txArray["signature"];
+
+  //  Signatures
+  if (this->signatures.size() > 0) {
+    JsonArray& signatures = root.createNestedArray("signatures");
+    std::string::size_type lastPos = txArray["signatures"].find_first_not_of(",", 0);
+    std::string::size_type pos = txArray["signatures"].find_first_of(",", lastPos);
+    while (std::string::npos != pos || std::string::npos != lastPos) {
+      signatures.add(txArray["signatures"].substr(lastPos, pos - lastPos));
+      lastPos = txArray["signatures"].find_first_not_of(",", pos);
+      pos = txArray["signatures"].find_first_of(",", lastPos);
+    }
+  }
+
+  //  SignSignature
+  if (std::strlen(txArray["signSignature"].c_str()) > 0) {
+    root["signSignature"] = txArray["signSignature"];
+  }
+
+  //  Timestamp
+  root["timestamp"] = txArray["timestamp"];
+
+  //  Type
+  root["type"] = txArray["type"];
+
+  //  VendorField
+  if (std::strlen(txArray["vendorField"].c_str()) > 0) {
+    root["vendorField"] = txArray["vendorField"];
+  }
+
+  //  Version
+  if (txArray["version"] != "0") {
+    root["version"] = txArray["version"];
+  }
+
+  char jsonChar[root.measureLength() + 1];
+  root.printTo((char*)jsonChar, sizeof(jsonChar));
+
+  return jsonChar;
 }

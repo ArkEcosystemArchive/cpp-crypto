@@ -15,6 +15,7 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../lib")
 
 include_directories(${PROJECT_SOURCE_DIR}/../src)
 include_directories(${PROJECT_SOURCE_DIR}/../include/bcl)
+include_directories(${PROJECT_SOURCE_DIR}/../src/lib/ArduinoJson)
 include_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 set (TEST_SRC
@@ -34,7 +35,8 @@ set (TEST_SRC
 	${PROJECT_SOURCE_DIR}/networks/testnet.cpp
   ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
   ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
-  ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
+	${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
+	${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
   ${PROJECT_SOURCE_DIR}/utils/message.cpp
 	${PROJECT_SOURCE_DIR}/utils/slot.cpp
 )

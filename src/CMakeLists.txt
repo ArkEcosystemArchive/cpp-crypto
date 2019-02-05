@@ -54,6 +54,7 @@ set(cpp_crypto_build_include_dirs
 )
 include_directories(${cpp_crypto_build_include_dirs})
 include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
+include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${cpp_crypto_build_include_dirs}
