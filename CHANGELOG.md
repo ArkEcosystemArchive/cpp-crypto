@@ -25,12 +25,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed the way the Arduino IDE Script restores converted directories ([#49])
 - Corrected PIO Builds to determine dependency versions explicitly ([#52])
 
-[unreleased]: https://github.com/ArkEcosystem/core/compare/0.2.0...develop
-[0.2.0]: https://github.com/ArkEcosystem/core/compare/0.1.0..0.2.0
-[#54]: https://github.com/ArkEcosystem/core/pull/54
-[#55]: https://github.com/ArkEcosystem/core/pull/55
-[#50]: https://github.com/ArkEcosystem/core/pull/50
-[#51]: https://github.com/ArkEcosystem/core/pull/51
-[#49]: https://github.com/ArkEcosystem/core/pull/49
-[#52]: https://github.com/ArkEcosystem/core/pull/52
-[#53]: https://github.com/ArkEcosystem/core/pull/53
+[unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.2.0...develop
+[0.2.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.1.0..0.2.0
+[#54]: https://github.com/ArkEcosystem/cpp-crypto/pull/54
+[#55]: https://github.com/ArkEcosystem/cpp-crypto/pull/55
+[#50]: https://github.com/ArkEcosystem/cpp-crypto/pull/50
+[#51]: https://github.com/ArkEcosystem/cpp-crypto/pull/51
+[#49]: https://github.com/ArkEcosystem/cpp-crypto/pull/49
+[#52]: https://github.com/ArkEcosystem/cpp-crypto/pull/52
+[#53]: https://github.com/ArkEcosystem/cpp-crypto/pull/53
