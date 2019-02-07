@@ -11,16 +11,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Added `toJson()` method to `Transaction` class ([#54](https://github.com/ArkEcosystem/cpp-crypto/pull/54))
-- Added `ArduinoJson` dependency and Arduino Sketch paths to `library.json` ([#55](https://github.com/ArkEcosystem/cpp-crypto/pull/55))
+- Added `toJson()` method to `Transaction` class ([#54])
+- Added `ArduinoJson` dependency and Arduino Sketch paths to `library.json` ([#55])
 
 ### Changed
 
-- Removed unused Arduino Adapter Header ([#50](https://github.com/ArkEcosystem/cpp-crypto/pull/50))
-- Renamed `Helpers` class to avoid naming collision with Cpp-Client `Helpers` ([#51](https://github.com/ArkEcosystem/cpp-crypto/pull/51))
-- Refactored Timestamps & `Slots` to use milliseconds and avoid integer overflow ([#53](https://github.com/ArkEcosystem/cpp-crypto/pull/53))
+- Removed unused Arduino Adapter Header ([#50])
+- Renamed `Helpers` class to avoid naming collision with Cpp-Client `Helpers` ([#51])
+- Refactored Timestamps & `Slots` to use milliseconds and avoid integer overflow ([#53])
 
 ### Fixed
 
-- Fixed the way the Arduino IDE Script restores converted directories ([#49](https://github.com/ArkEcosystem/cpp-crypto/pull/49))
-- Corrected PIO Builds to determine dependency versions explicitly ([#52](https://github.com/ArkEcosystem/cpp-crypto/pull/52))
+- Fixed the way the Arduino IDE Script restores converted directories ([#49])
+- Corrected PIO Builds to determine dependency versions explicitly ([#52])
