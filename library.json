@@ -39,9 +39,8 @@
     ]
   },
   "examples": [
-    "[Ee]xamples/arduino/*/*.ino",
-    "[Ee]xamples/platformio_example/*/*.ino",
-    "[Ee]xamples/platformio_example/*/*.cpp",
-    "[Ee]xamples/platformio_example/*/*.c"
+    "[Ee]xamples/*/*/*.ino",
+    "[Ee]xamples/*/*/*.cpp",
+    "[Ee]xamples/*/*/*.c"
   ]
 }
