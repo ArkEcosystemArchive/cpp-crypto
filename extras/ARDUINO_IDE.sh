@@ -19,6 +19,13 @@
 # (i.e. recreates the directory tree and moves headers back to 'include'.)
 # #########
 
+# Flags
+# You can skip the interface by passing '-auto'; eg 'bash ARDUINO_IDE.sh -auto'
+AUTO='0'
+if [ "$1" == "--auto" ]; then
+  AUTO='1'
+fi
+
 # Directories
 EXTRAS_DIR=`dirname "$0"`
 INCLUDE_DIR=${EXTRAS_DIR}/../src/include
@@ -53,24 +60,26 @@ SRC_NETWORKS_DIR=${SRC_DIR}/networks
 INCLUDE_TRANSACTIONS_DIR=${INCLUDE_CRYPTO_DIR}/transactions
 SRC_TRANSACTIONS_DIR=${SRC_DIR}/transactions
 
+if [[ $AUTO == '0' ]]; then
+
 # Interface
 echo -e "\n\n👋  Welcome Aboard  🚢\n\n"
 sleep 1
 
 if [[ -d ${INCLUDE_DIR} ]]; then
   echo -e "🤖  This script extends compatibility to the Arduino IDE  🤖\n"
-  sleep 2
+  sleep 1
   echo -e "💪  All header files will be moved to their 'src' folders  💪\n"
-  sleep 2
+  sleep 1
 else
   echo -e "🤖  Looks like this library was already converted to support the Arduino IDE  🤖\n"
-  sleep 2
+  sleep 1
   echo -e "💪  All header files will be moved back to the 'include' folder  💪\n"
-  sleep 2
+  sleep 1
 fi
 
 echo -e "\n🛑  These changes are permanent, any unsaved changes will be lost  🛑\n"
-sleep 4
+sleep 2
 
 # Prompts for continuation
 read -p "⚠️  Are you sure you want to continue? (Y/n):" -n 1 -r
@@ -82,30 +91,28 @@ else
   echo -e "\n\n👌 Let's go!\n";
 fi
 
+fi  # /if [[ ${AUTO} ]]; then
+
 if [[ -d ${INCLUDE_DIR} ]]; then
   # This will run if headers are in the 'include' directory tree.
   echo -e "****************************************\n"
   echo -e "Moving 'arkCrypto.h' to 'src' directory.\n"
   mv ${INCLUDE_CRYPTO_DIR}/arkCrypto.h ${SRC_DIR}
-  sleep 1
 
   echo -e "Moving 'configuration' headers.\n"
   mv ${INCLUDE_CONFIGURATION_DIR}/fee.h     ${SRC_CONFIGURATION_DIR}
   mv ${INCLUDE_CONFIGURATION_DIR}/network.h ${SRC_CONFIGURATION_DIR}
-  sleep 1
 
   echo "Creating 'enums' folder 🗂"
   mkdir ${SRC_ENUMS_DIR}
-  sleep 1
+
   echo -e "Moving 'enums' headers.\n"
   mv ${INCLUDE_ENUMS_DIR}/fees.h  ${SRC_ENUMS_DIR}
   mv ${INCLUDE_ENUMS_DIR}/types.h ${SRC_ENUMS_DIR}
-  sleep 1
 
   echo -e "Moving 'helpers' headers.\n"
   mv ${INCLUDE_HELPERS_DIR}/encoding/der.h  ${SRC_HELPERS_DIR}/encoding
   mv ${INCLUDE_HELPERS_DIR}/encoding/hex.h  ${SRC_HELPERS_DIR}/encoding
-  sleep 1
 
   ## 'bip39' library is not supported in Arduino
   echo -e "Backing up and removing 'mnemonic.h'.\n"
@@ -115,41 +122,34 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${SRC_IDENTITIES_DIR}/mnemonic.cpp ${EXTRAS_IDENTITIES_DIR}
   echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.h
   echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.cpp
-  sleep 1
 
   echo -e "Moving 'identites' headers.\n"
   mv ${INCLUDE_IDENTITIES_DIR}/address.h    ${SRC_IDENTITIES_DIR}
   mv ${INCLUDE_IDENTITIES_DIR}/privatekey.h ${SRC_IDENTITIES_DIR}
   mv ${INCLUDE_IDENTITIES_DIR}/publickey.h  ${SRC_IDENTITIES_DIR}
   mv ${INCLUDE_IDENTITIES_DIR}/wif.h        ${SRC_IDENTITIES_DIR}
-  sleep 1
 
   echo -e "Moving 'networks' headers.\n"
   mv ${INCLUDE_NETWORKS_DIR}/abstractnetwork.h  ${SRC_NETWORKS_DIR}
   mv ${INCLUDE_NETWORKS_DIR}/devnet.h           ${SRC_NETWORKS_DIR}
   mv ${INCLUDE_NETWORKS_DIR}/mainnet.h          ${SRC_NETWORKS_DIR}
   mv ${INCLUDE_NETWORKS_DIR}/testnet.h          ${SRC_NETWORKS_DIR}
-  sleep 1
 
   echo -e "Moving 'transactions' headers.\n"
   mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h  ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h ${SRC_TRANSACTIONS_DIR}
-  sleep 1
 
   echo -e "Backing up and removing the 'lib' directory.\n"
   mv ${SRC_LIB_DIR}/* ${EXTRAS_BACKUP_DIR}
   echo
-  sleep 1
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${INCLUDE_DIR}
   rm -rf ${SRC_DIR}/lib
-  sleep 1
 
   echo -e "****************************************\n"
-  sleep 1
 
   echo -e "\nAll Done!\n👏👏👏👏👏\n"
   echo -e "\nYou can now use Cpp-Crypto with the Arduino IDE 👍\n\n"
@@ -169,26 +169,21 @@ else
   mkdir ${INCLUDE_IDENTITIES_DIR}
   mkdir ${INCLUDE_NETWORKS_DIR}
   mkdir ${INCLUDE_TRANSACTIONS_DIR}
-  sleep 1
 
   echo -e "Moving 'arkCrypto.h' back to the 'include/cpp-crypto/' directory.\n"
   mv ${SRC_DIR}/arkCrypto.h ${INCLUDE_CRYPTO_DIR}
-  sleep 1
 
   echo -e "Moving 'configuration' headers.\n"
   mv ${SRC_CONFIGURATION_DIR}/fee.h     ${INCLUDE_CONFIGURATION_DIR}
   mv ${SRC_CONFIGURATION_DIR}/network.h ${INCLUDE_CONFIGURATION_DIR}
-  sleep 1
 
   echo -e "Moving 'enums' headers.\n"
   mv ${SRC_ENUMS_DIR}/fees.h  ${INCLUDE_ENUMS_DIR}
   mv ${SRC_ENUMS_DIR}/types.h ${INCLUDE_ENUMS_DIR}
-  sleep 1
 
   echo -e "Moving 'helpers/encoding' headers.\n"
   mv ${SRC_ENCODING_DIR}/der.h ${INCLUDE_ENCODING_DIR}
   mv ${SRC_ENCODING_DIR}/hex.h ${INCLUDE_ENCODING_DIR}
-  sleep 1
 
   echo -e "Moving 'identities' headers.\n"
   mv ${SRC_IDENTITIES_DIR}/address.h    ${INCLUDE_IDENTITIES_DIR}
@@ -196,21 +191,18 @@ else
   mv ${SRC_IDENTITIES_DIR}/privatekey.h ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/publickey.h  ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/wif.h        ${INCLUDE_IDENTITIES_DIR}
-  sleep 1
 
   echo -e "Moving 'networks' headers.\n"
   mv ${SRC_NETWORKS_DIR}/abstractnetwork.h  ${INCLUDE_NETWORKS_DIR}
   mv ${SRC_NETWORKS_DIR}/devnet.h           ${INCLUDE_NETWORKS_DIR}
   mv ${SRC_NETWORKS_DIR}/mainnet.h          ${INCLUDE_NETWORKS_DIR}
   mv ${SRC_NETWORKS_DIR}/testnet.h          ${INCLUDE_NETWORKS_DIR}
-  sleep 1
 
   echo -e "Moving 'transactions' headers.\n"
   mv ${SRC_TRANSACTIONS_DIR}/builder.h      ${INCLUDE_TRANSACTIONS_DIR}
   mv ${SRC_TRANSACTIONS_DIR}/deserializer.h ${INCLUDE_TRANSACTIONS_DIR}
   mv ${SRC_TRANSACTIONS_DIR}/serializer.h   ${INCLUDE_TRANSACTIONS_DIR}
   mv ${SRC_TRANSACTIONS_DIR}/transaction.h  ${INCLUDE_TRANSACTIONS_DIR}
-  sleep 1
 
   ## 'bip39' library is not supported in Arduino
   echo -e "Restoring 'mnemonic.h'.\n"
@@ -220,21 +212,16 @@ else
   mv ${EXTRAS_IDENTITIES_DIR}/mnemonic.cpp  ${SRC_IDENTITIES_DIR}
   rm -rf ${EXTRAS_IDENTITIES_DIR}/mnemonic.cpp
 
-  sleep 1
-
   echo -e "Restoring the 'lib' directory.\n"
   mkdir ${SRC_DIR}/lib
   mv ${EXTRAS_BACKUP_DIR}/* ${SRC_DIR}/lib
   echo
-  sleep 1
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${SRC_ENUMS_DIR}
   rm -rf ${EXTRAS_BACKUP_DIR}
-  sleep 1
 
   echo -e "****************************************\n"
-  sleep 1
 
   echo -e "\nAll Done!\n👏👏👏👏👏\n"
   echo -e "\nArduino IDE compatibility has been reverted 👍\n\n"
