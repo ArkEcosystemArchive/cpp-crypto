@@ -28,19 +28,9 @@
       "name": "ArduinoJson"
     }
   ],
-  "export": {
-    "include": [
-      "src/*"
-    ]
-  },
   "build": {
     "flags": [
       "-I src/include/cpp-crypto"
     ]
-  },
-  "examples": [
-    "[Ee]xamples/*/*/*.ino",
-    "[Ee]xamples/*/*/*.cpp",
-    "[Ee]xamples/*/*/*.c"
-  ]
+  }
 }
