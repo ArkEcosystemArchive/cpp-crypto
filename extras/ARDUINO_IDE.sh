@@ -20,7 +20,7 @@
 # #########
 
 # Flags
-# You can skip the interface by passing '-auto'; eg 'bash ARDUINO_IDE.sh -auto'
+# You can skip the interface by passing '--auto'; eg 'bash ARDUINO_IDE.sh -auto'
 AUTO='0'
 if [ "$1" == "--auto" ]; then
   AUTO='1'
