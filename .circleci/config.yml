@@ -1,5 +1,18 @@
 version: 2
 jobs:
+  build-arduino-default:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Make scripts executable 
+          command: sudo chmod -R +x ./.circleci/*.sh
+      - run:
+          name: Install
+          command: ./.circleci/install_arduino.sh
+      - run:
+          name: Build
+          command: ./.circleci/script_arduino.sh
   build-linux-default:
     machine: true
     steps:
@@ -106,6 +119,7 @@ workflows:
   version: 2
   build:
     jobs:
+      - build-arduino-default
       - build-linux-default
       - build-linux-gcc7
       - build-linux-clang-5
