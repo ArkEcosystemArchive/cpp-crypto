@@ -1,12 +1,12 @@
 #include "helpers/crypto.h"
 
 #include <cassert>
-#include "lib/bcl/Ecdsa.hpp"
-#include "lib/bcl/Sha256.hpp"
-#include "lib/bcl/Uint256.hpp"
+#include "bcl/Ecdsa.hpp"
+#include "bcl/Sha256.hpp"
+#include "bcl/Uint256.hpp"
 #include "helpers/encoding/der.h"
 #include "helpers/crypto_helpers.h"
-#include "lib/rfc6979/rfc6979.h"
+#include "rfc6979/rfc6979.h"
 #include "uECC.h"
 
 void cryptoSign(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey, std::vector<uint8_t>& signature) {

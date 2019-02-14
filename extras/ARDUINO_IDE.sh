@@ -119,7 +119,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mkdir ${EXTRAS_BACKUP_DIR}
   mkdir ${EXTRAS_IDENTITIES_DIR}
   mv ${INCLUDE_IDENTITIES_DIR}/mnemonic.h ${EXTRAS_IDENTITIES_DIR}
-  mv ${SRC_IDENTITIES_DIR}/mnemonic.cpp ${EXTRAS_IDENTITIES_DIR}
+  mv ${SRC_IDENTITIES_DIR}/mnemonic.cpp   ${EXTRAS_IDENTITIES_DIR}
   echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.h
   echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.cpp
 
@@ -137,17 +137,22 @@ if [[ -d ${INCLUDE_DIR} ]]; then
 
   echo -e "Moving 'transactions' headers.\n"
   mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h  ${SRC_TRANSACTIONS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h ${SRC_TRANSACTIONS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
 
-  echo -e "Backing up and removing relevant modules from the 'lib' directory.\n"
+  echo -e "Backing up, moving, and removing relevant modules from the 'lib' directory.\n"
   mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_BACKUP_DIR}
-  mv ${SRC_LIB_DIR}/bip39 ${EXTRAS_BACKUP_DIR}
-  mv ${SRC_LIB_DIR}/uECC ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/bip39       ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
+  mv ${SRC_LIB_DIR}/date        ${SRC_DIR}
+  mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
+  mv ${SRC_LIB_DIR}/stl         ${SRC_DIR}
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${INCLUDE_DIR}
+  rm -rf ${SRC_LIB_DIR}
 
   echo -e "****************************************\n"
 
@@ -212,9 +217,14 @@ else
   rm -rf ${EXTRAS_IDENTITIES_DIR}/mnemonic.cpp
 
   echo -e "Restoring the 'lib' directory.\n"
-  mv ${EXTRAS_BACKUP_DIR}/ArduinoJson ${SRC_DIR}/lib
-  mv ${EXTRAS_BACKUP_DIR}/bip39 ${SRC_DIR}/lib
-  mv ${EXTRAS_BACKUP_DIR}/uECC ${SRC_DIR}/lib
+  mkdir ${SRC_LIB_DIR}
+  mv ${EXTRAS_BACKUP_DIR}/ArduinoJson ${SRC_LIB_DIR}
+  mv ${EXTRAS_BACKUP_DIR}/bip39       ${SRC_LIB_DIR}
+  mv ${EXTRAS_BACKUP_DIR}/uECC        ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/bcl                   ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/date                  ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/rfc6979               ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/stl                   ${SRC_LIB_DIR}
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${SRC_ENUMS_DIR}

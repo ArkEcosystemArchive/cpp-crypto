@@ -53,6 +53,7 @@ set(cpp_crypto_build_include_dirs
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
 )
 include_directories(${cpp_crypto_build_include_dirs})
+include_directories(${PROJECT_SOURCE_DIR}/lib/)
 include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
 include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
 include_directories(${PROJECT_SOURCE_DIR}/lib/bip39)

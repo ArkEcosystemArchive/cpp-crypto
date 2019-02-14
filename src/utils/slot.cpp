@@ -6,7 +6,7 @@
 #include <sstream>
 
 #undef round
-#include "lib/date/date.h"
+#include "date/date.h"
 
 uint64_t Ark::Crypto::Utils::Slot::epoch(Crypto::Networks::AbstractNetwork network) {
   // https://stackoverflow.com/questions/33421450/c-c-time-zone-correct-time-conversion-to-seconds-since-epoch/33438989#33438989

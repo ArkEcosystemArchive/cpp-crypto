@@ -1,5 +1,5 @@
 #include "transactions/transaction.h"
-#include "lib/bcl/Sha256.hpp"
+#include "bcl/Sha256.hpp"
 #include "enums/types.h"
 #include "helpers/crypto.h"
 #include "helpers/crypto_helpers.h"

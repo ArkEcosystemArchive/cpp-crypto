@@ -18,7 +18,7 @@ const auto WIF_SIZE = 52u;
 #define USE_IOT
 
 // Including missing implementations of std::to_string
-#include "lib/stl/details/to_string.h"
+#include "stl/details/to_string.h"
 
 #include <Arduino.h>
 #include <pgmspace.h>
