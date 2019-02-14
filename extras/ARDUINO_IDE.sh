@@ -148,7 +148,6 @@ if [[ -d ${INCLUDE_DIR} ]]; then
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${INCLUDE_DIR}
-  # rm -rf ${SRC_DIR}/lib
 
   echo -e "****************************************\n"
 
@@ -183,7 +182,6 @@ else
   mv ${SRC_ENUMS_DIR}/types.h ${INCLUDE_ENUMS_DIR}
 
   echo -e "Moving 'helpers/encoding' headers.\n"
-  mv ${SRC_ENCODING_DIR}/der.h ${INCLUDE_ENCODING_DIR}
   mv ${SRC_ENCODING_DIR}/hex.h ${INCLUDE_ENCODING_DIR}
 
   echo -e "Moving 'identities' headers.\n"
