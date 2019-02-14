@@ -141,13 +141,14 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h ${SRC_TRANSACTIONS_DIR}
 
-  echo -e "Backing up and removing the 'lib' directory.\n"
-  mv ${SRC_LIB_DIR}/* ${EXTRAS_BACKUP_DIR}
-  echo
+  echo -e "Backing up and removing relevant modules from the 'lib' directory.\n"
+  mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/bip39 ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/uECC ${EXTRAS_BACKUP_DIR}
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${INCLUDE_DIR}
-  rm -rf ${SRC_DIR}/lib
+  # rm -rf ${SRC_DIR}/lib
 
   echo -e "****************************************\n"
 
@@ -213,9 +214,9 @@ else
   rm -rf ${EXTRAS_IDENTITIES_DIR}/mnemonic.cpp
 
   echo -e "Restoring the 'lib' directory.\n"
-  mkdir ${SRC_DIR}/lib
-  mv ${EXTRAS_BACKUP_DIR}/* ${SRC_DIR}/lib
-  echo
+  mv ${EXTRAS_BACKUP_DIR}/ArduinoJson ${SRC_DIR}/lib
+  mv ${EXTRAS_BACKUP_DIR}/bip39 ${SRC_DIR}/lib
+  mv ${EXTRAS_BACKUP_DIR}/uECC ${SRC_DIR}/lib
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${SRC_ENUMS_DIR}

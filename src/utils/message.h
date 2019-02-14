@@ -17,12 +17,12 @@
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
 
-#include "bcl/CurvePoint.hpp"
-#include "bcl/Sha256.hpp"
-#include "bcl/Sha256Hash.hpp"
-#include "bcl/Uint256.hpp"
+#include "lib/bcl/CurvePoint.hpp"
+#include "lib/bcl/Sha256.hpp"
+#include "lib/bcl/Sha256Hash.hpp"
+#include "lib/bcl/Uint256.hpp"
 
-#include "rfc6979/rfc6979.h"
+#include "lib/rfc6979/rfc6979.h"
 
 #include <cassert>
 #include <cstring>

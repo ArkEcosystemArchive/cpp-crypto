@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  **/
 
-#include "bcl/Sha256Hash.hpp"
+#include "lib/bcl/Sha256Hash.hpp"
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
 
