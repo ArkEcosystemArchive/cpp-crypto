@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-ARK KEYWORD1
+Ark KEYWORD1
 Crypto  KEYWORD1
 API KEYWORD1
 Configuration   KEYWORD1
