@@ -28,6 +28,7 @@ fi
 
 # Directories
 EXTRAS_DIR=`dirname "$0"`
+PROJECT_ROOT=${EXTRAS_DIR}/../
 INCLUDE_DIR=${EXTRAS_DIR}/../src/include
 INCLUDE_CRYPTO_DIR=${INCLUDE_DIR}/cpp-crypto
 SRC_DIR=${EXTRAS_DIR}/../src
@@ -150,6 +151,9 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
   mv ${SRC_LIB_DIR}/stl         ${SRC_DIR}
 
+  echo -e "Moving Docs to the './extras' directory.\n"
+  mv ${PROJECT_ROOT}/docs ${EXTRAS_DIR}
+
   echo -e "Removing old directories 🗑\n"
   rm -rf ${INCLUDE_DIR}
   rm -rf ${SRC_LIB_DIR}
@@ -225,6 +229,9 @@ else
   mv ${SRC_DIR}/date                  ${SRC_LIB_DIR}
   mv ${SRC_DIR}/rfc6979               ${SRC_LIB_DIR}
   mv ${SRC_DIR}/stl                   ${SRC_LIB_DIR}
+
+  echo -e "Moving Docs back to the project root directory.\n"
+  mv ${EXTRAS_DIR}/docs  ${PROJECT_ROOT}
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${SRC_ENUMS_DIR}
