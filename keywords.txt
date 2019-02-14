@@ -8,7 +8,6 @@
 
 Ark KEYWORD1
 Crypto  KEYWORD1
-API KEYWORD1
 Configuration   KEYWORD1
 Enums   KEYWORD1
 Identities  KEYWORD1
