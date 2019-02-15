@@ -25,9 +25,24 @@
       "name": "bip39"
     },
     {
-      "name": "ArduinoJson"
+      "name": "ArduinoJson@5.13.4"
     }
   ],
+  "export": {
+    "include": [
+      "src/*",
+      "examples/*",
+      "*.md",
+      "*.json",
+      "*.properties",
+      "LICENSE",
+      "*.ini",
+      "keywords.txt"
+    ],
+    "exclude": [
+      "*/*.txt"
+    ]
+  },
   "build": {
     "flags": [
       "-I src/include/cpp-crypto"
