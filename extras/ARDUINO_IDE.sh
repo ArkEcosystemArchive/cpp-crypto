@@ -28,6 +28,7 @@ fi
 
 # Directories
 EXTRAS_DIR=`dirname "$0"`
+PROJECT_ROOT=${EXTRAS_DIR}/../
 INCLUDE_DIR=${EXTRAS_DIR}/../src/include
 INCLUDE_CRYPTO_DIR=${INCLUDE_DIR}/cpp-crypto
 SRC_DIR=${EXTRAS_DIR}/../src
@@ -119,7 +120,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mkdir ${EXTRAS_BACKUP_DIR}
   mkdir ${EXTRAS_IDENTITIES_DIR}
   mv ${INCLUDE_IDENTITIES_DIR}/mnemonic.h ${EXTRAS_IDENTITIES_DIR}
-  mv ${SRC_IDENTITIES_DIR}/mnemonic.cpp ${EXTRAS_IDENTITIES_DIR}
+  mv ${SRC_IDENTITIES_DIR}/mnemonic.cpp   ${EXTRAS_IDENTITIES_DIR}
   echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.h
   echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.cpp
 
@@ -137,17 +138,25 @@ if [[ -d ${INCLUDE_DIR} ]]; then
 
   echo -e "Moving 'transactions' headers.\n"
   mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h  ${SRC_TRANSACTIONS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h ${SRC_TRANSACTIONS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
 
-  echo -e "Backing up and removing the 'lib' directory.\n"
-  mv ${SRC_LIB_DIR}/* ${EXTRAS_BACKUP_DIR}
-  echo
+  echo -e "Backing up, moving, and removing relevant modules from the 'lib' directory.\n"
+  mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/bip39       ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
+  mv ${SRC_LIB_DIR}/date        ${SRC_DIR}
+  mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
+  mv ${SRC_LIB_DIR}/stl         ${SRC_DIR}
+
+  echo -e "Moving Docs to the './extras' directory.\n"
+  mv ${PROJECT_ROOT}/docs ${EXTRAS_DIR}
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${INCLUDE_DIR}
-  rm -rf ${SRC_DIR}/lib
+  rm -rf ${SRC_LIB_DIR}
 
   echo -e "****************************************\n"
 
@@ -182,7 +191,6 @@ else
   mv ${SRC_ENUMS_DIR}/types.h ${INCLUDE_ENUMS_DIR}
 
   echo -e "Moving 'helpers/encoding' headers.\n"
-  mv ${SRC_ENCODING_DIR}/der.h ${INCLUDE_ENCODING_DIR}
   mv ${SRC_ENCODING_DIR}/hex.h ${INCLUDE_ENCODING_DIR}
 
   echo -e "Moving 'identities' headers.\n"
@@ -213,9 +221,17 @@ else
   rm -rf ${EXTRAS_IDENTITIES_DIR}/mnemonic.cpp
 
   echo -e "Restoring the 'lib' directory.\n"
-  mkdir ${SRC_DIR}/lib
-  mv ${EXTRAS_BACKUP_DIR}/* ${SRC_DIR}/lib
-  echo
+  mkdir ${SRC_LIB_DIR}
+  mv ${EXTRAS_BACKUP_DIR}/ArduinoJson ${SRC_LIB_DIR}
+  mv ${EXTRAS_BACKUP_DIR}/bip39       ${SRC_LIB_DIR}
+  mv ${EXTRAS_BACKUP_DIR}/uECC        ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/bcl                   ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/date                  ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/rfc6979               ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/stl                   ${SRC_LIB_DIR}
+
+  echo -e "Moving Docs back to the project root directory.\n"
+  mv ${EXTRAS_DIR}/docs  ${PROJECT_ROOT}
 
   echo -e "Removing old directories 🗑\n"
   rm -rf ${SRC_ENUMS_DIR}

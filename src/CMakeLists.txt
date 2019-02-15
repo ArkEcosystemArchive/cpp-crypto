@@ -6,16 +6,16 @@ project(Ark-Cpp-Crypto-lib C CXX)
 add_subdirectory(lib/bip39/src)
 
 set(BCL_SRC
-	bcl/Base58Check.cpp
-	bcl/CurvePoint.cpp
-	bcl/Ecdsa.cpp
-	bcl/FieldInt.cpp
-	bcl/Ripemd160.cpp
-	bcl/Sha256Hash.cpp
-	bcl/Sha256.cpp
-	bcl/Sha512.cpp
-	bcl/Uint256.cpp
-	bcl/Utils.cpp
+	lib/bcl/Base58Check.cpp
+	lib/bcl/CurvePoint.cpp
+	lib/bcl/Ecdsa.cpp
+	lib/bcl/FieldInt.cpp
+	lib/bcl/Ripemd160.cpp
+	lib/bcl/Sha256Hash.cpp
+	lib/bcl/Sha256.cpp
+	lib/bcl/Sha512.cpp
+	lib/bcl/Uint256.cpp
+	lib/bcl/Utils.cpp
 )
 
 set(uECC_SRC
@@ -53,8 +53,12 @@ set(cpp_crypto_build_include_dirs
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
 )
 include_directories(${cpp_crypto_build_include_dirs})
-include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
+include_directories(${PROJECT_SOURCE_DIR}/lib/)
 include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
+include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
+include_directories(${PROJECT_SOURCE_DIR}/lib/bip39)
+include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
+include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${cpp_crypto_build_include_dirs}
