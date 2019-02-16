@@ -25,13 +25,14 @@
       "name": "bip39"
     },
     {
-      "name": "ArduinoJson@5.13.4"
+      "name": "ArduinoJson"
     }
   ],
   "export": {
     "include": [
       "src/*",
       "examples/*",
+      "extras/*",
       "*.md",
       "*.json",
       "*.properties",
