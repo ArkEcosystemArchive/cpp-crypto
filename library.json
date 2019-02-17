@@ -22,7 +22,7 @@
       "name": "micro-ecc"
     },
     {
-      "name": "ArduinoJson@5.13.4"
+      "name": "ArduinoJson"
     }
   ],
   "export": {
