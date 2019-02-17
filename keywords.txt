@@ -22,7 +22,6 @@ Fees    KEYWORD1
 Types   KEYWORD1
 
 Address KEYWORD1
-Mnemonic    KEYWORD1
 PrivateKey  KEYWORD1
 PublicKey   KEYWORD1
 WIF KEYWORD1
