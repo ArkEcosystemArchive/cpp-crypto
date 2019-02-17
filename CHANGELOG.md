@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [0.3.0] - 2019-02-16
+## [0.3.0-arduino] - 2019-02-16
+
+### Added
+- Arduino CircleCI config
+
+### Changed
+- updated `keywords.txt`.
+- updated `./library.json` package export settings.
+- removed unnecessary files:
+  - `./appveyor.yml`.
+  - `./CMakeSettings.json`.
+  - `./test/travis.yml`.
+  - `uECC_README.md`.
+  - submodule from `cmake_example`
+- moved external packages to `./src/lib/`:
+  - `./src/bcl`.
+  - `./src/rfc6979`.
+  - `./src/stl`.
+  - `./date`.
+- moved `./docs` to `./extras` in arduino builds.
+- automated `ARDUINO_IDE.sh` script.
+- updated `ARDUINO_IDE.sh` script to reflect `lib/` changes.
+
 ## [0.2.0] - 2019-02-07
 
 ### Added
