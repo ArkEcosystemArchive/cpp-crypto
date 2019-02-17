@@ -32,6 +32,7 @@
     "include": [
       "src/*",
       "examples/*",
+      "docs/*",
       "extras/*",
       "*.md",
       "*.json",
