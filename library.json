@@ -47,7 +47,8 @@
   },
   "build": {
     "flags": [
-      "-I src/include/cpp-crypto"
+      "-I src/include/cpp-crypto",
+      "-I src/lib"
     ]
   }
 }
