@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.3.1] - 2019-02-19
 
-### fixed
+### Fixed
 
 - fixed PIO submodule ignore paths in `./platformio.ini` ([#70])
 - added `./src/lib` to build flags for PIO in `./library.json` ([#69])
