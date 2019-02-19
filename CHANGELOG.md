@@ -7,29 +7,39 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [0.3.1] - 2019-02-19
+
+### Fixed
+
+- fixed PIO submodule ignore paths in `./platformio.ini` ([#70])
+- added `./src/lib` to build flags for PIO in `./library.json` ([#69])
+
 ## [0.3.0] - 2019-02-16
+
 ## [0.3.0-arduino] - 2019-02-16
 
 ### Added
-- Arduino CircleCI config
+
+- Arduino CircleCI config ([#61])
 
 ### Changed
-- updated `keywords.txt`.
-- updated `./library.json` package export settings.
-- removed unnecessary files:
+
+- updated `keywords.txt` ([#64])
+- updated `./library.json` package export settings ([#64])
+- removed unnecessary files ([#64]):
   - `./appveyor.yml`.
   - `./CMakeSettings.json`.
   - `./test/travis.yml`.
   - `uECC_README.md`.
-  - submodule from `cmake_example`
-- moved external packages to `./src/lib/`:
+  - submodule from `cmake_example`.
+- moved external packages to `./src/lib/` ([#64]):
   - `./src/bcl`.
   - `./src/rfc6979`.
   - `./src/stl`.
   - `./date`.
-- moved `./docs` to `./extras` in arduino builds.
-- automated `ARDUINO_IDE.sh` script.
-- updated `ARDUINO_IDE.sh` script to reflect `lib/` changes.
+- moved `./docs` to `./extras` in arduino builds ([#64])
+- updated `ARDUINO_IDE.sh` script to reflect `lib/` changes ([#64])
+- automated `ARDUINO_IDE.sh` script ([#60])
 
 ## [0.2.0] - 2019-02-07
 
@@ -58,3 +68,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#49]: https://github.com/ArkEcosystem/cpp-crypto/pull/49
 [#52]: https://github.com/ArkEcosystem/cpp-crypto/pull/52
 [#53]: https://github.com/ArkEcosystem/cpp-crypto/pull/53
+[#60]: https://github.com/ArkEcosystem/cpp-crypto/pull/60
+[#61]: https://github.com/ArkEcosystem/cpp-crypto/pull/61
+[#64]: https://github.com/ArkEcosystem/cpp-crypto/pull/64
+[#69]: https://github.com/ArkEcosystem/cpp-crypto/pull/69
+[#70]: https://github.com/ArkEcosystem/cpp-crypto/pull/70
