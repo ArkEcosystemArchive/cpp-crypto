@@ -6,34 +6,37 @@
 #include "identities/publickey.h"
 using namespace Ark::Crypto::Identities;
 
-namespace {
-const auto passphrase = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
+namespace { // NOLINT
+
+// ARK Core test fixtures:
+// https://github.com/ARKEcosystem/core/blob/develop/__tests__/unit/crypto/identities/fixture.json
+const auto passphrase = "this is a top secret passphrase";
 const uint8_t networkVersion = 0x1E;
 }  // namespace
 
 TEST(identities, address_from_passphrase) {
   Address address = Address::fromPassphrase(passphrase, networkVersion);
-  ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
+  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", address.toString().c_str());
 }
 
 TEST(identities, address_from_privatekey) {
-  PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
+  PrivateKey privateKey("d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712");
   Address address = Address::fromPrivateKey(privateKey, networkVersion);
-  ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
+  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", address.toString().c_str());
 }
 
 TEST(identities, address_from_publickey) {
-  PublicKey publicKey("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
+  PublicKey publicKey("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192");
   Address address = Address::fromPublicKey(publicKey, networkVersion);
-  ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
+  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", address.toString().c_str());
 }
 
 TEST(identities, address_from_string) {
-  Address address("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV");
-  ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
+  Address address("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib");
+  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", address.toString().c_str());
 }
 
 TEST(identities, address_validate) {
-  Address address("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV");
+  Address address("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib");
   ASSERT_TRUE(Address::validate(address, networkVersion));
 }
