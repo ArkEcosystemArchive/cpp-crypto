@@ -49,10 +49,10 @@ void checkCrypto() {
    * This is done by passing a 12-word 'Passphrase' and the 'Network' 'Version' "byte".
    * The 'Version" "byte" is a BASE58 P2PKH byte. Ark Devnet is '0x1E'; Ark Mainnet is '0x17'. 
    * 
-   * Given the passphrase ""bullet parade snow bacon mutual deposit brass floor staff list concert ask", 
-   * and the 'Devnet' 'Version' byte (0x1E); the ARK Address should be "DStZXkgpEjxbG355nQ26vnkp95p24U9tsV"
+   * Given the passphrase "this is a top secret passphrase", 
+   * and the 'Devnet' 'Version' byte (0x1E); the ARK Address should be "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib"
    */
-  const auto passphrase = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
+  const auto passphrase = "this is a top secret passphrase";
   const uint8_t networkVersion = 0x1E;
 
   Address arkAddress = Address::fromPassphrase(passphrase, networkVersion);
@@ -67,11 +67,11 @@ void checkCrypto() {
    * The following methods allows create a 'PrivateKey'. 
    * This is done by passing a 12-word 'Passphrase'.
    * 
-   * Given the passphrase ""bullet parade snow bacon mutual deposit brass floor staff list concert ask", 
-   * the 'PrivateKey" should be "950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021".
+   * Given the passphrase "this is a top secret passphrase", 
+   * the 'PrivateKey" should be "d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712".
    * This is a 'SHA256' of your "Passphrase".
    */
-  const auto passphrase2 = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
+  const auto passphrase2 = "this is a top secret passphrase";
   PrivateKey privateKeyFromPassphrase = PrivateKey::fromPassphrase(passphrase2);
     Serial.print("\nPrivateKey from Passphrase: ");
     Serial.println(privateKeyFromPassphrase.toString().c_str()); // The 'PrivateKey' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
@@ -83,10 +83,10 @@ void checkCrypto() {
    * The following methods allows create a 'PublicKey'. 
    * This is done by passing a 12-word 'Passphrase'.
    * 
-   * Given the passphrase ""bullet parade snow bacon mutual deposit brass floor staff list concert ask", 
-   * the 'PublicKey" should be "029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4".
+   * Given the passphrase "this is a top secret passphrase", 
+   * the 'PublicKey" should be "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192".
    */
-  const auto passphrase3 = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
+  const auto passphrase3 = "this is a top secret passphrase";
   PublicKey publicKeyFromPassphrase = PublicKey::fromPassphrase(passphrase3);
     Serial.print("\nPublicKey from Passphrase: ");
     Serial.println(publicKeyFromPassphrase.toString().c_str()); // the 'PublicKey' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
@@ -101,11 +101,11 @@ void checkCrypto() {
    * The 'WIF" "byte" is a BASE58 WIF byte. Ark Devnet is '0xaa'; Ark Mainnet is also '0xaa'. 
 
    * 
-   * Given the passphrase ""bullet parade snow bacon mutual deposit brass floor staff list concert ask", 
+   * Given the passphrase "this is a top secret passphrase", 
    * and the 'Devnet' 'WIF' byte (0xaa);
-   * The 'WIF" should be "SEZuJZouNK8GLXNApjciH4QnSKiNr971exVcL2Y6XfrDF5o977zB".
+   * The 'WIF" should be "SGq4xLgZKCGxs7bjmwnBrWcT4C1ADFEermj846KC97FSv1WFD1dA".
    */
-  const auto passphrase4 = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
+  const auto passphrase4 = "this is a top secret passphrase";
   const uint8_t wifByte = 0xaa;
   WIF wifFromPassphrase = WIF::fromPassphrase(passphrase4, wifByte);
     Serial.print("\nWIF from Passphrase: ");
@@ -118,12 +118,12 @@ void checkCrypto() {
    * The following methods allows you to 'Sign' a text 'Message'. 
    * This is done by passing the text to be signed, and a 12-word 'Passphrase'.
    * 
-   * Given the text "Computer science is no more about computers than astronomy is about telescopes.", 
-   * and the passphrase "bullet parade snow bacon mutual deposit brass floor staff list concert ask", 
-   * The 'Signature" should be "3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d611402200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93".
+   * Given the text "Hello World", 
+   * and the passphrase "this is a top secret passphrase", 
+   * The 'Signature" should be "304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8".
    */
-  const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
-  const auto passphrase5 = "viable weasel wage promote praise inflict jaguar tackle color unusual exclude direct";
+  const auto text = "Hello World";
+  const auto passphrase5 = "this is a top secret passphrase";
   Ark::Crypto::Utils::Message message;
   message.sign(text, passphrase5);
     Serial.print("\nSignature from Signed Message: ");

@@ -6,11 +6,15 @@
 #include <map>
 
 namespace { // NOLINT
-const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
-const auto passphrase = "viable weasel wage promote praise inflict jaguar tackle color unusual exclude direct";
-const auto expectedSignature = "3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d611402200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93";
-const auto expectedPublicKey = "0275776018638e5c40f1b922901e96cac2caa734585ef302b4a2801ee9a338a456";
-const auto expectedJsonString = "{\"publickey\":\"0275776018638e5c40f1b922901e96cac2caa734585ef302b4a2801ee9a338a456\",\"signature\":\"3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d611402200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93\",\"message\":\"Computer science is no more about computers than astronomy is about telescopes.\"}";
+
+// ARK Core test fixtures:
+// https://github.com/ARKEcosystem/core/blob/develop/__tests__/unit/crypto/utils/message.test.ts
+const auto text = "Hello World";
+const auto passphrase = "this is a top secret passphrase";
+const auto expectedSignature = "304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8";
+const auto expectedPublicKey = "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192";
+const auto expectedJsonString = "{\"publickey\":\"034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192\",\"signature\":\"304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8\",\"message\":\"Hello World\"}";
+
 }  // namespace
 
 TEST(utils, message_sign) {
