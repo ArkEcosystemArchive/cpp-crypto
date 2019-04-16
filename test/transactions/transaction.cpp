@@ -141,14 +141,13 @@ TEST(transactions, transaction_to_json) {
     DeserializationError ssError = deserializeJson(ssDoc, ssJson);
     ASSERT_FALSE(ssError);
 
-
     ASSERT_EQ(ssDoc["amount"], 0);
     ASSERT_STREQ("02e1684d8990c0a5625aec85977fcf22204884bc08d45dbc71b2859e5fa4f45104", ssDoc["asset"]["signature"]["publicKey"].as<const char*>());
     ASSERT_EQ(ssDoc["fee"], 500000000);
     ASSERT_STRNE("", ssDoc["id"].as<const char*>());
     ASSERT_STREQ("", ssDoc["recipientId"].as<const char*>());
     ASSERT_STRNE("", ssDoc["secondSignature"].as<const char*>());
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", ssDoc["senderPublicKey"]);
+    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", ssDoc["senderPublicKey"].as<const char*>());
     ASSERT_STRNE("", ssDoc["signature"].as<const char*>());
     ASSERT_GT(ssDoc["timestamp"], 50000000);
     ASSERT_LT(ssDoc["timestamp"], 1000000000);
