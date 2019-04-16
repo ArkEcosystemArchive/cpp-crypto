@@ -14,8 +14,8 @@ void setup() {
 }
 
 void loop() {
-  const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
-  const auto passphrase = "viable weasel wage promote praise inflict jaguar tackle color unusual exclude direct";
+  const auto text = "Hello World";
+  const auto passphrase = "this is a top secret passphrase";
 
   // Message - sign
   Ark::Crypto::Utils::Message message;
@@ -28,8 +28,8 @@ void loop() {
   Serial.println();
 
   // Message - verify
-  auto publicKey = PublicKey::fromHex("0275776018638e5c40f1b922901e96cac2caa734585ef302b4a2801ee9a338a456");
-  auto signature = HexToBytes("3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d611402200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93");
+  auto publicKey = PublicKey::fromHex("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192");
+  auto signature = HexToBytes("304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8");
 
   message = Ark::Crypto::Utils::Message(
     text,
@@ -57,7 +57,7 @@ void loop() {
   Serial.println();
 
   // Address - from publickey
-  publicKey = PublicKey("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
+  publicKey = PublicKey("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192");
   address = Address::fromPublicKey(publicKey, networkVersion);
   Serial.println("Address from public key");
   Serial.print("\tPublic Key: "); Serial.print(publicKey.toString().c_str()); Serial.println();
@@ -65,7 +65,7 @@ void loop() {
   Serial.println();
 
   // Address - from privatekey
-  PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
+  PrivateKey privateKey("d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712");
   address = Address::fromPrivateKey(privateKey, networkVersion);
   Serial.println("Address from private key");
   Serial.print("\tPrivate Key: "); Serial.print(privateKey.toString().c_str()); Serial.println();
@@ -73,7 +73,7 @@ void loop() {
   Serial.println();
 
   // Address - validate
-  address = Address("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV");
+  address = Address("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib");
   auto isValidAddress = Address::validate(address, networkVersion);
   Serial.println("Valid Address");
   Serial.print("\tAddress: "); Serial.print(address.toString().c_str()); Serial.println();
@@ -88,9 +88,9 @@ void loop() {
   Serial.println();
 
   // Private Key - object from hex
-  privateKey = PrivateKey::fromHex("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
+  privateKey = PrivateKey::fromHex("d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712");
   Serial.println("Private Key from hex");
-  Serial.println("\tHex: 950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
+  Serial.println("\tHex: d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712");
   Serial.print("\tPrivate Key: "); Serial.print(privateKey.toString().c_str()); Serial.println();
   Serial.println();
 
@@ -102,9 +102,9 @@ void loop() {
   Serial.println();
 
   // Public Key - object from hex
-  publicKey = PublicKey::fromHex("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
+  publicKey = PublicKey::fromHex("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192");
   Serial.println("Public Key from hex");
-  Serial.println("\tHex: 029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
+  Serial.println("\tHex: 034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192");
   Serial.print("\tPublic Key: "); Serial.print(publicKey.toString().c_str()); Serial.println();
   Serial.println();
 
