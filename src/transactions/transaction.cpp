@@ -137,7 +137,15 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
 
 std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() {
   //  buffers for variable and non-string type-values.
-  char amount[24], assetName[16], assetValue[512], fee[24], network[8], signatures[512], timestamp[36], type[8], version[8];
+  char amount[24],
+      assetName[16],
+      assetValue[512],
+      fee[24],
+      network[8],
+      signatures[512],
+      timestamp[36],
+      type[8],
+      version[8];
 
   //  Amount
   sprintf(amount, "%llu", this->amount);
@@ -205,54 +213,51 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   sprintf(version, "%d", this->version);
 
   return {
-    {"amount", amount},
-    {assetName, assetValue},
-    {"fee", fee},
-    {"id", this->id},
-    {"network", network},
-    {"recipientId", this->recipientId},
-    {"secondSignature", this->secondSignature},
-    {"senderPublicKey", this->senderPublicKey},
-    {"signature", this->signature},
-    {"signatures", signatures},
-    {"signSignature", this->signSignature},
-    {"timestamp", timestamp},
-    {"type", type},
-    {"vendorField", this->vendorField},
-    {"version", version}
+    { "amount", amount },
+    { assetName, assetValue },
+    { "fee", fee },
+    { "id", this->id },
+    { "network", network },
+    { "recipientId", this->recipientId },
+    { "secondSignature", this->secondSignature },
+    { "senderPublicKey", this->senderPublicKey },
+    { "signature", this->signature },
+    { "signatures", signatures },
+    { "signSignature", this->signSignature },
+    { "timestamp", timestamp },
+    { "type", type },
+    { "vendorField", this->vendorField },
+    { "version", version }
   };
 }
 
 std::string Ark::Crypto::Transactions::Transaction::toJson() {
   std::map<std::string, std::string> txArray = this->toArray();
 
-  const size_t capacity = JSON_OBJECT_SIZE(15);
-  DynamicJsonBuffer jsonBuffer(capacity);
-
-  JsonObject& root = jsonBuffer.createObject();
+  DynamicJsonDocument doc(900);
 
   //  Amount
-  root["amount"] = txArray["amount"];
+  doc["amount"] = txArray["amount"];
 
   //  Asset
   if (this->type == 0) {  //  Transfer
     //do nothing
   } else if (this->type == 1) { //  Second Signature Registration
 
-    JsonObject& tAsset = root.createNestedObject("asset");
-    JsonObject& signature = tAsset.createNestedObject("signature");
+    JsonObject tAsset = doc.createNestedObject("asset");
+    JsonObject signature = tAsset.createNestedObject("signature");
     signature["publicKey"] = txArray["publicKey"];
 
   } else if (this->type == 2) { //  Delegate Registration
 
-    JsonObject& dAsset = root.createNestedObject("asset");
-    JsonObject& delegate = dAsset.createNestedObject("delegate");
+    JsonObject dAsset = doc.createNestedObject("asset");
+    JsonObject delegate = dAsset.createNestedObject("delegate");
     delegate["username"] = txArray["username"];
 
   }else if (this->type == 3) {  //  Vote
 
-    JsonObject& vAsset = root.createNestedObject("asset");
-    JsonArray& votes = vAsset.createNestedArray("votes");
+    JsonObject vAsset = doc.createNestedObject("asset");
+    JsonArray votes = vAsset.createNestedArray("votes");
 
     std::string::size_type lastPos = txArray["votes"].find_first_not_of(",", 0);
     std::string::size_type pos = txArray["votes"].find_first_of(",", lastPos);
@@ -275,33 +280,33 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   };
 
   //  Fee
-  root["fee"] = txArray["fee"];
+  doc["fee"] = txArray["fee"];
 
   //  Id
-  root["id"] = txArray["id"];
+  doc["id"] = txArray["id"];
 
   //  Network
   if (txArray["network"] != "0") {
-    root["network"] = txArray["network"];
+    doc["network"] = txArray["network"];
   }
 
   //  RecipientId
-  root["recipientId"] = txArray["recipientId"];
+  doc["recipientId"] = txArray["recipientId"];
 
   //  SecondSignature
   if (std::strlen(txArray["secondSignature"].c_str()) > 0) {
-    root["secondSignature"] = txArray["secondSignature"];
+    doc["secondSignature"] = txArray["secondSignature"];
   }
 
   //  SenderPublicKey
-  root["senderPublicKey"] = txArray["senderPublicKey"];
+  doc["senderPublicKey"] = txArray["senderPublicKey"];
 
   //  Signature
-  root["signature"] = txArray["signature"];
+  doc["signature"] = txArray["signature"];
 
   //  Signatures
   if (this->signatures.size() > 0) {
-    JsonArray& signatures = root.createNestedArray("signatures");
+    JsonArray signatures = doc.createNestedArray("signatures");
     std::string::size_type lastPos = txArray["signatures"].find_first_not_of(",", 0);
     std::string::size_type pos = txArray["signatures"].find_first_of(",", lastPos);
     while (std::string::npos != pos || std::string::npos != lastPos) {
@@ -313,27 +318,27 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
 
   //  SignSignature
   if (std::strlen(txArray["signSignature"].c_str()) > 0) {
-    root["signSignature"] = txArray["signSignature"];
+    doc["signSignature"] = txArray["signSignature"];
   }
 
   //  Timestamp
-  root["timestamp"] = txArray["timestamp"];
+  doc["timestamp"] = txArray["timestamp"];
 
   //  Type
-  root["type"] = txArray["type"];
+  doc["type"] = txArray["type"];
 
   //  VendorField
   if (std::strlen(txArray["vendorField"].c_str()) > 0) {
-    root["vendorField"] = txArray["vendorField"];
+    doc["vendorField"] = txArray["vendorField"];
   }
 
   //  Version
   if (txArray["version"] != "0") {
-    root["version"] = txArray["version"];
+    doc["version"] = txArray["version"];
   }
 
-  char jsonChar[root.measureLength() + 1];
-  root.printTo((char*)jsonChar, sizeof(jsonChar));
+  char jsonChar[measureJson(doc) + 1];
+  serializeJson(doc, jsonChar, measureJson(doc) + 1);
 
   return jsonChar;
 }

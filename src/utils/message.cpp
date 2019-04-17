@@ -34,14 +34,16 @@ Ark::Crypto::Utils::Message::Message(
  *
  * @return bool
  **/
-bool Ark::Crypto::Utils::Message::sign(std::string newMessage, const char *const passphrase) {
+bool Ark::Crypto::Utils::Message::sign(
+    std::string newMessage,
+    const char *const passphrase) {
   this->message = newMessage;
 
   /* Get the PrivateKey */
-  PrivateKey privateKey = Ark::Crypto::Identities::PrivateKey::fromPassphrase(passphrase);
+  auto privateKey = PrivateKey::fromPassphrase(passphrase);
 
   /* Set the PublicKey from the derived PrivateKey */
-  this->publicKey = Ark::Crypto::Identities::PublicKey::fromPrivateKey(privateKey);
+  this->publicKey = PublicKey::fromPrivateKey(privateKey);
 
   /* Get the Hash */
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(message.c_str());
@@ -75,9 +77,9 @@ bool Ark::Crypto::Utils::Message::verify() {
  **/
 std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
   return {
-    {"publickey", this->publicKey.toString()},
-    {"signature", BytesToHex(this->signature.begin(), this->signature.end())},
-    {"message", this->message}
+    { "publickey", this->publicKey.toString() },
+    { "signature", BytesToHex(this->signature.begin(), this->signature.end()) },
+    { "message", this->message }
   };
 }
 /**/
@@ -90,17 +92,15 @@ std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
 std::string Ark::Crypto::Utils::Message::toJson() {
   std::map<std::string, std::string> messageArray = this->toArray();
 
-  const size_t capacity = JSON_OBJECT_SIZE(3);
-  DynamicJsonBuffer jsonBuffer(capacity);
+  // const size_t capacity = JSON_OBJECT_SIZE(3);
+  DynamicJsonDocument doc(400);
 
-  JsonObject& root = jsonBuffer.createObject();
+  doc["publickey"] = messageArray["publickey"];
+  doc["signature"] = messageArray["signature"];
+  doc["message"] = messageArray["message"];
 
-  root["publickey"] = messageArray["publickey"];
-  root["signature"] = messageArray["signature"];
-  root["message"] = messageArray["message"];
-
-  char jsonChar[root.measureLength() + 1];
-  root.printTo((char*)jsonChar, sizeof(jsonChar));
+  char jsonChar[measureJson(doc) + 1];
+  serializeJson(doc, jsonChar, measureJson(doc) + 1);
 
   return jsonChar;
 }
