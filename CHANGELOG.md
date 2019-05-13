@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+- properly handle 0 ARKtoshi Transaction amounts.
+
 ## [0.3.1] - 2019-02-19
 
 ### Fixed
