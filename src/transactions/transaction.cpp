@@ -58,6 +58,8 @@ bool Ark::Crypto::Transactions::Transaction::internalVerify(
     std::string publicKey,
     std::vector<uint8_t> bytes,
     std::string signature) const {
+  if (bytes.empty()) { return false; };
+
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
   const auto key = Identities::PublicKey::fromHex(publicKey.c_str());
   auto signatureBytes = HexToBytes(signature.c_str());
@@ -69,6 +71,9 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
     bool skipSecondSignature) const {
   std::vector<uint8_t> bytes;
 
+  if (this->type == 0 && amount < 1ull) {
+    return bytes;
+  };
   pack(bytes, this->type);
   pack(bytes, this->timestamp);
 

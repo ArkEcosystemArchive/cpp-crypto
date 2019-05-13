@@ -13,6 +13,8 @@ namespace Transactions {
 Transaction Builder::buildTransfer(std::string recipientId, uint64_t amount, std::string vendorField,
                                    std::string passphrase, std::string secondPassphrase) {
   Transaction transaction;
+  if (amount < 1ull) { return transaction; };
+
   transaction.type = Enums::Types::TRANSFER;
   transaction.fee = Configuration::Fee().get(Enums::Types::TRANSFER);
   transaction.recipientId = std::move(recipientId);
