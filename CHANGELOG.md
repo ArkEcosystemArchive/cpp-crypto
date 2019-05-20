@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+
+## [0.4.0] - 2019-05-20
+
+### Changed
+
+- updated vendorField to support 255 bytes in Core v2.4 ([#84])
+- updated ArduinoJson package to version v.6.10.0 ([#76])
+- updated tests to use Core fixtures ([#74])
+
 ## [0.3.1] - 2019-02-19
 
 ### Fixed
