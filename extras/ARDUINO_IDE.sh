@@ -115,15 +115,6 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_HELPERS_DIR}/encoding/der.h  ${SRC_HELPERS_DIR}/encoding
   mv ${INCLUDE_HELPERS_DIR}/encoding/hex.h  ${SRC_HELPERS_DIR}/encoding
 
-  ## 'bip39' library is not supported in Arduino
-  echo -e "Backing up and removing 'mnemonic.h'.\n"
-  mkdir ${EXTRAS_BACKUP_DIR}
-  mkdir ${EXTRAS_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/mnemonic.h ${EXTRAS_IDENTITIES_DIR}
-  mv ${SRC_IDENTITIES_DIR}/mnemonic.cpp   ${EXTRAS_IDENTITIES_DIR}
-  echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.h
-  echo "// this is a dummy file" >> ${SRC_IDENTITIES_DIR}/mnemonic.cpp
-
   echo -e "Moving 'identites' headers.\n"
   mv ${INCLUDE_IDENTITIES_DIR}/address.h    ${SRC_IDENTITIES_DIR}
   mv ${INCLUDE_IDENTITIES_DIR}/privatekey.h ${SRC_IDENTITIES_DIR}
@@ -144,7 +135,6 @@ if [[ -d ${INCLUDE_DIR} ]]; then
 
   echo -e "Backing up, moving, and removing relevant modules from the 'lib' directory.\n"
   mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_BACKUP_DIR}
-  mv ${SRC_LIB_DIR}/bip39       ${EXTRAS_BACKUP_DIR}
   mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_BACKUP_DIR}
   mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
   mv ${SRC_LIB_DIR}/date        ${SRC_DIR}
@@ -195,7 +185,6 @@ else
 
   echo -e "Moving 'identities' headers.\n"
   mv ${SRC_IDENTITIES_DIR}/address.h    ${INCLUDE_IDENTITIES_DIR}
-  mv ${SRC_IDENTITIES_DIR}/mnemonic.h   ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/privatekey.h ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/publickey.h  ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/wif.h        ${INCLUDE_IDENTITIES_DIR}
@@ -212,18 +201,9 @@ else
   mv ${SRC_TRANSACTIONS_DIR}/serializer.h   ${INCLUDE_TRANSACTIONS_DIR}
   mv ${SRC_TRANSACTIONS_DIR}/transaction.h  ${INCLUDE_TRANSACTIONS_DIR}
 
-  ## 'bip39' library is not supported in Arduino
-  echo -e "Restoring 'mnemonic.h'.\n"
-  rm -rf ${SRC_IDENTITIES_DIR}/mnemonic.h
-  rm -rf ${SRC_IDENTITIES_DIR}/mnemonic.cpp
-  mv ${EXTRAS_IDENTITIES_DIR}/mnemonic.h    ${INCLUDE_IDENTITIES_DIR}
-  mv ${EXTRAS_IDENTITIES_DIR}/mnemonic.cpp  ${SRC_IDENTITIES_DIR}
-  rm -rf ${EXTRAS_IDENTITIES_DIR}/mnemonic.cpp
-
   echo -e "Restoring the 'lib' directory.\n"
   mkdir ${SRC_LIB_DIR}
   mv ${EXTRAS_BACKUP_DIR}/ArduinoJson ${SRC_LIB_DIR}
-  mv ${EXTRAS_BACKUP_DIR}/bip39       ${SRC_LIB_DIR}
   mv ${EXTRAS_BACKUP_DIR}/uECC        ${SRC_LIB_DIR}
   mv ${SRC_DIR}/bcl                   ${SRC_LIB_DIR}
   mv ${SRC_DIR}/date                  ${SRC_LIB_DIR}

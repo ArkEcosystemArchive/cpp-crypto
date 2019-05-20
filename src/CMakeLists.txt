@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.2.2)
 
 project(Ark-Cpp-Crypto-lib C CXX)
 
-add_subdirectory(lib/bip39/src)
-
 set(BCL_SRC
 	lib/bcl/Base58Check.cpp
 	lib/bcl/CurvePoint.cpp
@@ -28,7 +26,6 @@ set(COMMON_SRC
   helpers/crypto.cpp
   helpers/encoding/der.cpp
 	identities/address.cpp
-  identities/mnemonic.cpp
 	identities/privatekey.cpp
 	identities/publickey.cpp
 	identities/wif.cpp
@@ -56,15 +53,12 @@ include_directories(${cpp_crypto_build_include_dirs})
 include_directories(${PROJECT_SOURCE_DIR}/lib/)
 include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
 include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
-include_directories(${PROJECT_SOURCE_DIR}/lib/bip39)
 include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
 include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${cpp_crypto_build_include_dirs}
 )
-
-target_link_libraries(${PROJECT_NAME} PRIVATE bip39)
 
 if (MSVC)
 	target_link_libraries(${PROJECT_NAME} PUBLIC crypt32)

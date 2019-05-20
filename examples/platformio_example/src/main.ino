@@ -42,11 +42,6 @@ void loop() {
   Serial.print("\tVerified: "); Serial.print(message.verify()); Serial.println();
   Serial.println();
 
-  // Mnemonic
-  const auto new_passphrase = Ark::Crypto::Identities::Mnemonic::generate();
-  Serial.print("Generated Mnemonic: "); Serial.print(new_passphrase.c_str()); Serial.println();
-  Serial.println();
-
   // Address - from passphrase
   const uint8_t networkVersion = 0x1E;
   auto address = Address::fromPassphrase(passphrase, networkVersion);
