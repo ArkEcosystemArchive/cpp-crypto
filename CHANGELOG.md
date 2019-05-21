@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
-- disable ESP8266 PlatformIO test builds
+### Changed
+
+- improved Windows support ([#83])
 
 ## [0.3.1] - 2019-02-19
 
