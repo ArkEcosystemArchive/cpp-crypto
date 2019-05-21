@@ -18,8 +18,17 @@ namespace Transactions {
 
 class Builder {
  public:
+  /**
+  * Builder::buildTransfer()
+  *
+  * note: The 'Type 0'/Transfer amount must be greater than 0 ARKtoshi.
+  * If amount is not > 0, Builder will return an empty Transaction object and
+  * validation will fail.
+  **/
   static Transaction buildTransfer(std::string recipientId, uint64_t amount, std::string vendorField,
                                    std::string passphrase, std::string secondPassphrase = "");
+  /**/
+
   static Transaction buildSecondSignatureRegistration(std::string passphrase, std::string secondPassphrase = "");
   static Transaction buildDelegateRegistration(std::string username, std::string passphrase,
                                                std::string secondPassphrase = "");
