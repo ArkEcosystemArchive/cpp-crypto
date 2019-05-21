@@ -112,7 +112,8 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_ENUMS_DIR}/types.h ${SRC_ENUMS_DIR}
 
   echo -e "Moving 'helpers' headers.\n"
-  mv ${INCLUDE_HELPERS_DIR}/encoding/hex.h  ${SRC_HELPERS_DIR}/encoding
+  mkdir ${SRC_ENCODING_DIR}
+  mv ${INCLUDE_HELPERS_DIR}/encoding/hex.h  ${SRC_ENCODING_DIR}
 
   ## 'bip39' library is not supported in Arduino
   echo -e "Backing up and removing 'mnemonic.h'.\n"
@@ -136,6 +137,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_NETWORKS_DIR}/testnet.h          ${SRC_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
+  mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
@@ -190,6 +192,7 @@ else
 
   echo -e "Moving 'helpers/encoding' headers.\n"
   mv ${SRC_ENCODING_DIR}/hex.h ${INCLUDE_ENCODING_DIR}
+  rm ${SRC_ENCODING_DIR}
 
   echo -e "Moving 'identities' headers.\n"
   mv ${SRC_IDENTITIES_DIR}/address.h    ${INCLUDE_IDENTITIES_DIR}
