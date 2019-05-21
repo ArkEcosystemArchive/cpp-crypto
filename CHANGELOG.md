@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Changed
+
 - changed to BIP66 lib for DER ser/des.
+- improved Windows support ([#83])
 
 ## [0.3.1] - 2019-02-19
 
