@@ -92,16 +92,22 @@ std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
 std::string Ark::Crypto::Utils::Message::toJson() {
   std::map<std::string, std::string> messageArray = this->toArray();
 
-  // const size_t capacity = JSON_OBJECT_SIZE(3);
-  DynamicJsonDocument doc(400);
+  const size_t docLength
+      = (33 + 1)  // publickey length
+      + (72 + 1)  // signature length
+      + this->message.length();
+  const size_t docCapacity = JSON_OBJECT_SIZE(3) + docLength + 120;
+
+  DynamicJsonDocument doc(docCapacity);
 
   doc["publickey"] = messageArray["publickey"];
   doc["signature"] = messageArray["signature"];
   doc["message"] = messageArray["message"];
 
-  char jsonChar[measureJson(doc) + 1];
-  serializeJson(doc, jsonChar, measureJson(doc) + 1);
+  std::string jsonStr;
+  jsonStr.reserve(docCapacity);
+  serializeJson(doc, &jsonStr[0], docCapacity);
 
-  return jsonChar;
+  return jsonStr;
 }
 /**/

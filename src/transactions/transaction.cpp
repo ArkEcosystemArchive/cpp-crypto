@@ -238,7 +238,8 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
 std::string Ark::Crypto::Transactions::Transaction::toJson() {
   std::map<std::string, std::string> txArray = this->toArray();
 
-  DynamicJsonDocument doc(900);
+  const size_t docCapacity = 900;
+  DynamicJsonDocument doc(docCapacity);
 
   //  Amount
   doc["amount"] = txArray["amount"];
@@ -341,8 +342,8 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
     doc["version"] = txArray["version"];
   }
 
-  char jsonChar[measureJson(doc) + 1];
-  serializeJson(doc, jsonChar, measureJson(doc) + 1);
+  char jsonChar[docCapacity];
+  serializeJson(doc, jsonChar, docCapacity);
 
   return jsonChar;
 }
