@@ -58,6 +58,8 @@ bool Ark::Crypto::Transactions::Transaction::internalVerify(
     std::string publicKey,
     std::vector<uint8_t> bytes,
     std::string signature) const {
+  if (bytes.empty()) { return false; };
+
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
   const auto key = Identities::PublicKey::fromHex(publicKey.c_str());
   auto signatureBytes = HexToBytes(signature.c_str());
@@ -68,6 +70,8 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
     bool skipSignature,
     bool skipSecondSignature) const {
   std::vector<uint8_t> bytes;
+
+  if (this->type == 0 && amount < 1ull) { return bytes; };
 
   pack(bytes, this->type);
   pack(bytes, this->timestamp);
@@ -87,7 +91,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
     bytes.insert(std::end(bytes), std::begin(filler), std::end(filler));
   }
 
-  if (!this->vendorField.empty()) {
+  if (!this->vendorField.empty() && vendorField.length() <= 255) {
     bytes.insert(std::end(bytes), std::begin(this->vendorField), std::end(this->vendorField));
 
     size_t diff = 64 - vendorField.length();
@@ -95,7 +99,6 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
       std::vector<uint8_t> filler(diff, 0);
       bytes.insert(std::end(bytes), std::begin(filler), std::end(filler));
     }
-
   } else {
     std::vector<uint8_t> filler(64, 0);
     bytes.insert(std::end(bytes), std::begin(filler), std::end(filler));
