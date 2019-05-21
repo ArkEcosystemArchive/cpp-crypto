@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- properly handle 0 ARKtoshi Transaction amounts.
+- properly handle 0 ARKtoshi Transaction amounts. ([#85])
 
 ## [0.3.1] - 2019-02-19
 
