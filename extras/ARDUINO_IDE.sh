@@ -112,7 +112,6 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_ENUMS_DIR}/types.h ${SRC_ENUMS_DIR}
 
   echo -e "Moving 'helpers' headers.\n"
-  mv ${INCLUDE_HELPERS_DIR}/encoding/der.h  ${SRC_HELPERS_DIR}/encoding
   mv ${INCLUDE_HELPERS_DIR}/encoding/hex.h  ${SRC_HELPERS_DIR}/encoding
 
   ## 'bip39' library is not supported in Arduino
@@ -137,7 +136,6 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_NETWORKS_DIR}/testnet.h          ${SRC_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
-  mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
