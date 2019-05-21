@@ -12,13 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - updated vendorField to support 255 bytes in Core v2.4 ([#84])
 - updated ArduinoJson package to version v.6.10.0 ([#76])
 - updated tests to use Core fixtures ([#74])
+- improved Windows support ([#83])
 
-### Changed
-
-### Changed
+### Fixed
 
 - properly handle 0 ARKtoshi Transaction amounts.
-- improved Windows support ([#83])
 
 ## [0.3.1] - 2019-02-19
 
