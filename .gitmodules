@@ -7,3 +7,6 @@
 [submodule "src/lib/ArduinoJson"]
 	path = src/lib/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson
+[submodule "src/lib/BIP66"]
+	path = src/lib/BIP66
+	url = https://github.com/sleepdefic1t/BIP66

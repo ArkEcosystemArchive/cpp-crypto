@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- changed to BIP66 lib for DER ser/des. ([#88])
 - updated vendorField to support 255 bytes in Core v2.4 ([#84])
 - updated ArduinoJson package to version v.6.10.0 ([#76])
 - updated tests to use Core fixtures ([#74])

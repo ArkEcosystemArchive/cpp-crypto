@@ -4,10 +4,10 @@
 #include "bcl/Ecdsa.hpp"
 #include "bcl/Sha256.hpp"
 #include "bcl/Uint256.hpp"
-#include "helpers/encoding/der.h"
 #include "helpers/crypto_helpers.h"
 #include "rfc6979/rfc6979.h"
 #include "uECC.h"
+#include "bip66.h"
 
 void cryptoSign(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey, std::vector<uint8_t>& signature) {
   Uint256 r;
@@ -19,13 +19,11 @@ void cryptoSign(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey,
   auto ret = Ecdsa::sign(Uint256(privateKey.toBytes()), hash, Uint256(nonce32), r, s);
   assert(ret);
 
-  std::vector<uint8_t> r_der(PRIVATEKEY_SIZE);
-  r.getBigEndianBytes(&r_der[0]);
+  std::vector<uint8_t> rValue(PRIVATEKEY_SIZE), sValue(PRIVATEKEY_SIZE);
+  r.getBigEndianBytes(&rValue[0]);
+  s.getBigEndianBytes(&sValue[0]);
 
-  std::vector<uint8_t> s_der(PRIVATEKEY_SIZE);
-  s.getBigEndianBytes(&s_der[0]);
-
-  encodeDER(toDER(r_der), toDER(s_der), signature);
+  BIP66::encode(rValue, sValue, signature);
 }
 
 bool cryptoVerify(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash, std::vector<uint8_t>& signature) {
@@ -52,12 +50,12 @@ bool cryptoVerify(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash,
   CurvePoint curvePoint(x, y);
 
   /* Decode signature from DER into r & s buffers */
-  std::vector<uint8_t> r;  // create r-value buffer
-  std::vector<uint8_t> s;  // create s-value buffer
-  decodeDER(signature, r, s);
+  std::vector<uint8_t> rValue(PRIVATEKEY_SIZE), sValue(PRIVATEKEY_SIZE);
 
-  Uint256 r256(r.data());  // create Uint256/BigNumber from r-value buffer
-  Uint256 s256(s.data());  // create Uint256/BigNumber from s-value buffer
+  BIP66::decode(signature, rValue, sValue);
+
+  Uint256 r256(rValue.data());  // create Uint256/BigNumber from r-value buffer
+  Uint256 s256(sValue.data());  // create Uint256/BigNumber from s-value buffer
 
   /* Verify */
   return Ecdsa::verify(curvePoint, hash, r256, s256);

@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 3.2.2)
 
 project(Ark-Cpp-Crypto-lib C CXX)
 
+set(BIP66_SRC
+  ${PROJECT_SOURCE_DIR}/lib/BIP66/src/bip66.cpp
+)
+
 set(BCL_SRC
 	lib/bcl/Base58Check.cpp
 	lib/bcl/CurvePoint.cpp
@@ -24,7 +28,6 @@ set(COMMON_SRC
   configuration/fee.cpp
 	configuration/network.cpp
   helpers/crypto.cpp
-  helpers/encoding/der.cpp
 	identities/address.cpp
 	identities/privatekey.cpp
 	identities/publickey.cpp
@@ -42,6 +45,7 @@ add_library(${PROJECT_NAME}
 	STATIC
 	${BCL_SRC}
 	${uECC_SRC}
+  ${BIP66_SRC}
 	${COMMON_SRC}
 )
 
@@ -55,6 +59,7 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
 include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
 include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
 include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
+include_directories(${PROJECT_SOURCE_DIR}/lib/BIP66/src)
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${cpp_crypto_build_include_dirs}
