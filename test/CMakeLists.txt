@@ -24,7 +24,6 @@ set (TEST_SRC
 	${PROJECT_SOURCE_DIR}/enums/fees.cpp
 	${PROJECT_SOURCE_DIR}/enums/types.cpp
 	${PROJECT_SOURCE_DIR}/identities/address.cpp
-  ${PROJECT_SOURCE_DIR}/identities/mnemonic.cpp
 	${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
 	${PROJECT_SOURCE_DIR}/identities/publickey.cpp
 	${PROJECT_SOURCE_DIR}/identities/wif.cpp
