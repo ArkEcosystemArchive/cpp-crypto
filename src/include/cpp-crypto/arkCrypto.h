@@ -22,7 +22,6 @@
 #include "enums/types.h"
 
 #include "identities/address.h"
-#include "identities/mnemonic.h"
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
 #include "identities/wif.h"

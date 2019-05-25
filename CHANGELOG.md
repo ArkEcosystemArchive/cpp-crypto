@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - improved Slots implementations ([#92])
 
+## [0.5.0] - 2019-02-20
+
+### Changed
+
+- removed bip39 and mnemonic feature ([#86])
+
 ## [0.4.0] - 2019-05-20
 
 ### Changed

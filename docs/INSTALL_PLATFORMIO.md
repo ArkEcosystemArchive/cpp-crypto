@@ -18,8 +18,8 @@ or
 
 
 also install platformio dependencies:  
-> install AUnit (2778), micro-ecc (1665) bip39 (5886) ArduinoJson@6.10.0 libraries  
->```platformio lib -g install 2778 1665 5886 ArduinoJson@6.10.0```
+> install AUnit (2778), micro-ecc (1665) ArduinoJson@6.10.0 libraries  
+>```platformio lib -g install 2778 1665 ArduinoJson@6.10.0```
 
 #  
 

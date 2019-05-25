@@ -1,9 +1,6 @@
 [submodule "src/lib/uECC"]
 	path = src/lib/uECC
 	url = https://github.com/kmackay/micro-ecc
-[submodule "src/lib/bip39"]
-	path = src/lib/bip39
-	url = https://github.com/ciband/bip39.git
 [submodule "test/lib/googletest"]
 	path = test/lib/googletest
 	url = https://github.com/google/googletest.git

@@ -34,11 +34,6 @@ int main(int argc, char* argv[]) {
   std::cout << "\tVerified: " << std::boolalpha << message.verify() << '\n';
   std::cout << '\n';
 
-  // Mnemonic
-  const auto new_passphrase = Ark::Crypto::Identities::Mnemonic::generate();
-  std::cout << "Generated Mnemonic: " << new_passphrase << '\n';
-  std::cout << '\n';
-
   // Address - from passphrase
   const uint8_t networkVersion = 0x1E;
   auto address = Address::fromPassphrase(passphrase, networkVersion);
