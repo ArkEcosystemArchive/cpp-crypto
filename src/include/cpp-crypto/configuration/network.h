@@ -15,24 +15,17 @@
 #include "networks/mainnet.h"
 #include "networks/testnet.h"
 
-#include <vector>
-
 namespace Ark {
 namespace Crypto {
 namespace Configuration {
-
+/**/
 using namespace Ark::Crypto::Networks;
-
-/**
- * @brief This is the network configuration class.
- *
- * @author Simon Downey <simon@ark.io>
- **/
+/**/
 class Network {
- private:
+private:
   AbstractNetwork network_;
 
- public:
+public:
   AbstractNetwork get();
   void set(const AbstractNetwork& network);
 };

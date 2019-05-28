@@ -10,22 +10,22 @@
 #ifndef DESERIALIZER_H
 #define DESERIALIZER_H
 
-#include "helpers/encoding/hex.h"
-#include "helpers/crypto_helpers.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
 #include "transactions/transaction.h"
+
+#include <cstdint>
+#include <string>
+#include <vector>
 
 namespace Ark {
 namespace Crypto {
 namespace Transactions {
-
+/**/
 class Deserializer {
- public:
+public:
   Deserializer(const std::string& serialized);
   Transaction deserialize();
 
- private:
+private:
   void deserializeHeader(Transaction& transaction);
   void deserializeType(Transaction& transaction);
   void deserializeTransfer(Transaction& transaction);
@@ -44,9 +44,9 @@ class Deserializer {
   std::vector<uint8_t> _binary;
   uint32_t _assetOffset;
 };
-
-}  // namespace Transactions
-}  // namespace Crypto
-}  // namespace Ark
+/**/
+};  // namespace Transactions
+};  // namespace Crypto
+};  // namespace Ark
 
 #endif

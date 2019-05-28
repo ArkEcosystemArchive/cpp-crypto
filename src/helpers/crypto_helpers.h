@@ -15,10 +15,10 @@
 #include <string>
 #include <vector>
 
-const auto ADDRESS_LENGTH = 34u;
-const auto COMPRESSED_PUBLICKEY_SIZE = 33u;
-const auto PRIVATEKEY_SIZE = 32u;
-const auto WIF_SIZE = 52u;
+const auto ADDRESS_LENGTH = 34U;
+const auto COMPRESSED_PUBLICKEY_SIZE = 33U;
+const auto PRIVATEKEY_SIZE = 32U;
+const auto WIF_SIZE = 52U;
 
 #if (defined ARDUINO || defined ESP8266 || defined ESP32)
 
@@ -44,8 +44,12 @@ inline void unpack(T* dst, uint8_t* src, size_t size = -1) {
 
 // Join string vector
 inline std::string join(const std::vector<std::string>& strings) {
-  return std::accumulate(strings.begin(), strings.end(), std::string(),
-                         [](const std::string& a, const std::string& b) -> std::string { return a + b; });
+  return std::accumulate(
+      strings.begin(),
+      strings.end(),
+      std::string(),
+      [](const std::string& a, const std::string& b)
+          -> std::string { return a + b; });
 }
 
 #endif

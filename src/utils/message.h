@@ -24,8 +24,6 @@
 
 #include "rfc6979/rfc6979.h"
 
-#include <cassert>
-#include <cstring>
 #include <map>
 #include <string>
 #include <vector>
@@ -35,12 +33,7 @@ using namespace Ark::Crypto::Identities;
 namespace Ark {
 namespace Crypto {
 namespace Utils {
-
-/**
- * This is the message class.
- *
- * @author Simon Downey <simon@ark.io>
- **/
+/**/
 class Message {
  public:
   std::string message;
@@ -57,7 +50,6 @@ class Message {
   std::string toJson();
 };
 /**/
-
 };  // namespace Utils
 };  // namespace Crypto
 };  // namespace Ark
