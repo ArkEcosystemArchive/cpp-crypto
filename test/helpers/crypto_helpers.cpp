@@ -1,36 +1,30 @@
 
 #include "gtest/gtest.h"
 
-#include "enums/types.h"
+#include "helpers/crypto_helpers.h"
 
-TEST(helpers, pack) {
+#include <cstdint>
+#include <vector>
+
+TEST(helpers, pack_unpack) {
+  std::vector<uint8_t> packBuffer;
+  uint8_t packValue = 23;
+  pack(packBuffer, packValue);
+
+  uint8_t unpackValue;
+  unpack(&unpackValue, &packBuffer[0]);
+  ASSERT_EQ(packValue, unpackValue);
 }
 
-TEST(helpers, unpack) {
-}
+/**/
 
 TEST(helpers, join) {
-}
+  char strBuffer[4] = "123";
+  std::vector<std::string> vstr(3);
+  vstr[0] = strBuffer[0];
+  vstr[1] = strBuffer[1];
+  vstr[2]= strBuffer[2];
 
-// // Write data into dst
-// template <typename T>
-// inline void pack(std::vector<uint8_t>& dst, T& data) {
-//   const auto src = reinterpret_cast<const uint8_t*>(&data);
-//   dst.insert(dst.end(), src, src + sizeof(T));
-// }
-// /**/
-// // Read size bytes into dst from src
-// template <typename T>
-// inline void unpack(T* dst, uint8_t* src, size_t size = -1) {
-//   memcpy(dst, src, size == -1 ? sizeof(*dst) : size);
-// }
-// /**/
-// // Join string vector
-// inline std::string join(const std::vector<std::string>& strings) {
-//   return std::accumulate(
-//     strings.begin(),
-//     strings.end(),
-//     std::string(),
-//     [](const std::string& a, const std::string& b) -> std::string { return a + b; }
-//   );
-// }
+  std::string joined = join(vstr);
+  ASSERT_STREQ(joined.c_str(), strBuffer);
+}

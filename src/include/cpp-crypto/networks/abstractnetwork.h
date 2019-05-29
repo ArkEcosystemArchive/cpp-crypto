@@ -67,7 +67,7 @@ private:
   bool isLocked_;
 
 public:
-  AbstractNetwork() = default;
+  AbstractNetwork() : isLocked_(false) {};
   virtual ~AbstractNetwork() = default;
 
   AbstractNetwork(

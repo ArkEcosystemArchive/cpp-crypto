@@ -7,6 +7,15 @@
 #include <map>
 #include <string>
 
+/**/
+
+TEST(transactions, transaction_default) {
+  Ark::Crypto::Transactions::Transaction transaction;
+  ASSERT_FALSE(transaction.verify());
+};
+
+/**/
+
 TEST(transactions, transaction_to_array) {
   //  Type 0
   auto transfer = Ark::Crypto::Transactions::Builder::buildTransfer(

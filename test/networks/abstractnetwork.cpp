@@ -22,13 +22,19 @@ AbstractNetwork CUSTOM_NETWORK = {
 
 /**/
 
+TEST(networks, abstract_network_default) {
+  AbstractNetwork abstractNetwork;
+  ASSERT_FALSE(abstractNetwork.isLocked());
+};
+
+/**/
+
 TEST(networks, abstract_network_custom) {
-  AbstractNetwork testNetwork({
-    { 0x01, 0x02, 0x03 },
-    { 00010100, 00010101 },
-    "0000-00-00T00:00:00.000Z",
-    true
-  });
+  base58_t base58 = { 0x01, 0x02, 0x03 };
+  bip32_t bip32 = { 00010100, 00010101 };
+  const auto epoch = "0000-00-00T00:00:00.000Z";
+
+  AbstractNetwork testNetwork(base58, bip32, epoch, true);
 
   ASSERT_EQ(
       CUSTOM_NETWORK.getBase58Prefix(BASE58_ADDRESS_P2PKH),
