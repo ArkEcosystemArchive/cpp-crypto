@@ -187,7 +187,7 @@ void Deserializer::deserializeMultiSignatureRegistration(
 /**/
 
 static uint8_t parseSignatureLength(const std::string& hex) {
-  assert(hex.length() <= 2);
+  if (hex.length() > 2) { return 0; };
   unsigned int length;
   sscanf(hex.c_str(), "%x", &length);
   return static_cast<uint8_t>(length + 2);
