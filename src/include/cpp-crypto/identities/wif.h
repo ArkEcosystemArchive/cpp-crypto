@@ -34,7 +34,6 @@ public:
   static WIF fromPassphrase(const char* passphrase, uint8_t wifByte);
 
   static bool validate(WIF wif);
-
 };
 /**/
 };  // namespace Identities
