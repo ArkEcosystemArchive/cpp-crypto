@@ -19,7 +19,7 @@ TEST(helpers, pack_unpack) {
 /**/
 
 TEST(helpers, join) {
-  char strBuffer[4] = "123";
+  const auto strBuffer = "123";
   std::vector<std::string> vstr(3);
   vstr[0] = strBuffer[0];
   vstr[1] = strBuffer[1];
