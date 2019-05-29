@@ -4,36 +4,38 @@
 
 TEST(configuration, fee_get) {
   Ark::Crypto::Configuration::Fee fee;
-  ASSERT_TRUE(10000000 == fee.get(0));
-  ASSERT_TRUE(500000000 == fee.get(1));
-  ASSERT_TRUE(2500000000 == fee.get(2));
-  ASSERT_TRUE(100000000 == fee.get(3));
-  ASSERT_TRUE(500000000 == fee.get(4));
-  ASSERT_TRUE(0 == fee.get(5));
-  ASSERT_TRUE(0 == fee.get(6));
-  ASSERT_TRUE(0 == fee.get(7));
-  ASSERT_TRUE(0 == fee.get(8));
+  ASSERT_EQ(10000000ULL, fee.get(0));
+  ASSERT_EQ(500000000ULL, fee.get(1));
+  ASSERT_EQ(2500000000ULL, fee.get(2));
+  ASSERT_EQ(100000000ULL, fee.get(3));
+  ASSERT_EQ(500000000ULL, fee.get(4));
+  ASSERT_EQ(0ULL, fee.get(5));
+  ASSERT_EQ(0ULL, fee.get(6));
+  ASSERT_EQ(0ULL, fee.get(7));
+  ASSERT_EQ(0ULL, fee.get(8));
 }
+
+/**/
 
 TEST(configuration, fee_set) {
   Ark::Crypto::Configuration::Fee fee;
-  fee.set(0, 20000000ul);
-  fee.set(1, 1000000000ul);
-  fee.set(2, 4000000000ul);
-  fee.set(3, 200000000ul);
-  fee.set(4, 1000000000ul);
-  fee.set(5, 1ul);
-  fee.set(6, 1ul);
-  fee.set(7, 1ul);
-  fee.set(8, 1ul);
+  fee.set(0ULL, 20000000ULL);
+  fee.set(1ULL, 1000000000ULL);
+  fee.set(2ULL, 4000000000ULL);
+  fee.set(3ULL, 200000000ULL);
+  fee.set(4ULL, 1000000000ULL);
+  fee.set(5ULL, 1ULL);
+  fee.set(6ULL, 1ULL);
+  fee.set(7ULL, 1ULL);
+  fee.set(8ULL, 1ULL);
 
-  ASSERT_TRUE(20000000 == fee.get(0));
-  ASSERT_TRUE(1000000000 == fee.get(1));
-  ASSERT_TRUE(4000000000 == fee.get(2));
-  ASSERT_TRUE(200000000 == fee.get(3));
-  ASSERT_TRUE(1000000000 == fee.get(4));
-  ASSERT_TRUE(1 == fee.get(5));
-  ASSERT_TRUE(1 == fee.get(6));
-  ASSERT_TRUE(1 == fee.get(7));
-  ASSERT_TRUE(1 == fee.get(8));
+  ASSERT_EQ(20000000ULL, fee.get(0));
+  ASSERT_EQ(1000000000ULL, fee.get(1));
+  ASSERT_EQ(4000000000ULL, fee.get(2));
+  ASSERT_EQ(200000000ULL, fee.get(3));
+  ASSERT_EQ(1000000000ULL, fee.get(4));
+  ASSERT_EQ(1ULL, fee.get(5));
+  ASSERT_EQ(1ULL, fee.get(6));
+  ASSERT_EQ(1ULL, fee.get(7));
+  ASSERT_EQ(1ULL, fee.get(8));
 }

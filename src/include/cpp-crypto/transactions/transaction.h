@@ -10,8 +10,6 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include "helpers/encoding/hex.h"
-#include "helpers/crypto_helpers.h"
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
 
@@ -22,7 +20,7 @@
 namespace Ark {
 namespace Crypto {
 namespace Transactions {
-
+/**/
 struct TransactionAsset {
   struct {
     std::string publicKey;
@@ -40,10 +38,10 @@ struct TransactionAsset {
     std::vector<std::string> keysgroup;
   } multiSignature;
 };
-
+/**/
 class Transaction {
 public:
-  Transaction();
+  Transaction() = default;
 
   std::string getId() const;
 
@@ -79,11 +77,14 @@ public:
   uint64_t timelock = 0;
 
 private:
-  bool internalVerify(std::string publicKey, std::vector<uint8_t> bytes, std::string signature) const;
+  bool internalVerify(
+      std::string publicKey,
+      std::vector<uint8_t> bytes,
+      std::string signature) const;
 };
-
-}  // namespace Transactions
-}  // namespace Crypto
-}  // namespace Ark
+/**/
+};  // namespace Transactions
+};  // namespace Crypto
+};  // namespace Ark
 
 #endif

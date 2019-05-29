@@ -14,6 +14,8 @@ TEST(configuration, network_get) {
   ASSERT_EQ(30, network.version());
 }
 
+/**/
+
 TEST(configuration, network_set) {
   Network network;
   network.set(Testnet);

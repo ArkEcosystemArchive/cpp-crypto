@@ -10,32 +10,30 @@
 #ifndef WIF_H
 #define WIF_H
 
-#include <cstring>
-#include "helpers/encoding/hex.h"
 #include "identities/privatekey.h"
+
+#include <cstdint>
+#include <string>
 
 namespace Ark {
 namespace Crypto {
 namespace Identities {
-
-/**
- * This is the wif class.
- *
- * @author Simon Downey <simon@ark.io>
- **/
+/**/
 class WIF {
- protected:
-  uint8_t bytes_[WIF_SIZE];
+private:
+  uint8_t bytes_[WIF_SIZE] {};
 
- public:
-  WIF() : bytes_(){};
-  WIF(const char *const newWIFStr);
-  WIF(const uint8_t *newWIFBytes);
+public:
+  WIF() : bytes_() {};
+  WIF(const char* newWIFStr);
+  WIF(const uint8_t* newWIFBytes);
 
   const uint8_t *toBytes();
   std::string toString() const;
 
-  static WIF fromPassphrase(const char *const passphrase, uint8_t wifByte);
+  static WIF fromPassphrase(const char* passphrase, uint8_t wifByte);
+
+  static bool validate(WIF wif);
 };
 /**/
 };  // namespace Identities
