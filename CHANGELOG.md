@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- improved formatting and maintainability ([#97])
+- improved formatting and maintainability ([#98])
 - improved Slots implementations ([#92])
 
 ## [0.5.0] - 2019-02-20
