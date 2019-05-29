@@ -6,8 +6,6 @@
 #include "transactions/builder.h"
 using namespace Ark::Crypto::Transactions;
 
-#include <iostream>
-
 TEST(transactions, build_transfer) {
   const auto actual = Ark::Crypto::Transactions::Builder::buildTransfer(
       "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
