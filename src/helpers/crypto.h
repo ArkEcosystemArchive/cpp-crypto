@@ -17,7 +17,16 @@
 #ifndef CRYPTO_H
 #define CRYPTO_H
 
-void cryptoSign(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey, std::vector<uint8_t>& signature);
-bool cryptoVerify(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash, std::vector<uint8_t>& signature);
+void cryptoSign(
+    Sha256Hash hash,
+    Ark::Crypto::Identities::PrivateKey privateKey,
+    std::vector<uint8_t>& signature);
+
+/**/
+
+bool cryptoVerify(
+    Ark::Crypto::Identities::PublicKey publicKey,
+    Sha256Hash hash,
+    std::vector<uint8_t>& signature);
 
 #endif

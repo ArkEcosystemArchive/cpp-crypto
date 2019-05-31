@@ -1,34 +1,33 @@
+
 #include "gtest/gtest.h"
 
 #include "enums/fees.h"
 
 TEST(enums, fees) {
-  Ark::Crypto::Enums::Fees fees;
+  auto feeZERO = Ark::Crypto::Enums::Fees::TRANSFER;
+  ASSERT_EQ(10000000ULL, feeZERO);
 
-  auto feeZERO = fees.TRANSFER;
-  ASSERT_TRUE(10000000 == feeZERO);
+  auto feeONE = Ark::Crypto::Enums::Fees::SECOND_SIGNATURE_REGISTRATION;
+  ASSERT_EQ(500000000ULL, feeONE);
 
-  auto feeONE = fees.SECOND_SIGNATURE_REGISTRATION;
-  ASSERT_TRUE(500000000 == feeONE);
+  auto feeTWO = Ark::Crypto::Enums::Fees::DELEGATE_REGISTRATION;
+  ASSERT_EQ(2500000000ULL, feeTWO);
 
-  auto feeTWO = fees.DELEGATE_REGISTRATION;
-  ASSERT_TRUE(2500000000 == feeTWO);
+  auto feeTHREE = Ark::Crypto::Enums::Fees::VOTE;
+  ASSERT_EQ(100000000ULL, feeTHREE);
 
-  auto feeTHREE = fees.VOTE;
-  ASSERT_TRUE(100000000 == feeTHREE);
+  auto feeFOUR = Ark::Crypto::Enums::Fees::MULTI_SIGNATURE_REGISTRATION;
+  ASSERT_EQ(500000000ULL, feeFOUR);
 
-  auto feeFOUR = fees.MULTI_SIGNATURE_REGISTRATION;
-  ASSERT_TRUE(500000000 == feeFOUR);
+  auto feeFIVE = Ark::Crypto::Enums::Fees::IPFS;
+  ASSERT_EQ(0ULL, feeFIVE);
 
-  auto feeFIVE = fees.IPFS;
-  ASSERT_TRUE(0 == feeFIVE);
+  auto feeSIX = Ark::Crypto::Enums::Fees::TIMELOCK_TRANSFER;
+  ASSERT_EQ(0ULL, feeSIX);
 
-  auto feeSIX = fees.TIMELOCK_TRANSFER;
-  ASSERT_TRUE(0 == feeSIX);
+  auto feeSEVEN = Ark::Crypto::Enums::Fees::MULTI_PAYMENT;
+  ASSERT_EQ(0ULL, feeSEVEN);
 
-  auto feeSEVEN = fees.MULTI_PAYMENT;
-  ASSERT_TRUE(0 == feeSEVEN);
-
-  auto feeEIGHT = fees.DELEGATE_RESIGNATION;
-  ASSERT_TRUE(0 == feeEIGHT);
+  auto feeEIGHT = Ark::Crypto::Enums::Fees::DELEGATE_RESIGNATION;
+  ASSERT_EQ(0ULL, feeEIGHT);
 }

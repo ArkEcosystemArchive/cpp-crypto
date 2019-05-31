@@ -15,18 +15,18 @@
 namespace Ark {
 namespace Crypto {
 namespace Utils {
-
+/**/
 class Slot {
 public:
-  static uint64_t epoch(Crypto::Networks::AbstractNetwork network);
-  static uint64_t time(Crypto::Networks::AbstractNetwork network);
+  static uint64_t epoch(const Crypto::Networks::AbstractNetwork& network);
+  static uint64_t time(const Crypto::Networks::AbstractNetwork& network);
 
 private:
   static uint64_t now();
 };
-
-}  // namespace Utils
-}  // namespace Crypto
-}  // namespace Ark
+/**/
+};  // namespace Utils
+};  // namespace Crypto
+};  // namespace Ark
 
 #endif

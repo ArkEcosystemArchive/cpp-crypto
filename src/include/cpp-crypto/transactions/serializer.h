@@ -12,16 +12,20 @@
 
 #include "transactions/transaction.h"
 
+#include <cstdint>
+#include <string>
+#include <vector>
+
 namespace Ark {
 namespace Crypto {
 namespace Transactions {
-
+/**/
 class Serializer {
- public:
-  Serializer(const Transaction& transaction);
+public:
+  Serializer(Transaction transaction);
   std::string serialize();
 
- private:
+private:
   void serializeVendorField(std::vector<uint8_t>& bytes);
   void serializeType(std::vector<uint8_t>& bytes);
   void serializeTransfer(std::vector<uint8_t>& bytes);
@@ -33,7 +37,7 @@ class Serializer {
 
   Transaction _transaction;
 };
-
+/**/
 }  // namespace Transactions
 }  // namespace Crypto
 }  // namespace Ark

@@ -21,7 +21,11 @@ namespace Networks {
 /**
  * @brief Base58 Prefix Type
  **/
-enum Base58PrefixType : int { BASE58_ADDRESS_P2PKH = 0, BASE58_ADDRESS_P2SH, BASE58_WIF };
+enum Base58PrefixType : int {
+  BASE58_ADDRESS_P2PKH = 0,
+  BASE58_ADDRESS_P2SH,
+  BASE58_WIF
+};
 /**/
 
 /**
@@ -37,8 +41,12 @@ struct base58_t {
 /**
  * @brief BIP32 Prefix Type
  **/
-enum BIP32PrefixType : int { BIP32_PREFIX_XPUB = 0, BIP32_PREFIX_XPRV };
+enum BIP32PrefixType : int {
+  BIP32_PREFIX_XPUB = 0,
+  BIP32_PREFIX_XPRV
+};
 /**/
+
 /**
  * @brief BIP32 Prefix Container
  **/
@@ -50,34 +58,29 @@ struct bip32_t {
 
 /**
  * @brief This is the abstract network class.
- *
- * @author Simon Downey <simon@ark.io>
  **/
 class AbstractNetwork {
- protected:
+private:
   base58_t base58_;
   bip32_t bip32_;
   char epoch_[34];
   bool isLocked_;
 
- public:
-  AbstractNetwork() = default;
-
-  /**
-   * @brief Abstract Network Parameter Instantiation interface
-   *
-   * @param base58_t base58
-   * @param bip32_t bip32
-   * @param char epoch[34]
-   * @param bool isEditable // default false
-   **/
-  AbstractNetwork(base58_t base58, bip32_t bip32, const char* epoch, bool locked = true)
-      : base58_(base58), bip32_(bip32), epoch_(), isLocked_(locked) {
-    std::strncpy(this->epoch_, epoch, 34);
-  };
-  /**/
-
+public:
+  AbstractNetwork() : isLocked_(false) {};
   virtual ~AbstractNetwork() = default;
+
+  AbstractNetwork(
+      base58_t base58,
+      bip32_t bip32,
+      const char* epoch,
+      bool locked = true)
+          : base58_(base58),
+            bip32_(bip32),
+            epoch_(),
+            isLocked_(locked) {
+    strncpy(this->epoch_, epoch, 34);
+  };
 
   uint8_t getBase58Prefix(Base58PrefixType prefix) const;
   void setBase58Prefix(Base58PrefixType prefix, uint8_t newByte);

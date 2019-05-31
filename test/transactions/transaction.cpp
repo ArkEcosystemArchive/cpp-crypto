@@ -1,3 +1,4 @@
+
 #include "gtest/gtest.h"
 
 #include "transactions/builder.h"
@@ -6,196 +7,299 @@
 #include <map>
 #include <string>
 
+/**/
+
+TEST(transactions, transaction_default) {
+  Ark::Crypto::Transactions::Transaction transaction;
+  ASSERT_FALSE(transaction.verify());
+};
+
+/**/
+
 TEST(transactions, transaction_to_array) {
-    //  Type 0
-    auto transfer = Ark::Crypto::Transactions::Builder::buildTransfer("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", 1, "", "Secret passphrase");
-    std::map<std::string, std::string> tArray = transfer.toArray();
+  //  Type 0
+  auto transfer = Ark::Crypto::Transactions::Builder::buildTransfer(
+      "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+      1,
+      "",
+      "Secret passphrase");
+  std::map<std::string, std::string> tArray = transfer.toArray();
 
-    //  Amount
-    ASSERT_STREQ("1", tArray["amount"].c_str());
-    //  Fee
-    ASSERT_STREQ("10000000", tArray["fee"].c_str());
-    //  Id
-    ASSERT_STRNE("", tArray["id"].c_str());
-    //  RecipientId
-    ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", tArray["recipientId"].c_str());
-    //  SenderPublicKey
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", tArray["senderPublicKey"].c_str());
-    //  Signature
-    ASSERT_STRNE("", tArray["signature"].c_str());
-    //  Timestamp
-    ASSERT_STRNE("", tArray["timestamp"].c_str());
-    //  Type
-    ASSERT_STREQ("0", tArray["type"].c_str());
+  //  Amount
+  ASSERT_STREQ("1", tArray["amount"].c_str());
+  //  Fee
+  ASSERT_STREQ("10000000", tArray["fee"].c_str());
+  //  Id
+  ASSERT_FALSE(tArray["id"].empty());
+  //  RecipientId
+  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", tArray["recipientId"].c_str());
+  //  SenderPublicKey
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      tArray["senderPublicKey"].c_str());
+  //  Signature
+  ASSERT_FALSE(tArray["signature"].empty());
+  //  Timestamp
+  ASSERT_FALSE(tArray["timestamp"].empty());
+  //  Type
+  ASSERT_STREQ("0", tArray["type"].c_str());
 
+  //  Type 1
+  auto secondSignatureRegistration = Ark::Crypto::Transactions::Builder::buildSecondSignatureRegistration(
+      "Secret passphrase",
+      "Second Secret passphrase");
+  std::map<std::string, std::string> ssArray = secondSignatureRegistration.toArray();
 
-    //  Type 1
-    auto secondSignatureRegistration = Ark::Crypto::Transactions::Builder::buildSecondSignatureRegistration("Secret passphrase", "Second Secret passphrase");
-    std::map<std::string, std::string> ssArray = secondSignatureRegistration.toArray();
+  //  Amount
+  ASSERT_STREQ("0", ssArray["amount"].c_str());
+  //  Asset
+  ASSERT_STREQ(
+      "02e1684d8990c0a5625aec85977fcf22204884bc08d45dbc71b2859e5fa4f45104",
+      ssArray["publicKey"].c_str());
+  //  Fee
+  ASSERT_STREQ("500000000", ssArray["fee"].c_str());
+  //  Id
+  ASSERT_FALSE(ssArray["id"].empty());
+  //  RecipientId
+  ASSERT_TRUE(ssArray["recipientId"].empty());
+  //  SecondSignature
+  ASSERT_FALSE(ssArray["secondSignature"].empty());
+  //  SenderPublicKey
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      ssArray["senderPublicKey"].c_str());
+  //  Signature
+  ASSERT_FALSE(ssArray["signature"].empty());
+  //  Timestamp
+  ASSERT_FALSE(ssArray["timestamp"].empty());
+  //  Type
+  ASSERT_STREQ("1", ssArray["type"].c_str());
 
-    //  Amount
-    ASSERT_STREQ("0", ssArray["amount"].c_str());
-    //  Asset
-    ASSERT_STREQ("02e1684d8990c0a5625aec85977fcf22204884bc08d45dbc71b2859e5fa4f45104", ssArray["publicKey"].c_str());
-    //  Fee
-    ASSERT_STREQ("500000000", ssArray["fee"].c_str());
-    //  Id
-    ASSERT_STRNE("", ssArray["id"].c_str());
-    //  RecipientId
-    ASSERT_STREQ("", ssArray["recipientId"].c_str());
-    //  SecondSignature
-    ASSERT_STRNE("", ssArray["secondSignature"].c_str());
-    //  SenderPublicKey
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", ssArray["senderPublicKey"].c_str());
-    //  Signature
-    ASSERT_STRNE("", ssArray["signature"].c_str());
-    //  Timestamp
-    ASSERT_STRNE("", ssArray["timestamp"].c_str());
-    //  Type
-    ASSERT_STREQ("1", ssArray["type"].c_str());
+  //  Type 2
+  auto delegateRegistration = Ark::Crypto::Transactions::Builder::buildDelegateRegistration(
+      "testName",
+      "Secret passphrase");
+  std::map<std::string, std::string> dArray = delegateRegistration.toArray();
 
+  //  Amount
+  ASSERT_STREQ("0", dArray["amount"].c_str());
+  //  Asset
+  ASSERT_STREQ("testName", dArray["username"].c_str());
+  //  Fee
+  ASSERT_STREQ("2500000000", dArray["fee"].c_str());
+  //  Id
+  ASSERT_FALSE(dArray["id"].empty());
+  //  RecipientId
+  ASSERT_TRUE(dArray["recipientId"].empty());
+  //  SecondSignature
+  ASSERT_TRUE(dArray["secondSignature"].empty());
+  //  SenderPublicKey
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      dArray["senderPublicKey"].c_str());
+  //  Signature
+  ASSERT_FALSE(dArray["signature"].empty());
+  //  ASSERT_FALSE
+  ASSERT_FALSE(dArray["timestamp"].empty());
+  //  Type
+  ASSERT_STREQ("2", dArray["type"].c_str());
 
-    //  Type 2
-    auto delegateRegistration = Ark::Crypto::Transactions::Builder::buildDelegateRegistration("testName", "Secret passphrase");
-    std::map<std::string, std::string> dArray = delegateRegistration.toArray();
+  //  Type 3
+  std::vector<std::string> votes = {
+    "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6",
+    "+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6"
+  };
+  auto vote = Ark::Crypto::Transactions::Builder::buildVote(votes, "Secret passphrase");
+  std::map<std::string, std::string> vArray = vote.toArray();
 
-    //  Amount
-    ASSERT_STREQ("0", dArray["amount"].c_str());
-    //  Asset
-    ASSERT_STREQ("testName", dArray["username"].c_str());
-    //  Fee
-    ASSERT_STREQ("2500000000", dArray["fee"].c_str());
-    //  Id
-    ASSERT_STRNE("", dArray["id"].c_str());
-    //  RecipientId
-    ASSERT_STREQ("", dArray["recipientId"].c_str());
-    //  SecondSignature
-    ASSERT_STREQ("", dArray["secondSignature"].c_str());
-    //  SenderPublicKey
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", dArray["senderPublicKey"].c_str());
-    //  Signature
-    ASSERT_STRNE("", dArray["signature"].c_str());
-    //  Timestamp
-    ASSERT_STRNE("", dArray["timestamp"].c_str());
-    //  Type
-    ASSERT_STREQ("2", dArray["type"].c_str());
-
-
-    //  Type 3
-    std::vector<std::string> votes = { "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6", "+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6" };
-    auto vote = Ark::Crypto::Transactions::Builder::buildVote(votes, "Secret passphrase");
-    std::map<std::string, std::string> vArray = vote.toArray();
-
-    //  Amount
-    ASSERT_STREQ("0", vArray["amount"].c_str());
-    //  Asset
-    ASSERT_STREQ("-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6,+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6", vArray["votes"].c_str());
-    //  Fee
-    ASSERT_STREQ("100000000", vArray["fee"].c_str());
-    //  Id
-    ASSERT_STRNE("", vArray["id"].c_str());
-    //  RecipientId
-    ASSERT_STREQ("DPgZq5MK6rm5yVks9b7TrA22F8FwRvkCtF", vArray["recipientId"].c_str());
-    //  SecondSignature
-    ASSERT_STREQ("", vArray["secondSignature"].c_str());
-    //  SenderPublicKey
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", vArray["senderPublicKey"].c_str());
-    //  Signature
-    ASSERT_STRNE("", vArray["signature"].c_str());
-    //  Timestamp
-    ASSERT_STRNE("", vArray["timestamp"].c_str());
-    //  Type
-    ASSERT_STREQ("3", vArray["type"].c_str());
+  //  Amount
+  ASSERT_STREQ("0", vArray["amount"].c_str());
+  //  Asset
+  ASSERT_STREQ(
+      "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6,"
+      "+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6",
+      vArray["votes"].c_str());
+  //  Fee
+  ASSERT_STREQ("100000000", vArray["fee"].c_str());
+  //  Id
+  ASSERT_FALSE(vArray["id"].empty());
+  //  RecipientId
+  ASSERT_STREQ("DPgZq5MK6rm5yVks9b7TrA22F8FwRvkCtF", vArray["recipientId"].c_str());
+  //  SecondSignature
+  ASSERT_TRUE(vArray["secondSignature"].empty());
+  //  SenderPublicKey
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      vArray["senderPublicKey"].c_str());
+  //  Signature
+  ASSERT_FALSE(vArray["signature"].empty());
+  //  Timestamp
+  ASSERT_FALSE(vArray["timestamp"].empty());
+  //  Type
+  ASSERT_STREQ("3", vArray["type"].c_str());
 }
 
+/**/
+
 TEST(transactions, transaction_to_json) {
+  //  Type 0
+  auto transfer = Ark::Crypto::Transactions::Builder::buildTransfer(
+      "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+      1,
+      "",
+      "Secret passphrase");
+  std::string tJson = transfer.toJson();
 
-    //  Type 0
-    auto transfer = Ark::Crypto::Transactions::Builder::buildTransfer("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", 1, "", "Secret passphrase");
-    std::string tJson = transfer.toJson();
+  const size_t tCapacity = JSON_OBJECT_SIZE(8) + 450;
+  DynamicJsonDocument tDoc(tCapacity);
 
-    const size_t tCapacity = JSON_OBJECT_SIZE(8) + 450;
-    DynamicJsonDocument tDoc(tCapacity);
+  DeserializationError tError = deserializeJson(tDoc, tJson);
+  ASSERT_FALSE(tError);
 
-    DeserializationError tError = deserializeJson(tDoc, tJson);
-    ASSERT_FALSE(tError);
+  ASSERT_EQ(tDoc["amount"].as<unsigned long long>(), 1ULL);
+  ASSERT_EQ(tDoc["fee"].as<unsigned long long>(), 10000000ULL);
+  ASSERT_FALSE(tDoc["id"].as<std::string>().empty());
+  ASSERT_STREQ(
+      "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+      tDoc["recipientId"].as<const char*>());
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      tDoc["senderPublicKey"].as<const char*>());
+  ASSERT_FALSE(tDoc["signature"].as<std::string>().empty());
+  ASSERT_GT(tDoc["timestamp"].as<unsigned long>(), 50000000UL);
+  ASSERT_LT(tDoc["timestamp"].as<unsigned long>(), 1000000000UL);
+  ASSERT_EQ(tDoc["type"].as<int>(), 0);
 
-    ASSERT_EQ(tDoc["amount"], 1);
-    ASSERT_EQ(tDoc["fee"], 10000000);
-    ASSERT_STRNE("", tDoc["id"].as<const char*>());
-    ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", tDoc["recipientId"].as<const char*>());
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", tDoc["senderPublicKey"].as<const char*>());
-    ASSERT_STRNE("", tDoc["signature"].as<const char*>());
-    ASSERT_GT(tDoc["timestamp"], 50000000);
-    ASSERT_LT(tDoc["timestamp"], 1000000000);
-    ASSERT_EQ(tDoc["type"], 0);
+  //  Type 1
+  auto secondSignatureRegistration = Ark::Crypto::Transactions::Builder::buildSecondSignatureRegistration(
+      "Secret passphrase",
+      "Second Secret passphrase");
+  std::string ssJson = secondSignatureRegistration.toJson();
 
+  const size_t ssCapacity = 2 * JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(10) + 690;
+  DynamicJsonDocument ssDoc(ssCapacity);
 
-    //  Type 1
-    auto secondSignatureRegistration = Ark::Crypto::Transactions::Builder::buildSecondSignatureRegistration("Secret passphrase", "Second Secret passphrase");
-    std::string ssJson = secondSignatureRegistration.toJson();
+  DeserializationError ssError = deserializeJson(ssDoc, ssJson);
+  ASSERT_FALSE(ssError);
 
-    const size_t ssCapacity = 2 * JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(10) + 690;
-    DynamicJsonDocument ssDoc(ssCapacity);
+  ASSERT_EQ(ssDoc["amount"].as<unsigned long long>(), 0ULL);
+  ASSERT_STREQ(
+      "02e1684d8990c0a5625aec85977fcf22204884bc08d45dbc71b2859e5fa4f45104",
+      ssDoc["asset"]["signature"]["publicKey"].as<const char*>());
+  ASSERT_EQ(ssDoc["fee"].as<unsigned long long>(), 500000000ULL);
+  ASSERT_FALSE(ssDoc["id"].as<std::string>().empty());
+  ASSERT_TRUE(ssDoc["recipientId"].as<std::string>().empty());
+  ASSERT_FALSE(ssDoc["secondSignature"].as<std::string>().empty());
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      ssDoc["senderPublicKey"].as<const char*>());
+  ASSERT_FALSE(ssDoc["signature"].as<std::string>().empty());
+  ASSERT_GT(ssDoc["timestamp"].as<unsigned long>(), 50000000UL);
+  ASSERT_LT(ssDoc["timestamp"].as<unsigned long>(), 1000000000UL);
+  ASSERT_EQ(ssDoc["type"].as<int>(), 1);
 
-    DeserializationError ssError = deserializeJson(ssDoc, ssJson);
-    ASSERT_FALSE(ssError);
+  //  Type 2
+  auto delegateRegistration = Ark::Crypto::Transactions::Builder::buildDelegateRegistration(
+      "testName",
+      "Secret passphrase");
+  std::string dJson = delegateRegistration.toJson();
 
-    ASSERT_EQ(ssDoc["amount"], 0);
-    ASSERT_STREQ("02e1684d8990c0a5625aec85977fcf22204884bc08d45dbc71b2859e5fa4f45104", ssDoc["asset"]["signature"]["publicKey"].as<const char*>());
-    ASSERT_EQ(ssDoc["fee"], 500000000);
-    ASSERT_STRNE("", ssDoc["id"].as<const char*>());
-    ASSERT_STREQ("", ssDoc["recipientId"].as<const char*>());
-    ASSERT_STRNE("", ssDoc["secondSignature"].as<const char*>());
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", ssDoc["senderPublicKey"].as<const char*>());
-    ASSERT_STRNE("", ssDoc["signature"].as<const char*>());
-    ASSERT_GT(ssDoc["timestamp"], 50000000);
-    ASSERT_LT(ssDoc["timestamp"], 1000000000);
-    ASSERT_EQ(ssDoc["type"], 1);
+  const size_t dCapacity = 2*JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(9) + 450;
+  DynamicJsonDocument dDoc(dCapacity);
 
+  DeserializationError dError = deserializeJson(dDoc, dJson);
+  ASSERT_FALSE(dError);
 
-    //  Type 2
-    auto delegateRegistration = Ark::Crypto::Transactions::Builder::buildDelegateRegistration("testName", "Secret passphrase");
-    std::string dJson = delegateRegistration.toJson();
+  ASSERT_EQ(dDoc["amount"].as<unsigned long long>(), 0ULL);
+  ASSERT_STREQ("testName", dDoc["asset"]["delegate"]["username"].as<const char*>());
+  ASSERT_EQ(dDoc["fee"].as<unsigned long long>(), 2500000000ULL);
+  ASSERT_FALSE(dDoc["id"].as<std::string>().empty());
+  ASSERT_TRUE(dDoc["recipientId"].as<std::string>().empty());
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      dDoc["senderPublicKey"].as<const char*>());
+  ASSERT_FALSE(dDoc["signature"].as<std::string>().empty());
+  ASSERT_GT(dDoc["timestamp"].as<unsigned long>(), 50000000UL);
+  ASSERT_LT(dDoc["timestamp"].as<unsigned long>(), 1000000000UL);
+  ASSERT_EQ(dDoc["type"].as<int>(), 2);
 
-    const size_t dCapacity = 2*JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(9) + 450;
-    DynamicJsonDocument dDoc(dCapacity);
+  //  Type 3
+  std::vector<std::string> votes = {
+    "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6,"
+    "+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6"
+  };
+  auto vote = Ark::Crypto::Transactions::Builder::buildVote(votes, "Secret passphrase");
+  std::string vJson = vote.toJson();
 
-    DeserializationError dError = deserializeJson(dDoc, dJson);
-    ASSERT_FALSE(dError);
+  const size_t vCapacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(9) + 700;
+  DynamicJsonDocument vDoc(vCapacity);
 
-    ASSERT_EQ(dDoc["amount"], 0);
-    ASSERT_STREQ("testName", dDoc["asset"]["delegate"]["username"].as<const char*>());
-    ASSERT_EQ(dDoc["fee"], 2500000000);
-    ASSERT_STRNE("", dDoc["id"].as<const char*>());
-    ASSERT_STREQ("", dDoc["recipientId"].as<const char*>());
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", dDoc["senderPublicKey"].as<const char*>());
-    ASSERT_STRNE("", dDoc["signature"].as<const char*>());
-    ASSERT_GT(dDoc["timestamp"], 50000000);
-    ASSERT_LT(dDoc["timestamp"], 1000000000);
-    ASSERT_EQ(dDoc["type"], 2);
+  DeserializationError vError = deserializeJson(vDoc, vJson);
+  ASSERT_FALSE(vError);
 
-
-    //  Type 3
-    std::vector<std::string> votes = { "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6,+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6" };
-    auto vote = Ark::Crypto::Transactions::Builder::buildVote(votes, "Secret passphrase");
-    std::string vJson = vote.toJson();
-
-    const size_t vCapacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(9) + 700;
-    DynamicJsonDocument vDoc(vCapacity);
-
-    DeserializationError vError = deserializeJson(vDoc, vJson);
-    ASSERT_FALSE(vError);
-
-    ASSERT_EQ(vDoc["amount"], 0);
-    ASSERT_STREQ("-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6", vDoc["asset"]["votes"][0].as<const char*>());
-    ASSERT_STREQ("+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6", vDoc["asset"]["votes"][1].as<const char*>());
-    ASSERT_EQ(vDoc["fee"], 100000000);
-    ASSERT_STRNE("", vDoc["id"].as<const char*>());
-    ASSERT_STREQ("DPgZq5MK6rm5yVks9b7TrA22F8FwRvkCtF", vDoc["recipientId"].as<const char*>());
-    ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699", vDoc["senderPublicKey"].as<const char*>());
-    ASSERT_STRNE("", vDoc["signature"].as<const char*>());
-    ASSERT_GT(vDoc["timestamp"], 50000000);
-    ASSERT_LT(vDoc["timestamp"], 1000000000);
-    ASSERT_EQ(vDoc["type"], 3);
+  ASSERT_EQ(vDoc["amount"].as<unsigned long long>(), 0ULL);
+  ASSERT_STREQ(
+      "-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6",
+      vDoc["asset"]["votes"][0].as<const char*>());
+  ASSERT_STREQ(
+      "+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6",
+      vDoc["asset"]["votes"][1].as<const char*>());
+  ASSERT_EQ(vDoc["fee"].as<unsigned long long>(), 100000000ULL);
+  ASSERT_FALSE(vDoc["id"].as<std::string>().empty());
+  ASSERT_STREQ("DPgZq5MK6rm5yVks9b7TrA22F8FwRvkCtF", vDoc["recipientId"].as<const char*>());
+  ASSERT_STREQ(
+      "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
+      vDoc["senderPublicKey"].as<const char*>());
+  ASSERT_FALSE(vDoc["signature"].as<std::string>().empty());
+  ASSERT_GT(vDoc["timestamp"].as<unsigned long>(), 50000000UL);
+  ASSERT_LT(vDoc["timestamp"].as<unsigned long>(), 1000000000UL);
+  ASSERT_EQ(vDoc["type"].as<int>(), 3);
 };
+
+/**/
+
+TEST(transactions, transaction_empty) {
+  Ark::Crypto::Transactions::Transaction transaction;
+  bool isValid = transaction.verify();
+  ASSERT_FALSE(isValid);
+}
+
+/**/
+
+TEST(transactions, transaction_asset_signature) { // NOLINT
+  const auto publicKeyString = "02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699";
+  Ark::Crypto::Transactions::TransactionAsset asset;
+  asset.signature.publicKey = publicKeyString;
+  ASSERT_STREQ(asset.signature.publicKey.c_str(), publicKeyString);
+}
+
+/**/
+
+TEST(transactions, transaction_asset_delegate) {
+  const auto testUsername = "testUsername";
+  Ark::Crypto::Transactions::TransactionAsset asset;
+  asset.delegate.username = "testUsername";
+  ASSERT_STREQ(asset.delegate.username.c_str(), testUsername);
+}
+
+/**/
+
+TEST(transactions, transaction_asset_multisignature) {
+  const auto min = 2;
+  const auto lifetime = 24;
+  std::vector<std::string> keysgroup = {
+    "+03543c6cc3545be6bac09c82721973a052c690658283472e88f24d14739f75acc8",
+    "+0276dc5b8706a85ca9fdc46e571ac84e52fbb48e13ec7a165a80731b44ae89f1fc",
+    "+02e8d5d17eb17bbc8d7bf1001d29a2d25d1249b7bb7a5b7ad8b7422063091f4b31"
+  };
+
+  Ark::Crypto::Transactions::TransactionAsset asset;
+  asset.multiSignature.min = min;
+  asset.multiSignature.lifetime = lifetime;
+  asset.multiSignature.keysgroup = keysgroup;
+  ASSERT_EQ(asset.multiSignature.min, min);
+  ASSERT_EQ(asset.multiSignature.lifetime, lifetime);
+  ASSERT_TRUE(asset.multiSignature.keysgroup[0] == keysgroup[0]);
+  ASSERT_TRUE(asset.multiSignature.keysgroup[1] == keysgroup[1]);
+  ASSERT_TRUE(asset.multiSignature.keysgroup[2] == keysgroup[2]);
+}
