@@ -6,33 +6,33 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Ark KEYWORD1
-Crypto  KEYWORD1
-Configuration   KEYWORD1
-Enums   KEYWORD1
-Identities  KEYWORD1
-Networks    KEYWORD1
-Transactions    KEYWORD1
-Utils   KEYWORD1
+Ark	KEYWORD1
+Crypto	KEYWORD1
+Configuration	KEYWORD1
+Enums	KEYWORD1
+Identities	KEYWORD1
+Networks	KEYWORD1
+Transactions	KEYWORD1
+Utils	KEYWORD1
 
-Fee KEYWORD1
-Network KEYWORD1
+Fee	KEYWORD1
+Network	KEYWORD1
 
-Fees    KEYWORD1
-Types   KEYWORD1
+Fees	KEYWORD1
+Types	KEYWORD1
 
-Address KEYWORD1
-PrivateKey  KEYWORD1
-PublicKey   KEYWORD1
-WIF KEYWORD1
+Address	KEYWORD1
+PrivateKey	KEYWORD1
+PublicKey	KEYWORD1
+WIF	KEYWORD1
 
-Builder KEYWORD1
-Deserializer    KEYWORD1
-Serializer  KEYWORD1
-Transaction KEYWORD1
+Builder	KEYWORD1
+Deserializer	KEYWORD1
+Serializer	KEYWORD1
+Transaction	KEYWORD1
 
-Message KEYWORD1
-Slot    KEYWORD1
+Message	KEYWORD1
+Slot	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -42,6 +42,6 @@ Slot    KEYWORD1
 # Constants (LITERAL1)
 #######################################
 
-Devnet  LITERAL1
-Mainnet LITERAL1
-Testnet LITERAL1
+Devnet	LITERAL1
+Mainnet	LITERAL1
+Testnet	LITERAL1
