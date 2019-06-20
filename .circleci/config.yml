@@ -25,7 +25,9 @@ jobs:
           command: ./.circleci/install_platform_io.sh
       - run:
           name: Empty Git Submodule Folders
-          command: rm -rf ./src/lib/{ArduinoJson/*,BIP66/*,uECC/*}
+          command: |
+            rm -rf ./src/lib/{ArduinoJson/*,BIP66/*,uECC/*}
+            rm -rf ./test/lib/googletest/*
       - run:
           name: Build
           command: ./.circleci/script_platform_io.sh
