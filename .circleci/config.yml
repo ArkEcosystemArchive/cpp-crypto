@@ -26,6 +26,9 @@ jobs:
       - run:
           name: Build
           command: ./.circleci/script_platform_io.sh
+      - run:
+          name: Empty Git Submodule Folders
+          command: rm -rf ./src/lib/{ArduinoJson/*,BIP66/*,uECC/*}
   build-linux-gcc7:
     machine: true
     steps:
