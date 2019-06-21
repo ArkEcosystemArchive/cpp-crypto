@@ -12,12 +12,10 @@
 
 #include "bcl/Sha256.hpp"
 
+#include <cstdlib>
 #include <map>
 #include <string>
 #include <vector>
-
-#define __STDC_FORMAT_MACROS 1
-#include <cinttypes>
 
 using namespace Ark::Crypto::Identities;
 
@@ -326,7 +324,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   DynamicJsonDocument doc(docCapacity);
 
   //  Amount
-  doc["amount"] = txArray["amount"];
+  doc["amount"] = strtoull(txArray["amount"].c_str(), nullptr, 10);
 
   //  Asset
   if (this->type == 0) {
@@ -342,7 +340,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
     JsonObject dAsset = doc.createNestedObject("asset");
     JsonObject delegate = dAsset.createNestedObject("delegate");
     delegate["username"] = txArray["username"];
-  }else if (this->type == 3) {
+  } else if (this->type == 3) {
     //  Vote
     JsonObject vAsset = doc.createNestedObject("asset");
     JsonArray votes = vAsset.createNestedArray("votes");
@@ -368,14 +366,14 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   };
 
   //  Fee
-  doc["fee"] = txArray["fee"];
+  doc["fee"] = strtoull(txArray["fee"].c_str(), nullptr, 10);
 
   //  Id
   doc["id"] = txArray["id"];
 
   //  Network
   if (txArray["network"] != "0") {
-    doc["network"] = txArray["network"];
+    doc["network"] = atoi(txArray["network"].c_str());
   };
 
   //  RecipientId
@@ -410,10 +408,10 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   };
 
   //  Timestamp
-  doc["timestamp"] = txArray["timestamp"];
+  doc["timestamp"] = strtoul(txArray["timestamp"].c_str(), nullptr, 10);
 
   //  Type
-  doc["type"] = txArray["type"];
+  doc["type"] = atoi(txArray["type"].c_str());
 
   //  VendorField
   if (std::strlen(txArray["vendorField"].c_str()) > 0) {
@@ -422,7 +420,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
 
   //  Version
   if (txArray["version"] != "0") {
-    doc["version"] = txArray["version"];
+    doc["version"] = atoi(txArray["version"].c_str());
   };
 
   char jsonChar[docCapacity];

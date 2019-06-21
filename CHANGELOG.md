@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - improved formatting and maintainability ([#98])
 - improved Slots implementations ([#92])
 
+### Fixed
+
+- fixed Transaction Json numeric serialization ([#103])
+
 ## [0.5.0] - 2019-02-20
 
 ### Changed

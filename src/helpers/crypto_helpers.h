@@ -29,6 +29,13 @@ const auto WIF_SIZE = 52U;
 
 #endif
 
+#ifndef USE_IOT
+
+#define __STDC_FORMAT_MACROS 1
+#include <cinttypes>
+
+#endif
+
 // Write data into dst
 template <typename T>
 inline void pack(std::vector<uint8_t>& dst, T& data) {
