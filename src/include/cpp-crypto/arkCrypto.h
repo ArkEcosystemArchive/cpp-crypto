@@ -10,26 +10,22 @@
 #ifndef ARKCRYPTO_H
 #define ARKCRYPTO_H
 
-#define HAS_CRYPTO
+#include "common/configuration.hpp"
+#include "common/fee_policy.hpp"
+#include "common/network.hpp"
 
-#if (defined ARDUINO || defined ESP8266 || defined ESP32)
-#define USE_IOT
-#endif
-
-#include "configuration/fee.h"
-#include "configuration/network.h"
-#include "enums/fees.h"
-#include "enums/types.h"
+#include "defaults/fee_policies.hpp"
+#include "defaults/static_fees.hpp"
+#include "defaults/transaction_types.hpp"
 
 #include "identities/address.h"
 #include "identities/privatekey.h"
 #include "identities/publickey.h"
 #include "identities/wif.h"
 
-#include "networks/abstractnetwork.h"
-#include "networks/devnet.h"
-#include "networks/mainnet.h"
-#include "networks/testnet.h"
+#include "networks/devnet.hpp"
+#include "networks/mainnet.hpp"
+#include "networks/testnet.hpp"
 
 #include "transactions/builder.h"
 #include "transactions/deserializer.h"
@@ -39,10 +35,9 @@
 #include "utils/message.h"
 #include "utils/slot.h"
 
-using namespace Ark::Crypto::Configuration;
-using namespace Ark::Crypto::Enums;
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::Identities;
-using namespace Ark::Crypto::Networks;
 using namespace Ark::Crypto::Transactions;
+using namespace Ark::Crypto::Utils;
 
 #endif

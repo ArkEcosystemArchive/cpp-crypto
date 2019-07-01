@@ -32,12 +32,38 @@
 
 void checkCrypto() {
   /**
+   * Create a BridgeChain transaction, tailored for your custom network.
+   */
+  static const Network MyBridgechainNetwork = {
+    "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df",
+    1, 0x53, 0xaa,
+    "2019-04-12T13:00:00.000Z"
+  };
+
+  const Configuration MyBridgechainConfiguration(MyBridgechainNetwork);
+
+  auto myBridgechainTransaction = Builder::buildTransfer(
+          "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+          100000000ULL,
+          "this is a custom bridgechain transaction",
+          "this is a top secret passphrase",
+          "this is a top secret passphrase too",
+          MyBridgechainConfiguration);
+
+    Serial.print("\nBridgechain Transaction: ");
+    Serial.println(myBridgechainTransaction.toJson().c_str());
+
+  /**/
+
+  /********************/
+
+  /**
    * This is how you can check the default 'Network' "Transaction 'Fees' by type.
    * In this example, it should return a 'uint64_t' integer of '10000000' as the default 'Fee' for a 'Transaction' of 'Type' '0'. 
    */
-    Ark::Crypto::Configuration::Fee fee;
-    unsigned long typeZeroTransactionFee = fee.get(0);
-    Serial.print("\n Type 0 default Transaction Fee: ");
+    Configuration config;
+    unsigned long typeZeroTransactionFee = config.getFee(0);
+    Serial.print("\nType 0 default Transaction Fee: ");
     Serial.println(typeZeroTransactionFee); // The response is a 'uint64_t' integer.
   
   /**/

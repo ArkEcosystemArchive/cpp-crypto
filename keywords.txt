@@ -8,23 +8,23 @@
 
 Ark	KEYWORD1
 Crypto	KEYWORD1
-Configuration	KEYWORD1
-Enums	KEYWORD1
+common	KEYWORD1
+defaults	KEYWORD1
 Identities	KEYWORD1
-Networks	KEYWORD1
+managers	KEYWORD1
 Transactions	KEYWORD1
 Utils	KEYWORD1
 
-Fee	KEYWORD1
+Configuration	KEYWORD1
+FeePolicy	KEYWORD1
 Network	KEYWORD1
-
-Fees	KEYWORD1
-Types	KEYWORD1
 
 Address	KEYWORD1
 PrivateKey	KEYWORD1
 PublicKey	KEYWORD1
 WIF	KEYWORD1
+
+Networks	KEYWORD1
 
 Builder	KEYWORD1
 Deserializer	KEYWORD1
@@ -41,6 +41,10 @@ Slot	KEYWORD1
 ######################################
 # Constants (LITERAL1)
 #######################################
+
+Fees	KEYWORD1
+StaticFeePolicy	KEYWORD1
+TransactionTypes	KEYWORD1
 
 Devnet	LITERAL1
 Mainnet	LITERAL1
