@@ -4,10 +4,6 @@ title: "Cpp"
 
 # Cpp
 
-::: warning
-This project is still under development. This page will get more content as the project evolves. In the meantime you can view its source on [Github](https://github.com/ArkEcosystem/cpp-crypto/).
-:::
-
 [[toc]]
 
 ## Installation  
@@ -62,7 +58,6 @@ const auto MyBridgechainTransaction = Builder::buildTransfer(
         "this is a top secret passphrase too",
         MyBridgechainConfiguration);
 ```
-
 
 #### With custom Fees
 
@@ -205,16 +200,16 @@ const uint8_t wifByte = 0xaa;
 WIF wif = WIF::fromPassphrase(passphrase, wifByte);
 ```
 
-# 
+#
 
 # Arduino
-**Arduino IDE:**  
-Download and install the Arduino IDE (>=1.8.5) from the following link:  
+**Arduino IDE:**
+Download and install the Arduino IDE (>=1.8.5) from the following link:
 ```https://www.arduino.cc/en/Main/Software```
 
-Using the Arduino IDE's built in Library Manager,  
-install the following Libraries:  
-```micro-ecc```  
+Using the Arduino IDE's built in Library Manager,
+install the following Libraries:
+```micro-ecc```
 ```AUnit```
 
 #### Ensure all git submodules have been cloned
@@ -268,11 +263,11 @@ void setup()
 void loop() {}
 ```
 
-**PlatformIO IDE:**  
+**PlatformIO IDE:**
 
-#### Python:  
-Use an installer package from the following link or use your preferred method to install Python:  
-```https://www.python.org/downloads/```  
+#### Python:
+Use an installer package from the following link or use your preferred method to install Python:
+```https://www.python.org/downloads/```
 
 Install PlatformIO:
 
@@ -295,7 +290,7 @@ Install AUnit (2778), micro-ecc (1665)
 
     cd test
 
-#### execute the following command to upload test to your board  
+#### execute the following command to upload test to your board
 
 >| board | command |
 >|:-- |:-- |
@@ -307,20 +302,20 @@ Install AUnit (2778), micro-ecc (1665)
 # OS
 ## Linux, macOS and Windows
 
-**CMake:**  
+**CMake:**
 
-Use an installer package from the following link, Homebrew, or use your preferred method:  
+Use an installer package from the following link, Homebrew, or use your preferred method:
 ```https://www.cmake.org/download/```
 
 using
-**Homebrew:**  
+**Homebrew:**
 
     brew install cmake
 
 > note: all other dependencies will be automatically installed via CMake and Hunter Package Manager.
 
 ### make and build
-    cd cpp-crypto  
+    cd cpp-crypto
     cmake . && cmake --build .
 
 ### run tests (Linux, macOS)
