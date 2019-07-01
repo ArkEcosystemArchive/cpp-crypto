@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-bash ./extras/ARDUINO_IDE.sh --auto
-
 mkdir -p ~/Arduino/libraries/cpp-crypto/
 mv ~/project/* ~/Arduino/libraries/cpp-crypto
 
