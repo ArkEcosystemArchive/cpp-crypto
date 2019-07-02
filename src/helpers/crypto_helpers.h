@@ -1,4 +1,11 @@
-
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #ifndef CRYPTO_HELPERS_H
 #define CRYPTO_HELPERS_H
@@ -8,25 +15,24 @@
 #include <string>
 #include <vector>
 
-const auto ADDRESS_LENGTH = 34u;
-const auto COMPRESSED_PUBLICKEY_SIZE = 33u;
-const auto PRIVATEKEY_SIZE = 32u;
-const auto WIF_SIZE = 52u;
+const auto ADDRESS_LENGTH = 34U;
+const auto COMPRESSED_PUBLICKEY_SIZE = 33U;
+const auto PRIVATEKEY_SIZE = 32U;
+const auto WIF_SIZE = 52U;
 
 #if (defined ARDUINO || defined ESP8266 || defined ESP32)
 
 #define USE_IOT
 
-// Including missing implementations of std::to_string
-#include "stl/details/to_string.h"
-
 #include <Arduino.h>
 #include <pgmspace.h>
 
-// undef the C macros to allow the C++ STL to take over
-// This is to have compatibility with various board implementations of the STL
-#undef min
-#undef max
+#endif
+
+#ifndef USE_IOT
+
+#define __STDC_FORMAT_MACROS 1
+#include <cinttypes>
 
 #endif
 
@@ -45,8 +51,12 @@ inline void unpack(T* dst, uint8_t* src, size_t size = -1) {
 
 // Join string vector
 inline std::string join(const std::vector<std::string>& strings) {
-  return std::accumulate(strings.begin(), strings.end(), std::string(),
-                         [](const std::string& a, const std::string& b) -> std::string { return a + b; });
+  return std::accumulate(
+      strings.begin(),
+      strings.end(),
+      std::string(),
+      [](const std::string& a, const std::string& b)
+          -> std::string { return a + b; });
 }
 
 #endif
