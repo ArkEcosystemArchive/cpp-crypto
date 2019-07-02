@@ -25,14 +25,19 @@ set(uECC_SRC
 )
 
 set(COMMON_SRC
-    configuration/fee.cpp
-    configuration/network.cpp
+    common/configuration.cpp
+    common/network.cpp
+    defaults/static_fees.cpp
     helpers/crypto.cpp
     identities/address.cpp
     identities/privatekey.cpp
     identities/publickey.cpp
     identities/wif.cpp
-    networks/abstractnetwork.cpp
+    managers/fee_manager.cpp
+    managers/network_manager.cpp
+    networks/devnet.cpp
+    networks/mainnet.cpp
+    networks/testnet.cpp
     transactions/builder.cpp
     transactions/deserializer.cpp
     transactions/serializer.cpp

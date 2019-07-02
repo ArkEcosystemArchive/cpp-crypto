@@ -1,36 +1,19 @@
 
 #include "gtest/gtest.h"
+#include <arkCrypto.h>
 
-#include "networks/mainnet.h"
-using namespace Ark::Crypto::Networks;
+namespace {  // NOLINT
+  static const std::string Nethash  = "6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988";
+  static const uint8_t Slip44       = 111;
+  static const uint8_t Wif          = 0xaa;
+  static const uint8_t Version      = 0x17;
+  static const std::string Epoch    = "2017-03-21T13:00:00.000Z";
+};  // namespace
 
-TEST(networks, mainnet_base58_prefix_get) {
-  ASSERT_EQ(0x17, Mainnet.getBase58Prefix(BASE58_ADDRESS_P2PKH));
-  ASSERT_EQ(0x00, Mainnet.getBase58Prefix(BASE58_ADDRESS_P2SH));
-  ASSERT_EQ(0xaa, Mainnet.getBase58Prefix(BASE58_WIF));
-}
-
-/**/
-
-TEST(networks, mainnet_bip32_prefix_get) {
-  ASSERT_EQ(46090600, Mainnet.getBIP32Prefix(BIP32_PREFIX_XPUB));
-  ASSERT_EQ(46089520, Mainnet.getBIP32Prefix(BIP32_PREFIX_XPRV));
-}
-
-/**/
-
-TEST(networks, mainnet_epoch) {
-  ASSERT_STREQ("2017-03-21T13:00:00.000Z", Mainnet.epoch());
-}
-
-/**/
-
-TEST(networks, mainnet_is_locked) {
-  ASSERT_EQ(true, Mainnet.isLocked());
-}
-
-/**/
-
-TEST(networks, mainnet_version) {
-  ASSERT_EQ(23, Mainnet.version());
+TEST(networks, mainnet) {
+  ASSERT_STREQ(Nethash.c_str(), Networks::Mainnet().nethash().c_str());
+  ASSERT_EQ(Slip44,             Networks::Mainnet().slip44());
+  ASSERT_EQ(Wif,                Networks::Mainnet().wif());
+  ASSERT_EQ(Version,            Networks::Mainnet().version());
+  ASSERT_STREQ(Epoch.c_str(),   Networks::Mainnet().epoch().c_str());
 }

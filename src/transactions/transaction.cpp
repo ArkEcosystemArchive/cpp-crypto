@@ -1,21 +1,20 @@
 
 #include "transactions/transaction.h"
 
-#include "enums/types.h"
+#include <cstdlib>
+#include <map>
+#include <string>
+#include <vector>
+
+#include "defaults/transaction_types.hpp"
 #include "identities/address.h"
 #include "identities/privatekey.h"
-
 #include "helpers/crypto.h"
 #include "helpers/crypto_helpers.h"
 #include "helpers/encoding/hex.h"
 #include "helpers/json.h"
 
 #include "bcl/Sha256.hpp"
-
-#include <cstdlib>
-#include <map>
-#include <string>
-#include <vector>
 
 using namespace Ark::Crypto::Identities;
 
@@ -114,8 +113,8 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
       std::end(senderKeyBytes));
 
   const auto skipRecipientId =
-    type == Enums::Types::SECOND_SIGNATURE_REGISTRATION
-    || type == Enums::Types::MULTI_SIGNATURE_REGISTRATION;
+    type == defaults::TransactionTypes::SecondSignatureRegistration
+    || type ==defaults::TransactionTypes::MultiSignatureRegistration;
 
   if (!this->recipientId.empty() && !skipRecipientId) {
     std::vector<std::uint8_t> recipientIdBytes = Address::bytesFromBase58Check(
@@ -156,7 +155,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
   pack(bytes, this->amount);
   pack(bytes, this->fee);
 
-  if (type == Enums::Types::SECOND_SIGNATURE_REGISTRATION) {
+  if (type == defaults::TransactionTypes::SecondSignatureRegistration) {
     // SECOND_SIGNATURE_REGISTRATION
     const auto publicKeyBytes = HexToBytes(
         this->asset.signature.publicKey.c_str());
@@ -164,20 +163,20 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
         std::end(bytes),
         std::begin(publicKeyBytes),
         std::end(publicKeyBytes));
-  } else if (type == Enums::Types::DELEGATE_REGISTRATION) {
+  } else if (type == defaults::TransactionTypes::DelegateRegistration) {
     // DELEGATE_REGISTRATION
     bytes.insert(
         std::end(bytes),
         std::begin(this->asset.delegate.username),
         std::end(this->asset.delegate.username));
-  } else if (type == Enums::Types::VOTE) {
+  } else if (type == defaults::TransactionTypes::Vote) {
     // VOTE
     const auto joined = join(this->asset.votes);
     bytes.insert(
         std::end(bytes),
         std::begin(joined),
         std::end(joined));
-  } else if (type == Enums::Types::MULTI_SIGNATURE_REGISTRATION) {
+  } else if (type == defaults::TransactionTypes::MultiSignatureRegistration) {
     // MULTI_SIGNATURE_REGISTRATION
     pack(bytes, this->asset.multiSignature.min);
     pack(bytes, this->asset.multiSignature.lifetime);

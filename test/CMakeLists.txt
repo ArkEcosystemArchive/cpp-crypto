@@ -17,10 +17,11 @@ include_directories(${PROJECT_SOURCE_DIR}/../src/lib/ArduinoJson)
 include_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 set (TEST_SRC
-    ${PROJECT_SOURCE_DIR}/configuration/fee.cpp
-    ${PROJECT_SOURCE_DIR}/configuration/network.cpp
-    ${PROJECT_SOURCE_DIR}/enums/fees.cpp
-    ${PROJECT_SOURCE_DIR}/enums/types.cpp
+    ${PROJECT_SOURCE_DIR}/common/configuration.cpp
+    ${PROJECT_SOURCE_DIR}/common/fee_policy.cpp
+    ${PROJECT_SOURCE_DIR}/common/network.cpp
+    ${PROJECT_SOURCE_DIR}/defaults/static_fees.cpp
+    ${PROJECT_SOURCE_DIR}/defaults/transaction_types.cpp
     ${PROJECT_SOURCE_DIR}/helpers/crypto_helpers.cpp
     ${PROJECT_SOURCE_DIR}/helpers/crypto.cpp
     ${PROJECT_SOURCE_DIR}/helpers/encoding/hex.cpp
@@ -28,7 +29,8 @@ set (TEST_SRC
     ${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
     ${PROJECT_SOURCE_DIR}/identities/publickey.cpp
     ${PROJECT_SOURCE_DIR}/identities/wif.cpp
-    ${PROJECT_SOURCE_DIR}/networks/abstractnetwork.cpp
+    ${PROJECT_SOURCE_DIR}/managers/fee_manager.cpp
+    ${PROJECT_SOURCE_DIR}/managers/network_manager.cpp
     ${PROJECT_SOURCE_DIR}/networks/devnet.cpp
     ${PROJECT_SOURCE_DIR}/networks/mainnet.cpp
     ${PROJECT_SOURCE_DIR}/networks/testnet.cpp

@@ -1,6 +1,9 @@
 
-#include "helpers/crypto_helpers.h"
 #include "utils/slot.h"
+
+#include "common/network.hpp"
+
+#include "helpers/crypto_helpers.h"
 
 #ifndef USE_IOT // OS Builds
 
@@ -10,7 +13,8 @@
   #undef round
   #include "date/date.h"
 
-  uint64_t Ark::Crypto::Utils::Slot::epoch(const Crypto::Networks::AbstractNetwork& network) {
+  uint64_t Ark::Crypto::Utils::Slot::epoch(
+      const Ark::Crypto::Network& network) {
     // https://stackoverflow.com/questions/33421450/c-c-time-zone-correct-time-conversion-to-seconds-since-epoch/33438989#33438989
     std::istringstream in(network.epoch());
     std::chrono::system_clock::time_point tp;
@@ -32,7 +36,8 @@
 
 #endif
 
-uint64_t Ark::Crypto::Utils::Slot::time(const Crypto::Networks::AbstractNetwork& network) {
+uint64_t Ark::Crypto::Utils::Slot::time(
+    const Ark::Crypto::Network& network) {
   const auto time = now() - epoch(network);
   return (time > 0) ? time : 0;
 }
@@ -43,7 +48,8 @@ uint64_t Ark::Crypto::Utils::Slot::time(const Crypto::Networks::AbstractNetwork&
   #include <stdlib.h> /* strtol */
   #include <string>
 
-  uint64_t Ark::Crypto::Utils::Slot::epoch(const Crypto::Networks::AbstractNetwork& network) {
+  uint64_t Ark::Crypto::Utils::Slot::epoch(
+      const Ark::Crypto::Network& network) {
     constexpr const size_t expectedLength = sizeof("2017-03-21T13:00:00.000Z") - 1;
     if (expectedLength != 24) { return 0; } //  Unexpected ISO 8601 date/time length
 

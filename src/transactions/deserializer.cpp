@@ -1,23 +1,22 @@
 
 #include "transactions/deserializer.h"
 
-#include "enums/types.h"
-#include "identities/address.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-
-#include "helpers/crypto.h"
-#include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
-
-#include "bcl/Sha256.hpp"
-
 #include <algorithm>
 #include <cstdint>
 #include <iterator>
 #include <numeric>
 #include <string>
 #include <vector>
+
+#include "defaults/transaction_types.hpp"
+#include "identities/address.h"
+#include "identities/privatekey.h"
+#include "identities/publickey.h"
+#include "helpers/crypto.h"
+#include "helpers/crypto_helpers.h"
+#include "helpers/encoding/hex.h"
+
+#include "bcl/Sha256.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -45,10 +44,10 @@ Transaction Deserializer::deserialize() {
 /**/
 
 void Deserializer::deserializeHeader(Transaction& transaction) {
-  unpack(&transaction.header,     &this->_binary[0]);     // 1 Byte
-  unpack(&transaction.version,    &this->_binary[1]);    // 1 Byte
-  unpack(&transaction.network,    &this->_binary[2]);    // 1 Byte
-  unpack(&transaction.type,       &this->_binary[3]);       // 1 Byte
+  unpack(&transaction.header,     &this->_binary[0]);  // 1 Byte
+  unpack(&transaction.version,    &this->_binary[1]);  // 1 Byte
+  unpack(&transaction.network,    &this->_binary[2]);  // 1 Byte
+  unpack(&transaction.type,       &this->_binary[3]);  // 1 Byte
   unpack(&transaction.timestamp,  &this->_binary[4]);  // 4 Byte
 
   // 33 Byte
@@ -75,30 +74,30 @@ void Deserializer::deserializeHeader(Transaction& transaction) {
 void Deserializer::deserializeType(
     Transaction& transaction) {
   switch (transaction.type) {
-    case Enums::Types::TRANSFER: {
+    case defaults::TransactionTypes::Transfer: {
       deserializeTransfer(transaction);
       break;
     };
-    case Enums::Types::SECOND_SIGNATURE_REGISTRATION: {
+    case defaults::TransactionTypes::SecondSignatureRegistration: {
       deserializeSecondSignatureRegistration(transaction);
       break;
     };
-    case Enums::Types::DELEGATE_REGISTRATION: {
+    case defaults::TransactionTypes::DelegateRegistration: {
       deserializeDelegateRegistration(transaction);
       break;
     };
-    case Enums::Types::VOTE: {
+    case defaults::TransactionTypes::Vote: {
       deserializeVote(transaction);
       break;
     };
-    case Enums::Types::MULTI_SIGNATURE_REGISTRATION: {
+    case defaults::TransactionTypes::MultiSignatureRegistration: {
       deserializeMultiSignatureRegistration(transaction);
       break;
     };
-    case Enums::Types::IPFS: { break; };
-    case Enums::Types::TIMELOCK_TRANSFER: { break; };
-    case Enums::Types::MULTI_PAYMENT: { break; };
-    case Enums::Types::DELEGATE_RESIGNATION: { break; };
+    case defaults::TransactionTypes::Ipfs: { break; };
+    case defaults::TransactionTypes::TimelockTransfer: { break; };
+    case defaults::TransactionTypes::MultiPayment: { break; };
+    case defaults::TransactionTypes::DelegateResignation: { break; };
   };
 }
 
@@ -248,7 +247,7 @@ void Deserializer::handleVersionOne(
     Transaction& transaction) {
   transaction.signSignature = transaction.secondSignature;
 
-  if (transaction.type == Enums::Types::VOTE) {
+  if (transaction.type == defaults::TransactionTypes::Vote) {
     const auto publicKey = Identities::PublicKey::fromHex(
         transaction.senderPublicKey.c_str());
     const auto address = Identities::Address::fromPublicKey(
@@ -257,7 +256,7 @@ void Deserializer::handleVersionOne(
     transaction.recipientId = address.toString();
   };
 
-  if (transaction.type == Enums::Types::MULTI_SIGNATURE_REGISTRATION) {
+  if (transaction.type == defaults::TransactionTypes::MultiSignatureRegistration) {
     std::for_each(
         transaction.asset.multiSignature.keysgroup.begin(),
         transaction.asset.multiSignature.keysgroup.end(),
@@ -274,8 +273,8 @@ void Deserializer::handleVersionOne(
     transaction.id = transaction.getId();
   };
 
-  if (transaction.type == Enums::Types::SECOND_SIGNATURE_REGISTRATION
-      || transaction.type == Enums::Types::MULTI_SIGNATURE_REGISTRATION) {
+  if (transaction.type == defaults::TransactionTypes::SecondSignatureRegistration
+      || transaction.type == defaults::TransactionTypes::MultiSignatureRegistration) {
     const auto publicKey = Identities::PublicKey::fromHex(
         transaction.senderPublicKey.c_str());
     const auto address = Identities::Address::fromPublicKey(

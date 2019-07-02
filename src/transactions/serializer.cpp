@@ -1,16 +1,15 @@
 
 #include "transactions/serializer.h"
 
-#include "configuration/network.h"
-#include "enums/types.h"
-#include "identities/address.h"
-
-#include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
-
 #include <cstdint>
 #include <string>
 #include <vector>
+
+#include "common/configuration.hpp"
+#include "defaults/transaction_types.hpp"
+#include "identities/address.h"
+#include "helpers/crypto_helpers.h"
+#include "helpers/encoding/hex.h"
 
 namespace Ark {
 namespace Crypto {
@@ -30,7 +29,7 @@ std::string Serializer::serialize() {
   bytes.push_back(
       _transaction.network > 0
         ? _transaction.network
-        : Configuration::Network().get().version());
+        : Configuration().getNetwork().version());
   bytes.push_back(_transaction.type);
 
   pack(bytes, _transaction.timestamp);
@@ -81,30 +80,30 @@ void Serializer::serializeVendorField(
 void Serializer::serializeType(
     std::vector<uint8_t>& bytes) {
   switch (_transaction.type) {
-    case Enums::Types::TRANSFER: {
+    case defaults::TransactionTypes::Transfer: {
       serializeTransfer(bytes);
       break;
     };
-    case Enums::Types::SECOND_SIGNATURE_REGISTRATION: {
+    case defaults::TransactionTypes::SecondSignatureRegistration: {
       serializeSecondSignatureRegistration(bytes);
       break;
     };
-    case Enums::Types::DELEGATE_REGISTRATION: {
+    case defaults::TransactionTypes::DelegateRegistration: {
       serializeDelegateRegistration(bytes);
       break;
     };
-    case Enums::Types::VOTE: {
+    case defaults::TransactionTypes::Vote: {
       serializeVote(bytes);
       break;
     };
-    case Enums::Types::MULTI_SIGNATURE_REGISTRATION: {
+    case defaults::TransactionTypes::MultiSignatureRegistration: {
       serializeMultiSignatureRegistration(bytes);
       break;
     };
-    case Enums::Types::IPFS: { break; };
-    case Enums::Types::TIMELOCK_TRANSFER: { break; };
-    case Enums::Types::MULTI_PAYMENT: { break; };
-    case Enums::Types::DELEGATE_RESIGNATION: { break; };
+    case defaults::TransactionTypes::Ipfs: { break; };
+    case defaults::TransactionTypes::TimelockTransfer: { break; };
+    case defaults::TransactionTypes::MultiPayment: { break; };
+    case defaults::TransactionTypes::DelegateResignation: { break; };
   };
 }
 

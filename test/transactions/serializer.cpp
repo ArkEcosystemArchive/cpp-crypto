@@ -1,7 +1,7 @@
 
 #include "gtest/gtest.h"
 
-#include "transactions/serializer.h"
+#include <arkCrypto.h>
 
 TEST(transactions, serialize_transfer) { // NOLINT
   // transfer/passphrase-with-vendor-field.json

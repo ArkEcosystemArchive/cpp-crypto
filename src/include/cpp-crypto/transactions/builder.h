@@ -10,11 +10,12 @@
 #ifndef BUILDER_H
 #define BUILDER_H
 
-#include "transactions/transaction.h"
-
 #include <cstdint>
 #include <string>
 #include <vector>
+
+#include "transactions/transaction.h"
+#include "common/configuration.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -34,29 +35,34 @@ public:
       uint64_t amount,
       std::string vendorField,
       std::string passphrase,
-      std::string secondPassphrase = "");
+      std::string secondPassphrase = "",
+      const Configuration& configuration = {});
   /**/
 
   static Transaction buildSecondSignatureRegistration(
       std::string passphrase,
-      std::string secondPassphrase = "");
+      std::string secondPassphrase = "",
+      const Configuration& configuration = {});
 
   static Transaction buildDelegateRegistration(
       std::string username,
       std::string passphrase,
-      std::string secondPassphrase = "");
+      std::string secondPassphrase = "",
+      const Configuration& configuration = {});
 
   static Transaction buildVote(
       std::vector<std::string> votes,
       std::string passphrase,
-      std::string secondPassphrase = "");
+      std::string secondPassphrase = "",
+      const Configuration& configuration = {});
 
   static Transaction buildMultiSignatureRegistration(
       uint8_t min,
       uint8_t lifetime,
       std::vector<std::string>& keysgroup,
       std::string passphrase,
-      std::string secondPassphrase = "");
+      std::string secondPassphrase = "",
+      const Configuration& configuration = {});
 
 private:
   Builder();
@@ -64,7 +70,8 @@ private:
   static Transaction sign(
       Transaction transaction,
       std::string passphrase,
-      std::string secondPassphrase = "");
+      std::string secondPassphrase = "",
+      const Configuration& configuration = {});
 
   Builder sign(const std::string& passphrase);
 
