@@ -16,7 +16,10 @@
     }
   ],
   "frameworks": "arduino",
-  "platforms": "*",
+  "platforms": [
+    "espressif8266",
+    "espressif32"
+  ],
   "dependencies": [
     {
       "name": "micro-ecc"
