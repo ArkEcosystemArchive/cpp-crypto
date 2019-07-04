@@ -26,6 +26,9 @@
     },
     {
       "name": "ArduinoJson"
+    },
+    {
+      "name": "BIP66"
     }
   ],
   "export": {
