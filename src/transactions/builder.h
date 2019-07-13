@@ -31,7 +31,7 @@ public:
   * validation will fail.
   **/
   static Transaction buildTransfer(
-      std::string recipientId,
+      std::string recipient,
       uint64_t amount,
       std::string vendorField,
       std::string passphrase,

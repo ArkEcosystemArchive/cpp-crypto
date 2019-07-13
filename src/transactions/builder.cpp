@@ -17,7 +17,7 @@ namespace Crypto {
 namespace Transactions {
 
 Transaction Builder::buildTransfer(
-    std::string recipientId,
+    std::string recipient,
     uint64_t amount,
     std::string vendorField,
     std::string passphrase,
@@ -28,7 +28,7 @@ Transaction Builder::buildTransfer(
 
   transaction.type = defaults::TransactionTypes::Transfer;
   transaction.fee = configuration.getFee(defaults::TransactionTypes::Transfer);
-  transaction.recipientId = std::move(recipientId);
+  transaction.recipient = std::move(recipient);
   transaction.amount = amount;
   transaction.vendorField = std::move(vendorField);
 
@@ -93,7 +93,7 @@ Transaction Builder::buildVote(
   const auto recipient = Identities::Address::fromPassphrase(
       passphrase.c_str(),
       configuration.getNetwork().version());
-  transaction.recipientId = recipient.toString();
+  transaction.recipient = recipient.toString();
 
   return sign(transaction,
       std::move(passphrase),
@@ -121,7 +121,7 @@ Transaction Builder::buildMultiSignatureRegistration(
   const auto recipient = Identities::Address::fromPassphrase(
       passphrase.c_str(),
       configuration.getNetwork().version());
-  transaction.recipientId = recipient.toString();
+  transaction.recipient = recipient.toString();
 
   return sign(
       transaction,

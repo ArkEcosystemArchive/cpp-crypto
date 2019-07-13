@@ -114,12 +114,12 @@ void Serializer::serializeTransfer(
   pack(bytes, _transaction.amount);
   pack(bytes, _transaction.expiration);
 
-  std::vector<uint8_t> recipientIdBytes = Identities::Address::bytesFromBase58Check(
-      _transaction.recipientId.c_str());
+  std::vector<uint8_t> recipientBytes = Identities::Address::bytesFromBase58Check(
+      _transaction.recipient.c_str());
   bytes.insert(
       bytes.end(),
-      recipientIdBytes.begin(),
-      recipientIdBytes.end());
+      recipientBytes.begin(),
+      recipientBytes.end());
 }
 
 /**/

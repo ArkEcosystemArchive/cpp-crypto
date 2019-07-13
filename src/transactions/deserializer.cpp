@@ -107,7 +107,7 @@ void Deserializer::deserializeTransfer(
     Transaction& transaction) {
   unpack(&transaction.amount, &this->_binary[_assetOffset / 2]);
   unpack(&transaction.expiration, &this->_binary[_assetOffset / 2 + 8]);
-  transaction.recipientId = Identities::Address::base58encode(
+  transaction.recipient = Identities::Address::base58encode(
       &this->_binary[(_assetOffset / 2) + 12]);
 
   _assetOffset += (8 + 4 + 21) * 2;
@@ -253,7 +253,7 @@ void Deserializer::handleVersionOne(
     const auto address = Identities::Address::fromPublicKey(
         publicKey,
         transaction.network);
-    transaction.recipientId = address.toString();
+    transaction.recipient = address.toString();
   };
 
   if (transaction.type == defaults::TransactionTypes::MultiSignatureRegistration) {
@@ -280,7 +280,7 @@ void Deserializer::handleVersionOne(
     const auto address = Identities::Address::fromPublicKey(
         publicKey,
         transaction.network);
-    transaction.recipientId = address.toString();
+    transaction.recipient = address.toString();
   };
 }
 

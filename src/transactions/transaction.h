@@ -63,7 +63,7 @@ public:
   uint32_t timelock_type = 0;
   std::vector<std::string> signatures = {};
   std::string id = "";
-  std::string recipientId = "";
+  std::string recipient = "";
   std::string senderPublicKey = "";
   std::string signature = "";
   std::string secondSignature = "";
