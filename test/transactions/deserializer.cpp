@@ -26,7 +26,7 @@ TEST(transactions, deserialize_transfer) { // NOLINT
   ASSERT_STREQ(
       "ecf558fbddd62ae42edcfcba02f402d987a94b72a7636ef1121e8625487e2a1e",
       actual.id.c_str());
-  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", actual.recipientId.c_str());
+  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", actual.recipient.c_str());
   ASSERT_STREQ(
       "304402205616d6e361439d67a5c2067bbfc8fce61b93061a4fa113315a1c5cf965ff6f3202200a1d99caaa98aeebcec04edd5365352500addb830c79f49b9de484ec616bb1e1",
       actual.signature.c_str());
@@ -65,10 +65,10 @@ TEST(transactions, deserialize_second_signature_registration) { // NOLINT
       actual.signature.c_str());
   ASSERT_TRUE(actual.verify());
 
-  // special case as the type 1 transaction itself has no recipientId
+  // special case as the type 1 transaction itself has no recipient
   const auto publicKey = Ark::Crypto::Identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
   const auto address = Ark::Crypto::Identities::Address::fromPublicKey(publicKey, actual.network);
-  ASSERT_STREQ(address.toString().c_str(), actual.recipientId.c_str());
+  ASSERT_STREQ(address.toString().c_str(), actual.recipient.c_str());
 }
 
 /**/
@@ -131,7 +131,7 @@ TEST(transactions, deserialize_vote) { // NOLINT
   ASSERT_TRUE(0ULL == actual.amount);
   ASSERT_EQ(0, actual.expiration);
   ASSERT_STREQ("16f28a180cd6f3ea46c10f358a457989e956e9d355258230d0c7b07acec10b73", actual.id.c_str());
-  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", actual.recipientId.c_str());
+  ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", actual.recipient.c_str());
 
   std::vector<std::string> votes = {std::string("+022cca9529ec97a772156c152a00aad155ee6708243e65c9d211a589cb5d43234d")};
   ASSERT_EQ(1, actual.asset.votes.size());
@@ -207,8 +207,8 @@ TEST(transactions, deserialize_multi_signature_registration) { // NOLINT
 
   ASSERT_TRUE(actual.verify());
 
-  // special case as the type 4 transaction itself has no recipientId
+  // special case as the type 4 transaction itself has no recipient
   const auto publicKey = Ark::Crypto::Identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
   const auto address = Ark::Crypto::Identities::Address::fromPublicKey(publicKey, actual.network);
-  ASSERT_STREQ(address.toString().c_str(), actual.recipientId.c_str());
+  ASSERT_STREQ(address.toString().c_str(), actual.recipient.c_str());
 }
