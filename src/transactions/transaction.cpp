@@ -323,7 +323,8 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   DynamicJsonDocument doc(docCapacity);
 
   //  Amount
-  doc["amount"] = strtoull(txArray["amount"].c_str(), nullptr, 10);
+  // >= Core v.2.5 'amount' json is string-type
+  doc["amount"] = txArray["amount"];
 
   //  Asset
   if (this->type == 0) {
@@ -365,7 +366,8 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   };
 
   //  Fee
-  doc["fee"] = strtoull(txArray["fee"].c_str(), nullptr, 10);
+  // >= Core v.2.5 'amount' json is string-type
+  doc["fee"] = txArray["fee"];
 
   //  Id
   doc["id"] = txArray["id"];
