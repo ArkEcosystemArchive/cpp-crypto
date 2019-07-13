@@ -190,9 +190,9 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   DeserializationError tError = deserializeJson(tDoc, tJson);
   ASSERT_FALSE(tError);
 
-  ASSERT_STREQ(tDoc["amount"].as<const char*>(), "1");
+  ASSERT_STREQ("1", tDoc["amount"].as<const char*>());
 
-  ASSERT_STREQ(tDoc["fee"].as<const char*>(), "10000000");
+  ASSERT_STREQ("10000000", tDoc["fee"].as<const char*>());
 
   ASSERT_FALSE(tDoc["id"].as<std::string>().empty());
 
@@ -223,12 +223,12 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   DeserializationError ssError = deserializeJson(ssDoc, ssJson);
   ASSERT_FALSE(ssError);
 
-  ASSERT_STREQ(ssDoc["amount"].as<const char*>(), "0");
+  ASSERT_STREQ("0", ssDoc["amount"].as<const char*>());
 
   ASSERT_STREQ("02e1684d8990c0a5625aec85977fcf22204884bc08d45dbc71b2859e5fa4f45104",
                ssDoc["asset"]["signature"]["publicKey"].as<const char*>());
 
-  ASSERT_STREQ(ssDoc["fee"].as<const char*>(), "500000000");
+  ASSERT_STREQ("500000000", ssDoc["fee"].as<const char*>());
 
   ASSERT_FALSE(ssDoc["id"].as<std::string>().empty());
 
@@ -259,12 +259,12 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   DeserializationError dError = deserializeJson(dDoc, dJson);
   ASSERT_FALSE(dError);
 
-  ASSERT_STREQ(dDoc["amount"].as<const char*>(), "0");
+  ASSERT_STREQ("0", dDoc["amount"].as<const char*>());
 
   ASSERT_STREQ("testName",
                dDoc["asset"]["delegate"]["username"].as<const char*>());
 
-  ASSERT_STREQ(dDoc["fee"].as<const char*>(), "2500000000");
+  ASSERT_STREQ("2500000000", dDoc["fee"].as<const char*>());
 
   ASSERT_FALSE(dDoc["id"].as<std::string>().empty());
 
@@ -299,7 +299,7 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   DeserializationError vError = deserializeJson(vDoc, vJson);
   ASSERT_FALSE(vError);
 
-  ASSERT_STREQ(vDoc["amount"].as<const char*>(), "0");
+  ASSERT_STREQ("0", vDoc["amount"].as<const char*>());
 
   ASSERT_STREQ("-0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6",
                vDoc["asset"]["votes"][0].as<const char*>());
@@ -307,7 +307,7 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_STREQ("+0250b742256f9321bd7d46f3ed9769b215a7c2fb02be951acf43bc51eb57ceadf6",
                vDoc["asset"]["votes"][1].as<const char*>());
 
-  ASSERT_STREQ(vDoc["fee"].as<const char*>(), "100000000");
+  ASSERT_STREQ("100000000", vDoc["fee"].as<const char*>());
 
   ASSERT_FALSE(vDoc["id"].as<std::string>().empty());
 
