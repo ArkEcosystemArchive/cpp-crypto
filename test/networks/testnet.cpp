@@ -1,27 +1,19 @@
+
 #include "gtest/gtest.h"
+#include <arkCrypto.h>
 
-#include "networks/testnet.h"
-using namespace Ark::Crypto::Networks;
+namespace {  // NOLINT
+  static const std::string Nethash  = "d9acd04bde4234a81addb8482333b4ac906bed7be5a9970ce8ada428bd083192";
+  static const uint8_t Slip44       = 1;
+  static const uint8_t Wif          = 0xba;
+  static const uint8_t Version      = 0x17;
+  static const std::string Epoch    = "2017-03-21T13:00:00.000Z";
+};  // namespace
 
-TEST(networks, testnet_base58_prefix_get) {
-  ASSERT_EQ(0x17, Testnet.getBase58Prefix(BASE58_ADDRESS_P2PKH));
-  ASSERT_EQ(0x00, Testnet.getBase58Prefix(BASE58_ADDRESS_P2SH));
-  ASSERT_EQ(0xba, Testnet.getBase58Prefix(BASE58_WIF));
-}
-
-TEST(networks, testnet_bip32_prefix_get) {
-  ASSERT_EQ(70617039, Testnet.getBIP32Prefix(BIP32_PREFIX_XPUB));
-  ASSERT_EQ(70615956, Testnet.getBIP32Prefix(BIP32_PREFIX_XPRV));
-}
-
-TEST(networks, testnet_epoch) {
-  ASSERT_STREQ("2017-03-21T13:00:00.000Z", Testnet.epoch());
-}
-
-TEST(networks, testnet_is_locked) {
-  ASSERT_EQ(true, Testnet.isLocked());
-}
-
-TEST(networks, testnet_version) {
-  ASSERT_EQ(23, Testnet.version());
+TEST(networks, testnet) {
+  ASSERT_STREQ(Nethash.c_str(), Networks::Testnet().nethash().c_str());
+  ASSERT_EQ(Slip44,             Networks::Testnet().slip44());
+  ASSERT_EQ(Wif,                Networks::Testnet().wif());
+  ASSERT_EQ(Version,            Networks::Testnet().version());
+  ASSERT_STREQ(Epoch.c_str(),   Networks::Testnet().epoch().c_str());
 }

@@ -5,7 +5,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Make scripts executable 
+          name: Make scripts executable
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Install
@@ -18,11 +18,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Make scripts executable 
+          name: Make scripts executable
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Install
           command: ./.circleci/install_platform_io.sh
+      - run:
+          name: Empty Git Submodule Folders
+          command: |
+            rm -rf ./src/lib/{ArduinoJson/*,BIP66/*,uECC/*}
+            rm -rf ./test/lib/googletest/*
       - run:
           name: Build
           command: ./.circleci/script_platform_io.sh
@@ -34,16 +39,15 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get remove cmake cmake-data
-            sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test 
+            sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
             sudo apt-add-repository -y ppa:george-edison55/cmake-3.x
             sudo apt-get update
             sudo apt-get -y install g++-7 gcc-7 lcov cmake
             sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
             sudo update-alternatives --config gcc
       - run:
-          name: Make scripts executable 
+          name: Make scripts executable
           command: sudo chmod -R +x ./.circleci/*.sh
-    
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
@@ -63,28 +67,22 @@ jobs:
             sudo apt-get update
             sudo apt install python-lldb-5.0 lcov cmake
             sudo apt install clang-5.0 clang-tidy-5.0 clang-format-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libllvm5.0 lldb-5.0 llvm-5.0 llvm-5.0-dev
-
             sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-5.0 60
             sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 50
             sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-5.0 60
             sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 50
-
       - run:
-          name: Make scripts executable 
+          name: Make scripts executable
           command: sudo chmod -R +x ./.circleci/*.sh
-
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
-          
       - run:
           name: Clang Tidy
           command: ./.circleci/clang_tidy.sh
-          
       - run:
           name: Clang Format
           command: ./.circleci/clang_format.sh
-          
   build-macos-9-2:
     macos:
       xcode: "9.2.0"
@@ -95,7 +93,7 @@ jobs:
           name: Install dependencies
           command: brew install cmake lcov
       - run:
-          name: Make scripts executable 
+          name: Make scripts executable
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Build
@@ -109,12 +107,11 @@ jobs:
           name: Install dependencies
           command: brew install cmake lcov
       - run:
-          name: Make scripts executable 
+          name: Make scripts executable
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
-
 workflows:
   version: 2
   build:
@@ -125,4 +122,3 @@ workflows:
       - build-linux-clang-5
       - build-macos-9-2
       - build-macos-9-3
-      

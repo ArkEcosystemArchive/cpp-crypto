@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.2.2)
 
 project(Ark-Cpp-Crypto-tests C CXX)
 
-set(BUILD_GMOCK OFF FORCE)
-
 add_subdirectory(lib/googletest)
 
 include(CTest)
@@ -19,24 +17,29 @@ include_directories(${PROJECT_SOURCE_DIR}/../src/lib/ArduinoJson)
 include_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 set (TEST_SRC
-	${PROJECT_SOURCE_DIR}/configuration/fee.cpp
-	${PROJECT_SOURCE_DIR}/configuration/network.cpp
-	${PROJECT_SOURCE_DIR}/enums/fees.cpp
-	${PROJECT_SOURCE_DIR}/enums/types.cpp
-	${PROJECT_SOURCE_DIR}/identities/address.cpp
-	${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
-	${PROJECT_SOURCE_DIR}/identities/publickey.cpp
-	${PROJECT_SOURCE_DIR}/identities/wif.cpp
-	${PROJECT_SOURCE_DIR}/networks/abstractnetwork.cpp
-	${PROJECT_SOURCE_DIR}/networks/devnet.cpp
-	${PROJECT_SOURCE_DIR}/networks/mainnet.cpp
-	${PROJECT_SOURCE_DIR}/networks/testnet.cpp
-  ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
-  ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
-	${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
-	${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
-  ${PROJECT_SOURCE_DIR}/utils/message.cpp
-	${PROJECT_SOURCE_DIR}/utils/slot.cpp
+    ${PROJECT_SOURCE_DIR}/common/configuration.cpp
+    ${PROJECT_SOURCE_DIR}/common/fee_policy.cpp
+    ${PROJECT_SOURCE_DIR}/common/network.cpp
+    ${PROJECT_SOURCE_DIR}/defaults/static_fees.cpp
+    ${PROJECT_SOURCE_DIR}/defaults/transaction_types.cpp
+    ${PROJECT_SOURCE_DIR}/helpers/crypto_helpers.cpp
+    ${PROJECT_SOURCE_DIR}/helpers/crypto.cpp
+    ${PROJECT_SOURCE_DIR}/helpers/encoding/hex.cpp
+    ${PROJECT_SOURCE_DIR}/identities/address.cpp
+    ${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
+    ${PROJECT_SOURCE_DIR}/identities/publickey.cpp
+    ${PROJECT_SOURCE_DIR}/identities/wif.cpp
+    ${PROJECT_SOURCE_DIR}/managers/fee_manager.cpp
+    ${PROJECT_SOURCE_DIR}/managers/network_manager.cpp
+    ${PROJECT_SOURCE_DIR}/networks/devnet.cpp
+    ${PROJECT_SOURCE_DIR}/networks/mainnet.cpp
+    ${PROJECT_SOURCE_DIR}/networks/testnet.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
+    ${PROJECT_SOURCE_DIR}/utils/message.cpp
+    ${PROJECT_SOURCE_DIR}/utils/slot.cpp
 )
 
 find_library(Ark-Cpp-Crypto-tests PUBLIC)
@@ -54,4 +57,4 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
-  endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
+endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"

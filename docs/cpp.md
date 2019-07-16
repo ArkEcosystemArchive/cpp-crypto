@@ -16,6 +16,79 @@ This project is still under development. This page will get more content as the 
 * [macOS >= 10.10](#OS)  
 * [Windows >= 7](#OS)  
 
+### ARK Transactions
+
+#### Devnet
+
+```cpp
+const auto DevnetTransaction = Builder::buildTransfer(
+        "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+        100000000ULL,
+        "this is a devnet transaction",
+        "this is a top secret passphrase",
+        "this is a top secret passphrase too");
+```
+
+#### Mainnet
+
+```cpp
+const Configuration MainnetConfiguration(Networks::Mainnet());
+
+const auto MainnetTransaction = Builder::buildTransfer(
+        "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+        100000000ULL,
+        "this is a mainnet transaction",
+        "this is a top secret passphrase",
+        "this is a top secret passphrase too",
+        MainnetConfiguration);
+```
+
+#### BridgeChain Transaction
+
+```cpp
+static const Network MyBridgechainNetwork = {
+  "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df",
+  1, 0x53, 0xaa,
+  "2019-04-12T13:00:00.000Z"
+};
+
+const Configuration MyBridgechainConfiguration(MyBridgechainNetwork);
+
+const auto MyBridgechainTransaction = Builder::buildTransfer(
+        "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+        100000000ULL,
+        "this is a custom bridgechain transaction",
+        "this is a top secret passphrase",
+        "this is a top secret passphrase too",
+        MyBridgechainConfiguration);
+```
+
+
+#### With custom Fees
+
+```cpp
+static const Network MyBridgechainNetwork = {
+  "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df",
+  1, 0x53, 0xaa,
+  "2019-04-12T13:00:00.000Z"
+};
+
+const FeePolicy MyCustomFees = {
+  900000000ULL, 800000000ULL, 700000000ULL, 600000000ULL, 500000000ULL,
+  400000000ULL, 300000000ULL, 200000000ULL, 100000000ULL, 0ULL
+};
+
+ßconst Configuration MyBridgechainConfiguration(MyBridgechainNetwork,
+                                                MyCustomFees);
+
+const auto MyBridgechainTransaction = Builder::buildTransfer(
+        "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
+        100000000ULL,
+        "",
+        "this is a top secret passphrase",
+        "",
+        MyBridgechainConfiguration);
+```
 
 ### Sign
 

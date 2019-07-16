@@ -10,23 +10,25 @@
 #ifndef ARK_UTILITIES_SLOTS_H
 #define ARK_UTILITIES_SLOTS_H
 
-#include "configuration/network.h"
+#include <cstdint>
+
+#include "common/network.hpp"
 
 namespace Ark {
 namespace Crypto {
 namespace Utils {
-
+/**/
 class Slot {
 public:
-  static uint64_t epoch(Crypto::Networks::AbstractNetwork network);
-  static uint64_t time(Crypto::Networks::AbstractNetwork network);
+  static uint64_t epoch(const Network& network);
+  static uint64_t time(const Network& network);
 
 private:
   static uint64_t now();
 };
-
-}  // namespace Utils
-}  // namespace Crypto
-}  // namespace Ark
+/**/
+};  // namespace Utils
+};  // namespace Crypto
+};  // namespace Ark
 
 #endif

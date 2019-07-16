@@ -10,42 +10,34 @@
 #ifndef PRIVATEKEY_H
 #define PRIVATEKEY_H
 
-#include <cassert>
-#include <string>
-#include "bcl/Base58Check.hpp"
-#include "bcl/Sha256.hpp"
-#include "bcl/Sha256Hash.hpp"
-#include "helpers/encoding/hex.h"
 #include "helpers/crypto_helpers.h"
+
+#include <cstdint>
+#include <string>
 
 namespace Ark {
 namespace Crypto {
 namespace Identities {
-
-/**
- * This is the private key class.
- *
- * @author Simon Downey <simon@ark.io>
- **/
+/**/
 class PrivateKey {
- protected:
-  uint8_t bytes_[PRIVATEKEY_SIZE];
+private:
+  uint8_t bytes_[PRIVATEKEY_SIZE] {};
 
- public:
-  PrivateKey() : bytes_(){};
-  PrivateKey(const char *const newPrivateKeyStr);
-  PrivateKey(const uint8_t *newPrivateKeyBytes);
+public:
+  PrivateKey() : bytes_() {};
+  PrivateKey(const char* newPrivateKeyStr);
+  PrivateKey(const uint8_t* newPrivateKeyBytes);
 
   const uint8_t *toBytes();
   std::string toString() const;
 
-  static PrivateKey fromPassphrase(const char *const passphrase);
-  static PrivateKey fromHex(const char *const privateKey);
-  static PrivateKey fromWIFString(const char *wifStr, uint8_t wifByte);
+  static PrivateKey fromPassphrase(const char* passphrase);
+  static PrivateKey fromHex(const char* privateKey);
+  static PrivateKey fromWIFString(const char* wifStr, uint8_t wifByte);
 
   static bool validate(PrivateKey privateKey);
-  static bool validate(const char *privateKeyStr);
-  static bool validate(const uint8_t *privateKeyBytes);
+  static bool validate(const char* privateKeyStr);
+  static bool validate(const uint8_t* privateKeyBytes);
 };
 /**/
 };  // namespace Identities

@@ -1,27 +1,19 @@
+
 #include "gtest/gtest.h"
+#include <arkCrypto.h>
 
-#include "networks/devnet.h"
-using namespace Ark::Crypto::Networks;
+namespace {  // NOLINT
+  static const std::string Nethash  = "2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867";
+  static const uint8_t Slip44       = 1;
+  static const uint8_t Wif          = 0xaa;
+  static const uint8_t Version      = 0x1E;
+  static const std::string Epoch    = "2017-03-21T13:00:00.000Z";
+};  // namespace
 
-TEST(networks, devnet_base58_prefix_get) {
-  ASSERT_EQ(0x1E, Devnet.getBase58Prefix(BASE58_ADDRESS_P2PKH));
-  ASSERT_EQ(0x00, Devnet.getBase58Prefix(BASE58_ADDRESS_P2SH));
-  ASSERT_EQ(0xaa, Devnet.getBase58Prefix(BASE58_WIF));
-}
-
-TEST(networks, devnet_bip32_prefix_get) {
-  ASSERT_EQ(46090600, Devnet.getBIP32Prefix(BIP32_PREFIX_XPUB));
-  ASSERT_EQ(46089520, Devnet.getBIP32Prefix(BIP32_PREFIX_XPRV));
-}
-
-TEST(networks, devnet_epoch) {
-  ASSERT_STREQ("2017-03-21T13:00:00.000Z", Devnet.epoch());
-}
-
-TEST(networks, devnet_is_locked) {
-  ASSERT_EQ(true, Devnet.isLocked());
-}
-
-TEST(networks, devnet_version) {
-  ASSERT_EQ(30, Devnet.version());
+TEST(networks, devnet) {
+  ASSERT_STREQ(Nethash.c_str(), Networks::Devnet().nethash().c_str());
+  ASSERT_EQ(Slip44,             Networks::Devnet().slip44());
+  ASSERT_EQ(Wif,                Networks::Devnet().wif());
+  ASSERT_EQ(Version,            Networks::Devnet().version());
+  ASSERT_STREQ(Epoch.c_str(),   Networks::Devnet().epoch().c_str());
 }

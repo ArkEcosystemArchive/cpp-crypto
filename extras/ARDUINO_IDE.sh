@@ -27,7 +27,7 @@ if [ "$1" == "--auto" ]; then
 fi
 
 # Directories
-EXTRAS_DIR=`dirname "$0"`
+EXTRAS_DIR=$(dirname $0)
 PROJECT_ROOT=${EXTRAS_DIR}/../
 INCLUDE_DIR=${EXTRAS_DIR}/../src/include
 INCLUDE_CRYPTO_DIR=${INCLUDE_DIR}/cpp-crypto
@@ -38,22 +38,20 @@ EXTRAS_BACKUP_DIR=${EXTRAS_DIR}/BACKUP
 SRC_LIB_DIR=${SRC_DIR}/lib
 EXTRAS_LIB_DIR=${EXTRAS_BACKUP_DIR}/lib
 
-EXTRAS_IDENTITIES_DIR=${EXTRAS_BACKUP_DIR}/identities
+SRC_COMMON_DIR=${SRC_DIR}/common
+INCLUDE_COMMON_DIR=${INCLUDE_CRYPTO_DIR}/common
 
-INCLUDE_CONFIGURATION_DIR=${INCLUDE_CRYPTO_DIR}/configuration
-SRC_CONFIGURATION_DIR=${SRC_DIR}/configuration
+SRC_DEFAULTS_DIR=${SRC_DIR}/defaults
+INCLUDE_DEFAULTS_DIR=${INCLUDE_CRYPTO_DIR}/defaults
 
-INCLUDE_ENUMS_DIR=${INCLUDE_CRYPTO_DIR}/enums
-SRC_ENUMS_DIR=${SRC_DIR}/enums
-
-INCLUDE_HELPERS_DIR=${INCLUDE_CRYPTO_DIR}/helpers
 SRC_HELPERS_DIR=${SRC_DIR}/helpers
+INCLUDE_HELPERS_DIR=${INCLUDE_CRYPTO_DIR}/helpers
 
-INCLUDE_ENCODING_DIR=${INCLUDE_HELPERS_DIR}/encoding
 SRC_ENCODING_DIR=${SRC_HELPERS_DIR}/encoding
+INCLUDE_ENCODING_DIR=${INCLUDE_HELPERS_DIR}/encoding
 
-INCLUDE_IDENTITIES_DIR=${INCLUDE_CRYPTO_DIR}/identities
 SRC_IDENTITIES_DIR=${SRC_DIR}/identities
+INCLUDE_IDENTITIES_DIR=${INCLUDE_CRYPTO_DIR}/identities
 
 INCLUDE_NETWORKS_DIR=${INCLUDE_CRYPTO_DIR}/networks
 SRC_NETWORKS_DIR=${SRC_DIR}/networks
@@ -100,16 +98,15 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   echo -e "Moving 'arkCrypto.h' to 'src' directory.\n"
   mv ${INCLUDE_CRYPTO_DIR}/arkCrypto.h ${SRC_DIR}
 
-  echo -e "Moving 'configuration' headers.\n"
-  mv ${INCLUDE_CONFIGURATION_DIR}/fee.h     ${SRC_CONFIGURATION_DIR}
-  mv ${INCLUDE_CONFIGURATION_DIR}/network.h ${SRC_CONFIGURATION_DIR}
+  echo -e "Moving 'common' headers.\n"
+  mv ${INCLUDE_COMMON_DIR}/configuration.hpp  ${SRC_COMMON_DIR}
+  mv ${INCLUDE_COMMON_DIR}/fee_policy.hpp     ${SRC_COMMON_DIR}
+  mv ${INCLUDE_COMMON_DIR}/network.hpp        ${SRC_COMMON_DIR}
 
-  echo "Creating 'enums' folder 🗂"
-  mkdir ${SRC_ENUMS_DIR}
-
-  echo -e "Moving 'enums' headers.\n"
-  mv ${INCLUDE_ENUMS_DIR}/fees.h  ${SRC_ENUMS_DIR}
-  mv ${INCLUDE_ENUMS_DIR}/types.h ${SRC_ENUMS_DIR}
+  echo -e "Moving 'defaults' headers.\n"
+  mv ${INCLUDE_DEFAULTS_DIR}/fee_policies.hpp       ${SRC_DEFAULTS_DIR}
+  mv ${INCLUDE_DEFAULTS_DIR}/static_fees.hpp        ${SRC_DEFAULTS_DIR}
+  mv ${INCLUDE_DEFAULTS_DIR}/transaction_types.hpp  ${SRC_DEFAULTS_DIR}
 
   echo -e "Moving 'helpers' headers.\n"
   mkdir ${SRC_ENCODING_DIR}
@@ -122,10 +119,10 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_IDENTITIES_DIR}/wif.h        ${SRC_IDENTITIES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
-  mv ${INCLUDE_NETWORKS_DIR}/abstractnetwork.h  ${SRC_NETWORKS_DIR}
-  mv ${INCLUDE_NETWORKS_DIR}/devnet.h           ${SRC_NETWORKS_DIR}
-  mv ${INCLUDE_NETWORKS_DIR}/mainnet.h          ${SRC_NETWORKS_DIR}
-  mv ${INCLUDE_NETWORKS_DIR}/testnet.h          ${SRC_NETWORKS_DIR}
+  mv ${INCLUDE_NETWORKS_DIR}/networks.hpp ${SRC_NETWORKS_DIR}
+  mv ${INCLUDE_NETWORKS_DIR}/devnet.hpp   ${SRC_NETWORKS_DIR}
+  mv ${INCLUDE_NETWORKS_DIR}/mainnet.hpp  ${SRC_NETWORKS_DIR}
+  mv ${INCLUDE_NETWORKS_DIR}/testnet.hpp  ${SRC_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
   mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
@@ -133,13 +130,14 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
   mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
 
-  echo -e "Backing up, moving, and removing relevant modules from the 'lib' directory.\n"
+  echo -e "Backing up, moving, and removing dependencies from the 'src/lib' directory.\n"
+  mkdir ${EXTRAS_BACKUP_DIR}
   mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_BACKUP_DIR}
+  mv ${SRC_LIB_DIR}/BIP66       ${EXTRAS_BACKUP_DIR}
   mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_BACKUP_DIR}
   mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
   mv ${SRC_LIB_DIR}/date        ${SRC_DIR}
   mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
-  mv ${SRC_LIB_DIR}/stl         ${SRC_DIR}
 
   echo -e "Moving Docs to the './extras' directory.\n"
   mv ${PROJECT_ROOT}/docs ${EXTRAS_DIR}
@@ -161,8 +159,8 @@ else
   echo -e "Creating the 'include' directory tree 🗂\n"
   mkdir ${INCLUDE_DIR}
   mkdir ${INCLUDE_CRYPTO_DIR}
-  mkdir ${INCLUDE_CONFIGURATION_DIR}
-  mkdir ${INCLUDE_ENUMS_DIR}
+  mkdir ${INCLUDE_COMMON_DIR}
+  mkdir ${INCLUDE_DEFAULTS_DIR}
   mkdir ${INCLUDE_HELPERS_DIR}
   mkdir ${INCLUDE_ENCODING_DIR}
   mkdir ${INCLUDE_IDENTITIES_DIR}
@@ -172,13 +170,15 @@ else
   echo -e "Moving 'arkCrypto.h' back to the 'include/cpp-crypto/' directory.\n"
   mv ${SRC_DIR}/arkCrypto.h ${INCLUDE_CRYPTO_DIR}
 
-  echo -e "Moving 'configuration' headers.\n"
-  mv ${SRC_CONFIGURATION_DIR}/fee.h     ${INCLUDE_CONFIGURATION_DIR}
-  mv ${SRC_CONFIGURATION_DIR}/network.h ${INCLUDE_CONFIGURATION_DIR}
+  echo -e "Moving 'common' headers.\n"
+  mv ${SRC_COMMON_DIR}/configuration.hpp  ${INCLUDE_COMMON_DIR}
+  mv ${SRC_COMMON_DIR}/fee_policy.hpp     ${INCLUDE_COMMON_DIR}
+  mv ${SRC_COMMON_DIR}/network.hpp        ${INCLUDE_COMMON_DIR}
 
-  echo -e "Moving 'enums' headers.\n"
-  mv ${SRC_ENUMS_DIR}/fees.h  ${INCLUDE_ENUMS_DIR}
-  mv ${SRC_ENUMS_DIR}/types.h ${INCLUDE_ENUMS_DIR}
+  echo -e "Moving 'defaults' headers.\n"
+  mv ${SRC_DEFAULTS_DIR}/fee_policies.hpp       ${INCLUDE_DEFAULTS_DIR}
+  mv ${SRC_DEFAULTS_DIR}/static_fees.hpp        ${INCLUDE_DEFAULTS_DIR}
+  mv ${SRC_DEFAULTS_DIR}/transaction_types.hpp  ${INCLUDE_DEFAULTS_DIR}
 
   echo -e "Moving 'helpers/encoding' headers.\n"
   mv ${SRC_ENCODING_DIR}/hex.h ${INCLUDE_ENCODING_DIR}
@@ -191,10 +191,10 @@ else
   mv ${SRC_IDENTITIES_DIR}/wif.h        ${INCLUDE_IDENTITIES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
-  mv ${SRC_NETWORKS_DIR}/abstractnetwork.h  ${INCLUDE_NETWORKS_DIR}
-  mv ${SRC_NETWORKS_DIR}/devnet.h           ${INCLUDE_NETWORKS_DIR}
-  mv ${SRC_NETWORKS_DIR}/mainnet.h          ${INCLUDE_NETWORKS_DIR}
-  mv ${SRC_NETWORKS_DIR}/testnet.h          ${INCLUDE_NETWORKS_DIR}
+  mv ${SRC_NETWORKS_DIR}/networks.hpp ${INCLUDE_NETWORKS_DIR}
+  mv ${SRC_NETWORKS_DIR}/devnet.hpp   ${INCLUDE_NETWORKS_DIR}
+  mv ${SRC_NETWORKS_DIR}/mainnet.hpp  ${INCLUDE_NETWORKS_DIR}
+  mv ${SRC_NETWORKS_DIR}/testnet.hpp  ${INCLUDE_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
   mv ${SRC_TRANSACTIONS_DIR}/builder.h      ${INCLUDE_TRANSACTIONS_DIR}
@@ -205,17 +205,16 @@ else
   echo -e "Restoring the 'lib' directory.\n"
   mkdir ${SRC_LIB_DIR}
   mv ${EXTRAS_BACKUP_DIR}/ArduinoJson ${SRC_LIB_DIR}
+  mv ${EXTRAS_BACKUP_DIR}/BIP66       ${SRC_LIB_DIR}
   mv ${EXTRAS_BACKUP_DIR}/uECC        ${SRC_LIB_DIR}
   mv ${SRC_DIR}/bcl                   ${SRC_LIB_DIR}
   mv ${SRC_DIR}/date                  ${SRC_LIB_DIR}
   mv ${SRC_DIR}/rfc6979               ${SRC_LIB_DIR}
-  mv ${SRC_DIR}/stl                   ${SRC_LIB_DIR}
 
   echo -e "Moving Docs back to the project root directory.\n"
   mv ${EXTRAS_DIR}/docs  ${PROJECT_ROOT}
 
   echo -e "Removing old directories 🗑\n"
-  rm -rf ${SRC_ENUMS_DIR}
   rm -rf ${EXTRAS_BACKUP_DIR}
 
   echo -e "****************************************\n"
