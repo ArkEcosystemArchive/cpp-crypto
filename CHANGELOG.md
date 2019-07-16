@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- changed amount and fee Json serialization to match Core v.2.5 ([#111])
 - improved PlatformIO configuration ([#101])
 - improved formatting and maintainability ([#98])
 - improved Slots implementations ([#92])
