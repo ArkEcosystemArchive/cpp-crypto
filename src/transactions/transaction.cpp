@@ -112,17 +112,17 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
       std::begin(senderKeyBytes),
       std::end(senderKeyBytes));
 
-  const auto skipRecipientId =
+  const auto skiprecipient =
     type == defaults::TransactionTypes::SecondSignatureRegistration
     || type ==defaults::TransactionTypes::MultiSignatureRegistration;
 
-  if (!this->recipientId.empty() && !skipRecipientId) {
-    std::vector<std::uint8_t> recipientIdBytes = Address::bytesFromBase58Check(
-        this->recipientId.c_str());
+  if (!this->recipient.empty() && !skiprecipient) {
+    std::vector<std::uint8_t> recipientBytes = Address::bytesFromBase58Check(
+        this->recipient.c_str());
     bytes.insert(
         std::end(bytes),
-        std::begin(recipientIdBytes),
-        std::end(recipientIdBytes));
+        std::begin(recipientBytes),
+        std::end(recipientBytes));
   } else {
     std::vector<uint8_t> filler(21, 0);
     bytes.insert(
@@ -301,7 +301,7 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
     { "fee", fee },
     { "id", this->id },
     { "network", network },
-    { "recipientId", this->recipientId },
+    { "recipient", this->recipient },
     { "secondSignature", this->secondSignature },
     { "senderPublicKey", this->senderPublicKey },
     { "signature", this->signature },
@@ -323,7 +323,8 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   DynamicJsonDocument doc(docCapacity);
 
   //  Amount
-  doc["amount"] = strtoull(txArray["amount"].c_str(), nullptr, 10);
+  // >= Core v.2.5 'amount' json is string-type
+  doc["amount"] = txArray["amount"];
 
   //  Asset
   if (this->type == 0) {
@@ -365,7 +366,8 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   };
 
   //  Fee
-  doc["fee"] = strtoull(txArray["fee"].c_str(), nullptr, 10);
+  // >= Core v.2.5 'amount' json is string-type
+  doc["fee"] = txArray["fee"];
 
   //  Id
   doc["id"] = txArray["id"];
@@ -375,8 +377,8 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
     doc["network"] = atoi(txArray["network"].c_str());
   };
 
-  //  RecipientId
-  doc["recipientId"] = txArray["recipientId"];
+  //  Recipient
+  doc["recipient"] = txArray["recipient"];
 
   //  SecondSignature
   if (std::strlen(txArray["secondSignature"].c_str()) > 0) {
