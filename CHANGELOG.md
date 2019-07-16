@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.6.0-arduino] - 2019-07-01
+## [0.6.0-arduino] - 2019-07-16
 
-## [0.6.0] - 2019-07-01
+## [0.6.0] - 2019-07-16
 
 ### Added
 
@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- changed amount and fee Json serialization to match Core v.2.5 ([#111])
 - improved PlatformIO configuration ([#101])
 - improved formatting and maintainability ([#98])
 - improved Slots implementations ([#92])
