@@ -121,14 +121,14 @@ std::string Ark::Crypto::Identities::Address::base58encode(
 
 std::vector<uint8_t> Ark::Crypto::Identities::Address::bytesFromBase58Check(
     const char* address) {
-  std::vector<std::uint8_t> recipientIdBytes;
-  recipientIdBytes.resize(Ripemd160::HASH_LEN);
+  std::vector<std::uint8_t> recipientBytes;
+  recipientBytes.resize(Ripemd160::HASH_LEN);
   uint8_t version = 0;
   Base58Check::pubkeyHashFromBase58Check(
       address,
-      &recipientIdBytes[0],
+      &recipientBytes[0],
       &version);
-  recipientIdBytes.insert(recipientIdBytes.begin(), version);
+  recipientBytes.insert(recipientBytes.begin(), version);
 
-  return recipientIdBytes;
+  return recipientBytes;
 }

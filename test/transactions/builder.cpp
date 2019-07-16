@@ -13,7 +13,7 @@ TEST(transactions, build_transfer) {
   ASSERT_EQ(0, actual.type);
   ASSERT_EQ(defaults::Fees::StaticFeePolicy()[actual.type], actual.fee);
   ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
-               actual.recipientId.c_str());
+               actual.recipient.c_str());
   ASSERT_EQ(100000000ULL, actual.amount);
   ASSERT_TRUE(actual.vendorField.empty());
 }
@@ -40,7 +40,7 @@ TEST(transactions, build_transfer_custom_network) {
   ASSERT_EQ(0, transaction.type);
   ASSERT_EQ(myCustomConfiguration.getFee(transaction.type), transaction.fee);
   ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
-               transaction.recipientId.c_str());
+               transaction.recipient.c_str());
   ASSERT_EQ(100000000ULL, transaction.amount);
   ASSERT_STREQ("this is a custom bridgechain transaction",
                transaction.vendorField.c_str());
@@ -56,7 +56,7 @@ TEST(transactions, build_empty_transaction) {
       "",
       "Secret passphrase");
 
-  ASSERT_TRUE(shouldBeEmpty.recipientId.empty());
+  ASSERT_TRUE(shouldBeEmpty.recipient.empty());
   ASSERT_EQ(0ULL, shouldBeEmpty.amount);
   ASSERT_FALSE(shouldBeEmpty.verify());
 }

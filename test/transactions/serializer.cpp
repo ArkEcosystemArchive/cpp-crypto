@@ -11,7 +11,7 @@ TEST(transactions, serialize_transfer) { // NOLINT
   transaction.fee = 10000000ULL;
   transaction.amount = 200000000ULL;
   transaction.timestamp = 41443847UL;
-  transaction.recipientId = "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib";
+  transaction.recipient = "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib";
   transaction.senderPublicKey = "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192";
   transaction.vendorField = "Hello World";
   transaction.signature = "304402205616d6e361439d67a5c2067bbfc8fce61b93061a4fa113315a1c5cf965ff6f3202200a1d99caaa98aeebcec04edd5365352500addb830c79f49b9de484ec616bb1e1";
@@ -83,7 +83,7 @@ TEST(transactions, serialize_vote) { // NOLINT
   transaction.type = 3;
   transaction.fee = 100000000ULL;
   transaction.timestamp = 41269366UL;
-  transaction.recipientId = "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib";
+  transaction.recipient = "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib";
   transaction.senderPublicKey = "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192";
   transaction.signature = "304402204b8bb403e2db7f9599d46d0f5d39f8bb1d0663d875af7ec1154448e98466e86302201e92fb57e13fb729b07e1027fa3d6e3f28e0d5828ed2d7c53a5e8db08cb6d068";
   transaction.secondSignature = "304402201329882762a42d1af9079c822a9e3feefa47b7476b0afe61440637408958a64402206da179b08e31d9c784fbb23abe2c9b50353ed7881dc29787a5e8ecbee2dfda66";
