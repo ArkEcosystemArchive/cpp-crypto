@@ -11,6 +11,8 @@
 [![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/cpp-crypto)](https://github.com/ArkEcosystem/cpp-crypto/releases)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
+> Lead Maintainer: [Simon Downey](https://github.com/sleepdefic1t)
+
 ## Documentation
 
 You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/sdk/cryptography/usage.html).
@@ -21,11 +23,8 @@ If you discover a security vulnerability within this package, please send an e-m
 
 ## Credits
 
-- [Simon Downey](https://github.com/sleepdeficit)
-- [Chris Johnson](https://github.com/ciband)
-- [supaiku0](https://github.com/supaiku0)
-- [All Contributors](../../../../contributors)
+This project exists thanks to all the people who [contribute](../../contributors).
 
 ## License
 
-[MIT](LICENSE) © [ArkEcosystem](https://ark.io)
+[MIT](LICENSE) © [ARK Ecosystem](https://ark.io)
