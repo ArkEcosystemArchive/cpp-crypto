@@ -20,8 +20,8 @@ namespace identities {
 
 class Wif {
  public:
-  Wif(PrivateKeyBytes privateKeyBytes, uint8_t version);
-  Wif(const char* wif);
+  Wif(const PrivateKeyBytes privateKeyBytes, uint8_t version);
+  explicit Wif(const char* wif);
 
   uint8_t version() const;
   PrivateKeyBytes toBytes() const;

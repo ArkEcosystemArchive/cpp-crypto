@@ -22,7 +22,7 @@ namespace Crypto {
 namespace identities {
 
 // Construct a PublicKey object from a 33-byte PublicKey array.
-PublicKey::PublicKey(PublicKeyBytes publicKeyBytes)
+PublicKey::PublicKey(const PublicKeyBytes publicKeyBytes)
     : publicKeyBytes_(publicKeyBytes) {}
 
 /**/
@@ -42,8 +42,8 @@ std::string PublicKey::toString() const {
 
 // Returns a PublicKey object from a given Passphrase string.
 PublicKey PublicKey::fromPassphrase(const char* passphrase) {
-  return Keys::PublicKey::fromPrivateKey(
-      Keys::PrivateKey::fromPassphrase(passphrase).data());
+  return PublicKey(Keys::PublicKey::fromPrivateKey(
+      Keys::PrivateKey::fromPassphrase(passphrase).data()));
 }
 
 /**/
@@ -58,7 +58,7 @@ PublicKey PublicKey::fromHex(const char* publicKeyHex) {
       HexToBytesArray<PUBLICKEY_COMPRESSED_BYTE_LEN>(publicKeyHex);
 
   return Curve::PublicKey::validate(publicKeyBytes.data())
-            ? publicKeyBytes
+            ? PublicKey(publicKeyBytes)
             : PublicKey({});
 }
 

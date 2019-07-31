@@ -20,7 +20,7 @@ namespace identities {
 
 class PrivateKey {
  public:
-  PrivateKey(PrivateKeyBytes privateKeyBytes);
+  explicit PrivateKey(const PrivateKeyBytes privateKeyBytes);
 
   PrivateKeyBytes toBytes() const;
   std::string toString() const;

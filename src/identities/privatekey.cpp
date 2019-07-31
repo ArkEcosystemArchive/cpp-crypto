@@ -21,7 +21,7 @@ namespace Crypto {
 namespace identities {
 
 // Construct a PrivateKey object directly from a 32-byte PrivateKey array.
-PrivateKey::PrivateKey(PrivateKeyBytes privateKeyBytes)
+PrivateKey::PrivateKey(const PrivateKeyBytes privateKeyBytes)
     : privateKeyBytes_(privateKeyBytes) {}
 
 /**/
@@ -41,7 +41,7 @@ std::string PrivateKey::toString() const {
 
 // Returns a PrivateKey object from a Passphrase.
 PrivateKey PrivateKey::fromPassphrase(const char* passphrase) {
-  return Keys::fromPassphrase(passphrase).privateKey;
+  return PrivateKey(Keys::fromPassphrase(passphrase).privateKey);
 }
 
 /**/
@@ -49,7 +49,7 @@ PrivateKey PrivateKey::fromPassphrase(const char* passphrase) {
 // Returns a PrivateKey object from a 64-char PrivateKey Hex string.
 PrivateKey PrivateKey::fromHex(const char* privateKeyHex) {
   return strlenSafe(privateKeyHex) == PRIVATEKEY_STRING_LEN
-            ? HexToBytesArray<>(privateKeyHex)
+            ? PrivateKey(HexToBytesArray<>(privateKeyHex))
             : PrivateKey({});
 }
 

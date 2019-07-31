@@ -22,7 +22,7 @@ namespace Crypto {
 namespace identities {
 
 // Constructs an Address from a 20-byte PubkeyHash and Address Version.
-Address::Address(PubkeyHash pubkeyHash, uint8_t version)
+Address::Address(const PubkeyHash pubkeyHash, uint8_t version)
     : pubkeyHash_(pubkeyHash), version_(version) {}
 
 /**/

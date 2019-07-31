@@ -22,10 +22,12 @@ namespace Crypto {
 // Returns a Version-byte and Ripemd160 Hash as a pair.
 // Expects a c_string address as input.
 PubkeyHashPair Base58::getHashPair(const char* address) {
-  PubkeyHashPair out;
+  PubkeyHashPair out {};
+  uint8_t version = 0;
   Base58Check::pubkeyHashFromBase58Check(address,
                                          out.pubkeyHash.data(),
-                                         &out.version);
+                                         &version);
+  out.version = version;
   return out;
 }
 
@@ -74,7 +76,7 @@ PrivateKeyBytes Base58::parseWif(const char* wif, uint8_t* outVersion) {
 namespace {  // NOLINT
 const size_t BASE58_TABLE_BYTE_LEN = 128U;
 const std::array<int8_t, BASE58_TABLE_BYTE_LEN> Base58Table = {{
-  #include "utils/base58.table"
+  #include "base58.table"
 }};
 }  // namespace
 

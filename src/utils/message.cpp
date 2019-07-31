@@ -24,7 +24,7 @@ bool Ark::Crypto::Utils::Message::sign(
   const auto keys = Keys::fromPassphrase(passphrase);
 
   /* Set the PublicKey from the PrivateKey */
-  this->publicKey = keys.publicKey;
+  this->publicKey = PublicKey(keys.publicKey);
 
   /* Get the Hash */
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(
@@ -32,7 +32,7 @@ bool Ark::Crypto::Utils::Message::sign(
   const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
 
   /* Sign it */
-  cryptoSign(hash, keys.privateKey, this->signature);
+  cryptoSign(hash, PrivateKey(keys.privateKey), this->signature);
 
   return this->verify();
 };

@@ -20,8 +20,8 @@ namespace identities {
 
 class Address {
  public:
-  Address(PubkeyHash pubkeyHash, uint8_t version);
-  Address(const char* addressString);
+  Address(const PubkeyHash pubkeyHash, uint8_t version);
+  explicit Address(const char* addressString);
 
   uint8_t version() const;
 
