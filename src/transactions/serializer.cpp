@@ -5,11 +5,12 @@
 #include <string>
 #include <vector>
 
-#include "common/configuration.hpp"
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
+#include "identities/address.hpp"
+#include "common/configuration.hpp"
 #include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
+#include "utils/base58.hpp"
+#include "utils/hex.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -114,12 +115,9 @@ void Serializer::serializeTransfer(
   pack(bytes, _transaction.amount);
   pack(bytes, _transaction.expiration);
 
-  std::vector<uint8_t> recipientBytes = Identities::Address::bytesFromBase58Check(
-      _transaction.recipient.c_str());
-  bytes.insert(
-      bytes.end(),
-      recipientBytes.begin(),
-      recipientBytes.end());
+  const auto hashPair = Base58::getHashPair(_transaction.recipient.c_str());
+  bytes.push_back(hashPair.version);
+  bytes.insert(bytes.end(), hashPair.pubkeyHash.begin(), hashPair.pubkeyHash.end());
 }
 
 /**/

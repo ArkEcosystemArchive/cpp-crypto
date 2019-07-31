@@ -1,8 +1,10 @@
 
 #include "gtest/gtest.h"
 
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
+#include <array>
+
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 
 #include "bcl/Sha256.hpp"
 #include "bcl/Uint256.hpp"
@@ -17,21 +19,21 @@ namespace { // NOLINT
      87, 178, 119, 217, 173, 159,  20, 110
   };
 
-  std::vector<uint8_t> PrivateKeyTestBytes = {
+  std::array<uint8_t, 32> PrivateKeyTestBytes = {
     216, 131, 156,  36,  50, 191, 208, 166,
     126, 241,  10, 128,  75, 169, 145, 234,
     187, 161, 159,  21,  74,  61, 112, 121,
     23, 104,  29,  69, 130,  42,  87,  18
   };
 
-  std::vector<uint8_t> PublicKeyTestBytes = {
+  std::array<uint8_t, 33> PublicKeyTestBytes = {
       3,
      65,  81, 163, 236,  70, 181, 103,  10,
     104,  43,  10,  99,  57,  79, 134,  53,
     135, 209, 188, 151,  72,  59,  27, 108,
     112, 235,  88, 231, 240, 174, 209, 146
   };
-  std::vector<uint8_t> InvalidPublicKeyTestBytes = {
+  std::array<uint8_t, 33> InvalidPublicKeyTestBytes = {
       3,
      66,  81, 163, 236,  70, 181, 103,  10,
     104,  43,  10,  99,  57,  79, 134,  53,
@@ -68,7 +70,7 @@ namespace { // NOLINT
 
 TEST(helpers, crypto_sign) {
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
-  Ark::Crypto::Identities::PrivateKey privateKey(&PrivateKeyTestBytes[0]);
+  Ark::Crypto::identities::PrivateKey privateKey(PrivateKeyTestBytes);
   std::vector<uint8_t> signature;
   cryptoSign(
       hash,
@@ -83,7 +85,7 @@ TEST(helpers, crypto_sign) {
 /**/
 
 TEST(helpers, crypto_verify_valid) {
-  Ark::Crypto::Identities::PublicKey publicKey(&PublicKeyTestBytes[0]);
+  Ark::Crypto::identities::PublicKey publicKey(PublicKeyTestBytes);
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
 
   bool isValid = cryptoVerify(
@@ -96,8 +98,8 @@ TEST(helpers, crypto_verify_valid) {
 /**/
 
 TEST(helpers, crypto_verify_invalid) {
-  Ark::Crypto::Identities::PublicKey publicKey(&InvalidPublicKeyTestBytes[0]);
-//   Ark::Crypto::Identities::PublicKey publicKey(&InvalidPublicKeyTestBytes[0]);
+  Ark::Crypto::identities::PublicKey publicKey(InvalidPublicKeyTestBytes);
+//   Ark::Crypto::identities::PublicKey publicKey(&InvalidPublicKeyTestBytes[0]);
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
 
   bool isValid = cryptoVerify(

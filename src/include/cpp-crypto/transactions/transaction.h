@@ -10,8 +10,8 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 
 #include <map>
 #include <string>

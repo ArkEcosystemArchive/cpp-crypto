@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # This file is part of Ark Cpp Crypto.
 #
 # (c) Ark Ecosystem <info@ark.io>
@@ -30,7 +31,7 @@ fi
 EXTRAS_DIR=$(dirname $0)
 PROJECT_ROOT=${EXTRAS_DIR}/../
 INCLUDE_DIR=${EXTRAS_DIR}/../src/include
-INCLUDE_CRYPTO_DIR=${INCLUDE_DIR}/cpp-crypto
+INCLUDE_CPP_CRYPTO_DIR=${INCLUDE_DIR}/cpp-crypto
 SRC_DIR=${EXTRAS_DIR}/../src
 
 EXTRAS_BACKUP_DIR=${EXTRAS_DIR}/BACKUP
@@ -39,24 +40,24 @@ SRC_LIB_DIR=${SRC_DIR}/lib
 EXTRAS_LIB_DIR=${EXTRAS_BACKUP_DIR}/lib
 
 SRC_COMMON_DIR=${SRC_DIR}/common
-INCLUDE_COMMON_DIR=${INCLUDE_CRYPTO_DIR}/common
+INCLUDE_COMMON_DIR=${INCLUDE_CPP_CRYPTO_DIR}/common
 
 SRC_DEFAULTS_DIR=${SRC_DIR}/defaults
-INCLUDE_DEFAULTS_DIR=${INCLUDE_CRYPTO_DIR}/defaults
+INCLUDE_DEFAULTS_DIR=${INCLUDE_CPP_CRYPTO_DIR}/defaults
 
 SRC_HELPERS_DIR=${SRC_DIR}/helpers
-INCLUDE_HELPERS_DIR=${INCLUDE_CRYPTO_DIR}/helpers
-
-SRC_ENCODING_DIR=${SRC_HELPERS_DIR}/encoding
-INCLUDE_ENCODING_DIR=${INCLUDE_HELPERS_DIR}/encoding
+INCLUDE_HELPERS_DIR=${INCLUDE_CPP_CRYPTO_DIR}/helpers
 
 SRC_IDENTITIES_DIR=${SRC_DIR}/identities
-INCLUDE_IDENTITIES_DIR=${INCLUDE_CRYPTO_DIR}/identities
+INCLUDE_IDENTITIES_DIR=${INCLUDE_CPP_CRYPTO_DIR}/identities
 
-INCLUDE_NETWORKS_DIR=${INCLUDE_CRYPTO_DIR}/networks
+SRC_INTERFACES_DIR=${SRC_DIR}/interfaces
+INCLUDE_INTERFACES_DIR=${INCLUDE_CPP_CRYPTO_DIR}/interfaces
+
+INCLUDE_NETWORKS_DIR=${INCLUDE_CPP_CRYPTO_DIR}/networks
 SRC_NETWORKS_DIR=${SRC_DIR}/networks
 
-INCLUDE_TRANSACTIONS_DIR=${INCLUDE_CRYPTO_DIR}/transactions
+INCLUDE_TRANSACTIONS_DIR=${INCLUDE_CPP_CRYPTO_DIR}/transactions
 SRC_TRANSACTIONS_DIR=${SRC_DIR}/transactions
 
 if [[ $AUTO == '0' ]]; then
@@ -96,7 +97,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   # This will run if headers are in the 'include' directory tree.
   echo -e "****************************************\n"
   echo -e "Moving 'arkCrypto.h' to 'src' directory.\n"
-  mv ${INCLUDE_CRYPTO_DIR}/arkCrypto.h ${SRC_DIR}
+  mv ${INCLUDE_CPP_CRYPTO_DIR}/arkCrypto.h ${SRC_DIR}
 
   echo -e "Moving 'common' headers.\n"
   mv ${INCLUDE_COMMON_DIR}/configuration.hpp  ${SRC_COMMON_DIR}
@@ -108,15 +109,16 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_DEFAULTS_DIR}/static_fees.hpp        ${SRC_DEFAULTS_DIR}
   mv ${INCLUDE_DEFAULTS_DIR}/transaction_types.hpp  ${SRC_DEFAULTS_DIR}
 
-  echo -e "Moving 'helpers' headers.\n"
-  mkdir ${SRC_ENCODING_DIR}
-  mv ${INCLUDE_HELPERS_DIR}/encoding/hex.h  ${SRC_ENCODING_DIR}
-
   echo -e "Moving 'identites' headers.\n"
-  mv ${INCLUDE_IDENTITIES_DIR}/address.h    ${SRC_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/privatekey.h ${SRC_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/publickey.h  ${SRC_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/wif.h        ${SRC_IDENTITIES_DIR}
+  mv ${INCLUDE_IDENTITIES_DIR}/address.hpp    ${SRC_IDENTITIES_DIR}
+  mv ${INCLUDE_IDENTITIES_DIR}/keys.hpp       ${SRC_IDENTITIES_DIR}
+  mv ${INCLUDE_IDENTITIES_DIR}/privatekey.hpp ${SRC_IDENTITIES_DIR}
+  mv ${INCLUDE_IDENTITIES_DIR}/publickey.hpp  ${SRC_IDENTITIES_DIR}
+  mv ${INCLUDE_IDENTITIES_DIR}/wif.hpp        ${SRC_IDENTITIES_DIR}
+
+  echo -e "Moving 'interfaces' headers.\n"
+  mkdir ${SRC_INTERFACES_DIR}
+  mv ${INCLUDE_INTERFACES_DIR}/identities.hpp ${SRC_INTERFACES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
   mv ${INCLUDE_NETWORKS_DIR}/networks.hpp ${SRC_NETWORKS_DIR}
@@ -132,11 +134,12 @@ if [[ -d ${INCLUDE_DIR} ]]; then
 
   echo -e "Backing up, moving, and removing dependencies from the 'src/lib' directory.\n"
   mkdir ${EXTRAS_BACKUP_DIR}
-  mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_BACKUP_DIR}
-  mv ${SRC_LIB_DIR}/BIP66       ${EXTRAS_BACKUP_DIR}
-  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_BACKUP_DIR}
+  mkdir ${EXTRAS_LIB_DIR}
+  mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_LIB_DIR}
+  mv ${SRC_LIB_DIR}/BIP66       ${EXTRAS_LIB_DIR}
+  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_LIB_DIR}
+  mv ${SRC_LIB_DIR}/date        ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
-  mv ${SRC_LIB_DIR}/date        ${SRC_DIR}
   mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
 
   echo -e "Moving Docs to the './extras' directory.\n"
@@ -158,17 +161,16 @@ else
 
   echo -e "Creating the 'include' directory tree 🗂\n"
   mkdir ${INCLUDE_DIR}
-  mkdir ${INCLUDE_CRYPTO_DIR}
+  mkdir ${INCLUDE_CPP_CRYPTO_DIR}
   mkdir ${INCLUDE_COMMON_DIR}
   mkdir ${INCLUDE_DEFAULTS_DIR}
-  mkdir ${INCLUDE_HELPERS_DIR}
-  mkdir ${INCLUDE_ENCODING_DIR}
   mkdir ${INCLUDE_IDENTITIES_DIR}
+  mkdir ${INCLUDE_INTERFACES_DIR}
   mkdir ${INCLUDE_NETWORKS_DIR}
   mkdir ${INCLUDE_TRANSACTIONS_DIR}
 
   echo -e "Moving 'arkCrypto.h' back to the 'include/cpp-crypto/' directory.\n"
-  mv ${SRC_DIR}/arkCrypto.h ${INCLUDE_CRYPTO_DIR}
+  mv ${SRC_DIR}/arkCrypto.h ${INCLUDE_CPP_CRYPTO_DIR}
 
   echo -e "Moving 'common' headers.\n"
   mv ${SRC_COMMON_DIR}/configuration.hpp  ${INCLUDE_COMMON_DIR}
@@ -180,15 +182,15 @@ else
   mv ${SRC_DEFAULTS_DIR}/static_fees.hpp        ${INCLUDE_DEFAULTS_DIR}
   mv ${SRC_DEFAULTS_DIR}/transaction_types.hpp  ${INCLUDE_DEFAULTS_DIR}
 
-  echo -e "Moving 'helpers/encoding' headers.\n"
-  mv ${SRC_ENCODING_DIR}/hex.h ${INCLUDE_ENCODING_DIR}
-  rm ${SRC_ENCODING_DIR}
-
   echo -e "Moving 'identities' headers.\n"
-  mv ${SRC_IDENTITIES_DIR}/address.h    ${INCLUDE_IDENTITIES_DIR}
-  mv ${SRC_IDENTITIES_DIR}/privatekey.h ${INCLUDE_IDENTITIES_DIR}
-  mv ${SRC_IDENTITIES_DIR}/publickey.h  ${INCLUDE_IDENTITIES_DIR}
-  mv ${SRC_IDENTITIES_DIR}/wif.h        ${INCLUDE_IDENTITIES_DIR}
+  mv ${SRC_IDENTITIES_DIR}/address.hpp    ${INCLUDE_IDENTITIES_DIR}
+  mv ${SRC_IDENTITIES_DIR}/privatekey.hpp ${INCLUDE_IDENTITIES_DIR}
+  mv ${SRC_IDENTITIES_DIR}/publickey.hpp  ${INCLUDE_IDENTITIES_DIR}
+  mv ${SRC_IDENTITIES_DIR}/wif.hpp        ${INCLUDE_IDENTITIES_DIR}
+
+  echo -e "Moving 'interfaces' headers.\n"
+  mv ${SRC_INTERFACES_DIR}/identities.hpp ${INCLUDE_INTERFACES_DIR}
+  rm -rf ${SRC_INTERFACES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
   mv ${SRC_NETWORKS_DIR}/networks.hpp ${INCLUDE_NETWORKS_DIR}
@@ -204,12 +206,12 @@ else
 
   echo -e "Restoring the 'lib' directory.\n"
   mkdir ${SRC_LIB_DIR}
-  mv ${EXTRAS_BACKUP_DIR}/ArduinoJson ${SRC_LIB_DIR}
-  mv ${EXTRAS_BACKUP_DIR}/BIP66       ${SRC_LIB_DIR}
-  mv ${EXTRAS_BACKUP_DIR}/uECC        ${SRC_LIB_DIR}
-  mv ${SRC_DIR}/bcl                   ${SRC_LIB_DIR}
-  mv ${SRC_DIR}/date                  ${SRC_LIB_DIR}
-  mv ${SRC_DIR}/rfc6979               ${SRC_LIB_DIR}
+  mv ${EXTRAS_LIB_DIR}/ArduinoJson  ${SRC_LIB_DIR}
+  mv ${EXTRAS_LIB_DIR}/BIP66        ${SRC_LIB_DIR}
+  mv ${EXTRAS_LIB_DIR}/uECC         ${SRC_LIB_DIR}
+  mv ${EXTRAS_LIB_DIR}/date         ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/bcl                 ${SRC_LIB_DIR}
+  mv ${SRC_DIR}/rfc6979             ${SRC_LIB_DIR}
 
   echo -e "Moving Docs back to the project root directory.\n"
   mv ${EXTRAS_DIR}/docs  ${PROJECT_ROOT}

@@ -1,134 +1,100 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
-#include "identities/address.h"
-
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-
-#include "helpers/encoding/hex.h"
-
-#include "bcl/Base58Check.hpp"
+#include "identities/address.hpp"
 
 #include <string>
 
-Ark::Crypto::Identities::Address::Address(
-    const char* newAddressStr) {
-  (strlen(newAddressStr) == ADDRESS_LENGTH)
-      ? void(memmove(
-            this->bytes_,
-            reinterpret_cast<const unsigned char *>(newAddressStr),
-            ADDRESS_LENGTH))
-      : void(this->bytes_[COMPRESSED_PUBLICKEY_SIZE] = {'\0'});
-}
-/**/
+#include "interfaces/identities.hpp"
+#include "identities/keys.hpp"
+#include "crypto/hash.hpp"
+#include "utils/base58.hpp"
+#include "utils/str.hpp"
 
-Ark::Crypto::Identities::Address::Address(
-    const uint8_t* newAddressBytes) {
-  memmove(this->bytes_, newAddressBytes, ADDRESS_LENGTH);
-}
+namespace Ark {
+namespace Crypto {
+namespace identities {
+
+// Constructs an Address from a 20-byte PubkeyHash and Address Version.
+Address::Address(PubkeyHash pubkeyHash, uint8_t version)
+    : pubkeyHash_(pubkeyHash), version_(version) {}
 
 /**/
 
-const uint8_t *Ark::Crypto::Identities::Address::toBytes() {
-  return this->bytes_;
-}
-
-/**/
-
-std::string Ark::Crypto::Identities::Address::toString() const {
-  return std::string(this->bytes_, this->bytes_ + ADDRESS_LENGTH);
-}
-
-/**/
-
-Ark::Crypto::Identities::Address Ark::Crypto::Identities::Address::fromPassphrase(
-    const char* passphrase,
-    uint8_t networkVersion) {
-  PublicKey publicKey = PublicKey::fromPassphrase(passphrase);
-  return fromPublicKey(publicKey, networkVersion);
+// Constructs an Address from a 34-character Address string.
+Address::Address(const char* addressString) : pubkeyHash_(), version_() {
+  if (strlenSafe(addressString) == ADDRESS_STRING_LEN
+      && Base58::validate(addressString, ADDRESS_STRING_LEN)) {
+    const auto hashPair = Base58::getHashPair(addressString);
+    this->pubkeyHash_ = hashPair.pubkeyHash;
+    this->version_ = hashPair.version;
+  };
 }
 
 /**/
 
-Ark::Crypto::Identities::Address Ark::Crypto::Identities::Address::fromPrivateKey(
-    PrivateKey privateKey,
-    uint8_t networkVersion) {
-  PublicKey publicKey = PublicKey::fromPrivateKey(privateKey);
-  return fromPublicKey(publicKey, networkVersion);
+// Returns the Base58 Address Version-byte.
+uint8_t Address::version() const { return this->version_; }
+
+/**/
+
+// Returns the internal 20-byte Ripemd160 PublicKey Hash.
+PubkeyHash Address::toBytes() const { return this->pubkeyHash_; }
+
+/**/
+
+// Returns a 34-character formatted Address string.
+std::string Address::toString() const {
+  return Base58::parseHash(this->pubkeyHash_.data(), this->version_);
 }
 
 /**/
 
-Ark::Crypto::Identities::Address Ark::Crypto::Identities::Address::fromPublicKey(
-    PublicKey publicKey,
-    uint8_t networkVersion) {
-  std::vector<uint8_t> seed(Ripemd160::HASH_LEN);
-  Ripemd160::getHash(
-      publicKey.toBytes(),
-      COMPRESSED_PUBLICKEY_SIZE,
-      &seed[0]);
-  std::string s(35, '\0');
-  Base58Check::pubkeyHashToBase58Check(&seed[0], networkVersion, &s[0]);
-  return { s.c_str() };
+// Returns an Address object from a given Passphrase and Address Version.
+Address Address::fromPassphrase(const char* passphrase, uint8_t version) {
+  return fromPublicKey(Keys::fromPassphrase(passphrase).publicKey.data(),
+                       version);
 }
 
 /**/
 
-bool Ark::Crypto::Identities::Address::validate(
-    Address address,
-    uint8_t networkVersion) {
-  std::uint8_t pub_key_hash[Ripemd160::HASH_LEN] = {};
-  uint8_t version = 0;
-  Base58Check::pubkeyHashFromBase58Check(
-      address.toString().c_str(),
-      pub_key_hash,
-      &version);
-  return version == networkVersion;
+// Returns an Address object from PublicKey-bytes and an Address Version.
+Address Address::fromPublicKey(const uint8_t* publicKeyBytes,
+                               uint8_t version) {
+  return { Hash::ripemd160(publicKeyBytes), version };
 }
 
 /**/
 
-bool Ark::Crypto::Identities::Address::validate(
-    const char* addressStr,
-    uint8_t networkVersion) {
-  return validate(Address(addressStr), networkVersion);
+// Returns an Address object from PrivateKey-bytes and an Address Version.
+Address Address::fromPrivateKey(const uint8_t* privateKeyBytes,
+                                uint8_t version) {
+  return fromPublicKey(Keys::fromPrivateKey(privateKeyBytes).publicKey.data(),
+                       version);
 }
 
 /**/
 
-bool Ark::Crypto::Identities::Address::validate(
-    const uint8_t* addressBytes,
-    uint8_t networkVersion) {
-  return validate(Address(addressBytes), networkVersion);
+// Validates an Address object.
+bool Address::validate(const Address& address, uint8_t version) {
+  auto hashPair = Base58::getHashPair(address.toString().c_str());
+  auto pubkeyHash = address.toBytes();
+
+  for (auto i = 0; i < HASH_20_BYTE_LEN; ++i) {
+    if (hashPair.pubkeyHash.at(i) != pubkeyHash.at(i)) {
+      return false;
+    };
+  };
+
+  return hashPair.version == version;
 }
 
-/**/
-
-std::string Ark::Crypto::Identities::Address::base58encode(
-    const uint8_t* source) {
-  // Magic numbers from Base58Check::pubkeyHashToBase58Check
-  uint8_t temp[21 + 4] = {};
-  char out[ADDRESS_LENGTH + 1] = {};
-
-  uint8_t buf[21 + 4] = {};
-  std::memcpy(buf, source, 21);
-
-  Base58Check::bytesToBase58Check(buf, temp, 21, out);
-
-  return std::string(out);
-}
-
-/**/
-
-std::vector<uint8_t> Ark::Crypto::Identities::Address::bytesFromBase58Check(
-    const char* address) {
-  std::vector<std::uint8_t> recipientBytes;
-  recipientBytes.resize(Ripemd160::HASH_LEN);
-  uint8_t version = 0;
-  Base58Check::pubkeyHashFromBase58Check(
-      address,
-      &recipientBytes[0],
-      &version);
-  recipientBytes.insert(recipientBytes.begin(), version);
-
-  return recipientBytes;
-}
+}  // namespace identities
+}  // namespace Crypto
+}  // namespace Ark
