@@ -23,11 +23,9 @@ namespace Crypto {
 // Expects a c_string address as input.
 PubkeyHashPair Base58::getHashPair(const char* address) {
   PubkeyHashPair out {};
-  uint8_t version = 0;
   Base58Check::pubkeyHashFromBase58Check(address,
                                          out.pubkeyHash.data(),
-                                         &version);
-  out.version = version;
+                                         &out.version);
   return out;
 }
 
