@@ -17,12 +17,10 @@ namespace Ark {
 namespace Crypto {
 
 struct Curve {
-
   struct PublicKey {
     static PublicKeyBytes compute(const uint8_t* privateKeyBytes);
     static bool validate(const uint8_t* publicKeyBytes);  
   };
-
 };
 
 }  // namespace Crypto
