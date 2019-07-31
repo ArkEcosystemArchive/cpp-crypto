@@ -83,15 +83,7 @@ Address Address::fromPrivateKey(const uint8_t* privateKeyBytes,
 
 // Validates an Address object.
 bool Address::validate(const Address& address, uint8_t version) {
-  auto hashPair = Base58::getHashPair(address.toString().c_str());
-  auto pubkeyHash = address.toBytes();
-
-  for (auto i = 0; i < HASH_20_BYTE_LEN; ++i) {
-    if (hashPair.pubkeyHash.at(i) != pubkeyHash.at(i)) {
-      return false;
-    };
-  };
-
+  const auto hashPair = Base58::getHashPair(address.toString().c_str());
   return hashPair.version == version;
 }
 

@@ -50,7 +50,7 @@ PublicKey PublicKey::fromPassphrase(const char* passphrase) {
 
 // Returns a PublicKey object from a 64-char PublicKey Hex string.
 PublicKey PublicKey::fromHex(const char* publicKeyHex) {
-  if (strlenSafe(publicKeyHex) == PUBLICKEY_COMPRESSED_BYTE_LEN) {
+  if (strlenSafe(publicKeyHex) != PUBLICKEY_COMPRESSED_STRING_LEN) {
     return PublicKey({});
   };
 
