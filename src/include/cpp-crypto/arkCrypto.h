@@ -17,7 +17,6 @@
 #include "crypto/message.hpp"
 #include "crypto/slot.hpp"
 
-#include "defaults/fee_policies.hpp"
 #include "defaults/static_fees.hpp"
 #include "defaults/transaction_types.hpp"
 

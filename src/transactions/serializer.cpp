@@ -30,7 +30,7 @@ std::string Serializer::serialize() const {
   bytes.push_back(
       _transaction.network > 0
         ? _transaction.network
-        : Configuration().getNetwork().version());
+        : Configuration().getNetwork().version);
   bytes.push_back(_transaction.type);
 
   pack(bytes, _transaction.timestamp);
@@ -81,30 +81,30 @@ void Serializer::serializeVendorField(
 void Serializer::serializeType(
     std::vector<uint8_t>& bytes) const {
   switch (_transaction.type) {
-    case defaults::TransactionTypes::Transfer: {
+    case TransactionTypes::Transfer: {
       serializeTransfer(bytes);
       break;
     };
-    case defaults::TransactionTypes::SecondSignatureRegistration: {
+    case TransactionTypes::SecondSignatureRegistration: {
       serializeSecondSignatureRegistration(bytes);
       break;
     };
-    case defaults::TransactionTypes::DelegateRegistration: {
+    case TransactionTypes::DelegateRegistration: {
       serializeDelegateRegistration(bytes);
       break;
     };
-    case defaults::TransactionTypes::Vote: {
+    case TransactionTypes::Vote: {
       serializeVote(bytes);
       break;
     };
-    case defaults::TransactionTypes::MultiSignatureRegistration: {
+    case TransactionTypes::MultiSignatureRegistration: {
       serializeMultiSignatureRegistration(bytes);
       break;
     };
-    case defaults::TransactionTypes::Ipfs: { break; };
-    case defaults::TransactionTypes::TimelockTransfer: { break; };
-    case defaults::TransactionTypes::MultiPayment: { break; };
-    case defaults::TransactionTypes::DelegateResignation: { break; };
+    case TransactionTypes::Ipfs: { break; };
+    case TransactionTypes::TimelockTransfer: { break; };
+    case TransactionTypes::MultiPayment: { break; };
+    case TransactionTypes::DelegateResignation: { break; };
   };
 }
 
@@ -219,7 +219,6 @@ void Serializer::serializeSignatures(
 
   if (!_transaction.signatures.empty()) {
     bytes.push_back(0xff);
-    std::string joined = join(_transaction.signatures);
     for (const auto& signature : _transaction.signatures) {
       std::vector<uint8_t> signatureBytes = HexToBytes(signature.c_str());
       bytes.insert(

@@ -10,35 +10,25 @@
 #ifndef COMMON_CONFIGURATION_HPP
 #define COMMON_CONFIGURATION_HPP
 
-#include "common/network.hpp"
 #include "managers/network_manager.hpp"
-#include "common/fee_policy.hpp"
 #include "managers/fee_manager.hpp"
 
 namespace Ark {
 namespace Crypto {
-/**/
+
 class Configuration : public managers::NetworkManager,
                       public managers::FeeManager {
  public:
-  // Default initialization: using ARK Devnet & StaticFees
+  // Default initialization: ARK Devnet w/StaticFees
   Configuration() = default;
-  ~Configuration() = default;
+  explicit Configuration(const Network& network);
+  explicit Configuration(const FeePolicy& policy);
+  Configuration(const Network& network, const FeePolicy& policy);
 
-  // Network initialization: Custom Network & StaticFees
-  explicit Configuration(const Network& network) : NetworkManager(network) {}
-
-  // FeePolicy initialization: ARK Devnet & Custom Fees
-  explicit Configuration(const FeePolicy& policy) : FeeManager(policy) {}
-
-  // Network & Fee initialization: Custom Network & Custom Fees
-  Configuration(const Network& network, const FeePolicy& policy)
-      : NetworkManager(network), FeeManager(policy) {}
-
-  bool operator==(const Configuration& rhs) const;
-  bool operator!=(const Configuration& rhs) const;
+  bool operator==(const Configuration& other) const;
+  bool operator!=(const Configuration& other) const;
 };
-/**/
+
 }  // namespace Crypto
 }  // namespace Ark
 

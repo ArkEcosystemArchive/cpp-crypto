@@ -27,7 +27,7 @@ namespace {
 constexpr const char* MESSAGE_KEY    = "message";
 constexpr const char* PUBLICKEY_KEY  = "publickey";
 constexpr const char* SIGNATURE_KEY  = "signature";
-constexpr size_t MAGIC_JSON_SIZE = 120U;
+constexpr const size_t MAGIC_JSON_SIZE = 120U;
 }  // namespace
 
 // Create an empty Message object for building and signing.

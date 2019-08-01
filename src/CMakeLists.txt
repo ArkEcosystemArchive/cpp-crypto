@@ -31,7 +31,6 @@ set(COMMON_SRC
     crypto/hash.cpp
     crypto/message.cpp
     crypto/slot.cpp
-    defaults/static_fees.cpp
     identities/address.cpp
     identities/keys.cpp
     identities/privatekey.cpp
@@ -39,15 +38,11 @@ set(COMMON_SRC
     identities/wif.cpp
     managers/fee_manager.cpp
     managers/network_manager.cpp
-    networks/devnet.cpp
-    networks/mainnet.cpp
-    networks/testnet.cpp
     transactions/builder.cpp
     transactions/deserializer.cpp
     transactions/serializer.cpp
     transactions/transaction.cpp
     utils/base58.cpp
-
 )
 
 add_library(${PROJECT_NAME} STATIC

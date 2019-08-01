@@ -10,20 +10,24 @@
 #ifndef DEFAULTS_TRANSACTIONS_STATIC_FEES_HPP
 #define DEFAULTS_TRANSACTIONS_STATIC_FEES_HPP
 
-#include "defaults/fee_policies.hpp"
+#include "common/fee_policy.hpp"
 
-// const FeePolicy Fees::StaticFeePolicy() {
-//   return {
-//     10000000ULL,    // Transfer
-//     500000000ULL,   // SecondSignatureRegistration
-//     2500000000ULL,  // DelegateRegistration
-//     100000000ULL,   // Vote
-//     500000000ULL,   // MultiSignatureRegistration
-//     0ULL,           // Ipfs
-//     0ULL,           // TimelockTransfer
-//     0ULL,           // MultiPayment
-//     2500000000ULL   // DelegateResignation
-//   };
-// }
+namespace Ark {
+namespace Crypto {
+
+const FeePolicy StaticFeePolicy {
+    10000000ULL,    // Transfer
+    500000000ULL,   // SecondSignatureRegistration
+    2500000000ULL,  // DelegateRegistration
+    100000000ULL,   // Vote
+    500000000ULL,   // MultiSignatureRegistration
+    0ULL,           // Ipfs
+    0ULL,           // TimelockTransfer
+    0ULL,           // MultiPayment
+    2500000000ULL   // DelegateResignation
+};
+
+}  // namespace Crypto
+}  // namespace Ark
 
 #endif

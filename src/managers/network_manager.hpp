@@ -16,26 +16,16 @@
 namespace Ark {
 namespace Crypto {
 namespace managers {
-/**/
+
 class NetworkManager {
- private:
-  Network network_ = Networks::Devnet();
-
  public:
-  // Default initialization: using ARK Devnet
-  NetworkManager() = default;
-  virtual ~NetworkManager() = default;
-
-  // Network initialization: Custom Network
-  NetworkManager(const Network& network) : network_(network) {}
-
   Network getNetwork() const;
   void setNetwork(const Network& network);
 
-  bool operator==(const NetworkManager& rhs) const;
-  bool operator!=(const NetworkManager& rhs) const;
+ protected:
+  Network network_ = Devnet;
 };
-/**/
+
 }  // namespace managers
 }  // namespace Crypto
 }  // namespace Ark

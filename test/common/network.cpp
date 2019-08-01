@@ -3,65 +3,42 @@
 
 #include <arkCrypto.h>
 
-namespace {  // NOLINT
-static const Network kDevnetNetwork = Networks::Devnet();
-/**/
-static const std::string kCustomNethash  = "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df";
-static const uint8_t kCustomSlip44       = 1;
-static const uint8_t kCustomWif          = 0x53;
-static const uint8_t kCustomVersion      = 0xaa;
-static const std::string kCustomEpoch    = "2019-04-12T13:00:00.000Z";
-/**/
-static const Network kCustomNetwork {
-  kCustomNethash,
-  kCustomSlip44, kCustomWif, kCustomVersion,
-  kCustomEpoch
+namespace {
+const Network CustomNetwork {
+  "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df",
+  1, 0x53, 0xaa,
+  "2019-04-12T13:00:00.000Z"
 };
 }  // namespace
 
 /**/
 
-TEST(common, network_constructor_default) {
-  Network network;
-  bool networksMatch = kDevnetNetwork == network;
-  ASSERT_TRUE(networksMatch);
-}
-
-/**/
-
-TEST(common, network_constructor_list) {
-  Network customNetwork = { kCustomNethash,
-                            kCustomSlip44,
-                            kCustomWif,
-                            kCustomVersion,
-                            kCustomEpoch };
-  bool networksMatch = kCustomNetwork == customNetwork;
-  ASSERT_TRUE(networksMatch);
-}
-
-/**/
-
-TEST(common, network_comparison_equals) {
- Network customNetwork(kDevnetNetwork);
-  bool networksMatch = kDevnetNetwork == customNetwork;
-  ASSERT_TRUE(networksMatch);
-}
-
-/**/
-
-TEST(common, network_comparison_not_equal) {
- Network customNetwork(kCustomNetwork);
-  bool networksMatch = kDevnetNetwork != customNetwork;
-  ASSERT_TRUE(networksMatch);
+TEST(common, network_constructor) {
+  Network network(CustomNetwork);
+  ASSERT_TRUE(network == CustomNetwork);
 }
 
 /**/
 
 TEST(common, network_get_parameters) {
-  Network network(kDevnetNetwork);
-  ASSERT_STREQ(kDevnetNetwork.nethash().c_str(), network.nethash().c_str());
-  ASSERT_EQ(kDevnetNetwork.slip44(),             network.slip44());
-  ASSERT_EQ(kDevnetNetwork.wif(),                network.wif());
-  ASSERT_EQ(kDevnetNetwork.version(),            network.version());
-  ASSERT_STREQ(kDevnetNetwork.epoch().c_str(),   network.epoch().c_str());
+  Network network(Devnet);
+  ASSERT_STREQ(network.nethash.c_str(), Devnet.nethash.c_str());
+  ASSERT_EQ(network.slip44,             Devnet.slip44);
+  ASSERT_EQ(network.wif,                Devnet.wif);
+  ASSERT_EQ(network.version,            Devnet.version);
+  ASSERT_STREQ(network.epoch.c_str(),   Devnet.epoch.c_str());
+}
+
+/**/
+
+TEST(common, network_comparison_equals) {
+  Network network(CustomNetwork);
+  ASSERT_TRUE(network == CustomNetwork);
+}
+
+/**/
+
+TEST(common, network_comparison_not_equal) {
+  Network network(CustomNetwork);
+  ASSERT_TRUE(network != Devnet);
 }

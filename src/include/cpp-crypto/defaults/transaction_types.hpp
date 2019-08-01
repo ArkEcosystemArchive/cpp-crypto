@@ -14,8 +14,7 @@
 
 namespace Ark {
 namespace Crypto {
-namespace defaults {
-/**/
+
 enum TransactionTypes : uint8_t {
   Transfer                    = 0,
   SecondSignatureRegistration = 1,
@@ -27,8 +26,7 @@ enum TransactionTypes : uint8_t {
   MultiPayment                = 7,
   DelegateResignation         = 8
 };
-/**/
-}  // namespace defaults
+
 }  // namespace Crypto
 }  // namespace Ark
 

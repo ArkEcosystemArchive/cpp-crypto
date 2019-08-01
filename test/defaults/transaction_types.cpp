@@ -4,27 +4,27 @@
 #include <arkCrypto.h>
 
 namespace {
-static const uint8_t kTransferType                    = 0;
-static const uint8_t kSecondSignatureRegistrationType = 1;
-static const uint8_t kDelegateRegistrationType        = 2;
-static const uint8_t kVoteType                        = 3;
-static const uint8_t kMultiSignatureRegistrationType  = 4;
-static const uint8_t kIpfsType                        = 5;
-static const uint8_t kTimelockTransferType            = 6;
-static const uint8_t kMultiPaymentType                = 7;
-static const uint8_t kDelegateResignationType         = 8;
+constexpr const uint8_t TransferType                    = 0;
+constexpr const uint8_t SecondSignatureRegistrationType = 1;
+constexpr const uint8_t DelegateRegistrationType        = 2;
+constexpr const uint8_t VoteType                        = 3;
+constexpr const uint8_t MultiSignatureRegistrationType  = 4;
+constexpr const uint8_t IpfsType                        = 5;
+constexpr const uint8_t TimelockTransferType            = 6;
+constexpr const uint8_t MultiPaymentType                = 7;
+constexpr const uint8_t DelegateResignationType         = 8;
 }  //namespace
 
 /**/
 
 TEST(defaults, transaction_types) {  // NOLINT
-  ASSERT_EQ(kTransferType,                    defaults::TransactionTypes::Transfer);
-  ASSERT_EQ(kSecondSignatureRegistrationType, defaults::TransactionTypes::SecondSignatureRegistration);
-  ASSERT_EQ(kDelegateRegistrationType,        defaults::TransactionTypes::DelegateRegistration);
-  ASSERT_EQ(kVoteType,                        defaults::TransactionTypes::Vote);
-  ASSERT_EQ(kMultiSignatureRegistrationType,  defaults::TransactionTypes::MultiSignatureRegistration);
-  ASSERT_EQ(kIpfsType,                        defaults::TransactionTypes::Ipfs);
-  ASSERT_EQ(kTimelockTransferType,            defaults::TransactionTypes::TimelockTransfer);
-  ASSERT_EQ(kMultiPaymentType,                defaults::TransactionTypes::MultiPayment);
-  ASSERT_EQ(kDelegateResignationType,         defaults::TransactionTypes::DelegateResignation);
+  ASSERT_EQ(TransferType,                    TransactionTypes::Transfer);
+  ASSERT_EQ(SecondSignatureRegistrationType, TransactionTypes::SecondSignatureRegistration);
+  ASSERT_EQ(DelegateRegistrationType,        TransactionTypes::DelegateRegistration);
+  ASSERT_EQ(VoteType,                        TransactionTypes::Vote);
+  ASSERT_EQ(MultiSignatureRegistrationType,  TransactionTypes::MultiSignatureRegistration);
+  ASSERT_EQ(IpfsType,                        TransactionTypes::Ipfs);
+  ASSERT_EQ(TimelockTransferType,            TransactionTypes::TimelockTransfer);
+  ASSERT_EQ(MultiPaymentType,                TransactionTypes::MultiPayment);
+  ASSERT_EQ(DelegateResignationType,         TransactionTypes::DelegateResignation);
 }

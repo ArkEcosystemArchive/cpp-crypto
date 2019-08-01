@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  **/
 
-// This is a dummy prototype 'setup' & 'loop' for CI testing.
+// This is a placeholder 'setup' & 'loop' for CI testing.
 // This isn't intended for project or production use.
 // It is only used in the 'pio run' command from root in CI;
 // successful completion of which asserts that the ARK Cpp-Crypto library builds on its own.
