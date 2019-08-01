@@ -23,7 +23,6 @@ const size_t HASH_32_BYTE_LEN     = 32U;
 const size_t HASH_64_BYTE_LEN     = 64U;
 
 typedef std::array<uint8_t, HASH_32_BYTE_LEN> Hash32;
-typedef std::array<uint8_t, HASH_64_BYTE_LEN> Hash64;
 
 ////////// Identities //////////
 

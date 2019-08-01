@@ -47,8 +47,8 @@ inline std::string BytesToHex(const T& vch) {
 /****/
 
 namespace {
-constexpr size_t HEX_TABLE_BYTE_LEN = 256U;
-constexpr std::array<int8_t, HEX_TABLE_BYTE_LEN> HexTable = {{
+constexpr size_t HEX_TABLE_LEN = 256U;
+constexpr std::array<int8_t, HEX_TABLE_LEN> HexTable = {{
     #include "utils/hex.table"
 }};
 }  // namespace
@@ -65,7 +65,7 @@ inline std::vector<uint8_t> HexToBytes(const char* psz) {
   // convert hex dump to vector
   std::vector<uint8_t> vch;
   for (;;) {
-    // while (isspace(*psz) != 0) { psz++; };
+    while (isspace(*psz) != 0) { psz++; };
     auto c = HexDigit(*psz++);
     if (c == static_cast<int8_t>(-1)) { break; };
     int8_t n = (c << 4);
@@ -82,7 +82,10 @@ inline std::vector<uint8_t> HexToBytes(const char* psz) {
 // Hex string to Byte Array.
 // Same as HexToBytes, but using std::array.
 // This is a bit lighter and faster than using the vector method.
+//
 // Default size is 32-bytes.
+// The template 'SIZE' should be 1/2x the Hex length.
+// e.g. A 66-character Hex string represents 33-bytes
 //
 // Examples:
 // auto privateKeyFromHex = HexToBytesArray<>(my_privatekey_hex_string);
@@ -93,7 +96,7 @@ inline std::array<uint8_t, SIZE> HexToBytesArray(const char* psz) {
 
   std::array<uint8_t, SIZE> arr;
   for (auto& e : arr) {
-    while (*psz == ' ') { psz++; };
+    while (isspace(*psz) != 0) { psz++; };
     auto a = HexTable[ static_cast<int8_t>(*psz++) ] << 4;
     auto b = HexTable[ static_cast<int8_t>(*psz++) ];
     if ((a | b) < 0) { return {0}; };

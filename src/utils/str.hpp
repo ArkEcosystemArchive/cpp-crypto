@@ -15,8 +15,8 @@
 #include <vector>
 
 namespace {
-const size_t ALPHANUM_TABLE_BYTE_LEN = 128U;
-constexpr std::array<int8_t, ALPHANUM_TABLE_BYTE_LEN> AlphaNumericTable = {{
+const size_t ALPHANUM_TABLE_LEN = 128U;
+constexpr std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
     #include "utils/str.table"
 }};
 }  // namespace
@@ -35,6 +35,7 @@ inline size_t strlenSafe(const char* str) {
 
 /**/
 
+// Converts an ASCII string to a uint8_t/bytes vector representation.
 inline const std::vector<uint8_t> StringToBytes(const std::string& str) {
   return { str.begin(), str.end() };
 };

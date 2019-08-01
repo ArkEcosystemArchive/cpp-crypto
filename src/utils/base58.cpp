@@ -72,8 +72,8 @@ PrivateKeyBytes Base58::parseWif(const char* wif, uint8_t* outVersion) {
 /**/
 
 namespace {  // NOLINT
-const size_t BASE58_TABLE_BYTE_LEN = 128U;
-const std::array<int8_t, BASE58_TABLE_BYTE_LEN> Base58Table = {{
+const size_t BASE58_TABLE_LEN = 128U;
+const std::array<int8_t, BASE58_TABLE_LEN> Base58Table = {{
   #include "base58.table"
 }};
 }  // namespace
