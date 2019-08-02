@@ -29,8 +29,7 @@ Address::Address(const PubkeyHash pubkeyHash, uint8_t version)
 
 // Constructs an Address from a 34-character Address string.
 Address::Address(const char* addressString) : pubkeyHash_(), version_() {
-  if (strlenSafe(addressString) == ADDRESS_STRING_LEN
-      && Base58::validate(addressString, ADDRESS_STRING_LEN)) {
+  if (Base58::validate(addressString, ADDRESS_STRING_LEN)) {
     const auto hashPair = Base58::getHashPair(addressString);
     this->pubkeyHash_ = hashPair.pubkeyHash;
     this->version_ = hashPair.version;
