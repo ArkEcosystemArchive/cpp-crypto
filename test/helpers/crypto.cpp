@@ -75,7 +75,7 @@ TEST(helpers, crypto_sign) {
       privateKey,
       signature);
 
-  for (auto i = 0; i < signature.size(); ++i) {
+  for (auto i = 0u; i < signature.size(); ++i) {
     ASSERT_EQ(signature[i], SignatureTestBytes[i]);
   };
 }
