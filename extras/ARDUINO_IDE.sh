@@ -141,8 +141,8 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mkdir ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/BIP66       ${EXTRAS_LIB_DIR}
-  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/date        ${EXTRAS_LIB_DIR}
+  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
   mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
 
@@ -217,8 +217,8 @@ else
   mkdir ${SRC_LIB_DIR}
   mv ${EXTRAS_LIB_DIR}/ArduinoJson  ${SRC_LIB_DIR}
   mv ${EXTRAS_LIB_DIR}/BIP66        ${SRC_LIB_DIR}
-  mv ${EXTRAS_LIB_DIR}/uECC         ${SRC_LIB_DIR}
   mv ${EXTRAS_LIB_DIR}/date         ${SRC_LIB_DIR}
+  mv ${EXTRAS_LIB_DIR}/uECC         ${SRC_LIB_DIR}
   mv ${SRC_DIR}/bcl                 ${SRC_LIB_DIR}
   mv ${SRC_DIR}/rfc6979             ${SRC_LIB_DIR}
 
