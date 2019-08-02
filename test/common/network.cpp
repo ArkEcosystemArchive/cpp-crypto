@@ -49,6 +49,6 @@ TEST(common, network_comparison_not_equal) {
   Network network(CustomNetwork);
   ASSERT_TRUE(network != Devnet);
 
-  Network network(InvalidNetwork);
-  ASSERT_TRUE(network != Devnet);
+  Network invalid(InvalidNetwork);
+  ASSERT_TRUE(invalid != Devnet);
 }
