@@ -15,7 +15,7 @@ TEST(helpers, hex_bytes_to_hex) {
 
 /**/
 
-TEST(helpers, hex_hex_to_bytes) {
+TEST(utils, hex_hex_to_bytes) {
   const auto result = HexToBytes(tSignatureString);
   for (auto i = 0; i < result.size(); ++i) {
     ASSERT_TRUE(result.at(i) == tMessageSignatureBytes.at(i));
@@ -24,7 +24,7 @@ TEST(helpers, hex_hex_to_bytes) {
 
 /**/
 
-TEST(helpers, hex_hex_to_bytes_spaces) {
+TEST(utils, hex_hex_to_bytes_spaces) {
   const auto result = HexToBytes(tSignatureStringSpaces);
   for (auto i = 0; i < result.size(); ++i) {
     ASSERT_TRUE(result.at(i) == tMessageSignatureBytes.at(i));
@@ -33,7 +33,7 @@ TEST(helpers, hex_hex_to_bytes_spaces) {
 
 /**/
 
-TEST(helpers, hex_hex_to_bytes_array) {
+TEST(utils, hex_hex_to_bytes_array) {
   const auto result = HexToBytesArray<>(tSignatureString);
   for (auto i = 0; i < result.size(); ++i) {
     ASSERT_TRUE(result.at(i) == tMessageSignatureBytes[i]);
@@ -42,7 +42,7 @@ TEST(helpers, hex_hex_to_bytes_array) {
 
 /**/
 
-TEST(helpers, hex_hex_to_bytes_array_spaces) {
+TEST(utils, hex_hex_to_bytes_array_spaces) {
   const auto result = HexToBytesArray<>(tSignatureStringSpaces);
   for (auto i = 0; i < result.size(); ++i) {
     ASSERT_TRUE(result.at(i) == tMessageSignatureBytes.at(i));
@@ -51,7 +51,7 @@ TEST(helpers, hex_hex_to_bytes_array_spaces) {
 
 /**/
 
-TEST(helpers, hex_hex_to_bytes_array_null_input) {
+TEST(utils, hex_hex_to_bytes_array_null_input) {
   const auto result = HexToBytesArray<>(nullptr);
   for (unsigned char i : result) {
     ASSERT_EQ(result.at(i), 0);
