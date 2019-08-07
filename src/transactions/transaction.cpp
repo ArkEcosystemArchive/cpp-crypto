@@ -293,7 +293,7 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   snprintf(type, sizeof(type), "%u", this->type);
 
   //  Version
-  snprintf(version, sizeof(version), "%d", this->version);
+  snprintf(version, sizeof(version), "%u", this->version);
 
   return {
     { "amount", amount },
@@ -423,7 +423,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   if (txArray["version"] != "0") {
     doc["version"] = atoi(txArray["version"].c_str());
   };
-
+  
   char jsonChar[docCapacity];
   serializeJson(doc, jsonChar, docCapacity);
 
