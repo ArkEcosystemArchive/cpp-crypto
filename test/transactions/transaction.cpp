@@ -50,6 +50,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("0", tArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", tArray["version"].c_str());
 
   // Type 1 //
   auto secondSignatureRegistration = Builder::buildSecondSignatureRegistration(
@@ -89,6 +92,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("1", ssArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", ssArray["version"].c_str());
 
   // Type 2 //
   auto delegateRegistration = Builder::buildDelegateRegistration(
@@ -127,6 +133,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("2", dArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", dArray["version"].c_str());
 
   // Type 3 //
   std::vector<std::string> votes = {
@@ -171,6 +180,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("3", vArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", vArray["version"].c_str());
 }
 
 /**/
@@ -209,6 +221,8 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_LT(tDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(tDoc["type"].as<int>(), 0);
+  
+  ASSERT_EQ(1, tDoc["version"].as<int>());
 
   // Type 1 //
   auto secondSignatureRegistration = Builder::buildSecondSignatureRegistration(
@@ -245,6 +259,8 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_LT(ssDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(ssDoc["type"].as<int>(), 1);
+  
+  ASSERT_EQ(1, ssDoc["version"].as<int>());
 
   // Type 2 //
   auto delegateRegistration = Builder::buildDelegateRegistration(
@@ -279,6 +295,8 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_LT(dDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(dDoc["type"].as<int>(), 2);
+  
+  ASSERT_EQ(1, dDoc["version"].as<int>());
 
   // Type 3 //
   std::vector<std::string> votes = {
@@ -323,6 +341,8 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_LT(vDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(vDoc["type"].as<int>(), 3);
+  
+  ASSERT_EQ(1, vDoc["version"].as<int>());
 };
 
 /**/
