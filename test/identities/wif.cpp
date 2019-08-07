@@ -9,7 +9,7 @@ using namespace fixtures::identity;
 TEST(identities, wif_construct_bytes) {
   Wif wif(tPrivateKeyBytes, tWifVersion);
   const auto wifBytes = wif.toBytes();
-  for (auto i = 0; i < HASH_20_BYTE_LEN; i++) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
     ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
   };
   ASSERT_EQ(wif.version(), tWifVersion);
@@ -19,7 +19,7 @@ TEST(identities, wif_construct_bytes) {
 TEST(identities, wif_construct_string) {
   Wif wif(tWifString);
   const auto wifBytes = wif.toBytes();
-  for (auto i = 0; i < HASH_20_BYTE_LEN; i++) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
     ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
   };
   ASSERT_EQ(wif.version(), tWifVersion);
@@ -30,7 +30,7 @@ TEST(identities, wif_construct_string) {
 TEST(identities, wif_construct_string_invlaid) {
   Wif wif(invalid::tWifString);
   const auto wifBytes = wif.toBytes();
-  for (auto i = 0; i < HASH_20_BYTE_LEN; i++) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
     ASSERT_EQ(wifBytes.at(i), 0);
   };
   ASSERT_EQ(wif.version(), 0);
@@ -48,7 +48,7 @@ TEST(identities, wif_get_version) {
 TEST(identities, wif_to_bytes) {
   Wif wif(tWifString);
   const auto wifBytes = wif.toBytes();
-  for (auto i = 0; i < HASH_20_BYTE_LEN; i++) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
     ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
   };
   ASSERT_EQ(wif.version(), tWifVersion);
@@ -68,7 +68,7 @@ TEST(identities, wif_to_string) {
 TEST(identities, wif_from_passphrase) {
   Wif wif = Wif::fromPassphrase(tPassphrase, tWifVersion);
   const auto wifBytes = wif.toBytes();
-  for (auto i = 0; i < HASH_20_BYTE_LEN; i++) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
     ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
   };
   ASSERT_EQ(wif.version(), tWifVersion);

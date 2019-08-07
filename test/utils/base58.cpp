@@ -9,7 +9,7 @@ using namespace fixtures::identity;
 
 TEST(utils, base58_get_hash_pair) {
   auto hashPair = Base58::getHashPair(tAddressString);
-  for (auto i = 0; i < HASH_20_BYTE_LEN; ++i) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; ++i) {
     ASSERT_EQ(hashPair.pubkeyHash.at(i), tAddressBytes.at(i));
   };
   ASSERT_EQ(hashPair.version, tAddressVersion);
@@ -34,7 +34,7 @@ TEST(utils, base58_get_wif) {
 TEST(utils, base58_parse_wif) {
   uint8_t outVersion;
   auto privateKey = Base58::parseWif(tWifString, &outVersion);
-  for (auto i = 0; i < HASH_20_BYTE_LEN; ++i) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; ++i) {
     ASSERT_EQ(privateKey[i], tPrivateKeyBytes.at(i));
   };
   ASSERT_EQ(outVersion, tWifVersion);
@@ -45,7 +45,7 @@ TEST(utils, base58_parse_wif) {
 TEST(utils, base58_parse_wif_invalid) {
   uint8_t outVersion;
   auto privateKey = Base58::parseWif(invalid::tWifString, &outVersion);
-  for (auto i = 0; i < HASH_20_BYTE_LEN; ++i) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; ++i) {
     ASSERT_NE(privateKey.at(i), tPrivateKeyBytes.at(i));
   };
   ASSERT_NE(outVersion, tWifVersion);

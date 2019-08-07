@@ -87,7 +87,7 @@ bool Base58::validate(const char* str, size_t size) {
   auto length = strlenSafe(str);
   if (size == 0 || length != size) { return false; };
 
-  for (auto i = 0; i < length; ++i) {
+  for (auto i = 0U; i < length; ++i) {
     if (Base58Table.at(str[i]) == 0) { return false; };
   };
 

@@ -14,7 +14,7 @@ static const FeePolicy kCustomFeePolicy = {
 
 TEST(common, fee_policy_custom) {
   const FeePolicy feePolicy(kCustomFeePolicy);
-  for (auto i = 0u; i < kCustomFeePolicy.size(); ++i) {
+  for (auto i = 0U; i < kCustomFeePolicy.size(); ++i) {
     ASSERT_EQ(kCustomFeePolicy[i], feePolicy[i]);
   };
 }

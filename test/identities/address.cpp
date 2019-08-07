@@ -45,7 +45,7 @@ TEST(identities, address_get_version) {
 TEST(identities, address_to_bytes) {
   Address address(tAddressString);
   auto addressBytes = address.toBytes();
-  for (auto i = 0; i < HASH_20_BYTE_LEN; i++) {
+  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
     ASSERT_EQ(addressBytes.at(i), tAddressBytes.at(i));
   };
   auto version = address.version();

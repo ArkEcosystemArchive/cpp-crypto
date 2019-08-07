@@ -9,7 +9,7 @@ using namespace fixtures::identity;
 TEST(identities, publickey_construct_bytes) {
   PublicKey publicKey(tPublicKeyBytes);
   const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
+  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
     ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
   };}
 
@@ -18,7 +18,7 @@ TEST(identities, publickey_construct_bytes) {
 TEST(identities, publickey_to_bytes) {
   auto publicKey = PublicKey::fromHex(tPublicKeyHex);
   const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
+  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
     ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
   };
 }
@@ -36,7 +36,7 @@ TEST(identities, publickey_to_string) {
 TEST(identities, publickey_from_passphrase) {
   auto publicKey = PublicKey::fromPassphrase(tPassphrase);
   const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
+  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
     ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
   };
 }
@@ -46,7 +46,7 @@ TEST(identities, publickey_from_passphrase) {
 TEST(identities, publickey_from_hex) {
   auto publicKey = PublicKey::fromHex(tPublicKeyHex);
   const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
+  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
     ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
   };
 }
@@ -56,7 +56,7 @@ TEST(identities, publickey_from_hex) {
 TEST(identities, publickey_from_hex_invalid_chars) {
   auto publicKey = PublicKey::fromHex(invalid::tPublicKeyHex);
   const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
+  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
     ASSERT_NE(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
   };
 }
@@ -66,7 +66,7 @@ TEST(identities, publickey_from_hex_invalid_chars) {
 TEST(identities, publickey_from_hex_invalid_length) {
   auto publicKey = PublicKey::fromHex(&tPublicKeyHex[1]);
   const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
+  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
     ASSERT_NE(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
   };
 }

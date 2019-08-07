@@ -9,7 +9,7 @@ using namespace fixtures::identity;
 
 TEST(crypto, curve_publickey_compute) {
   const auto publicKey = Curve::PublicKey::compute(tPrivateKeyBytes.data());
-  for (auto i = 0; i < PUBLICKEY_COMPRESSED_BYTE_LEN; ++i) {
+  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; ++i) {
     ASSERT_EQ(publicKey.at(i), tPublicKeyBytes.at(i));
   };
 }
