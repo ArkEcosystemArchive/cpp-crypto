@@ -26,7 +26,7 @@ TEST(helpers, hex_bytes_to_hex) {
 
 TEST(helpers, hex_hex_to_bytes) {
   const auto result = HexToBytes(SignatureTestString);
-  for (auto i = 0; i < result.size(); ++i) {
+  for (auto i = 0u; i < result.size(); ++i) {
     ASSERT_TRUE(result[i] == SignatureTestBytes[i]);
   };
 }
@@ -35,7 +35,7 @@ TEST(helpers, hex_hex_to_bytes) {
 
 TEST(helpers, hex_hex_to_bytes_spaces) {
   const auto result = HexToBytes(SignatureTestStringSpaces);
-  for (auto i = 0; i < result.size(); ++i) {
+  for (auto i = 0u; i < result.size(); ++i) {
     ASSERT_TRUE(result[i] == SignatureTestBytes[i]);
   };
 }
