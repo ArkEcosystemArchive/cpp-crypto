@@ -1,13 +1,16 @@
 
 #include "utils/message.h"
+
 #include "helpers/json.h"
+#include "identities/keys.hpp"
+#include "utils/hex.hpp"
 
 Ark::Crypto::Utils::Message::Message(
     std::string msg,
     PublicKey pubKey,
     std::vector<uint8_t> sig)
     : message(std::move(msg)),
-      publicKey(pubKey),
+      publicKey(std::move(pubKey)),
       signature(std::move(sig)) {};
 
 /**/
@@ -17,11 +20,11 @@ bool Ark::Crypto::Utils::Message::sign(
     const char *const passphrase) {
   this->message = std::move(newMessage);
 
-  /* Get the PrivateKey */
-  auto privateKey = PrivateKey::fromPassphrase(passphrase);
+  /* Get the KeyPair */
+  const auto keys = Keys::fromPassphrase(passphrase);
 
-  /* Set the PublicKey from the derived PrivateKey */
-  this->publicKey = PublicKey::fromPrivateKey(privateKey);
+  /* Set the PublicKey from the PrivateKey */
+  this->publicKey = PublicKey(keys.publicKey);
 
   /* Get the Hash */
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(
@@ -29,7 +32,7 @@ bool Ark::Crypto::Utils::Message::sign(
   const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
 
   /* Sign it */
-  cryptoSign(hash, privateKey, this->signature);
+  cryptoSign(hash, PrivateKey(keys.privateKey), this->signature);
 
   return this->verify();
 };

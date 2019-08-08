@@ -8,9 +8,10 @@
 
 #include "common/configuration.hpp"
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
+#include "identities/address.hpp"
 #include "utils/slot.h"
 #include "helpers/crypto_helpers.h"
+#include "identities/publickey.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -54,9 +55,9 @@ Transaction Builder::buildSecondSignatureRegistration(
   transaction.fee = configuration.getFee(
       defaults::TransactionTypes::SecondSignatureRegistration);
 
-  const auto publicKey = Identities::PublicKey::fromPassphrase(
-      secondPassphrase.c_str());
-  transaction.asset.signature.publicKey = publicKey.toString();
+    transaction.asset.signature.publicKey =
+        identities::PublicKey::fromPassphrase(secondPassphrase.c_str())
+        .toString();
 
   sign(
       transaction,
@@ -103,7 +104,7 @@ Transaction Builder::buildVote(
   transaction.fee = configuration.getFee(defaults::TransactionTypes::Vote);
   transaction.asset.votes = std::move(votes);
 
-  const auto recipient = Identities::Address::fromPassphrase(
+  const auto recipient = identities::Address::fromPassphrase(
       passphrase.c_str(),
       configuration.getNetwork().version());
   transaction.recipient = recipient.toString();
@@ -135,7 +136,7 @@ Transaction Builder::buildMultiSignatureRegistration(
   transaction.asset.multiSignature.lifetime = lifetime;
   transaction.asset.multiSignature.keysgroup = keysgroup;
 
-  const auto recipient = Identities::Address::fromPassphrase(
+  const auto recipient = identities::Address::fromPassphrase(
       passphrase.c_str(),
       configuration.getNetwork().version());
   transaction.recipient = recipient.toString();

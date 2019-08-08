@@ -11,24 +11,21 @@
 #define MESSAGE_H
 
 #include "helpers/crypto.h"
-#include "helpers/encoding/hex.h"
 #include "helpers/crypto_helpers.h"
 
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 
 #include "bcl/CurvePoint.hpp"
 #include "bcl/Sha256.hpp"
 #include "bcl/Sha256Hash.hpp"
 #include "bcl/Uint256.hpp"
 
-#include "rfc6979/rfc6979.h"
-
 #include <map>
 #include <string>
 #include <vector>
 
-using namespace Ark::Crypto::Identities;
+using namespace Ark::Crypto::identities;
 
 namespace Ark {
 namespace Crypto {
@@ -41,7 +38,7 @@ class Message {
   std::vector<uint8_t> signature;
 
   Message(std::string msg, PublicKey pubKey, std::vector<uint8_t> sig);
-  Message() : signature(std::vector<uint8_t>(142)){};
+  Message() : publicKey({}) {};
 
   bool sign(std::string newMessage, const char *const passphrase);
   bool verify();

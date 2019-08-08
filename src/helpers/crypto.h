@@ -8,8 +8,8 @@
  **/
 
 #include "bcl/Sha256Hash.hpp"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -19,13 +19,13 @@
 
 void cryptoSign(
     Sha256Hash hash,
-    Ark::Crypto::Identities::PrivateKey privateKey,
+    Ark::Crypto::identities::PrivateKey privateKey,
     std::vector<uint8_t>& signature);
 
 /**/
 
 bool cryptoVerify(
-    Ark::Crypto::Identities::PublicKey publicKey,
+    Ark::Crypto::identities::PublicKey publicKey,
     Sha256Hash hash,
     std::vector<uint8_t>& signature);
 
