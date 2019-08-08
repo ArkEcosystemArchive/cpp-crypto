@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 
   // WIF - from passphrase
   const uint8_t wifByte = 0xaa;
-  auto wif = WIF::fromPassphrase(passphrase, wifByte);
+  auto wif = Wif::fromPassphrase(passphrase, wifByte);
   std::cout << "WIF from passphrase\n";
   std::cout << "\tPassphrase: " << passphrase << '\n';
   std::cout << "\tWIF Byte: 0x" << std::hex << static_cast<uint16_t>(wifByte) << '\n';

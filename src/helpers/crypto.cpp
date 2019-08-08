@@ -11,7 +11,7 @@
 
 void cryptoSign(
     Sha256Hash hash,
-    Ark::Crypto::Identities::PrivateKey privateKey,
+    Ark::Crypto::identities::PrivateKey privateKey,
     std::vector<uint8_t>& signature) {
   // create r & s-values
   Uint256 r;
@@ -22,13 +22,13 @@ void cryptoSign(
   nonce_function_rfc6979(
       nonce32,
       hash.value,
-      privateKey.toBytes(),
+      privateKey.toBytes().data(),
       nullptr, nullptr, 0);
 
   // sign the hash using privateKey-bytes and nonce.
   // outputs r & s-values.
   Ecdsa::sign(
-      Uint256(privateKey.toBytes()),
+      Uint256(privateKey.toBytes().data()),
       hash,
       Uint256(nonce32),
       r, s);
@@ -48,7 +48,7 @@ void cryptoSign(
 /**/
 
 bool cryptoVerify(
-    Ark::Crypto::Identities::PublicKey publicKey,
+    Ark::Crypto::identities::PublicKey publicKey,
     Sha256Hash hash,
     std::vector<uint8_t>& signature) {
   // Get the Uncompressed PublicKey
@@ -63,7 +63,7 @@ bool cryptoVerify(
   const struct uECC_Curve_t* curve = uECC_secp256k1();
 
   // decompress the key
-  uECC_decompress(publicKeyBytes, uncompressedPublicKey, curve);
+  uECC_decompress(publicKeyBytes.data(), uncompressedPublicKey, curve);
   if (uECC_valid_public_key(uncompressedPublicKey, curve) == 0) {
     return false;
   };  // validate the uncompressed publicKey

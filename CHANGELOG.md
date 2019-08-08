@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+## [Unreleased]
+
+### Changed
+
+- refactored Identities implementation. ([#120])
+
 ## [0.6.0-arduino] - 2019-07-16
 
 ## [0.6.0] - 2019-07-16
@@ -96,7 +103,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed the way the Arduino IDE Script restores converted directories ([#49])
 - Corrected PIO Builds to determine dependency versions explicitly ([#52])
 
-[unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.2.0...develop
+[unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0...develop
 [0.2.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.1.0..0.2.0
 [#54]: https://github.com/ArkEcosystem/cpp-crypto/pull/54
 [#55]: https://github.com/ArkEcosystem/cpp-crypto/pull/55
@@ -110,3 +117,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#64]: https://github.com/ArkEcosystem/cpp-crypto/pull/64
 [#69]: https://github.com/ArkEcosystem/cpp-crypto/pull/69
 [#70]: https://github.com/ArkEcosystem/cpp-crypto/pull/70
+[#120]: https://github.com/ArkEcosystem/cpp-crypto/pull/120

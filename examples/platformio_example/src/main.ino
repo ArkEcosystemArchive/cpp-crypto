@@ -105,7 +105,7 @@ void loop() {
 
   // WIF - from passphrase
   const uint8_t wifByte = 0xaa;
-  auto wif = WIF::fromPassphrase(passphrase, wifByte);
+  auto wif = Wif::fromPassphrase(passphrase, wifByte);
   Serial.println("WIF from passphrase");
   Serial.print("\tPassphrase: "); Serial.print(passphrase); Serial.println();
   Serial.print("\tWIF Byte: "); Serial.print(static_cast<uint16_t>(wifByte)); Serial.println();

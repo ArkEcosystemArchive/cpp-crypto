@@ -5,6 +5,8 @@
 
 #include <map>
 
+#include "utils/hex.hpp"
+
 namespace { // NOLINT
   //ARK Core test fixtures:
   // https://github.com/ARKEcosystem/core/blob/develop/__tests__/unit/crypto/utils/message.test.ts
@@ -24,7 +26,7 @@ namespace { // NOLINT
 TEST(utils, message_sign) {
   Ark::Crypto::Utils::Message message;
   message.sign(text, passphrase);
-  ASSERT_STREQ(expectedSignature, BytesToHex(message.signature).c_str());
+  ASSERT_STREQ(expectedSignature, BytesToHex(message.signature.begin(), message.signature.end()).c_str());
   ASSERT_TRUE(message.verify());
 }
 
