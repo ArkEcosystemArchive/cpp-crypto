@@ -20,11 +20,11 @@ namespace identities {
 
 class Wif {
  public:
-  Wif(const PrivateKeyBytes privateKeyBytes, uint8_t version);
+  Wif(const PrivateKeyBytes& privateKeyBytes, uint8_t version);
   explicit Wif(const char* wif);
 
-  uint8_t version() const;
-  PrivateKeyBytes toBytes() const;
+  uint8_t version() const noexcept;
+  PrivateKeyBytes toBytes() const noexcept;
   std::string toString() const;
 
   static Wif fromPassphrase(const char* passphrase, uint8_t version);

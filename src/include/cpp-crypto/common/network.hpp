@@ -27,11 +27,11 @@ class Network final {
           uint8_t wif,
           uint8_t version,
           std::string epoch)
-      : nethash_(nethash),
+      : nethash_(std::move(nethash)),
         slip44_(slip44),
         wif_(wif),
         version_(version),
-        epoch_(epoch) {}
+        epoch_(std::move(epoch)) {}
 
   std::string nethash() const;
   uint8_t slip44() const;

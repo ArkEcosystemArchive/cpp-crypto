@@ -18,15 +18,15 @@
 #define CRYPTO_H
 
 void cryptoSign(
-    Sha256Hash hash,
-    Ark::Crypto::identities::PrivateKey privateKey,
+    const Sha256Hash& hash,
+    const Ark::Crypto::identities::PrivateKey& privateKey,
     std::vector<uint8_t>& signature);
 
 /**/
 
 bool cryptoVerify(
-    Ark::Crypto::identities::PublicKey publicKey,
-    Sha256Hash hash,
-    std::vector<uint8_t>& signature);
+    const Ark::Crypto::identities::PublicKey& publicKey,
+    const Sha256Hash& hash,
+    const std::vector<uint8_t>& signature);
 
 #endif

@@ -10,8 +10,8 @@
 #include "bip66.h"
 
 void cryptoSign(
-    Sha256Hash hash,
-    Ark::Crypto::identities::PrivateKey privateKey,
+    const Sha256Hash& hash,
+    const Ark::Crypto::identities::PrivateKey& privateKey,
     std::vector<uint8_t>& signature) {
   // create r & s-values
   Uint256 r;
@@ -48,9 +48,9 @@ void cryptoSign(
 /**/
 
 bool cryptoVerify(
-    Ark::Crypto::identities::PublicKey publicKey,
-    Sha256Hash hash,
-    std::vector<uint8_t>& signature) {
+    const Ark::Crypto::identities::PublicKey& publicKey,
+    const Sha256Hash& hash,
+    const std::vector<uint8_t>& signature) {
   // Get the Uncompressed PublicKey
 
   // compressed publicKey bytes (uint8_t*)

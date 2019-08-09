@@ -69,21 +69,21 @@ private:
 
   static void sign(
       Transaction& transaction,
-      std::string passphrase,
-      std::string secondPassphrase = "",
+      const std::string& passphrase,
+      const std::string& secondPassphrase = "",
       const Configuration& configuration = {});
 
   Builder sign(const std::string& passphrase);
 
 private:
-  void serializeVendorField(std::vector<uint8_t>& bytes);
-  void serializeType(std::vector<uint8_t>& bytes);
-  void serializeTransfer(std::vector<uint8_t>& bytes);
-  void serializeSecondSignatureRegistration(std::vector<uint8_t>& bytes);
-  void serializeDelegateRegistration(std::vector<uint8_t>& bytes);
-  void serializeVote(std::vector<uint8_t>& bytes);
-  void serializeMultiSignatureRegistration(std::vector<uint8_t>& bytes);
-  void serializeSignatures(std::vector<uint8_t>& bytes);
+  void serializeVendorField(const std::vector<uint8_t>& bytes);
+  void serializeType(const std::vector<uint8_t>& bytes);
+  void serializeTransfer(const std::vector<uint8_t>& bytes);
+  void serializeSecondSignatureRegistration(const std::vector<uint8_t>& bytes);
+  void serializeDelegateRegistration(const std::vector<uint8_t>& bytes);
+  void serializeVote(const std::vector<uint8_t>& bytes);
+  void serializeMultiSignatureRegistration(const std::vector<uint8_t>& bytes);
+  void serializeSignatures(const std::vector<uint8_t>& bytes);
 
   Transaction _transaction;
 };

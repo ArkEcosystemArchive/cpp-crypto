@@ -20,7 +20,7 @@ namespace Crypto {
 namespace identities {
 
 // Constructs a Wif object using a PrivateKey and Wif Version-byte.
-Wif::Wif(PrivateKeyBytes privateKeyBytes, uint8_t version)
+Wif::Wif(const PrivateKeyBytes& privateKeyBytes, uint8_t version)
     : privateKeyBytes_(privateKeyBytes), version_(version) {}
 
 /**/
@@ -35,12 +35,12 @@ Wif::Wif(const char* wif) : privateKeyBytes_(), version_() {
 /**/
 
 // Returns the Wif Network Version-byte.
-uint8_t Wif::version() const { return this->version_; };
+uint8_t Wif::version() const noexcept { return this->version_; };
 
 /**/
 
 // Returns the Wifs internal privateKey 
-PrivateKeyBytes Wif::toBytes() const {
+PrivateKeyBytes Wif::toBytes() const noexcept {
   return this->privateKeyBytes_;
 }
 

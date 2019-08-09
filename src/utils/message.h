@@ -41,10 +41,10 @@ class Message {
   Message() : publicKey({}) {};
 
   bool sign(std::string newMessage, const char *const passphrase);
-  bool verify();
+  bool verify() const;
 
-  std::map<std::string, std::string> toArray();
-  std::string toJson();
+  std::map<std::string, std::string> toArray() const;
+  std::string toJson() const;
 };
 /**/
 };  // namespace Utils
