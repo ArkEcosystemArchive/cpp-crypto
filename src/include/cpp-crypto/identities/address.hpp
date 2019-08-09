@@ -20,12 +20,12 @@ namespace identities {
 
 class Address {
  public:
-  Address(const PubkeyHash pubkeyHash, uint8_t version);
+  Address(const PubkeyHash& pubkeyHash, uint8_t version);
   explicit Address(const char* addressString);
 
-  uint8_t version() const;
+  uint8_t version() const noexcept;
 
-  PubkeyHash toBytes() const;
+  PubkeyHash toBytes() const noexcept;
   std::string toString() const;
 
   static Address fromPassphrase(const char* passphrase, uint8_t version);

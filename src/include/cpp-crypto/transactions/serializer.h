@@ -23,17 +23,17 @@ namespace Transactions {
 class Serializer {
 public:
   Serializer(Transaction transaction);
-  std::string serialize();
+  std::string serialize() const;
 
 private:
-  void serializeVendorField(std::vector<uint8_t>& bytes);
-  void serializeType(std::vector<uint8_t>& bytes);
-  void serializeTransfer(std::vector<uint8_t>& bytes);
-  void serializeSecondSignatureRegistration(std::vector<uint8_t>& bytes);
-  void serializeDelegateRegistration(std::vector<uint8_t>& bytes);
-  void serializeVote(std::vector<uint8_t>& bytes);
-  void serializeMultiSignatureRegistration(std::vector<uint8_t>& bytes);
-  void serializeSignatures(std::vector<uint8_t>& bytes);
+  void serializeVendorField(std::vector<uint8_t>& bytes) const;
+  void serializeType(std::vector<uint8_t>& bytes) const;
+  void serializeTransfer(std::vector<uint8_t>& bytes) const;
+  void serializeSecondSignatureRegistration(std::vector<uint8_t>& bytes) const;
+  void serializeDelegateRegistration(std::vector<uint8_t>& bytes) const;
+  void serializeVote(std::vector<uint8_t>& bytes) const;
+  void serializeMultiSignatureRegistration(std::vector<uint8_t>& bytes) const;
+  void serializeSignatures(std::vector<uint8_t>& bytes) const;
 
   Transaction _transaction;
 };

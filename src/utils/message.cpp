@@ -39,7 +39,7 @@ bool Ark::Crypto::Utils::Message::sign(
 
 /**/
 
-bool Ark::Crypto::Utils::Message::verify() {
+bool Ark::Crypto::Utils::Message::verify() const {
   // cast message to unsigned char*
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(
       this->message.c_str());
@@ -50,7 +50,7 @@ bool Ark::Crypto::Utils::Message::verify() {
 
 /**/
 
-std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
+std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() const {
   return {
     { "publickey", this->publicKey.toString() },
     { "signature", BytesToHex(this->signature.begin(), this->signature.end()) },
@@ -60,7 +60,7 @@ std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
 
 /**/
 
-std::string Ark::Crypto::Utils::Message::toJson() {
+std::string Ark::Crypto::Utils::Message::toJson() const {
   std::map<std::string, std::string> messageArray = this->toArray();
 
   const size_t docLength

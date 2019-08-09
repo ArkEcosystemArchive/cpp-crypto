@@ -153,8 +153,8 @@ Transaction Builder::buildMultiSignatureRegistration(
 
 void Builder::sign(
     Transaction& transaction,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   transaction.timestamp = static_cast<uint32_t>(
       Utils::Slot::time(configuration.getNetwork()));

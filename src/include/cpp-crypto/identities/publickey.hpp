@@ -20,9 +20,9 @@ namespace identities {
 
 class PublicKey {
  public:
-  explicit PublicKey(const PublicKeyBytes publicKeyBytes);
+  explicit PublicKey(const PublicKeyBytes& publicKeyBytes);
 
-  PublicKeyBytes toBytes() const;
+  PublicKeyBytes toBytes() const noexcept;
   std::string toString() const;
 
   static PublicKey fromPassphrase(const char* passphrase);

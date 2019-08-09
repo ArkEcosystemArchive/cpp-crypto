@@ -21,13 +21,13 @@ namespace Crypto {
 namespace identities {
 
 // Construct a PrivateKey object directly from a 32-byte PrivateKey array.
-PrivateKey::PrivateKey(const PrivateKeyBytes privateKeyBytes)
+PrivateKey::PrivateKey(const PrivateKeyBytes& privateKeyBytes)
     : privateKeyBytes_(privateKeyBytes) {}
 
 /**/
 
 // Returns the 32-byte PrivateKey representation.
-PrivateKeyBytes PrivateKey::toBytes() const { return this->privateKeyBytes_; }
+PrivateKeyBytes PrivateKey::toBytes() const noexcept{ return this->privateKeyBytes_; }
 
 /**/
 

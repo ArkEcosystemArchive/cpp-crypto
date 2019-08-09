@@ -22,13 +22,13 @@ namespace Crypto {
 namespace identities {
 
 // Construct a PublicKey object from a 33-byte PublicKey array.
-PublicKey::PublicKey(const PublicKeyBytes publicKeyBytes)
+PublicKey::PublicKey(const PublicKeyBytes& publicKeyBytes)
     : publicKeyBytes_(publicKeyBytes) {}
 
 /**/
 
 // Returns a 33-byte Compressed PublicKey array.
-PublicKeyBytes PublicKey::toBytes() const { return this->publicKeyBytes_; }
+PublicKeyBytes PublicKey::toBytes() const noexcept { return this->publicKeyBytes_; }
 
 /**/
 
