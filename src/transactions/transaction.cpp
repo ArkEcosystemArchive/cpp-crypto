@@ -83,9 +83,9 @@ bool Ark::Crypto::Transactions::Transaction::secondVerify(
 /**/
 
 bool Ark::Crypto::Transactions::Transaction::internalVerify(
-    std::string publicKey,
+    const std::string& publicKey,
     std::vector<uint8_t> bytes,
-    std::string signature) const {
+    const std::string& signature) const {
   if (bytes.empty()) { return false; };
 
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());

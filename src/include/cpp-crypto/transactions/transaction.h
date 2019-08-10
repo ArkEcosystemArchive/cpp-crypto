@@ -82,9 +82,9 @@ public:
 
 private:
   bool internalVerify(
-      std::string publicKey,
+      const std::string& publicKey,
       std::vector<uint8_t> bytes,
-      std::string signature) const;
+      const std::string& signature) const;
 };
 /**/
 };  // namespace Transactions
