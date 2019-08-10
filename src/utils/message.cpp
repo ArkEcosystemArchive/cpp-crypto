@@ -7,10 +7,10 @@
 
 Ark::Crypto::Utils::Message::Message(
     std::string msg,
-    PublicKey pubKey,
+    const PublicKey& pubKey,
     std::vector<uint8_t> sig)
     : message(std::move(msg)),
-      publicKey(std::move(pubKey)),
+      publicKey(pubKey),
       signature(std::move(sig)) {};
 
 /**/

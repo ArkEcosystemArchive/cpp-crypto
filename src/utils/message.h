@@ -37,7 +37,7 @@ class Message {
   PublicKey publicKey;
   std::vector<uint8_t> signature;
 
-  Message(std::string msg, PublicKey pubKey, std::vector<uint8_t> sig);
+  Message(std::string msg, const PublicKey& pubKey, std::vector<uint8_t> sig);
   Message() : publicKey({}) {};
 
   bool sign(std::string newMessage, const char *const passphrase);
