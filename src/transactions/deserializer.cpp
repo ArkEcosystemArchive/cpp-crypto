@@ -12,12 +12,9 @@
 #include "identities/address.hpp"
 #include "identities/privatekey.hpp"
 #include "identities/publickey.hpp"
-#include "helpers/crypto.h"
 #include "helpers/crypto_helpers.h"
 #include "utils/base58.hpp"
 #include "utils/hex.hpp"
-
-#include "bcl/Sha256.hpp"
 
 namespace Ark {
 namespace Crypto {

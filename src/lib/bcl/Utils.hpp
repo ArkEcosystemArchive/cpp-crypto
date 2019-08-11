@@ -11,6 +11,9 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bcl {
+
+
 
 /* 
  * Miscellaneous utilities used in a variety of places.
@@ -40,3 +43,5 @@ class Utils final {
 	Utils() = delete;  // Not instantiable
 	
 };
+
+}  // namespace bcl

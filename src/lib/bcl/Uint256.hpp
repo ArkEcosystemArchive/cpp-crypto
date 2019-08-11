@@ -10,6 +10,9 @@
 
 #include <cstdint>
 
+namespace bcl {
+
+
 class FieldInt;  // Forward declaration
 
 
@@ -136,5 +139,7 @@ class Uint256 {
 	
 };
 
+
+}  // namespace bcl
 
 #include "FieldInt.hpp"

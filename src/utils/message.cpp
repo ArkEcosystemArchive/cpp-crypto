@@ -1,6 +1,8 @@
 
 #include "utils/message.h"
 
+#include "crypto/curve.hpp"
+#include "crypto/hash.hpp"
 #include "helpers/json.h"
 #include "identities/keys.hpp"
 #include "utils/hex.hpp"
@@ -29,10 +31,17 @@ bool Ark::Crypto::Utils::Message::sign(
   /* Get the Hash */
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(
       message.c_str());
-  const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
+  const auto hash = Ark::Crypto::Hash::sha256(unsignedMessage,
+                                              this->message.size());
 
   /* Sign it */
-  cryptoSign(hash, PrivateKey(keys.privateKey), this->signature);
+  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
+  if (Ark::Crypto::Curve::Ecdsa::sign(hash.data(),
+                                      keys.privateKey.data(),
+                                      buffer)) {
+    buffer.resize(buffer[1] + 2);
+    this->signature = std::move(buffer);
+  };
 
   return this->verify();
 };
@@ -43,9 +52,12 @@ bool Ark::Crypto::Utils::Message::verify() const {
   // cast message to unsigned char*
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(
       this->message.c_str());
-  const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
-
-  return cryptoVerify(this->publicKey, hash, this->signature);
+  const auto hash = Ark::Crypto::Hash::sha256(unsignedMessage,
+                                              this->message.size());
+  const auto pk = this->publicKey.toBytes();
+  return Ark::Crypto::Curve::Ecdsa::verify(hash.data(),
+                                           pk.data(),
+                                           this->signature);
 };
 
 /**/
@@ -65,7 +77,7 @@ std::string Ark::Crypto::Utils::Message::toJson() const {
 
   const size_t docLength
       = (33 + 1)  // publickey length
-      + (72 + 1)  // signature length
+      + (Curve::Ecdsa::MAX_SIG_LEN + 1)  // signature length
       + this->message.length();
   const size_t docCapacity = JSON_OBJECT_SIZE(3) + docLength + 120;
 

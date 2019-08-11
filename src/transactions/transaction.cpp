@@ -6,25 +6,24 @@
 #include <string>
 #include <vector>
 
+#include "crypto/curve.hpp"
+#include "crypto/hash.hpp"
 #include "defaults/transaction_types.hpp"
 #include "identities/address.hpp"
 #include "identities/keys.hpp"
 #include "identities/privatekey.hpp"
-#include "helpers/crypto.h"
 #include "helpers/crypto_helpers.h"
 #include "helpers/json.h"
 #include "utils/base58.hpp"
 #include "utils/hex.hpp"
 
-#include "bcl/Sha256.hpp"
-
 using namespace Ark::Crypto::identities;
 
 std::string Ark::Crypto::Transactions::Transaction::getId() const {
   auto bytes = this->toBytes(false, false);
-  const auto shaHash = Sha256::getHash(&bytes[0], bytes.size());
-  memcpy(&bytes[0], shaHash.value, Sha256Hash::HASH_LEN);
-  return BytesToHex(&bytes[0], &bytes[0] + Sha256Hash::HASH_LEN);
+  const auto hash = Ark::Crypto::Hash::sha256(bytes.data(), bytes.size());
+  memcpy(bytes.data(), hash.data(), HASH_32_BYTE_LEN);
+  return BytesToHex(bytes.begin(), bytes.begin() + HASH_32_BYTE_LEN);
 }
 
 /**/
@@ -35,10 +34,11 @@ std::string Ark::Crypto::Transactions::Transaction::sign(
   this->senderPublicKey = BytesToHex(keys.publicKey);
 
   const auto bytes = this->toBytes();
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  const auto hash = Ark::Crypto::Hash::sha256(&bytes[0], bytes.size());
+  const auto pk = Keys::PrivateKey::fromPassphrase(passphrase);
 
-  std::vector<uint8_t> buffer;
-  cryptoSign(hash, PrivateKey(keys.privateKey), buffer);
+  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
+  Ark::Crypto::Curve::Ecdsa::sign(hash.data(), pk.data(), buffer);
 
   this->signature = BytesToHex(buffer.begin(), buffer.end());
   return this->signature;
@@ -49,12 +49,11 @@ std::string Ark::Crypto::Transactions::Transaction::sign(
 std::string Ark::Crypto::Transactions::Transaction::secondSign(
     const char* passphrase) {
   const auto bytes = this->toBytes(false);
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  const auto hash = Ark::Crypto::Hash::sha256(&bytes[0], bytes.size());
+  const auto pk = Keys::PrivateKey::fromPassphrase(passphrase);
 
-  std::vector<uint8_t> buffer;
-  cryptoSign(hash,
-             PrivateKey(Keys::PrivateKey::fromPassphrase(passphrase)),
-             buffer);
+  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
+  Ark::Crypto::Curve::Ecdsa::sign(hash.data(), pk.data(), buffer);
 
   this->secondSignature = BytesToHex(buffer.begin(), buffer.end());
   return this->secondSignature;
@@ -87,12 +86,13 @@ bool Ark::Crypto::Transactions::Transaction::internalVerify(
     std::vector<uint8_t> bytes,
     const std::string& signature) const {
   if (bytes.empty()) { return false; };
-
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  const auto hash = Ark::Crypto::Hash::sha256(bytes.data(), bytes.size());
   const auto key = identities::PublicKey::fromHex(publicKey.c_str());
   auto signatureBytes = HexToBytes(signature.c_str());
 
-  return cryptoVerify(key, hash, signatureBytes);
+  return Ark::Crypto::Curve::Ecdsa::verify(hash.data(),
+                                           key.toBytes().data(),
+                                           signatureBytes);
 }
 
 /**/

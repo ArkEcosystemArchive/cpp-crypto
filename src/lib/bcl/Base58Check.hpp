@@ -16,6 +16,8 @@
 #include "Ripemd160.hpp"
 #include "Uint256.hpp"
 
+namespace bcl {
+
 
 /* 
  * Converts a pubkey hash, private key, or extended private key to and from a Base58Check ASCII string.
@@ -105,3 +107,6 @@ class Base58Check final {
 	public: static const char *ALPHABET;
 	
 };
+
+
+}  // namespace bcl
