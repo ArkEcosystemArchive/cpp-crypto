@@ -18,6 +18,8 @@
 #include "defaults/static_fees.hpp"
 #include "defaults/transaction_types.hpp"
 
+#include "helpers/encoding/hex.h"
+
 #include "identities/address.hpp"
 #include "identities/keys.hpp"
 #include "identities/privatekey.hpp"
