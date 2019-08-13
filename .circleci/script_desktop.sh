@@ -6,6 +6,7 @@ cmake --build .
 
 # build examples
 cd ../examples/cmake_example
+chmod +x ./build.sh
 ./build.sh
 
 # run Gtest
