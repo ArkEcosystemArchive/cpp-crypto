@@ -19,15 +19,17 @@ or
 #
 
 ### make and build
-**`cd`** into **`.../cpp-crypto/`**  
-then run the following commands:  
-> init & update micro-ecc submodule  
->`git submodule init && git submodule update`
+**For Linux/Mac**
+> `./build.sh`
 
-> make and build  
-> `cmake . && cmake --build .`
+**For Windows**
+> `./build.cmd`
 
 #
 
 ### run tests
-> `./bin/Ark-Cpp-Crypto-tests`
+**For Linux/Mac**
+> `./run_tests.sh`
+
+**For Windows**
+> `./run_tests.cmd`
