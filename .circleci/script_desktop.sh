@@ -6,10 +6,8 @@ cmake --build .
 
 # build examples
 cd ../examples/cmake_example
-mkdir build
-cd build
 ./build.sh
 
 # run Gtest
-cd ../../../build
+cd ../../build
 ./test/Ark-Cpp-Crypto-tests
