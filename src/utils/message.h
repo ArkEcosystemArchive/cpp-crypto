@@ -37,14 +37,14 @@ class Message {
   PublicKey publicKey;
   std::vector<uint8_t> signature;
 
-  Message(std::string msg, PublicKey pubKey, std::vector<uint8_t> sig);
+  Message(std::string msg, const PublicKey& pubKey, std::vector<uint8_t> sig);
   Message() : publicKey({}) {};
 
   bool sign(std::string newMessage, const char *const passphrase);
-  bool verify();
+  bool verify() const;
 
-  std::map<std::string, std::string> toArray();
-  std::string toJson();
+  std::map<std::string, std::string> toArray() const;
+  std::string toJson() const;
 };
 /**/
 };  // namespace Utils

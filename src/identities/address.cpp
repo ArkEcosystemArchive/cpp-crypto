@@ -22,7 +22,7 @@ namespace Crypto {
 namespace identities {
 
 // Constructs an Address from a 20-byte PubkeyHash and Address Version.
-Address::Address(const PubkeyHash pubkeyHash, uint8_t version)
+Address::Address(const PubkeyHash& pubkeyHash, uint8_t version)
     : pubkeyHash_(pubkeyHash), version_(version) {}
 
 /**/
@@ -39,12 +39,12 @@ Address::Address(const char* addressString) : pubkeyHash_(), version_() {
 /**/
 
 // Returns the Base58 Address Version-byte.
-uint8_t Address::version() const { return this->version_; }
+uint8_t Address::version() const noexcept { return this->version_; }
 
 /**/
 
 // Returns the internal 20-byte Ripemd160 PublicKey Hash.
-PubkeyHash Address::toBytes() const { return this->pubkeyHash_; }
+PubkeyHash Address::toBytes() const noexcept { return this->pubkeyHash_; }
 
 /**/
 

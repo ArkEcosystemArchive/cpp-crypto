@@ -83,9 +83,9 @@ bool Ark::Crypto::Transactions::Transaction::secondVerify(
 /**/
 
 bool Ark::Crypto::Transactions::Transaction::internalVerify(
-    std::string publicKey,
+    const std::string& publicKey,
     std::vector<uint8_t> bytes,
-    std::string signature) const {
+    const std::string& signature) const {
   if (bytes.empty()) { return false; };
 
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
@@ -210,7 +210,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
 
 /**/
 
-std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() {
+std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() const {
   //  buffers for variable and non-string type-values.
   char amount[24];
   char assetName[16];
@@ -317,12 +317,12 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
 
 /**/
 
-std::string Ark::Crypto::Transactions::Transaction::toJson() {
+std::string Ark::Crypto::Transactions::Transaction::toJson() const {
   std::map<std::string, std::string> txArray = this->toArray();
 
   // Update this value if the size of the JSON document changes
   static const size_t docCapacity = 913;
-  
+
   DynamicJsonDocument doc(docCapacity);
 
   //  Amount
@@ -426,7 +426,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   if (txArray["version"] != "0") {
     doc["version"] = atoi(txArray["version"].c_str());
   };
-  
+
   char jsonChar[docCapacity];
   serializeJson(doc, jsonChar, docCapacity);
 

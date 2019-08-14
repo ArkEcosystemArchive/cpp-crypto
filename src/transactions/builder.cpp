@@ -21,8 +21,8 @@ Transaction Builder::buildTransfer(
     std::string recipient,
     uint64_t amount,
     std::string vendorField,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string&secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
   if (amount < 1ULL) { return transaction; }
@@ -45,8 +45,8 @@ Transaction Builder::buildTransfer(
 /**/
 
 Transaction Builder::buildSecondSignatureRegistration(
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
   
@@ -71,8 +71,8 @@ Transaction Builder::buildSecondSignatureRegistration(
 
 Transaction Builder::buildDelegateRegistration(
     std::string username,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
   
@@ -94,8 +94,8 @@ Transaction Builder::buildDelegateRegistration(
 
 Transaction Builder::buildVote(
     std::vector<std::string> votes,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
   
@@ -122,8 +122,8 @@ Transaction Builder::buildMultiSignatureRegistration(
     uint8_t min,
     uint8_t lifetime,
     std::vector<std::string>& keysgroup,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
   
@@ -153,8 +153,8 @@ Transaction Builder::buildMultiSignatureRegistration(
 
 void Builder::sign(
     Transaction& transaction,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   transaction.timestamp = static_cast<uint32_t>(
       Utils::Slot::time(configuration.getNetwork()));
