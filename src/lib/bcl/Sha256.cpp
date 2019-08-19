@@ -11,6 +11,9 @@
 #include "Sha256.hpp"
 #include "Utils.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 using std::uint32_t;
 using std::uint64_t;
@@ -165,3 +168,6 @@ const uint32_t Sha256::ROUND_CONSTANTS[NUM_ROUNDS] = {
 	UINT32_C(0x748F82EE), UINT32_C(0x78A5636F), UINT32_C(0x84C87814), UINT32_C(0x8CC70208),
 	UINT32_C(0x90BEFFFA), UINT32_C(0xA4506CEB), UINT32_C(0xBEF9A3F7), UINT32_C(0xC67178F2),
 };
+
+
+}  // namespace bcl

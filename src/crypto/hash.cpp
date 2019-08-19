@@ -22,7 +22,7 @@ namespace Crypto {
 // Expects a 33-byte compressed PublicKey array.
 PubkeyHash Hash::ripemd160(const uint8_t*publicKeyBytes) {
   PubkeyHash hash20;
-  Ripemd160::getHash(publicKeyBytes,
+  bcl::Ripemd160::getHash(publicKeyBytes,
                      PUBLICKEY_COMPRESSED_BYTE_LEN,
                      hash20.data());
   return hash20;
@@ -32,7 +32,7 @@ PubkeyHash Hash::ripemd160(const uint8_t*publicKeyBytes) {
 
 // Returns a 32-byte SHA256 hash of the input vector.
 Hash32 Hash::sha256(const uint8_t* inputBytes, size_t size) {
-  auto result = Sha256::getHash(inputBytes, size);
+  auto result = bcl::Sha256::getHash(inputBytes, size);
 
   Hash32 hash32;
   uint8_t* ptr = result.value;

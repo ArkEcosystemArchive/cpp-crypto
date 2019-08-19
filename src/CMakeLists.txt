@@ -30,7 +30,6 @@ set(COMMON_SRC
     crypto/curve.cpp
     crypto/hash.cpp
     defaults/static_fees.cpp
-    helpers/crypto.cpp
     identities/address.cpp
     identities/keys.cpp
     identities/privatekey.cpp

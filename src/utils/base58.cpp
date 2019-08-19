@@ -23,9 +23,9 @@ namespace Crypto {
 // Expects a c_string address as input.
 PubkeyHashPair Base58::getHashPair(const char* address) {
   PubkeyHashPair out {};
-  Base58Check::pubkeyHashFromBase58Check(address,
-                                         out.pubkeyHash.data(),
-                                         &out.version);
+  bcl::Base58Check::pubkeyHashFromBase58Check(address,
+                                              out.pubkeyHash.data(),
+                                              &out.version);
   return out;
 }
 
@@ -35,7 +35,7 @@ PubkeyHashPair Base58::getHashPair(const char* address) {
 // Expects a 20-byte Ripemd160 Address hash a Network version-byte.
 std::string Base58::parseHash(const uint8_t* pubkeyHash, uint8_t version) {
   std::string out(ADDRESS_STRING_LEN + 1, '\0');  // (+1, null terminator)
-  Base58Check::pubkeyHashToBase58Check(pubkeyHash, version, &out[0]);
+  bcl::Base58Check::pubkeyHashToBase58Check(pubkeyHash, version, &out[0]);
   return out;
 }
 
@@ -44,10 +44,10 @@ std::string Base58::parseHash(const uint8_t* pubkeyHash, uint8_t version) {
 // Returns a Wif string from PrivateKey-bytes and a Wif version-byte.
 std::string Base58::getWif(const uint8_t* privateKeyBytes, uint8_t version) {
   std::string out(WIF_STRING_LEN + 1, '\0');
-  Base58Check::privateKeyToBase58Check(Uint256(privateKeyBytes),
-                                       version,
-                                       true,
-                                       &out[0]);
+  bcl::Base58Check::privateKeyToBase58Check(bcl::Uint256(privateKeyBytes),
+                                                         version,
+                                                         true,
+                                                         &out[0]);
   return out;
 }
 
@@ -57,12 +57,12 @@ std::string Base58::getWif(const uint8_t* privateKeyBytes, uint8_t version) {
 PrivateKeyBytes Base58::parseWif(const char* wif, uint8_t* outVersion) {
   if (!Base58::validate(wif, WIF_STRING_LEN)) { return {}; };
 
-  Uint256 num;
+  bcl::Uint256 num;
   bool compressed;
-  Base58Check::privateKeyFromBase58Check(wif,
-                                         num,
-                                         outVersion,
-                                         &compressed);
+  bcl::Base58Check::privateKeyFromBase58Check(wif,
+                                              num,
+                                              outVersion,
+                                              &compressed);
 
   PrivateKeyBytes privateKey;
   num.getBigEndianBytes(privateKey.data());

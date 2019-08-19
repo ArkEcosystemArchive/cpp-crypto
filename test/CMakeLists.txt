@@ -25,7 +25,6 @@ set (TEST_SRC
     ${PROJECT_SOURCE_DIR}/defaults/static_fees.cpp
     ${PROJECT_SOURCE_DIR}/defaults/transaction_types.cpp
     ${PROJECT_SOURCE_DIR}/helpers/crypto_helpers.cpp
-    ${PROJECT_SOURCE_DIR}/helpers/crypto.cpp
     ${PROJECT_SOURCE_DIR}/identities/address.cpp
     ${PROJECT_SOURCE_DIR}/identities/keys.cpp
     ${PROJECT_SOURCE_DIR}/identities/privatekey.cpp

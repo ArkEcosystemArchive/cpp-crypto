@@ -11,6 +11,8 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bcl {
+
 
 /* 
  * Represents a 32-byte SHA-256 hash value.
@@ -54,3 +56,6 @@ class Sha256Hash final {
 	public: bool operator!=(const Sha256Hash &other) const;
 	
 };
+
+
+}  // namespace bcl
