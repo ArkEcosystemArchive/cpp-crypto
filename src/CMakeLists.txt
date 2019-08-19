@@ -27,9 +27,11 @@ set(uECC_SRC
 set(COMMON_SRC
     common/configuration.cpp
     common/network.cpp
+    crypto/curve.cpp
+    crypto/hash.cpp
     defaults/static_fees.cpp
-    helpers/crypto.cpp
     identities/address.cpp
+    identities/keys.cpp
     identities/privatekey.cpp
     identities/publickey.cpp
     identities/wif.cpp
@@ -44,6 +46,8 @@ set(COMMON_SRC
     transactions/transaction.cpp
     utils/message.cpp
     utils/slot.cpp
+    utils/base58.cpp
+
 )
 
 add_library(${PROJECT_NAME} STATIC
@@ -56,10 +60,10 @@ add_library(${PROJECT_NAME} STATIC
 set(cpp_crypto_build_include_dirs
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
+    ${PROJECT_SOURCE_DIR}/lib/
 )
 
 include_directories(${cpp_crypto_build_include_dirs})
-include_directories(${PROJECT_SOURCE_DIR}/lib/)
 include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
 include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
 include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)

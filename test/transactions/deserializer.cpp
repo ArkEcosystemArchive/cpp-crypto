@@ -66,8 +66,8 @@ TEST(transactions, deserialize_second_signature_registration) { // NOLINT
   ASSERT_TRUE(actual.verify());
 
   // special case as the type 1 transaction itself has no recipient
-  const auto publicKey = Ark::Crypto::Identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
-  const auto address = Ark::Crypto::Identities::Address::fromPublicKey(publicKey, actual.network);
+  const auto publicKey = Ark::Crypto::identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
+  const auto address = Ark::Crypto::identities::Address::fromPublicKey(publicKey.toBytes().data(), actual.network);
   ASSERT_STREQ(address.toString().c_str(), actual.recipient.c_str());
 }
 
@@ -208,7 +208,7 @@ TEST(transactions, deserialize_multi_signature_registration) { // NOLINT
   ASSERT_TRUE(actual.verify());
 
   // special case as the type 4 transaction itself has no recipient
-  const auto publicKey = Ark::Crypto::Identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
-  const auto address = Ark::Crypto::Identities::Address::fromPublicKey(publicKey, actual.network);
+  const auto publicKey = Ark::Crypto::identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
+  const auto address = Ark::Crypto::identities::Address::fromPublicKey(publicKey.toBytes().data(), actual.network);
   ASSERT_STREQ(address.toString().c_str(), actual.recipient.c_str());
 }

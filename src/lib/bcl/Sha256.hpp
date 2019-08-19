@@ -12,6 +12,8 @@
 #include <cstdint>
 #include "Sha256Hash.hpp"
 
+namespace bcl {
+
 
 /* 
  * Computes the SHA-256 hash of a sequence of bytes, returning a Sha256Hash object.
@@ -74,3 +76,6 @@ class Sha256 final {
 	private: static const std::uint32_t ROUND_CONSTANTS[NUM_ROUNDS];
 	
 };
+
+
+}  // namespace bcl

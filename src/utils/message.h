@@ -10,25 +10,16 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "helpers/crypto.h"
-#include "helpers/encoding/hex.h"
 #include "helpers/crypto_helpers.h"
 
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-
-#include "bcl/CurvePoint.hpp"
-#include "bcl/Sha256.hpp"
-#include "bcl/Sha256Hash.hpp"
-#include "bcl/Uint256.hpp"
-
-#include "rfc6979/rfc6979.h"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
 
-using namespace Ark::Crypto::Identities;
+using namespace Ark::Crypto::identities;
 
 namespace Ark {
 namespace Crypto {
@@ -40,14 +31,14 @@ class Message {
   PublicKey publicKey;
   std::vector<uint8_t> signature;
 
-  Message(std::string msg, PublicKey pubKey, std::vector<uint8_t> sig);
-  Message() : signature(std::vector<uint8_t>(142)){};
+  Message(std::string msg, const PublicKey& pubKey, std::vector<uint8_t> sig);
+  Message() : publicKey({}) {};
 
   bool sign(std::string newMessage, const char *const passphrase);
-  bool verify();
+  bool verify() const;
 
-  std::map<std::string, std::string> toArray();
-  std::string toJson();
+  std::map<std::string, std::string> toArray() const;
+  std::string toJson() const;
 };
 /**/
 };  // namespace Utils

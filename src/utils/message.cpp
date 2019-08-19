@@ -1,10 +1,15 @@
 
 #include "utils/message.h"
+
+#include "crypto/curve.hpp"
+#include "crypto/hash.hpp"
 #include "helpers/json.h"
+#include "identities/keys.hpp"
+#include "utils/hex.hpp"
 
 Ark::Crypto::Utils::Message::Message(
     std::string msg,
-    PublicKey pubKey,
+    const PublicKey& pubKey,
     std::vector<uint8_t> sig)
     : message(std::move(msg)),
       publicKey(pubKey),
@@ -17,37 +22,47 @@ bool Ark::Crypto::Utils::Message::sign(
     const char *const passphrase) {
   this->message = std::move(newMessage);
 
-  /* Get the PrivateKey */
-  auto privateKey = PrivateKey::fromPassphrase(passphrase);
+  /* Get the KeyPair */
+  const auto keys = Keys::fromPassphrase(passphrase);
 
-  /* Set the PublicKey from the derived PrivateKey */
-  this->publicKey = PublicKey::fromPrivateKey(privateKey);
+  /* Set the PublicKey from the PrivateKey */
+  this->publicKey = PublicKey(keys.publicKey);
 
   /* Get the Hash */
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(
       message.c_str());
-  const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
+  const auto hash = Ark::Crypto::Hash::sha256(unsignedMessage,
+                                              this->message.size());
 
   /* Sign it */
-  cryptoSign(hash, privateKey, this->signature);
+  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
+  if (Ark::Crypto::Curve::Ecdsa::sign(hash.data(),
+                                      keys.privateKey.data(),
+                                      buffer)) {
+    buffer.resize(buffer[1] + 2);
+    this->signature = std::move(buffer);
+  };
 
   return this->verify();
 };
 
 /**/
 
-bool Ark::Crypto::Utils::Message::verify() {
+bool Ark::Crypto::Utils::Message::verify() const {
   // cast message to unsigned char*
   const auto unsignedMessage = reinterpret_cast<const unsigned char *>(
       this->message.c_str());
-  const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
-
-  return cryptoVerify(this->publicKey, hash, this->signature);
+  const auto hash = Ark::Crypto::Hash::sha256(unsignedMessage,
+                                              this->message.size());
+  const auto pk = this->publicKey.toBytes();
+  return Ark::Crypto::Curve::Ecdsa::verify(hash.data(),
+                                           pk.data(),
+                                           this->signature);
 };
 
 /**/
 
-std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
+std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() const {
   return {
     { "publickey", this->publicKey.toString() },
     { "signature", BytesToHex(this->signature.begin(), this->signature.end()) },
@@ -57,12 +72,12 @@ std::map<std::string, std::string> Ark::Crypto::Utils::Message::toArray() {
 
 /**/
 
-std::string Ark::Crypto::Utils::Message::toJson() {
+std::string Ark::Crypto::Utils::Message::toJson() const {
   std::map<std::string, std::string> messageArray = this->toArray();
 
   const size_t docLength
       = (33 + 1)  // publickey length
-      + (72 + 1)  // signature length
+      + (Curve::Ecdsa::MAX_SIG_LEN + 1)  // signature length
       + this->message.length();
   const size_t docCapacity = JSON_OBJECT_SIZE(3) + docLength + 120;
 

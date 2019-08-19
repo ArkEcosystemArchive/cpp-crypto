@@ -9,14 +9,12 @@
 #include <vector>
 
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-#include "helpers/crypto.h"
+#include "identities/address.hpp"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 #include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
-
-#include "bcl/Sha256.hpp"
+#include "utils/base58.hpp"
+#include "utils/hex.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -107,8 +105,10 @@ void Deserializer::deserializeTransfer(
     Transaction& transaction) {
   unpack(&transaction.amount, &this->_binary[_assetOffset / 2]);
   unpack(&transaction.expiration, &this->_binary[_assetOffset / 2 + 8]);
-  transaction.recipient = Identities::Address::base58encode(
-      &this->_binary[(_assetOffset / 2) + 12]);
+
+  transaction.recipient = Base58::parseHash(
+      &this->_binary[(_assetOffset / 2) + 13],
+      this->_binary[(_assetOffset / 2) + 12]);
 
   _assetOffset += (8 + 4 + 21) * 2;
 };
@@ -248,11 +248,12 @@ void Deserializer::handleVersionOne(
   transaction.signSignature = transaction.secondSignature;
 
   if (transaction.type == defaults::TransactionTypes::Vote) {
-    const auto publicKey = Identities::PublicKey::fromHex(
-        transaction.senderPublicKey.c_str());
-    const auto address = Identities::Address::fromPublicKey(
-        publicKey,
+    const auto address = identities::Address::fromPublicKey(
+        HexToBytesArray<PUBLICKEY_COMPRESSED_BYTE_LEN>(
+            transaction.senderPublicKey.c_str())
+            .data(),
         transaction.network);
+
     transaction.recipient = address.toString();
   };
 
@@ -275,11 +276,12 @@ void Deserializer::handleVersionOne(
 
   if (transaction.type == defaults::TransactionTypes::SecondSignatureRegistration
       || transaction.type == defaults::TransactionTypes::MultiSignatureRegistration) {
-    const auto publicKey = Identities::PublicKey::fromHex(
-        transaction.senderPublicKey.c_str());
-    const auto address = Identities::Address::fromPublicKey(
-        publicKey,
+    const auto address = identities::Address::fromPublicKey(
+        HexToBytesArray<PUBLICKEY_COMPRESSED_BYTE_LEN>(
+            transaction.senderPublicKey.c_str())
+            .data(),
         transaction.network);
+
     transaction.recipient = address.toString();
   };
 }

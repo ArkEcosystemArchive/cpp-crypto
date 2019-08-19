@@ -10,8 +10,8 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 
 #include <map>
 #include <string>
@@ -56,8 +56,8 @@ public:
   bool secondVerify(const char* secondPublicKey) const;
 
   std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true) const;
-  std::map<std::string, std::string> toArray();
-  std::string toJson();
+  std::map<std::string, std::string> toArray() const;
+  std::string toJson() const;
 
   uint8_t header = 0;
   uint8_t network = 0;
@@ -82,9 +82,9 @@ public:
 
 private:
   bool internalVerify(
-      std::string publicKey,
+      const std::string& publicKey,
       std::vector<uint8_t> bytes,
-      std::string signature) const;
+      const std::string& signature) const;
 };
 /**/
 };  // namespace Transactions

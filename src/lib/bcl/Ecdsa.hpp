@@ -12,6 +12,8 @@
 #include "Sha256Hash.hpp"
 #include "Uint256.hpp"
 
+namespace bcl {
+
 
 /* 
  * Performs ECDSA signature generation and verification. Provides just three static functions.
@@ -46,3 +48,6 @@ class Ecdsa final {
 	Ecdsa() = delete;  // Not instantiable
 	
 };
+
+
+}  // namespace bcl

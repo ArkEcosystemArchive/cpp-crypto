@@ -9,6 +9,9 @@
 #include <cstring>
 #include "Utils.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 
 
@@ -39,3 +42,6 @@ void Utils::storeBigUint32(std::uint32_t x, uint8_t arr[4]) {
 
 
 const char *Utils::HEX_DIGITS = "0123456789abcdef";
+
+
+}  // namespace bcl
