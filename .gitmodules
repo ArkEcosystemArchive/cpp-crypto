@@ -1,12 +1,12 @@
-[submodule "src/lib/uECC"]
-	path = src/lib/uECC
-	url = https://github.com/kmackay/micro-ecc
-[submodule "test/lib/googletest"]
-	path = test/lib/googletest
-	url = https://github.com/google/googletest.git
-[submodule "src/lib/ArduinoJson"]
-	path = src/lib/ArduinoJson
-	url = https://github.com/bblanchon/ArduinoJson
-[submodule "src/lib/BIP66"]
-	path = src/lib/BIP66
+[submodule "extern/BIP66"]
+	path = extern/BIP66
 	url = https://github.com/sleepdefic1t/BIP66
+[submodule "extern/uECC"]
+	path = extern/uECC
+	url = https://github.com/kmackay/micro-ecc
+[submodule "extern/ArduinoJson"]
+	path = extern/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
+[submodule "extern/googletest"]
+	path = extern/googletest
+	url = https://github.com/google/googletest.git
