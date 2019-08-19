@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.2.2)
 project(Ark-Cpp-Crypto-lib C CXX)
 
 set(BIP66_SRC
-    ${PROJECT_SOURCE_DIR}/lib/BIP66/src/bip66.cpp
+    ${PROJECT_SOURCE_DIR}/../extern/BIP66/src/bip66.cpp
 )
 
 set(BCL_SRC
@@ -21,7 +21,7 @@ set(BCL_SRC
 )
 
 set(uECC_SRC
-    lib/uECC/uECC.c
+    ../extern/uECC/uECC.c
 )
 
 set(COMMON_SRC
@@ -47,7 +47,6 @@ set(COMMON_SRC
     utils/message.cpp
     utils/slot.cpp
     utils/base58.cpp
-
 )
 
 add_library(${PROJECT_NAME} STATIC
@@ -60,15 +59,15 @@ add_library(${PROJECT_NAME} STATIC
 set(cpp_crypto_build_include_dirs
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
-    ${PROJECT_SOURCE_DIR}/lib/
 )
 
 include_directories(${cpp_crypto_build_include_dirs})
-include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
+include_directories(${PROJECT_SOURCE_DIR}/lib/)
 include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
 include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
-include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
-include_directories(${PROJECT_SOURCE_DIR}/lib/BIP66/src)
+include_directories(${PROJECT_SOURCE_DIR}/../extern/ArduinoJson)
+include_directories(${PROJECT_SOURCE_DIR}/../extern/uECC)
+include_directories(${PROJECT_SOURCE_DIR}/../extern/BIP66/src)
 
 target_include_directories( ${PROJECT_NAME} PUBLIC
     ${cpp_crypto_build_include_dirs}
