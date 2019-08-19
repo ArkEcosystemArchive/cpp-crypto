@@ -2,22 +2,16 @@ cmake_minimum_required(VERSION 3.2.2)
 
 project(Ark-Cpp-Crypto-tests C CXX)
 
-include(CTest)
-enable_testing()
-
 set (PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../lib")
 
-add_subdirectory(
-    ${PROJECT_SOURCE_DIR}/../extern/googletest/googletest
-    "${PROJECT_SOURCE_DIR}/../extern/googletest-build"
-)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/../cmake/)
+include(GetGTest)
 
 include_directories(${PROJECT_SOURCE_DIR}/)
 include_directories(${PROJECT_SOURCE_DIR}/../src)
 include_directories(${PROJECT_SOURCE_DIR}/../src/lib)
 include_directories(${PROJECT_SOURCE_DIR}/../extern/ArduinoJson)
-include_directories(${PROJECT_SOURCE_DIR}/../extern/googletest-build)
 
 set (TEST_SRC
     ${PROJECT_SOURCE_DIR}/common/configuration.cpp

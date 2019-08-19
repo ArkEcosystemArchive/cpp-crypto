@@ -7,6 +7,3 @@
 [submodule "extern/ArduinoJson"]
 	path = extern/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson
-[submodule "extern/googletest"]
-	path = extern/googletest
-	url = https://github.com/google/googletest.git

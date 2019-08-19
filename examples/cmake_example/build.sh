@@ -9,6 +9,7 @@ cd build
 rm -dfr ../lib/cpp-crypto/
 mkdir ../lib/cpp-crypto/
 cp -R ../../../src ../lib/cpp-crypto/
+cp -R ../../../extern ../lib/
 
 cmake ..
 cmake --build .
