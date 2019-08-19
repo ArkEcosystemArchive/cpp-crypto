@@ -52,9 +52,7 @@ bool Message::sign(const std::string& message, const std::string& passphrase) {
   const auto hash = Hash::sha256(messageBytes, this->message.size());
 
   std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
-  if (!Curve::Ecdsa::sign(hash.data(), keys.privateKey.data(), buffer)) {
-    return false;
-  };
+  Curve::Ecdsa::sign(hash.data(), keys.privateKey.data(), buffer);
 
   buffer.resize(buffer[1] + 2);
   this->signature = std::move(buffer);
