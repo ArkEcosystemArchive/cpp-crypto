@@ -157,7 +157,7 @@ void checkCrypto() {
    */
   const auto text = "Hello World";
   const auto passphrase5 = "this is a top secret passphrase";
-  Ark::Crypto::Utils::Message message;
+  Ark::Crypto::Message message;
   message.sign(text, passphrase5);
     Serial.print("\nSignature from Signed Message: ");
     Serial.println(BytesToHex(message.signature).c_str());
