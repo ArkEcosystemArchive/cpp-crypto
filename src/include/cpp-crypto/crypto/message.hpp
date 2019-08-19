@@ -7,42 +7,37 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef MESSAGE_H
-#define MESSAGE_H
-
-#include "helpers/crypto_helpers.h"
-
-#include "identities/privatekey.hpp"
-#include "identities/publickey.hpp"
+#ifndef CRYPTO_MESSAGE_HPP
+#define CRYPTO_MESSAGE_HPP
 
 #include <map>
 #include <string>
 #include <vector>
 
-using namespace Ark::Crypto::identities;
+#include "interfaces/identities.hpp"
 
 namespace Ark {
 namespace Crypto {
-namespace Utils {
-/**/
+
 class Message {
  public:
   std::string message;
-  PublicKey publicKey;
+  PublicKeyBytes publicKey;
   std::vector<uint8_t> signature;
 
-  Message(std::string msg, const PublicKey& pubKey, std::vector<uint8_t> sig);
-  Message() : publicKey({}) {};
+  Message();
+  Message(std::string message,
+          const PublicKeyBytes& publicKeyBytes,
+          std::vector<uint8_t> signature);
 
-  bool sign(std::string newMessage, const char *const passphrase);
+  bool sign(const std::string& message, const std::string& passphrase);
   bool verify() const;
 
   std::map<std::string, std::string> toArray() const;
   std::string toJson() const;
 };
-/**/
-};  // namespace Utils
-};  // namespace Crypto
-};  // namespace Ark
+
+}  // namespace Crypto
+}  // namespace Ark
 
 #endif

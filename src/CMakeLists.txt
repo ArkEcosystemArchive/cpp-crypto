@@ -29,6 +29,8 @@ set(COMMON_SRC
     common/network.cpp
     crypto/curve.cpp
     crypto/hash.cpp
+    crypto/message.cpp
+    crypto/slot.cpp
     defaults/static_fees.cpp
     identities/address.cpp
     identities/keys.cpp
@@ -44,8 +46,6 @@ set(COMMON_SRC
     transactions/deserializer.cpp
     transactions/serializer.cpp
     transactions/transaction.cpp
-    utils/message.cpp
-    utils/slot.cpp
     utils/base58.cpp
 
 )

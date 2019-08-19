@@ -8,8 +8,8 @@
 #include "defaults/transaction_types.hpp"
 #include "identities/address.hpp"
 #include "common/configuration.hpp"
-#include "helpers/crypto_helpers.h"
 #include "utils/base58.hpp"
+#include "utils/crypto_helpers.h"
 #include "utils/hex.hpp"
 
 namespace Ark {

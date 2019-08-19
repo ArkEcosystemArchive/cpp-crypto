@@ -12,10 +12,10 @@
 #include "identities/address.hpp"
 #include "identities/keys.hpp"
 #include "identities/privatekey.hpp"
-#include "helpers/crypto_helpers.h"
-#include "helpers/json.h"
 #include "utils/base58.hpp"
+#include "utils/crypto_helpers.h"
 #include "utils/hex.hpp"
+#include "utils/json.h"
 
 using namespace Ark::Crypto::identities;
 

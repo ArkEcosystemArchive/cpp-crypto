@@ -7,7 +7,7 @@
 using namespace Ark::Crypto;
 using namespace fixtures::message;
 
-TEST(helpers, hex_bytes_to_hex) {
+TEST(utils, hex_bytes_to_hex) {
   const auto result = BytesToHex(tMessageSignatureBytes.begin(),
                                  tMessageSignatureBytes.end());
   ASSERT_STREQ(result.c_str(), tSignatureString);
