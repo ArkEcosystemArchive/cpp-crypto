@@ -21,7 +21,7 @@ set(BCL_SRC
 )
 
 set(uECC_SRC
-    ../extern/uECC/uECC.c
+    ${PROJECT_SOURCE_DIR}/../extern/uECC/uECC.c
 )
 
 set(COMMON_SRC
