@@ -31,7 +31,7 @@
 
   // Get the Epoch of a given Network.
   uint64_t Slot::epoch(const Network& network) {
-    std::istringstream in(network.epoch());
+    std::istringstream in(network.epoch);
     std::chrono::system_clock::time_point timePoint;
     in >> date::parse("%FT%TZ", timePoint);
 
@@ -63,7 +63,6 @@
 
   namespace Ark {
   namespace Crypto {
-
   namespace {
   constexpr const uint8_t TIMESTAMP_LEN = 24U;
   constexpr const uint8_t OFFSET_YEAR    = 0U;
@@ -79,11 +78,11 @@
   // Get the Epoch of a given Network.
   uint64_t Slot::epoch(const Ark::Crypto::Network& network) {
     //  If unexpected ISO 8601 date/time length
-    if (network.epoch().length() != TIMESTAMP_LEN) {  
+    if (network.epoch.length() != TIMESTAMP_LEN) {  
       return 0ULL;
     };
 
-    std::string input(network.epoch());
+    std::string input(network.epoch);
 
     struct tm time;
     time.tm_year = strtol(&input[OFFSET_YEAR], nullptr, BASE10) - YEAR_1900;

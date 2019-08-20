@@ -8,20 +8,16 @@
 using namespace Ark::Crypto;
 
 TEST(crypto, slots_epoch) {
-  const auto devnet = Networks::Devnet();
   const auto arkEpoch = 1490101200ULL;
-  ASSERT_EQ(arkEpoch, Slot::epoch(devnet));
+  ASSERT_EQ(arkEpoch, Slot::epoch(Devnet));
 }
 
 /**/
 
-TEST(crypto, slots_time) {
-  const auto devnet = Networks::Devnet();
-  // const auto mainnet = Networks::Mainnet;
-
+TEST(utilities, slots_time) {
   // 28 Jan 2019(in seconds) - Ark Epoch (seconds)
   const auto testTime = (1548725761ULL - 1490101200ULL); 
-  const auto slotTime = Slot::time(devnet);
+  const auto slotTime = Slot::time(Devnet);
 
   // test that slot-time is more recent than 'testTime',
   ASSERT_GT(slotTime , testTime);

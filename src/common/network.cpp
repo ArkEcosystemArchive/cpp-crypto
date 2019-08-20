@@ -8,41 +8,30 @@
  **/
 
 #include "common/network.hpp"
-#include "networks/devnet.hpp"
+
+#include <string>
 
 namespace Ark {
 namespace Crypto {
 
-Network::Network() { *this = Networks::Devnet(); }
-
-/**/
-
-std::string Network::nethash() const  { return this->nethash_; }
-uint8_t Network::slip44() const       { return this->slip44_; }
-uint8_t Network::wif() const          { return this->wif_; }
-uint8_t Network::version() const      { return this->version_; }
-std::string Network::epoch() const    { return this->epoch_; }
-
-/**/
-
-bool Network::operator==(const Network& rhs) const {
-  bool numericsMatch = (this->slip44_ == rhs.slip44_)
-                        && (this->wif_ == rhs.wif_)
-                        && (this->version_ == rhs.version_);
-  bool stringsMatch = (this->nethash_ == rhs.nethash_)
-                       && (this->epoch_ == rhs.epoch_);
-  return numericsMatch && stringsMatch;
+bool Network::operator==(const Network& other) const {
+  bool numbersMatch = (this->slip44 == other.slip44) &&
+                      (this->wif == other.wif) &&
+                      (this->version == other.version);
+  bool stringsMatch = (this->nethash == other.nethash) &&
+                      (this->epoch == other.epoch);
+  return numbersMatch && stringsMatch;
 }
 
 /**/
 
-bool Network::operator!=(const Network& rhs) const {
-  bool numericsMatch = (this->slip44_ != rhs.slip44_)
-                        || (this->wif_ != rhs.wif_)
-                        || (this->version_ != rhs.version_);
-  bool stringsMatch = (this->nethash_ != rhs.nethash_)
-                       || (this->epoch_ != rhs.epoch_);
-  return numericsMatch || stringsMatch;
+bool Network::operator!=(const Network& other) const {
+  bool numbersMatch = (this->slip44 != other.slip44) ||
+                      (this->wif != other.wif) ||
+                      (this->version != other.version);
+  bool stringsMatch = (this->nethash != other.nethash) ||
+                      (this->epoch != other.epoch);
+  return numbersMatch || stringsMatch;
 }
 
 }  // namespace Crypto

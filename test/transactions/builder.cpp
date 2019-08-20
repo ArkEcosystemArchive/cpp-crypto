@@ -11,7 +11,7 @@ TEST(transactions, build_transfer) {
                              "Secret passphrase");
 
   ASSERT_EQ(0, actual.type);
-  ASSERT_EQ(defaults::Fees::StaticFeePolicy()[actual.type], actual.fee);
+  ASSERT_EQ(StaticFeePolicy[actual.type], actual.fee);
   ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
                actual.recipient.c_str());
   ASSERT_EQ(100000000ULL, actual.amount);

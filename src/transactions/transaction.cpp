@@ -115,8 +115,8 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
       std::end(senderKeyBytes));
 
   const auto skiprecipient =
-    type == defaults::TransactionTypes::SecondSignatureRegistration
-    || type ==defaults::TransactionTypes::MultiSignatureRegistration;
+    type == TransactionTypes::SecondSignatureRegistration
+    || type ==TransactionTypes::MultiSignatureRegistration;
 
   if (!this->recipient.empty() && !skiprecipient) {
     const auto hashPair = Base58::getHashPair(this->recipient.c_str());
@@ -156,7 +156,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
   pack(bytes, this->amount);
   pack(bytes, this->fee);
 
-  if (type == defaults::TransactionTypes::SecondSignatureRegistration) {
+  if (type == TransactionTypes::SecondSignatureRegistration) {
     // SECOND_SIGNATURE_REGISTRATION
     const auto publicKeyBytes = HexToBytes(
         this->asset.signature.publicKey.c_str());
@@ -164,20 +164,20 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
         std::end(bytes),
         std::begin(publicKeyBytes),
         std::end(publicKeyBytes));
-  } else if (type == defaults::TransactionTypes::DelegateRegistration) {
+  } else if (type == TransactionTypes::DelegateRegistration) {
     // DELEGATE_REGISTRATION
     bytes.insert(
         std::end(bytes),
         std::begin(this->asset.delegate.username),
         std::end(this->asset.delegate.username));
-  } else if (type == defaults::TransactionTypes::Vote) {
+  } else if (type == TransactionTypes::Vote) {
     // VOTE
     const auto joined = join(this->asset.votes);
     bytes.insert(
         std::end(bytes),
         std::begin(joined),
         std::end(joined));
-  } else if (type == defaults::TransactionTypes::MultiSignatureRegistration) {
+  } else if (type == TransactionTypes::MultiSignatureRegistration) {
     // MULTI_SIGNATURE_REGISTRATION
     pack(bytes, this->asset.multiSignature.min);
     pack(bytes, this->asset.multiSignature.lifetime);

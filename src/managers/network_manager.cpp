@@ -25,18 +25,6 @@ void NetworkManager::setNetwork(const Network& network) {
   this->network_ = network;
 }
 
-/**/
-
-bool NetworkManager::operator==(const NetworkManager& rhs) const {
-  return this->getNetwork() == rhs.getNetwork();
-}
-
-/**/
-
-bool NetworkManager::operator!=(const NetworkManager& rhs) const {
-  return this->getNetwork() != rhs.getNetwork();
-}
-
 }  // namespace managers
 }  // namespace Crypto
 }  // namespace Ark

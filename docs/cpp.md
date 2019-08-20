@@ -32,7 +32,7 @@ const auto DevnetTransaction = Builder::buildTransfer(
 #### Mainnet
 
 ```cpp
-const Configuration MainnetConfiguration(Networks::Mainnet());
+const Configuration MainnetConfiguration(Mainnet);
 
 const auto MainnetTransaction = Builder::buildTransfer(
         "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
