@@ -42,6 +42,9 @@ EXTRAS_LIB_DIR=${EXTRAS_BACKUP_DIR}/lib
 SRC_COMMON_DIR=${SRC_DIR}/common
 INCLUDE_COMMON_DIR=${INCLUDE_CPP_CRYPTO_DIR}/common
 
+SRC_CRYPTO_DIR=${SRC_DIR}/crypto
+INCLUDE_CRYPTO_DIR=${INCLUDE_CPP_CRYPTO_DIR}/crypto
+
 SRC_DEFAULTS_DIR=${SRC_DIR}/defaults
 INCLUDE_DEFAULTS_DIR=${INCLUDE_CPP_CRYPTO_DIR}/defaults
 
@@ -100,6 +103,10 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_COMMON_DIR}/configuration.hpp  ${SRC_COMMON_DIR}
   mv ${INCLUDE_COMMON_DIR}/fee_policy.hpp     ${SRC_COMMON_DIR}
   mv ${INCLUDE_COMMON_DIR}/network.hpp        ${SRC_COMMON_DIR}
+
+  echo -e "Moving 'crypto' headers.\n"
+  mv ${INCLUDE_CRYPTO_DIR}/message.hpp  ${SRC_CRYPTO_DIR}
+  mv ${INCLUDE_CRYPTO_DIR}/slot.hpp     ${SRC_CRYPTO_DIR}
 
   echo -e "Moving 'defaults' headers.\n"
   mv ${INCLUDE_DEFAULTS_DIR}/fee_policies.hpp       ${SRC_DEFAULTS_DIR}
@@ -160,6 +167,7 @@ else
   mkdir ${INCLUDE_DIR}
   mkdir ${INCLUDE_CPP_CRYPTO_DIR}
   mkdir ${INCLUDE_COMMON_DIR}
+  mkdir ${INCLUDE_CRYPTO_DIR}
   mkdir ${INCLUDE_DEFAULTS_DIR}
   mkdir ${INCLUDE_IDENTITIES_DIR}
   mkdir ${INCLUDE_INTERFACES_DIR}
@@ -173,6 +181,10 @@ else
   mv ${SRC_COMMON_DIR}/configuration.hpp  ${INCLUDE_COMMON_DIR}
   mv ${SRC_COMMON_DIR}/fee_policy.hpp     ${INCLUDE_COMMON_DIR}
   mv ${SRC_COMMON_DIR}/network.hpp        ${INCLUDE_COMMON_DIR}
+
+  echo -e "Moving 'crypto' headers.\n"
+  mv ${SRC_CRYPTO_DIR}/message.hpp  ${INCLUDE_CRYPTO_DIR}
+  mv ${SRC_CRYPTO_DIR}/slot.hpp     ${INCLUDE_CRYPTO_DIR}
 
   echo -e "Moving 'defaults' headers.\n"
   mv ${SRC_DEFAULTS_DIR}/fee_policies.hpp       ${INCLUDE_DEFAULTS_DIR}

@@ -14,6 +14,9 @@
 #include "common/fee_policy.hpp"
 #include "common/network.hpp"
 
+#include "crypto/message.hpp"
+#include "crypto/slot.hpp"
+
 #include "defaults/fee_policies.hpp"
 #include "defaults/static_fees.hpp"
 #include "defaults/transaction_types.hpp"
@@ -33,12 +36,8 @@
 #include "transactions/serializer.h"
 #include "transactions/transaction.h"
 
-#include "utils/message.h"
-#include "utils/slot.h"
-
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
 using namespace Ark::Crypto::Transactions;
-using namespace Ark::Crypto::Utils;
 
 #endif

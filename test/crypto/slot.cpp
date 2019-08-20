@@ -1,9 +1,13 @@
 
 #include "gtest/gtest.h"
 
-#include "arkCrypto.h"
+#include "crypto/slot.hpp"
 
-TEST(utilities, slots_epoch) {
+#include "networks/devnet.hpp"
+
+using namespace Ark::Crypto;
+
+TEST(crypto, slots_epoch) {
   const auto devnet = Networks::Devnet();
   const auto arkEpoch = 1490101200ULL;
   ASSERT_EQ(arkEpoch, Slot::epoch(devnet));
@@ -11,7 +15,7 @@ TEST(utilities, slots_epoch) {
 
 /**/
 
-TEST(utilities, slots_time) {
+TEST(crypto, slots_time) {
   const auto devnet = Networks::Devnet();
   // const auto mainnet = Networks::Mainnet;
 

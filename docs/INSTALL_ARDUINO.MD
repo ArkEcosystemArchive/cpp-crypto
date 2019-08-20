@@ -59,7 +59,7 @@ void setup()
 
 
   const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
-  Ark::Crypto::Utils::Message message;
+  Ark::Crypto::Message message;
   message.sign(text, passphrase);
   Serial.println(BytesToHex(message.signature).c_str());
 }

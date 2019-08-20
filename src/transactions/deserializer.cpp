@@ -12,8 +12,8 @@
 #include "identities/address.hpp"
 #include "identities/privatekey.hpp"
 #include "identities/publickey.hpp"
-#include "helpers/crypto_helpers.h"
 #include "utils/base58.hpp"
+#include "utils/crypto_helpers.h"
 #include "utils/hex.hpp"
 
 namespace Ark {

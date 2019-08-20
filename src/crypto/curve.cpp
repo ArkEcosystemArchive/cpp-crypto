@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "interfaces/identities.hpp"
-#include "helpers/crypto_helpers.h"
+#include "utils/crypto_helpers.h"
 #include "utils/hex.hpp"
 
 #include "rfc6979/rfc6979.h"  // Nonce function

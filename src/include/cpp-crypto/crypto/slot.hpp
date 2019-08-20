@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef ARK_UTILITIES_SLOTS_H
-#define ARK_UTILITIES_SLOTS_H
+#ifndef CRYPTO_SLOTS_HPP
+#define CRYPTO_SLOTS_HPP
 
 #include <cstdint>
 
@@ -16,19 +16,14 @@
 
 namespace Ark {
 namespace Crypto {
-namespace Utils {
-/**/
+
 class Slot {
-public:
+ public:
   static uint64_t epoch(const Network& network);
   static uint64_t time(const Network& network);
-
-private:
-  static uint64_t now();
 };
-/**/
-};  // namespace Utils
-};  // namespace Crypto
-};  // namespace Ark
+
+}  // namespace Crypto
+}  // namespace Ark
 
 #endif

@@ -6,7 +6,7 @@
 
 #include <arkCrypto.h>
 
-#include "helpers/json.h"
+#include "utils/json.h"
 
 using namespace Ark::Crypto::Transactions;
 

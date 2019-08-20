@@ -1,10 +1,20 @@
-#include "arkCrypto.h"
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
+
+#include <arkCrypto.h>
+#include <Arduino.h>
 
 #include <string>
 #include <vector>
 #include <cstdint>
 
-#include <arduino.h>
+#include "utils/hex.hpp"
 
 void setup() {
   Serial.begin(115200);
@@ -18,7 +28,7 @@ void loop() {
   const auto passphrase = "this is a top secret passphrase";
 
   // Message - sign
-  Ark::Crypto::Utils::Message message;
+  Ark::Crypto::Message message;
   message.sign(text, passphrase);
 
   Serial.println("Message");
@@ -31,7 +41,7 @@ void loop() {
   auto publicKey = PublicKey::fromHex("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192");
   auto signature = HexToBytes("304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8");
 
-  message = Ark::Crypto::Utils::Message(
+  message = Ark::Crypto::Message(
     text,
     publicKey,
     signature
