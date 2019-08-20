@@ -22,9 +22,10 @@ set (TEST_SRC
     ${PROJECT_SOURCE_DIR}/common/network.cpp
     ${PROJECT_SOURCE_DIR}/crypto/curve.cpp
     ${PROJECT_SOURCE_DIR}/crypto/hash.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/message.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/slot.cpp
     ${PROJECT_SOURCE_DIR}/defaults/static_fees.cpp
     ${PROJECT_SOURCE_DIR}/defaults/transaction_types.cpp
-    ${PROJECT_SOURCE_DIR}/helpers/crypto_helpers.cpp
     ${PROJECT_SOURCE_DIR}/identities/address.cpp
     ${PROJECT_SOURCE_DIR}/identities/keys.cpp
     ${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
@@ -40,9 +41,8 @@ set (TEST_SRC
     ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
     ${PROJECT_SOURCE_DIR}/utils/base58.cpp
+    ${PROJECT_SOURCE_DIR}/utils/crypto_helpers.cpp
     ${PROJECT_SOURCE_DIR}/utils/hex.cpp
-    ${PROJECT_SOURCE_DIR}/utils/message.cpp
-    ${PROJECT_SOURCE_DIR}/utils/slot.cpp
     ${PROJECT_SOURCE_DIR}/utils/str.cpp
 )
 

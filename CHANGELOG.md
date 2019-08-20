@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- refactored utils implementation ([#133])
 - refactored Identities implementation. ([#120])
 
 ## [0.6.0-arduino] - 2019-07-16
@@ -118,3 +119,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#69]: https://github.com/ArkEcosystem/cpp-crypto/pull/69
 [#70]: https://github.com/ArkEcosystem/cpp-crypto/pull/70
 [#120]: https://github.com/ArkEcosystem/cpp-crypto/pull/120
+[#133]: https://github.com/ArkEcosystem/cpp-crypto/pull/133

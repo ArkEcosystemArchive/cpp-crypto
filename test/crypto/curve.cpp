@@ -57,7 +57,7 @@ TEST(crypto, curve_ecdsa_sign_null_pk) {
 
 /**/
 
-TEST(helpers, crypto_verify_valid) {
+TEST(crypto, crypto_verify_valid) {
   ASSERT_TRUE(Curve::Ecdsa::verify(tMessageSha256Bytes.data(),
                                    tPublicKeyBytes.data(),
                                    { tMessageSignatureBytes.begin(),
@@ -66,7 +66,7 @@ TEST(helpers, crypto_verify_valid) {
 
 /**/
 
-TEST(helpers, crypto_verify_invalid) {
+TEST(crypto, crypto_verify_invalid) {
   ASSERT_FALSE(Curve::Ecdsa::verify(tMessageSha256Bytes.data(),
                                     invalid::tPublicKeyBytes.data(),
                                     { tMessageSignatureBytes.begin(),
@@ -113,12 +113,12 @@ TEST(crypto, curve_publickey_decompress) {
 
 /**/
 
-TEST(utils, curve_publickey_validate) {
+TEST(crypto, curve_publickey_validate) {
   ASSERT_TRUE(Curve::PublicKey::validate(tPublicKeyBytes.data()));
 }
 
 /**/
 
-TEST(utils, curve_publickey_validate_invalid) {
+TEST(crypto, curve_publickey_validate_invalid) {
   ASSERT_FALSE(Curve::PublicKey::validate(invalid::tPublicKeyBytes.data()));
 }

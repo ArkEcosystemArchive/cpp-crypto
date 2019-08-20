@@ -1,12 +1,12 @@
 
 #include "gtest/gtest.h"
 
-#include "helpers/crypto_helpers.h"
+#include "utils/crypto_helpers.h"
 
 #include <cstdint>
 #include <vector>
 
-TEST(helpers, pack_unpack) {
+TEST(utils, pack_unpack) {
   std::vector<uint8_t> packBuffer;
   uint8_t packValue = 23;
   pack(packBuffer, packValue);
@@ -18,7 +18,7 @@ TEST(helpers, pack_unpack) {
 
 /**/
 
-TEST(helpers, join) {
+TEST(utils, join) {
   const auto strBuffer = "123";
   std::vector<std::string> vstr(3);
   vstr[0] = strBuffer[0];

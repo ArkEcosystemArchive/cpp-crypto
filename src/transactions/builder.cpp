@@ -9,8 +9,8 @@
 #include "common/configuration.hpp"
 #include "defaults/transaction_types.hpp"
 #include "identities/address.hpp"
-#include "utils/slot.h"
-#include "helpers/crypto_helpers.h"
+#include "crypto/slot.hpp"
+#include "utils/crypto_helpers.h"
 #include "identities/publickey.hpp"
 
 namespace Ark {
@@ -157,7 +157,7 @@ void Builder::sign(
     const std::string& secondPassphrase,
     const Configuration& configuration) {
   transaction.timestamp = static_cast<uint32_t>(
-      Utils::Slot::time(configuration.getNetwork()));
+        Slot::time(configuration.getNetwork()));
   transaction.sign(passphrase.c_str());
 
   if (secondPassphrase.length() > 0) {
