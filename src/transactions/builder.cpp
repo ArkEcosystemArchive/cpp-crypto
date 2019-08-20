@@ -28,8 +28,8 @@ Transaction Builder::buildTransfer(
   if (amount < 1ULL) { return transaction; }
 
   transaction.version = 0x01;
-  transaction.type = defaults::TransactionTypes::Transfer;
-  transaction.fee = configuration.getFee(defaults::TransactionTypes::Transfer);
+  transaction.type = TransactionTypes::Transfer;
+  transaction.fee = configuration.getFee(TransactionTypes::Transfer);
   transaction.recipient = std::move(recipient);
   transaction.amount = amount;
   transaction.vendorField = std::move(vendorField);
@@ -51,9 +51,9 @@ Transaction Builder::buildSecondSignatureRegistration(
   Transaction transaction;
   
   transaction.version = 0x01;
-  transaction.type = defaults::TransactionTypes::SecondSignatureRegistration;
+  transaction.type = TransactionTypes::SecondSignatureRegistration;
   transaction.fee = configuration.getFee(
-      defaults::TransactionTypes::SecondSignatureRegistration);
+      TransactionTypes::SecondSignatureRegistration);
 
     transaction.asset.signature.publicKey =
         identities::PublicKey::fromPassphrase(secondPassphrase.c_str())
@@ -77,15 +77,13 @@ Transaction Builder::buildDelegateRegistration(
   Transaction transaction;
   
   transaction.version = 0x01;
-  transaction.type = defaults::TransactionTypes::DelegateRegistration;
-  transaction.fee = configuration.getFee(
-      defaults::TransactionTypes::DelegateRegistration);
+  transaction.type = TransactionTypes::DelegateRegistration;
+  transaction.fee = configuration.getFee(TransactionTypes::DelegateRegistration);
   transaction.asset.delegate.username = std::move(username);
 
-  sign(
-      transaction,
-      std::move(passphrase),
-      std::move(secondPassphrase));
+  sign(transaction,
+       std::move(passphrase),
+       std::move(secondPassphrase));
   
   return transaction;
 }
@@ -100,18 +98,18 @@ Transaction Builder::buildVote(
   Transaction transaction;
   
   transaction.version = 0x01;
-  transaction.type = defaults::TransactionTypes::Vote;
-  transaction.fee = configuration.getFee(defaults::TransactionTypes::Vote);
+  transaction.type = TransactionTypes::Vote;
+  transaction.fee = configuration.getFee(TransactionTypes::Vote);
   transaction.asset.votes = std::move(votes);
 
   const auto recipient = identities::Address::fromPassphrase(
       passphrase.c_str(),
-      configuration.getNetwork().version());
+      configuration.getNetwork().version);
   transaction.recipient = recipient.toString();
 
   sign(transaction,
-      std::move(passphrase),
-      std::move(secondPassphrase));
+       std::move(passphrase),
+       std::move(secondPassphrase));
   
   return transaction;
 }
@@ -128,17 +126,17 @@ Transaction Builder::buildMultiSignatureRegistration(
   Transaction transaction;
   
   transaction.version = 0x01;
-  transaction.type = defaults::TransactionTypes::MultiSignatureRegistration;
-  transaction.fee = (
-      keysgroup.size() + 1)
-      * configuration.getFee(defaults::TransactionTypes::MultiSignatureRegistration);
+  transaction.type = TransactionTypes::MultiSignatureRegistration;
+  transaction.fee =
+      (keysgroup.size() + 1) *
+      configuration.getFee(TransactionTypes::MultiSignatureRegistration);
   transaction.asset.multiSignature.min = min;
   transaction.asset.multiSignature.lifetime = lifetime;
   transaction.asset.multiSignature.keysgroup = keysgroup;
 
   const auto recipient = identities::Address::fromPassphrase(
       passphrase.c_str(),
-      configuration.getNetwork().version());
+      configuration.getNetwork().version);
   transaction.recipient = recipient.toString();
 
   sign(

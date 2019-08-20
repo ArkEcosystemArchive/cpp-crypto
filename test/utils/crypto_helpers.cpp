@@ -8,7 +8,7 @@
 
 TEST(utils, pack_unpack) {
   std::vector<uint8_t> packBuffer;
-  uint8_t packValue = 23;
+  const uint8_t packValue = 23U;
   pack(packBuffer, packValue);
 
   uint8_t unpackValue;
@@ -23,7 +23,7 @@ TEST(utils, join) {
   std::vector<std::string> vstr(3);
   vstr[0] = strBuffer[0];
   vstr[1] = strBuffer[1];
-  vstr[2]= strBuffer[2];
+  vstr[2] = strBuffer[2];
 
   std::string joined = join(vstr);
   ASSERT_STREQ(joined.c_str(), strBuffer);

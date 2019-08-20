@@ -7,6 +7,6 @@
 #define ARDUINOJSON_ENABLE_STD_STRING 1 // Enable 'std::string'
 
 // ArduinoJson Header
-#include "ArduinoJson.h"
+#include <ArduinoJson.h>
 
 #endif

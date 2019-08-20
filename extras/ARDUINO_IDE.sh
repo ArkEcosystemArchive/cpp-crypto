@@ -109,7 +109,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_CRYPTO_DIR}/slot.hpp     ${SRC_CRYPTO_DIR}
 
   echo -e "Moving 'defaults' headers.\n"
-  mv ${INCLUDE_DEFAULTS_DIR}/fee_policies.hpp       ${SRC_DEFAULTS_DIR}
+  mkdir ${SRC_DEFAULTS_DIR}
   mv ${INCLUDE_DEFAULTS_DIR}/static_fees.hpp        ${SRC_DEFAULTS_DIR}
   mv ${INCLUDE_DEFAULTS_DIR}/transaction_types.hpp  ${SRC_DEFAULTS_DIR}
 
@@ -125,7 +125,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_INTERFACES_DIR}/identities.hpp ${SRC_INTERFACES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
-  mv ${INCLUDE_NETWORKS_DIR}/networks.hpp ${SRC_NETWORKS_DIR}
+  mkdir ${SRC_NETWORKS_DIR}
   mv ${INCLUDE_NETWORKS_DIR}/devnet.hpp   ${SRC_NETWORKS_DIR}
   mv ${INCLUDE_NETWORKS_DIR}/mainnet.hpp  ${SRC_NETWORKS_DIR}
   mv ${INCLUDE_NETWORKS_DIR}/testnet.hpp  ${SRC_NETWORKS_DIR}
@@ -141,8 +141,8 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mkdir ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/BIP66       ${EXTRAS_LIB_DIR}
-  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/date        ${EXTRAS_LIB_DIR}
+  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
   mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
 
@@ -187,9 +187,9 @@ else
   mv ${SRC_CRYPTO_DIR}/slot.hpp     ${INCLUDE_CRYPTO_DIR}
 
   echo -e "Moving 'defaults' headers.\n"
-  mv ${SRC_DEFAULTS_DIR}/fee_policies.hpp       ${INCLUDE_DEFAULTS_DIR}
   mv ${SRC_DEFAULTS_DIR}/static_fees.hpp        ${INCLUDE_DEFAULTS_DIR}
   mv ${SRC_DEFAULTS_DIR}/transaction_types.hpp  ${INCLUDE_DEFAULTS_DIR}
+  rm -rf ${SRC_DEFAULTS_DIR}
 
   echo -e "Moving 'identities' headers.\n"
   mv ${SRC_IDENTITIES_DIR}/address.hpp    ${INCLUDE_IDENTITIES_DIR}
@@ -202,10 +202,10 @@ else
   rm -rf ${SRC_INTERFACES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
-  mv ${SRC_NETWORKS_DIR}/networks.hpp ${INCLUDE_NETWORKS_DIR}
   mv ${SRC_NETWORKS_DIR}/devnet.hpp   ${INCLUDE_NETWORKS_DIR}
   mv ${SRC_NETWORKS_DIR}/mainnet.hpp  ${INCLUDE_NETWORKS_DIR}
   mv ${SRC_NETWORKS_DIR}/testnet.hpp  ${INCLUDE_NETWORKS_DIR}
+  rm -rf ${SRC_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
   mv ${SRC_TRANSACTIONS_DIR}/builder.h      ${INCLUDE_TRANSACTIONS_DIR}
@@ -217,8 +217,8 @@ else
   mkdir ${SRC_LIB_DIR}
   mv ${EXTRAS_LIB_DIR}/ArduinoJson  ${SRC_LIB_DIR}
   mv ${EXTRAS_LIB_DIR}/BIP66        ${SRC_LIB_DIR}
-  mv ${EXTRAS_LIB_DIR}/uECC         ${SRC_LIB_DIR}
   mv ${EXTRAS_LIB_DIR}/date         ${SRC_LIB_DIR}
+  mv ${EXTRAS_LIB_DIR}/uECC         ${SRC_LIB_DIR}
   mv ${SRC_DIR}/bcl                 ${SRC_LIB_DIR}
   mv ${SRC_DIR}/rfc6979             ${SRC_LIB_DIR}
 
