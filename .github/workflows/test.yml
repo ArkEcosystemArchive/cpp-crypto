@@ -1,0 +1,92 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types: [opened]
+
+jobs:
+  arduino-default:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Make scripts executable
+      run: sudo chmod -R +x ./.github/workflows/test/*.sh
+    - name: Install
+      run: ./.github/workflows/test/install_arduino.sh
+    - name: Build
+      run: ./.github/workflows/test/script_arduino.sh
+
+  linux-default:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Make scripts executable
+      run: sudo chmod -R +x ./.github/workflows/test/*.sh
+    - name: Install
+      run: ./.github/workflows/test/install_platform_io.sh
+    - name: Empty Git Submodule Folders
+      run: |
+        rm -rf ./src/lib/{ArduinoJson/*,BIP66/*,uECC/*}
+        rm -rf ./test/lib/googletest/*
+    - name: Build
+      run: ./.github/workflows/test/script_platform_io.sh
+
+  linux-gcc7:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get -y install g++-7 gcc-7 lcov
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+        sudo update-alternatives --config gcc
+    - name: Make scripts executable
+      run: sudo chmod -R +x ./.github/workflows/test/*.sh
+    - name: Build
+      run: ./.github/workflows/test/script_desktop.sh
+    - name: Codecov upload
+      run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
+  linux-clang-5:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt install liblldb-5.0-dev python-lldb-5.0 lcov
+        sudo apt install clang-5.0 clang-tidy-5.0 clang-format-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libllvm5.0 lldb-5.0 llvm-5.0 llvm-5.0-dev
+        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-5.0 60
+        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 50
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-5.0 60
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 50
+    - name: Make scripts executable
+      run: sudo chmod -R +x ./.github/workflows/test/*.sh
+    - name: Build
+      run: ./.github/workflows/test/script_desktop.sh
+    - name: Clang Tidy
+      run: ./.github/workflows/test/clang_tidy.sh
+    - name: Clang Format
+      run: ./.github/workflows/test/clang_format.sh
+
+  macOS:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - run: COMPILER=clang++
+      - name: Install dependencies
+        run: brew install cmake lcov
+      - name: Make scripts executable
+        run: sudo chmod -R +x ./.github/workflows/test/*.sh
+      - name: Build
+        run: ./.github/workflows/test/script_desktop.sh
