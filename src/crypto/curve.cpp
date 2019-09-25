@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <array>
 
 #include "interfaces/identities.hpp"
 #include "utils/crypto_helpers.h"
@@ -71,8 +72,7 @@ bool Curve::Ecdsa::sign(const uint8_t* hash32,
                    r, s);
 
   // Copy the big-endian bytes into and R and S element byte-buffers.
-  std::vector<uint8_t> rsBuffer;
-  rsBuffer.reserve(HASH_64_BYTE_LEN);
+  std::array<uint8_t, HASH_64_BYTE_LEN> rsBuffer = {};
   r.getBigEndianBytes(&rsBuffer[0]);
   s.getBigEndianBytes(&rsBuffer[HASH_32_BYTE_LEN]);
 
