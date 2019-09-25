@@ -21,7 +21,7 @@ constexpr const uint64_t CustomFee = 1000ULL;
 
 TEST(managers, fee_manager_fee_get) {
   FeeManager feeManager;
-  for (auto i = 0; i < StaticFeePolicy.size(); ++i) {
+  for (auto i = 0u; i < StaticFeePolicy.size(); ++i) {
     ASSERT_EQ(feeManager.getFee(i), StaticFeePolicy.at(i));
   };
 }
