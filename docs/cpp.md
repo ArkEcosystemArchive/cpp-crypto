@@ -346,7 +346,7 @@ _note: all other library dependencies will be automatically installed via CMake 
 ### CMake (manually)
 
 1) `mkdir build && cd build`
-2) `cmake .. -DBUILD_TESTS=ON`
+2) `cmake ..`
 3) `./tests/ark_tests`
 
 ## Build and Run Tests
@@ -362,5 +362,5 @@ _note: all other library dependencies will be automatically installed via CMake 
 ### CMake (manually)
 
 1) `mkdir build && cd build`
-2) `cmake .. -DBUILD_TESTS=ON`
+2) `cmake ..`
 3) `./tests/ark_tests`

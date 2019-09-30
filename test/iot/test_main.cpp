@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  **/
 
-#if (defined PLATFORMIO && defined BUILD_TESTS)
+#if (defined PLATFORMIO && defined UNIT_TESTS)
 
 #include <gtest/gtest.h>
 

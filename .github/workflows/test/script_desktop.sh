@@ -3,7 +3,7 @@
 # run desktop builds
 mkdir build
 cd build
-cmake .. -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Coverage
+cmake .. -DCMAKE_BUILD_TYPE=Coverage
 cmake --build .
 
 # build examples

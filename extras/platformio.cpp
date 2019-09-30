@@ -9,7 +9,7 @@
 
 // This isn't intended for project or production use.
 // It is only used to do an example build of ARK C++ Crypto;
-#if (defined PLATFORMIO && !defined BUILD_TESTS)
+#if (defined PLATFORMIO && !defined UNIT_TESTS)
 
 #include <Arduino.h>
 

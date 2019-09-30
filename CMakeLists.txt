@@ -68,10 +68,4 @@ endif()
 # ------------------------------------------------------------------------------
 
 add_subdirectory(src)
-
-option(BUILD_TESTS "ARK C++ Crypto tests Disabled by default" OFF)
-
-if(BUILD_TESTS)
-	add_subdirectory(test)
-endif()
-
+add_subdirectory(test)
