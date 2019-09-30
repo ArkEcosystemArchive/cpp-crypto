@@ -66,11 +66,11 @@ set (ARK_TEST_SRC
 
 find_library(ARK_CPP_CRYPTO_TESTS PUBLIC)
 
-add_executable(ARK_CPP_CRYPTO_TESTS ${ARK_TEST_SRC})
+add_executable(ark_cpp_crypto_tests ${ARK_TEST_SRC})
 
-target_link_libraries(ARK_CPP_CRYPTO_TESTS ARK_CPP_CRYPTO_LIB gtest gtest_main)
+target_link_libraries(ark_cpp_crypto_tests ARK_CPP_CRYPTO_LIB gtest gtest_main)
 
-add_test(NAME test COMMAND ark_tests)
+add_test(NAME test COMMAND  ark_cpp_crypto_tests)
 
 # ------------------------------------------------------------------------------
 # Coverage
@@ -79,7 +79,7 @@ add_test(NAME test COMMAND ark_tests)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     include("${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake")
 
-    setup_target_for_coverage(${PROJECT_NAME}_coverage ARK_CPP_CRYPTO_TESTS coverage)
+    setup_target_for_coverage(${PROJECT_NAME}_coverage ark_cpp_crypto_tests coverage)
 
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")

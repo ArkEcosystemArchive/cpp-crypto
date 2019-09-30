@@ -29,7 +29,7 @@ _note: all other library dependencies will be automatically installed via CMake 
 
 1) `mkdir build && cd build`
 2) `cmake .. -DBUILD_TESTS=ON`
-3) `./tests/ark_tests`
+3) `./tests/ark_cpp_crypto_tests`
 
 ## Build and Run Tests
 
@@ -45,4 +45,4 @@ _note: all other library dependencies will be automatically installed via CMake 
 
 1) `mkdir build && cd build`
 2) `cmake .. -DBUILD_TESTS=ON`
-3) `./tests/ark_tests`
+3) `./tests/ark_cpp_crypto_tests`
