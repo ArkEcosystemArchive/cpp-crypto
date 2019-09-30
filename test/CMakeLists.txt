@@ -12,7 +12,7 @@ option(PACKAGE_TESTS OFF FORCE)
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-if (APPLE OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+if (APPLE OR CMAKE_BUILD_TYPE STREQUAL "Coverage")
     add_subdirectory(../extern/googletest/googletest [EXCLUDE_FROM_ALL])
     include(GoogleTest)
 else()
