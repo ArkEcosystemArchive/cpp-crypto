@@ -91,11 +91,11 @@ jobs:
       - name: Build
         run: ./.github/workflows/test/script_desktop.sh
 
-  windows-debug:
+  windows:
     runs-on: windows-2016
     strategy:
       matrix:
-        build: [Debug]
+        build: [Debug, Release]
 
     steps:
       - uses: actions/checkout@v1
@@ -107,7 +107,6 @@ jobs:
         run: cmake -G "Visual Studio 15 2017 Win64" .
       - name: Build Solution
         shell: cmd
-        run: |
-          msbuild "%GITHUB_WORKSPACE%\Ark-Cpp-Crypto.sln"
+        run: msbuild "%GITHUB_WORKSPACE%\Ark-Cpp-Crypto.sln"
       - name: Test
         run: call "%GITHUB_WORKSPACE%\test\Debug\Ark-Cpp-Crypto-tests"
