@@ -8,12 +8,10 @@ project(ARK_CPP_CRYPTO_LIB C CXX)
 # ------------------------------------------------------------------------------
 
 set(BIP66_SRC
-    ${PROJECT_SOURCE_DIR}/../extern/BIP66/src/bip66.cpp
+    ${PROJECT_SOURCE_DIR}/../extern/bip66/src/bip66.cpp
 )
 
-set(uECC_SRC
-    ../extern/uecc/uECC.c
-)
+set(uECC_SRC ../extern/uecc/uECC.c)
 
 include_directories(${PROJECT_SOURCE_DIR}/../extern/arduinojson/src)
 include_directories(${PROJECT_SOURCE_DIR}/../extern/uecc)
