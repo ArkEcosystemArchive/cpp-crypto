@@ -11,7 +11,12 @@ option(BUILD_GMOCK OFF FORCE)
 option(PACKAGE_TESTS OFF FORCE)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-add_subdirectory(../extern/googletest/googletest [EXCLUDE_FROM_ALL])
+if (APPLE)
+    add_subdirectory(../extern/googletest/googletest [EXCLUDE_FROM_ALL])
+    include(GoogleTest)
+else()
+    add_subdirectory(../extern/googletest [EXCLUDE_FROM_ALL])
+endif()
 
 # ------------------------------------------------------------------------------
 
@@ -67,11 +72,11 @@ set (ARK_TEST_SRC
 
 find_library(ARK_CPP_CRYPTO_TESTS PUBLIC)
 
-add_executable(ARK_CPP_CRYPTO_TESTS ${ARK_TEST_SRC})
+add_executable(ark_cpp_crypto_tests ${ARK_TEST_SRC})
 
-target_link_libraries(ARK_CPP_CRYPTO_TESTS ARK_CPP_CRYPTO_LIB gtest gtest_main)
+target_link_libraries(ark_cpp_crypto_tests ARK_CPP_CRYPTO_LIB gtest gtest_main)
 
-add_test(NAME test COMMAND  ARK_CPP_CRYPTO_TESTS)
+add_test(NAME test COMMAND  ark_cpp_crypto_tests)
 
 # ------------------------------------------------------------------------------
 # Coverage
@@ -80,14 +85,13 @@ add_test(NAME test COMMAND  ARK_CPP_CRYPTO_TESTS)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
     if (UNIX)
-        include(GoogleTest)
         include_directories(${PROJECT_SOURCE_DIR}/../extern/googletest/google/src)
         include_directories(${PROJECT_SOURCE_DIR}/../extern/googletest/googletest/include)
     endif()
 
     include("${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake")
 
-    setup_target_for_coverage(ARK_CRYPTO_TESTS_COVERAGE ARK_CPP_CRYPTO_TESTS coverage)
+    setup_target_for_coverage(ARK_CRYPTO_TESTS_COVERAGE ark_cpp_crypto_tests coverage)
 
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
