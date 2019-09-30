@@ -8,7 +8,7 @@
             "name": "Debug Tests",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/test/Ark-Cpp-Crypto-tests",
+            "program": "${workspaceFolder}/test/ARK_CPP_CRYPTO_TESTS",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/test/",

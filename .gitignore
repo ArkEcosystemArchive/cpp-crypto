@@ -36,7 +36,7 @@ build
 /Win32
 /ZERO_CHECK.vcxproj.filters
 /ZERO_CHECK.vcxproj
-/Ark-Cpp-Crypto.sln
+/ARK_CPP_CRYPTO.sln
 /ALL_BUILD.vcxproj.filters
 /ALL_BUILD.vcxproj
 /src/INSTALL.vcxproj.filters

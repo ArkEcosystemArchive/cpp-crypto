@@ -9,6 +9,8 @@ cd build
 rm -dfr ../lib/cpp-crypto/
 mkdir ../lib/cpp-crypto/
 cp -R ../../../src ../lib/cpp-crypto/
+mkdir ../lib/extern/
+cp -R ../../../extern ../lib/extern/
 
 if [ "$1" == "--BUILD_TESTS" ]; then
   cmake .. -DBUILD_TESTS=ON

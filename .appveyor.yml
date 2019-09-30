@@ -14,7 +14,7 @@ before_build:
   - cmake -G "Visual Studio 15 2017 Win64" .
 
 build:
-  project: $(APPVEYOR_BUILD_FOLDER)\Ark-Cpp-Crypto.sln
+  project: $(APPVEYOR_BUILD_FOLDER)\ARK_CPP_CRYPTO.sln
 
 test_script:
   - cmd: '%APPVEYOR_BUILD_FOLDER%\test\%CONFIGURATION%\ark_cpp_crypto_tests.exe'
