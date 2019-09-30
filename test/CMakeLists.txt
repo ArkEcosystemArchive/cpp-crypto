@@ -9,6 +9,7 @@ project(ARK_CPP_CRYPTO_TESTS C CXX)
 
 option(BUILD_GMOCK OFF FORCE)
 option(PACKAGE_TESTS OFF FORCE)
+
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 if (APPLE)
