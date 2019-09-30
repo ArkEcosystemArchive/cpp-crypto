@@ -90,3 +90,24 @@ jobs:
         run: sudo chmod -R +x ./.github/workflows/test/*.sh
       - name: Build
         run: ./.github/workflows/test/script_desktop.sh
+
+  windows-debug:
+    runs-on: windows-2016
+    strategy:
+      matrix:
+        build: [Debug]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup MSBuild.exe
+        uses: warrenbuckley/Setup-MSBuild@v1
+      - name: Install
+        run: git submodule update --init --recursive
+      - name: CMake
+        run: cmake -G "Visual Studio 15 2017 Win64" .
+      - name: Build Solution
+        shell: cmd
+        run: |
+          msbuild "%GITHUB_WORKSPACE%\Ark-Cpp-Crypto.sln"
+      - name: Test
+        run: call "%GITHUB_WORKSPACE%\test\Debug\Ark-Cpp-Crypto-tests"
