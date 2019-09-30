@@ -12,13 +12,25 @@ option(PACKAGE_TESTS OFF FORCE)
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-if (APPLE)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     add_subdirectory(../extern/googletest/googletest [EXCLUDE_FROM_ALL])
     include(GoogleTest)
 else()
     add_subdirectory(../extern/googletest [EXCLUDE_FROM_ALL])
 endif()
 
+
+# clone submodules
+execute_process(
+	COMMAND git submodule update --init --recursive
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+option(BUILD_GMOCK OFF FORCE)
+option(PACKAGE_TESTS OFF FORCE)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+add_subdirectory(../extern/googletest [EXCLUDE_FROM_ALL])
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
