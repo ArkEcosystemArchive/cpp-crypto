@@ -22,13 +22,13 @@
   ],
   "dependencies": [
     {
-      "name": "micro-ecc"
-    },
-    {
       "name": "ArduinoJson"
     },
     {
       "name": "BIP66"
+    },
+    {
+      "name": "micro-ecc"
     }
   ],
   "export": {

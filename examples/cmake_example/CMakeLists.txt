@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 3.2)
-project(Cpp-Crypto-Example)
+
+cmake_minimum_required(VERSION 3.2.2)
+
+project(CPP_CRYPTO_EXAMPLE)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -24,8 +26,9 @@ endif()
 
 add_subdirectory(lib/cpp-crypto/src)
 
-set(SOURCE_FILES main.cpp)
+set(SRC_FILES main.cpp)
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} Ark-Cpp-Crypto-lib)
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+target_link_libraries(${PROJECT_NAME} ARK_CPP_CRYPTO_LIB)
 

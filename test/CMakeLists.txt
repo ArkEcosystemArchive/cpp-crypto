@@ -1,22 +1,38 @@
+
 cmake_minimum_required(VERSION 3.2.2)
 
-project(Ark-Cpp-Crypto-tests C CXX)
+project(ARK_CPP_CRYPTO_TESTS C CXX)
 
-add_subdirectory(lib/googletest)
+# ------------------------------------------------------------------------------
+# Google Test
+# ------------------------------------------------------------------------------
 
-include(CTest)
-enable_testing()
+option(BUILD_GMOCK OFF FORCE)
+option(PACKAGE_TESTS OFF FORCE)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+add_subdirectory(../extern/googletest [EXCLUDE_FROM_ALL])
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
 
 set (PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../lib")
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 include_directories(${PROJECT_SOURCE_DIR}/../src)
 include_directories(${PROJECT_SOURCE_DIR}/../src/lib)
-include_directories(${PROJECT_SOURCE_DIR}/../src/lib/ArduinoJson)
-include_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/../extern/arduinojson/src)
 
-set (TEST_SRC
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# ARK Tests Sources
+# ------------------------------------------------------------------------------
+
+set (ARK_TEST_SRC
     ${PROJECT_SOURCE_DIR}/common/configuration.cpp
     ${PROJECT_SOURCE_DIR}/common/fee_policy.cpp
     ${PROJECT_SOURCE_DIR}/common/network.cpp
@@ -46,19 +62,27 @@ set (TEST_SRC
     ${PROJECT_SOURCE_DIR}/utils/str.cpp
 )
 
-find_library(Ark-Cpp-Crypto-tests PUBLIC)
+# ------------------------------------------------------------------------------
 
-add_executable(Ark-Cpp-Crypto-tests ${TEST_SRC})
+find_library(ARK_CPP_CRYPTO_TESTS PUBLIC)
 
-target_link_libraries(Ark-Cpp-Crypto-tests Ark-Cpp-Crypto-lib gtest gtest_main)
+add_executable(ARK_CPP_CRYPTO_TESTS ${ARK_TEST_SRC})
 
-add_test(NAME test COMMAND Ark-Cpp-Crypto-tests)
+target_link_libraries(ARK_CPP_CRYPTO_TESTS ARK_CPP_CRYPTO_LIB gtest gtest_main)
+
+add_test(NAME test COMMAND ark_tests)
+
+# ------------------------------------------------------------------------------
+# Coverage
+# ------------------------------------------------------------------------------
 
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     include("${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake")
 
-    setup_target_for_coverage(${PROJECT_NAME}_coverage Ark-Cpp-Crypto-tests coverage)
+    setup_target_for_coverage(${PROJECT_NAME}_coverage ARK_CPP_CRYPTO_TESTS coverage)
 
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
 endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
+
+# ------------------------------------------------------------------------------

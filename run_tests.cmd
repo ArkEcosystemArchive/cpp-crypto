@@ -1,2 +1,5 @@
+SET var=BUILD_TESTS
+
 call build.cmd
-.\build\test\Debug\Ark-Cpp-Crypto-tests
+
+.\build\test\Debug\ark_cpp_crypto_tests

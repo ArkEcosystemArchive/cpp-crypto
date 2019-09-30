@@ -1,5 +1,9 @@
-cmake_minimum_required(VERSION 3.2)
-project(Ark-Cpp-Crypto)
+
+cmake_minimum_required(VERSION 3.2.2)
+
+project(ARK_CPP_CRYPTO)
+
+# ------------------------------------------------------------------------------
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 11)
@@ -19,11 +23,18 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 endif()
 
-# clone submodules
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Git Submodules
+# ------------------------------------------------------------------------------
+
 execute_process(
     COMMAND git submodule update --init --recursive
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
+
+# ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 # Clang Tidy
@@ -55,5 +66,10 @@ if(ENABLE_CLANG_TIDY)
 endif()
 
 add_subdirectory(src)
-add_subdirectory(test)
 
+option(BUILD_TESTS "ARK C++ Crypto tests Disabled by default" OFF)
+if(BUILD_TESTS)
+	add_subdirectory(test)
+endif()
+
+# ------------------------------------------------------------------------------

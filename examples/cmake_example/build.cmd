@@ -8,5 +8,9 @@ rmdir /S /Q ..\lib\cpp-crypto\
 mkdir ..\lib\cpp-crypto\
 xcopy /E /Y /H /R ..\..\..\src ..\lib\cpp-crypto\
 
-cmake ..
+IF "%var%"=="BUILD_TESTS" (
+  cmake .. -DBUILD_TESTS=ON
+) ELSE (
+  cmake ..
+)
 cmake --build .

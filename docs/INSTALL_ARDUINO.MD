@@ -1,38 +1,34 @@
 
-
 # Arduino Builds
 
-
-### requirements:
+### Requirements:
 
 **Arduino IDE:**  
-Download and install the Arduino IDE (>=1.8.5) from the following link:  
-```https://www.arduino.cc/en/Main/Software```
+Download and install the Arduino IDE (>=1.8.5) from the following link:
 
-#
+> `https://www.arduino.cc/en/Main/Software`
 
-### dependencies:
+### Dependencies:
 
-Using the Arduino IDE's built in Library Manager,  
-install the following Libraries  
-- micro-ecc
-- AUnit
-- ArduinoJson
+Using the Arduino IDE's built in Library Manager,
 
-#
+install the following Libraries:
+-   ArduinoJson
+-   BIP66
+-   micro-ecc
 
 ### Using with the Arduino IDE
-> include the following header in your Arduino Sketch:  
+
+> include the following header in your Arduino Sketch:
+
 ```cpp
 #include <arkCrypto.h>
 ```
 
-#
-
-### Arduino Example using the Adafruit Feather ESP8266
+### Arduino Example using the Adafruit Feather ESP32
 
 ```cpp
-#include "arkCrypto.h"
+#include <arkCrypto.h>
 
 void setup()
 {
@@ -53,10 +49,8 @@ void setup()
   WIF wif = WIF::fromPassphrase(passphrase, wifByte);
   Serial.println(wif.toString().c_str());
 
-
   const auto actual = Ark::Crypto::Transactions::Builder::buildTransfer("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", 100000000, "", "Secret passphrase");
   Serial.println(actual.type);
-
 
   const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
   Ark::Crypto::Message message;

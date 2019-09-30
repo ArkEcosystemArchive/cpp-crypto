@@ -13,9 +13,9 @@
 /lib/
 /bin/
 build
-/src/Ark-Cpp-Crypto-lib.vcxproj.filters
-/src/Ark-Cpp-Crypto-lib.vcxproj
-/src/Ark-Cpp-Crypto-lib.sln
+/src/ARK_CPP_CRYPTO_LIB.vcxproj.filters
+/src/ARK_CPP_CRYPTO_LIB.vcxproj
+/src/ARK_CPP_CRYPTO_LIB.sln
 /src/ALL_BUILD.vcxproj.filters
 /src/ALL_BUILD.vcxproj
 /test/NightlyMemoryCheck.vcxproj.filters
@@ -26,9 +26,9 @@ build
 /test/Experimental.vcxproj
 /test/Continuous.vcxproj.filters
 /test/Continuous.vcxproj
-/test/Ark-Cpp-Crypto-tests.vcxproj.filters
-/test/Ark-Cpp-Crypto-tests.vcxproj
-/test/Ark-Cpp-Crypto-tests.sln
+/test/ARK_CPP_CRYPTO_TESTS.vcxproj.filters
+/test/ARK_CPP_CRYPTO_TESTS.vcxproj
+/test/ARK_CPP_CRYPTO_TESTS.sln
 /test/ALL_BUILD.vcxproj.filters
 /test/ALL_BUILD.vcxproj
 /test/INSTALL.vcxproj.filters
@@ -51,7 +51,7 @@ build
 /examples/cmake_example/ALL_BUILD.vcxproj.filters
 /examples/cmake_example/ALL_BUILD.vcxproj
 /examples/cmake_example/ZERO_CHECK.vcxproj
-/examples/cmake_example/Cpp-Crypto-Example.vcxproj.filters
-/examples/cmake_example/Cpp-Crypto-Example.vcxproj
-/examples/cmake_example/Cpp-Crypto-Example.sln
+/examples/cmake_example/CPP_CRYPTO_EXAMPLE.vcxproj.filters
+/examples/cmake_example/CPP_CRYPTO_EXAMPLE.vcxproj
+/examples/cmake_example/CPP_CRYPTO_EXAMPLE.sln
 /examples/cmake_example/lib/cpp-crypto

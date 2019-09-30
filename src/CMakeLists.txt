@@ -1,11 +1,29 @@
 
 cmake_minimum_required(VERSION 3.2.2)
 
-project(Ark-Cpp-Crypto-lib C CXX)
+project(ARK_CPP_CRYPTO_LIB C CXX)
+
+# ------------------------------------------------------------------------------
+# External Dependencies
+# ------------------------------------------------------------------------------
 
 set(BIP66_SRC
-    ${PROJECT_SOURCE_DIR}/lib/BIP66/src/bip66.cpp
+    ${PROJECT_SOURCE_DIR}/../extern/BIP66/src/bip66.cpp
 )
+
+set(uECC_SRC
+    ../extern/uecc/uECC.c
+)
+
+include_directories(${PROJECT_SOURCE_DIR}/../extern/arduinojson/src)
+include_directories(${PROJECT_SOURCE_DIR}/../extern/uecc)
+include_directories(${PROJECT_SOURCE_DIR}/../extern/bip66/src)
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Internal Libraries
+# ------------------------------------------------------------------------------
 
 set(BCL_SRC
     lib/bcl/Base58Check.cpp
@@ -20,11 +38,24 @@ set(BCL_SRC
     lib/bcl/Utils.cpp
 )
 
-set(uECC_SRC
-    lib/uECC/uECC.c
+include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
+include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
+
+# ------------------------------------------------------------------------------
+
+set(LIB_SRC
+    ${BCL_SRC}
+    ${uECC_SRC}
+    ${BIP66_SRC}
 )
 
-set(COMMON_SRC
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# ARK Sources
+# ------------------------------------------------------------------------------
+
+set(ARK_SRC
     common/configuration.cpp
     common/network.cpp
     crypto/curve.cpp
@@ -45,28 +76,25 @@ set(COMMON_SRC
     utils/base58.cpp
 )
 
+# ------------------------------------------------------------------------------
+
 add_library(${PROJECT_NAME} STATIC
-    ${BCL_SRC}
-    ${uECC_SRC}
-    ${BIP66_SRC}
-    ${COMMON_SRC}
+    ${LIB_SRC}
+    ${ARK_SRC}
 )
 
-set(cpp_crypto_build_include_dirs
+# ------------------------------------------------------------------------------
+
+set(CPP_CRYPTO_BUILD_INCLUDE_DIRS
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
     ${PROJECT_SOURCE_DIR}/lib/
 )
 
-include_directories(${cpp_crypto_build_include_dirs})
-include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
-include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
-include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
-include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
-include_directories(${PROJECT_SOURCE_DIR}/lib/BIP66/src)
+include_directories(${CPP_CRYPTO_BUILD_INCLUDE_DIRS})
 
 target_include_directories( ${PROJECT_NAME} PUBLIC
-    ${cpp_crypto_build_include_dirs}
+    ${CPP_CRYPTO_BUILD_INCLUDE_DIRS}
 )
 
 if (MSVC)

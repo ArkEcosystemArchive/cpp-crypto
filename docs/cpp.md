@@ -10,11 +10,11 @@ This project is still under development. This page will get more content as the 
 
 [[toc]]
 
-## Installation  
-* [Arduino](#Arduino)  
-* [Linux >= 16.04](#OS)  
-* [macOS >= 10.10](#OS)  
-* [Windows >= 7](#OS)  
+## Installation
+-   [Arduino](#Arduino)
+-   [Linux >= 16.04](#OS)
+-   [macOS >= 10.10](#OS)
+-   [Windows >= 7](#OS)
 
 ### ARK Transactions
 
@@ -205,126 +205,162 @@ const uint8_t wifByte = 0xaa;
 WIF wif = WIF::fromPassphrase(passphrase, wifByte);
 ```
 
-# 
-
 # Arduino
+
+Download and install the Arduino IDE (>=1.8.5) from the following link:
+-   `https://www.arduino.cc/en/Main/Software`
+
+Using the Arduino IDE's built in Library Manager,
+install the following Libraries:
+-   `micro-ecc`
+-   `AUnit`
+
+#### Arduino Example using the Adafruit Feather ESP32
+
+### Requirements:
+
 **Arduino IDE:**  
-Download and install the Arduino IDE (>=1.8.5) from the following link:  
-```https://www.arduino.cc/en/Main/Software```
+Download and install the Arduino IDE (>=1.8.5) from the following link:
 
-Using the Arduino IDE's built in Library Manager,  
-install the following Libraries:  
-```micro-ecc```  
-```AUnit```
+> `https://www.arduino.cc/en/Main/Software`
 
-#### Ensure all git submodules have been cloned
-##### Note that future goals include ensuring that all dependent libaries are registered in the PIO Library Manager to avoid the use of git submodules for PIO builds
+### Dependencies:
 
-    cd Cpp-Crypto
-    git submodule update --init --recursive
+Using the Arduino IDE's built in Library Manager,
 
-#### Arduino Example using the Adafruit Feather ESP8266
+install the following Libraries:
+-   ArduinoJson
+-   BIP66
+-   micro-ecc
+
+### Using with the Arduino IDE
+
+> include the following header in your Arduino Sketch:
 
 ```cpp
-#include "arkCrypto.h"
+#include <arkCrypto.h>
+```
+
+### Arduino Example using the Adafruit Feather ESP32
+
+```cpp
+#include <arkCrypto.h>
 
 void setup()
 {
-    Serial.begin(115200);
+  Serial.begin(115200);
 
-    const auto passphrase = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
-    const uint8_t networkVersion = 0x1E;
-    Address address = Address::fromPassphrase(passphrase, networkVersion);
-    .println(address.toString().c_str());
+  Address address = Address::fromPassphrase(passphrase, networkVersion);
+  Serial.println(address.toString().c_str());
 
-    PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
-    Serial.println(privateKey.toString().c_str());
+  PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
+  Serial.println(privateKey.toString().c_str());
 
-    const auto passphrase = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
+  const auto passphrase = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
 
-    PublicKey publicKey = PublicKey::fromPassphrase(passphrase);
-    Serial.println(publicKey.toString().c_str());
+  PublicKey publicKey = PublicKey::fromPassphrase(passphrase);
+  Serial.println(publicKey.toString().c_str());
 
-    const uint8_t wifByte = 0xaa;
-    WIF wif = WIF::fromPassphrase(passphrase, wifByte);
-    Serial.println(wif.toString().c_str());
+  const uint8_t wifByte = 0xaa;
+  WIF wif = WIF::fromPassphrase(passphrase, wifByte);
+  Serial.println(wif.toString().c_str());
 
+  const auto actual = Ark::Crypto::Transactions::Builder::buildTransfer("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", 100000000, "", "Secret passphrase");
+  Serial.println(actual.type);
 
-    const auto actual = Ark::Crypto::Transactions::Builder::buildTransfer(
-            "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
-            100000000,
-            "",
-            "Secret passphrase"
-    );
-    Serial.println(actual.type);
-
-
-    const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
-    Ark::Crypto::Message message;
-    message.sign(text, passphrase);
-    Serial.println(BytesToHex(message.signature).c_str());
+  const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
+  Ark::Crypto::Message message;
+  message.sign(text, passphrase);
+  Serial.println(BytesToHex(message.signature).c_str());
 }
 
 void loop() {}
 ```
 
-**PlatformIO IDE:**  
+## PlatformIO
 
-#### Python:  
-Use an installer package from the following link or use your preferred method to install Python:  
-```https://www.python.org/downloads/```  
+### Dependencies
 
-Install PlatformIO:
+**Python:**
 
-    pip install -U platformio
-or
+Use an installer package from the following link:
 
-    python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"
-
-Install AUnit (2778), micro-ecc (1665)
-
-    platformio lib -g install 2778 1665
-
-#### Ensure all git submodules have been cloned
-##### Note that future goals include ensuring that all dependent libaries are registered in the PIO Library Manager to avoid the use of git submodules for PIO builds
-
-    cd Cpp-Crypto
-    git submodule update --init --recursive
-
-#### running the tests on an Arduino board
-
-    cd test
-
-#### execute the following command to upload test to your board  
-
->| board | command |
->|:-- |:-- |
->| ESP8266 | ```pio run -e esp8266 -t upload``` |
->| ESP32 | ```pio run -e esp32 -t upload``` |
+> `https://www.python.org/downloads/`
 
 #
 
-# OS
-## Linux, macOS and Windows
+**PlatformIO:**
 
-**CMake:**  
+install PlatformIO if not already installed
 
-Use an installer package from the following link, Homebrew, or use your preferred method:  
-```https://www.cmake.org/download/```
+> `pip install -U platformio`
 
-using
-**Homebrew:**  
+_or_
 
-    brew install cmake
+> `python -c "$(curl -fsSL > https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"`
 
-> note: all other dependencies will be automatically installed via CMake and Hunter Package Manager.
+#
 
-### make and build
-    cd cpp-crypto  
-    cmake . && cmake --build .
+### Running the tests on an Arduino board using PlatformIO
 
-### run tests (Linux, macOS)
-    ./test/Ark-Cpp-Crypto-tests
+**`cd` into the ".../cpp-crypto/test" directory:**
 
-### run tests (Windows)
-    .\test\Debug\Ark-Cpp-Crypto-tests.exe
+> `cd test`
+
+**execute the following command to upload and run tests on your board:**  
+
+| board    | command                         |
+|:-------- | :------------------------------ |
+| ESP8266  | `pio run -e esp8266 -t upload`  |
+| ESP32    | `pio run -e esp32 -t upload`    |
+
+#
+
+
+# OS Builds
+
+## Dependencies
+
+**CMake:**
+
+Use an installer package:
+
+> `https://www.cmake.org/download/`
+
+Homebrew:
+
+> `brew install cmake`
+
+_note: all other library dependencies will be automatically installed via CMake and Git submodule._
+
+## Make and Build
+
+### Linux/macOS
+
+> `./build.sh`
+
+### Windows
+
+> `./build.cmd`
+
+### CMake (manually)
+
+1) `mkdir build && cd build`
+2) `cmake .. -DBUILD_TESTS=ON`
+3) `./tests/ark_tests`
+
+## Build and Run Tests
+
+### Linux/macOS
+
+> `./run_tests.sh`
+
+### Windows
+
+> `./run_tests.cmd`
+
+### CMake (manually)
+
+1) `mkdir build && cd build`
+2) `cmake .. -DBUILD_TESTS=ON`
+3) `./tests/ark_tests`

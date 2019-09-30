@@ -17,4 +17,4 @@ build:
   project: $(APPVEYOR_BUILD_FOLDER)\Ark-Cpp-Crypto.sln
 
 test_script:
-  - cmd: '%APPVEYOR_BUILD_FOLDER%\test\%CONFIGURATION%\Ark-Cpp-Crypto-tests.exe'
+  - cmd: '%APPVEYOR_BUILD_FOLDER%\test\%CONFIGURATION%\ark_cpp_crypto_tests.exe'

@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 -   improved coverage and formatting ([#121])
 -   refactored utils implementation ([#133])
--   refactored Identities implementation. ([#120])
+-   refactored Identities implementation ([#120])
+-   moved external packages out of the source tree ([#149])
 
 ## [0.6.0] - 2019-07-16
 
@@ -117,4 +118,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#120]: https://github.com/ArkEcosystem/cpp-crypto/pull/120
 [#121]: https://github.com/ArkEcosystem/cpp-crypto/pull/121
 [#133]: https://github.com/ArkEcosystem/cpp-crypto/pull/133
+[#149]: https://github.com/ArkEcosystem/cpp-crypto/pull/149
 [Unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0...develop

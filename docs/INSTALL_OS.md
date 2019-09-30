@@ -1,35 +1,48 @@
 
-
 # OS Builds
 
-### dependencies
+## Dependencies
 
-**CMake:**  
-> Use an installer package from the following link:  
-> ```https://www.cmake.org/download/```
+**CMake:**
 
-or    
-**Homebrew:**  
+Use an installer package:
+
+> `https://www.cmake.org/download/`
+
+Homebrew:
+
 > `brew install cmake`
 
-#
+_note: all other library dependencies will be automatically installed via CMake and Git submodule._
 
-> note: all other dependencies will be automatically installed via CMake and Hunter Package Manager.
+## Make and Build
 
-#
+### Linux/macOS
 
-### make and build
-**For Linux/Mac**
 > `./build.sh`
 
-**For Windows**
+### Windows
+
 > `./build.cmd`
 
-#
+### CMake (manually)
 
-### run tests
-**For Linux/Mac**
+1) `mkdir build && cd build`
+2) `cmake .. -DBUILD_TESTS=ON`
+3) `./tests/ark_tests`
+
+## Build and Run Tests
+
+### Linux/macOS
+
 > `./run_tests.sh`
 
-**For Windows**
+### Windows
+
 > `./run_tests.cmd`
+
+### CMake (manually)
+
+1) `mkdir build && cd build`
+2) `cmake .. -DBUILD_TESTS=ON`
+3) `./tests/ark_tests`
