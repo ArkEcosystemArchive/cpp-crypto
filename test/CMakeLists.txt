@@ -85,7 +85,7 @@ add_test(NAME test COMMAND  ark_cpp_crypto_tests)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
-    if (UNIX)
+    if (APPLE)
         include_directories(${PROJECT_SOURCE_DIR}/../extern/googletest/google/src)
         include_directories(${PROJECT_SOURCE_DIR}/../extern/googletest/googletest/include)
     endif()
