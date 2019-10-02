@@ -52,6 +52,9 @@ jobs:
         run: sudo chmod -R +x ./.github/workflows/test/*.sh
       - name: Build
         run: ./.github/workflows/test/script_desktop.sh
+        env:
+          CC: gcc-7
+          CXX: g++-7
       - name: Codecov upload
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
@@ -73,10 +76,19 @@ jobs:
         run: sudo chmod -R +x ./.github/workflows/test/*.sh
       - name: Build
         run: ./.github/workflows/test/script_desktop.sh
+        env:
+          CC: clang-5.0
+          CXX: clang++-5.0
       - name: Clang Tidy
         run: ./.github/workflows/test/clang_tidy.sh
+        env:
+          CC: clang-5.0
+          CXX: clang++-5.0
       - name: Clang Format
         run: ./.github/workflows/test/clang_format.sh
+        env:
+          CC: clang-5.0
+          CXX: clang++-5.0
 
   macOS:
     runs-on: macOS-latest
