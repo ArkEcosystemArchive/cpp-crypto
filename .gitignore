@@ -13,9 +13,9 @@
 /lib/
 /bin/
 build
-/src/Ark-Cpp-Crypto-lib.vcxproj.filters
-/src/Ark-Cpp-Crypto-lib.vcxproj
-/src/Ark-Cpp-Crypto-lib.sln
+/src/ark_cpp_crypto.vcxproj.filters
+/src/ark_cpp_crypto.vcxproj
+/src/ark_cpp_crypto.sln
 /src/ALL_BUILD.vcxproj.filters
 /src/ALL_BUILD.vcxproj
 /test/NightlyMemoryCheck.vcxproj.filters
@@ -26,9 +26,9 @@ build
 /test/Experimental.vcxproj
 /test/Continuous.vcxproj.filters
 /test/Continuous.vcxproj
-/test/Ark-Cpp-Crypto-tests.vcxproj.filters
-/test/Ark-Cpp-Crypto-tests.vcxproj
-/test/Ark-Cpp-Crypto-tests.sln
+/test/ark_cpp_crypto_tests.vcxproj.filters
+/test/ark_cpp_crypto_tests.vcxproj
+/test/ark_cpp_crypto_tests.sln
 /test/ALL_BUILD.vcxproj.filters
 /test/ALL_BUILD.vcxproj
 /test/INSTALL.vcxproj.filters
@@ -36,7 +36,7 @@ build
 /Win32
 /ZERO_CHECK.vcxproj.filters
 /ZERO_CHECK.vcxproj
-/Ark-Cpp-Crypto.sln
+/ark_cpp_crypto.sln
 /ALL_BUILD.vcxproj.filters
 /ALL_BUILD.vcxproj
 /src/INSTALL.vcxproj.filters

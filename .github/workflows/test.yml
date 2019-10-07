@@ -8,53 +8,52 @@ on:
     types: [ready_for_review, synchronize, opened] # fix: synchronize triggers builds for PR merges with the base branch, currently causes duplicate builds as synchronize is treated the same as push for everything besides merges
 
 jobs:
-  arduino-default:
+  arduino:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
       - name: Make scripts executable
         run: sudo chmod -R +x ./.github/workflows/test/*.sh
-      - name: Install
+      - name: Install Dependencies
         run: ./.github/workflows/test/install_arduino.sh
-      - name: Build
+      - name: Build Arduino Sketch
         run: ./.github/workflows/test/script_arduino.sh
 
-  linux-default:
+  platformio:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
-      - name: Make scripts executable
-        run: sudo chmod -R +x ./.github/workflows/test/*.sh
-      - name: Install
-        run: ./.github/workflows/test/install_platform_io.sh
-      - name: Empty Git Submodule Folders
+      - name: Install Dependencies
         run: |
-          rm -rf ./src/lib/{ArduinoJson/*,BIP66/*,uECC/*}
-          rm -rf ./test/lib/googletest/*
+          sudo pip install -U platformio
+          platformio update
+          git submodule update --init --recursive
       - name: Build
-        run: ./.github/workflows/test/script_platform_io.sh
+        run: |
+          platformio run
+          platformio run -d ./test
 
   linux-gcc7:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get -y install g++-7 gcc-7 lcov
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
           sudo update-alternatives --config gcc
-      - name: Make scripts executable
-        run: sudo chmod -R +x ./.github/workflows/test/*.sh
       - name: Build
-        run: ./.github/workflows/test/script_desktop.sh
-        env:
-          CC: gcc-7
-          CXX: g++-7
+        run: |
+          mkdir build && cd build
+          cmake -DCMAKE_BUILD_TYPE=Coverage -DUNIT_TEST=ON ..
+          cmake --build .
+      - name: Run Tests
+        run: ./build/test/ark_cpp_crypto_tests
       - name: Codecov upload
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
@@ -63,7 +62,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt install liblldb-5.0-dev python-lldb-5.0 lcov
@@ -75,20 +74,16 @@ jobs:
       - name: Make scripts executable
         run: sudo chmod -R +x ./.github/workflows/test/*.sh
       - name: Build
-        run: ./.github/workflows/test/script_desktop.sh
-        env:
-          CC: clang-5.0
-          CXX: clang++-5.0
+        run: |
+          mkdir build && cd build
+          cmake -DUNIT_TEST=ON ..
+          cmake --build .
+      - name: Run Tests
+        run: ./build/test/ark_cpp_crypto_tests
       - name: Clang Tidy
         run: ./.github/workflows/test/clang_tidy.sh
-        env:
-          CC: clang-5.0
-          CXX: clang++-5.0
       - name: Clang Format
         run: ./.github/workflows/test/clang_format.sh
-        env:
-          CC: clang-5.0
-          CXX: clang++-5.0
 
   macOS:
     runs-on: macOS-latest
@@ -96,12 +91,15 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: COMPILER=clang++
-      - name: Install dependencies
-        run: brew install cmake lcov
-      - name: Make scripts executable
-        run: sudo chmod -R +x ./.github/workflows/test/*.sh
+      - name: Install Dependencies
+        run: brew install cmake
       - name: Build
-        run: ./.github/workflows/test/script_desktop.sh
+        run: |
+          mkdir build && cd build
+          cmake -DUNIT_TEST=ON ..
+          cmake --build .
+      - name: Run Tests
+        run: ./build/test/ark_cpp_crypto_tests
 
   windows:
     runs-on: windows-2016
@@ -113,12 +111,10 @@ jobs:
       - uses: actions/checkout@v1
       - name: Setup MSBuild.exe
         uses: warrenbuckley/Setup-MSBuild@v1
-      - name: Install
-        run: git submodule update --init --recursive
       - name: CMake
-        run: cmake -G "Visual Studio 15 2017 Win64" .
+        run: cmake -D UNIT_TEST=ON -G "Visual Studio 15 2017 Win64" .
       - name: Build Solution
         shell: cmd
-        run: msbuild "%GITHUB_WORKSPACE%\Ark-Cpp-Crypto.sln"
-      - name: Test
-        run: call "%GITHUB_WORKSPACE%\test\Debug\Ark-Cpp-Crypto-tests"
+        run: msbuild "%GITHUB_WORKSPACE%\ark_cpp_crypto.sln"
+      - name: Run Tests
+        run: call "%GITHUB_WORKSPACE%\test\Debug\ark_cpp_crypto_tests"
