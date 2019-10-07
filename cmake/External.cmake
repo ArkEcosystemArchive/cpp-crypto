@@ -63,7 +63,7 @@ add_subdirectory("${EXTERNAL_LIBRARY_DIR}/bip66/src/src"
                  "${EXTERNAL_LIBRARY_DIR}/bip66/build"
                  EXCLUDE_FROM_ALL)
                  
-set(BIP66_BINARIES
+set(BIP66_SOURCE
     ${EXTERNAL_LIBRARY_DIR}/bip66/src/src/bip66.cpp
     CACHE INTERNAL "BIP66: Source Files")
 
@@ -101,7 +101,7 @@ set(UECC_SOURCE_DIR
     ${EXTERNAL_LIBRARY_DIR}/uecc/src
     CACHE INTERNAL "uECC: Source Folder Path")
 
-set(UECC_BINARIES
+set(UECC_SOURCE
     ${EXTERNAL_LIBRARY_DIR}/uecc/src/uECC.c
     CACHE INTERNAL "uECC: Source Files")
 
@@ -113,9 +113,9 @@ include_directories(${UECC_SOURCE_DIR})
 # External Linkage
 # ------------------------------------------------------------------------------
 
-set(EXTERNAL_LIBRARY_BINARIES
-    ${BIP66_BINARIES}
-    ${UECC_BINARIES}
+set(EXTERNAL_LIBRARY_SOURCE
+    ${BIP66_SOURCE}
+    ${UECC_SOURCE}
     CACHE INTERNAL "External Lib Binary Files")
 
 # ------------------------------------------------------------------------------

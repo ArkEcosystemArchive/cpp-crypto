@@ -23,7 +23,7 @@ include_directories(${INTERNAL_LIBRARY_SOURCE_DIRS})
 
 # ------------------------------------------------------------------------------
 
-set(BCL_BINARIES
+set(BCL_SOURCE
     lib/bcl/Base58Check.cpp
     lib/bcl/CurvePoint.cpp
     lib/bcl/Ecdsa.cpp
@@ -35,26 +35,25 @@ set(BCL_BINARIES
     lib/bcl/Uint256.cpp
     lib/bcl/Utils.cpp)
 
-set(INTERNAL_LIBRARY_BINARIES
-    ${BCL_BINARIES})
+set(INTERNAL_LIBRARY_SOURCE ${BCL_SOURCE})
 
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
-# ARK Binaries
+# ARK C++ Crypto Source
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 # Common
 
-set(COMMON_BINARIES
+set(COMMON_SOURCE
     common/configuration.cpp
     common/network.cpp)
 
 # ------------------------------------------------------------------------------
 # Crypto
 
-set(CRYPTO_BINARIES
+set(CRYPTO_SOURCE
     crypto/curve.cpp
     crypto/hash.cpp
     crypto/message.cpp
@@ -63,7 +62,7 @@ set(CRYPTO_BINARIES
 # ------------------------------------------------------------------------------
 # Identities
 
-set(IDENTITIES_BINARIES
+set(IDENTITIES_SOURCE
     identities/address.cpp
     identities/keys.cpp
     identities/privatekey.cpp
@@ -73,7 +72,7 @@ set(IDENTITIES_BINARIES
 # ------------------------------------------------------------------------------
 # Managers
 
-set(MANAGERS_BINARIES
+set(MANAGERS_SOURCE
     managers/fee_manager.cpp
     managers/network_manager.cpp
 )
@@ -81,7 +80,7 @@ set(MANAGERS_BINARIES
 # ------------------------------------------------------------------------------
 # Transactions
 
-set(TRANSACTIONS_BINARIES
+set(TRANSACTIONS_SOURCE
     transactions/builder.cpp
     transactions/deserializer.cpp
     transactions/serializer.cpp
@@ -90,18 +89,18 @@ set(TRANSACTIONS_BINARIES
 # ------------------------------------------------------------------------------
 # Utils
 
-set(UTILS_BINARIES utils/base58.cpp)
+set(UTILS_SOURCE utils/base58.cpp)
 
 # ------------------------------------------------------------------------------
-# ARK C++ Library Binaries
+# ARK C++ Crypto Library Source
 
-set(ARK_BINARIES
-    ${COMMON_BINARIES}
-    ${CRYPTO_BINARIES}
-    ${IDENTITIES_BINARIES}
-    ${MANAGERS_BINARIES}
-    ${TRANSACTIONS_BINARIES}
-    ${UTILS_BINARIES})
+set(ARK_SOURCE
+    ${COMMON_SOURCE}
+    ${CRYPTO_SOURCE}
+    ${IDENTITIES_SOURCE}
+    ${MANAGERS_SOURCE}
+    ${TRANSACTIONS_SOURCE}
+    ${UTILS_SOURCE})
 
 # ------------------------------------------------------------------------------
 
@@ -110,9 +109,9 @@ set(ARK_BINARIES
 # ------------------------------------------------------------------------------
 
 add_library(${PROJECT_NAME} STATIC
-            ${EXTERNAL_LIBRARY_BINARIES}
-            ${INTERNAL_LIBRARY_BINARIES}
-            ${ARK_BINARIES})
+            ${EXTERNAL_LIBRARY_SOURCE}
+            ${INTERNAL_LIBRARY_SOURCE}
+            ${ARK_SOURCE})
 
 # ------------------------------------------------------------------------------
 
