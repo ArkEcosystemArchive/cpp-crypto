@@ -116,17 +116,17 @@ add_library(${PROJECT_NAME} STATIC
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
-# Set the Source Folders
+# Set the Include Folders
 # ------------------------------------------------------------------------------
 
-set(ARK_CPP_CRYPTO_SOURCE_DIR
+set(ARK_CPP_CRYPTO_INCLUDE_DIRS
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
     ${PROJECT_SOURCE_DIR}/lib/)
 
-include_directories(${ARK_CPP_CRYPTO_SOURCE_DIR})
+include_directories(${ARK_CPP_CRYPTO_INCLUDE_DIRS})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${ARK_CPP_CRYPTO_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${ARK_CPP_CRYPTO_INCLUDE_DIRS})
 
 # ------------------------------------------------------------------------------
 
