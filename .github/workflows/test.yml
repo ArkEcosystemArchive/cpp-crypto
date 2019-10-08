@@ -29,7 +29,6 @@ jobs:
         run: |
           sudo pip install -U platformio
           platformio update
-          git submodule update --init --recursive
       - name: Build
         run: |
           platformio run
