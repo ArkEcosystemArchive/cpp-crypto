@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/ArkEcosystem/Cpp-Crypto.git"
   },
-  "version": "0.6.0",
+  "version": "0.7.0",
   "authors": [
     {
       "name": "Ark Ecosystem",
@@ -22,13 +22,13 @@
   ],
   "dependencies": [
     {
-      "name": "micro-ecc"
+      "name": "micro-ecc@1.0.0"
     },
     {
-      "name": "ArduinoJson"
+      "name": "ArduinoJson@6.12.0"
     },
     {
-      "name": "BIP66"
+      "name": "BIP66@0.2.0"
     }
   ],
   "export": {
