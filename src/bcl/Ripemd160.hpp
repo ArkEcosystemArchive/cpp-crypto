@@ -11,6 +11,8 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bcl {
+
 
 /* 
  * Computes the RIPEMD-160 hash of a sequence of bytes. The hash value is 20 bytes long.
@@ -48,3 +50,6 @@ class Ripemd160 final {
 	private: static const unsigned char SR[NUM_ROUNDS];  // Left-rotation for right line
 	
 };
+
+
+}  // namespace bcl

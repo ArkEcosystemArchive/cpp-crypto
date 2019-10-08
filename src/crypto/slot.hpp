@@ -7,23 +7,22 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef DEFAULTS_TRANSACTIONS_FEE_POLICIES_HPP
-#define DEFAULTS_TRANSACTIONS_FEE_POLICIES_HPP
+#ifndef CRYPTO_SLOTS_HPP
+#define CRYPTO_SLOTS_HPP
 
 #include <cstdint>
 
-#include "common/fee_policy.hpp"
+#include "common/network.hpp"
 
 namespace Ark {
 namespace Crypto {
-namespace defaults {
-/**/
-class Fees {
+
+class Slot {
  public:
-  static const FeePolicy StaticFeePolicy();
+  static uint64_t epoch(const Network& network);
+  static uint64_t time(const Network& network);
 };
-/**/
-}  // namespace defaults
+
 }  // namespace Crypto
 }  // namespace Ark
 

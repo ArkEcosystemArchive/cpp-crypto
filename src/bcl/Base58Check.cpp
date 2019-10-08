@@ -16,6 +16,9 @@
 #include "Sha256Hash.hpp"
 #include "Utils.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 using std::uint32_t;
 using std::size_t;
@@ -240,3 +243,6 @@ bool Base58Check::multiply58(uint8_t x[], size_t len) {
 
 // Static initializers
 const char *Base58Check::ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+
+}  // namespace bcl

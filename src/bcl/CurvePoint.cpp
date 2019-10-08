@@ -9,6 +9,9 @@
 #include <cassert>
 #include "CurvePoint.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 using std::uint32_t;
 
@@ -285,3 +288,6 @@ const CurvePoint CurvePoint::G(
 	FieldInt("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"),
 	FieldInt("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8"));
 const CurvePoint CurvePoint::ZERO;  // Default constructor
+
+
+}  // namespace bcl

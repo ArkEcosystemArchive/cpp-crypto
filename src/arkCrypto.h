@@ -7,21 +7,24 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef ARKCRYPTO_H
-#define ARKCRYPTO_H
+#ifndef ARK_CRYPTO_H
+#define ARK_CRYPTO_H
 
 #include "common/configuration.hpp"
 #include "common/fee_policy.hpp"
 #include "common/network.hpp"
 
-#include "defaults/fee_policies.hpp"
+#include "crypto/message.hpp"
+#include "crypto/slot.hpp"
+
 #include "defaults/static_fees.hpp"
 #include "defaults/transaction_types.hpp"
 
-#include "identities/address.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-#include "identities/wif.h"
+#include "identities/address.hpp"
+#include "identities/keys.hpp"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
+#include "identities/wif.hpp"
 
 #include "networks/devnet.hpp"
 #include "networks/mainnet.hpp"
@@ -32,12 +35,8 @@
 #include "transactions/serializer.h"
 #include "transactions/transaction.h"
 
-#include "utils/message.h"
-#include "utils/slot.h"
-
 using namespace Ark::Crypto;
-using namespace Ark::Crypto::Identities;
+using namespace Ark::Crypto::identities;
 using namespace Ark::Crypto::Transactions;
-using namespace Ark::Crypto::Utils;
 
 #endif

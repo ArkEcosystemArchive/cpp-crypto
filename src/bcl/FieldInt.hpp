@@ -11,6 +11,8 @@
 #include <cstdint>
 #include "Uint256.hpp"
 
+namespace bcl {
+
 
 /* 
  * An unsigned 256-bit integer modulo a specific prime number, for Bitcoin and secp256k1.
@@ -104,3 +106,6 @@ class FieldInt final : private Uint256 {
 	private: static const Uint256 MODULUS;  // Prime number
 	
 };
+
+
+}  // namespace bcl
