@@ -27,5 +27,5 @@ add_subdirectory(lib/cpp-crypto/src)
 set(SOURCE_FILES main.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} Ark-Cpp-Crypto-lib)
+target_link_libraries(${PROJECT_NAME} ark_cpp_crypto)
 

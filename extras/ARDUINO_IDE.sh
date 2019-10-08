@@ -139,10 +139,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   echo -e "Backing up, moving, and removing dependencies from the 'src/lib' directory.\n"
   mkdir ${EXTRAS_BACKUP_DIR}
   mkdir ${EXTRAS_LIB_DIR}
-  mv ${SRC_LIB_DIR}/ArduinoJson ${EXTRAS_LIB_DIR}
-  mv ${SRC_LIB_DIR}/BIP66       ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/date        ${EXTRAS_LIB_DIR}
-  mv ${SRC_LIB_DIR}/uECC        ${EXTRAS_LIB_DIR}
   mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
   mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
 
@@ -215,10 +212,7 @@ else
 
   echo -e "Restoring the 'lib' directory.\n"
   mkdir ${SRC_LIB_DIR}
-  mv ${EXTRAS_LIB_DIR}/ArduinoJson  ${SRC_LIB_DIR}
-  mv ${EXTRAS_LIB_DIR}/BIP66        ${SRC_LIB_DIR}
   mv ${EXTRAS_LIB_DIR}/date         ${SRC_LIB_DIR}
-  mv ${EXTRAS_LIB_DIR}/uECC         ${SRC_LIB_DIR}
   mv ${SRC_DIR}/bcl                 ${SRC_LIB_DIR}
   mv ${SRC_DIR}/rfc6979             ${SRC_LIB_DIR}
 
