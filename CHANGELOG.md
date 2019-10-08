@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 -   improved coverage and formatting ([#121])
 -   refactored utils implementation ([#133])
 -   refactored Identities implementation. ([#120])
+-   moved external libraries out of source tree ([#156])
 
 ## [0.6.0] - 2019-07-16
 
@@ -24,7 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 -   improved PlatformIO configuration ([#101])
 -   improved formatting and maintainability ([#98])
 -   improved Slots implementations ([#92])
--   moved external libraries out of source tree ([#156])
 
 ### Fixed
 -   fixed Transaction Json numeric serialization ([#103])
