@@ -119,5 +119,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#121]: https://github.com/ArkEcosystem/cpp-crypto/pull/121
 [#133]: https://github.com/ArkEcosystem/cpp-crypto/pull/133
 [#156]: https://github.com/ArkEcosystem/cpp-crypto/pull/156
-[Unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0...develop
 [0.7.0-arduino]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0-arduino...0.7.0-arduino
