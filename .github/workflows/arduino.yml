@@ -13,8 +13,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Make scripts executable
-        run: sudo chmod -R +x ./.github/workflows/test/*.sh
       - name: Install Dependencies
         run: |
           sudo apt-get install bzip2
