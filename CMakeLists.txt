@@ -1,27 +1,32 @@
+
 cmake_minimum_required(VERSION 3.2)
-project(Ark-Cpp-Crypto)
+
+project(ark_cpp_crypto)
+
+# ------------------------------------------------------------------------------
+# Set the Environment Variables
+# ------------------------------------------------------------------------------
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
+set(EXTERNAL_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/extern)
 
 if (MSVC)
     add_definitions(
         -D_CRT_SECURE_NO_WARNINGS
         -D_SCL_SECURE_NO_WARNINGS
-        -DNOMINMAX
-    )
+        -DNOMINMAX)
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+else()
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 endif()
 
-# clone submodules
-execute_process(
-    COMMAND git submodule update --init --recursive
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
+# ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 # Clang Tidy
@@ -41,17 +46,35 @@ if(ENABLE_CLANG_TIDY)
 
     list(APPEND RUN_CLANG_TIDY_BIN_ARGS
         -clang-tidy-binary ${CLANG_TIDY_BIN}
-        "\"-header-filter=.*\\b(src|test|examples)\\b\\/(?!lib\/*).*\""     #Only run clang tidy on src, test, examples and skip 3rd party libraries
-        -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor,-cppcoreguidelines-*
-    )
+        -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor,-cppcoreguidelines-*)
 
-    add_custom_target(
-        tidy
-        COMMAND ${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}
-        COMMENT "running clang tidy"
-    )
+    add_custom_target(tidy
+                      COMMAND ${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}
+                      COMMENT "running clang tidy")
 endif()
 
-add_subdirectory(src)
-add_subdirectory(test)
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Add the ARK C++ Crypto Library Subdirectory
+# ------------------------------------------------------------------------------
+
+add_subdirectory(src)
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Add the ARK C++ Crypto Test Subdirectory
+#
+# Disabled by default.
+#
+# Use `cmake -DUNIT_TEST=ON .` to enable Test building.
+# ------------------------------------------------------------------------------
+
+option(UNIT_TEST "Tests disabled by default" OFF)
+
+if(UNIT_TEST)
+    add_subdirectory(test)
+endif()
+
+# ------------------------------------------------------------------------------

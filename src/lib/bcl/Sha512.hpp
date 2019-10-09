@@ -11,6 +11,8 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bcl {
+
 
 /* 
  * Computes the SHA-512 hash of a sequence of bytes. The hash value is 64 bytes long.
@@ -71,3 +73,6 @@ class Sha512 final {
 	private: static const std::uint64_t ROUND_CONSTANTS[NUM_ROUNDS];
 	
 };
+
+
+}  // namespace bcl

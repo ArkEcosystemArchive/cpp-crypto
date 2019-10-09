@@ -11,6 +11,9 @@
 #include "Sha256Hash.hpp"
 #include "Utils.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 using std::size_t;
 
@@ -43,3 +46,6 @@ bool Sha256Hash::operator==(const Sha256Hash &other) const {
 bool Sha256Hash::operator!=(const Sha256Hash &other) const {
 	return !(*this == other);
 }
+
+
+}  // namespace bcl

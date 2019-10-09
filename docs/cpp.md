@@ -32,7 +32,7 @@ const auto DevnetTransaction = Builder::buildTransfer(
 #### Mainnet
 
 ```cpp
-const Configuration MainnetConfiguration(Networks::Mainnet());
+const Configuration MainnetConfiguration(Mainnet);
 
 const auto MainnetTransaction = Builder::buildTransfer(
         "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
@@ -96,7 +96,7 @@ const auto MyBridgechainTransaction = Builder::buildTransfer(
 const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
 const auto passphrase = "viable weasel wage promote praise inflict jaguar tackle color unusual exclude direct";
 
-Ark::Crypto::Utils::Message message;
+Ark::Crypto::Message message;
 message.sign(text, passphrase);
 ```
 
@@ -119,7 +119,7 @@ message.sign(text, passphrase);
 ```cpp
 const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
 const auto passphrase = "bullet parade snow bacon mutual deposit brass floor staff list concert ask";
-Ark::Crypto::Utils::Message message;
+Ark::Crypto::Message message;
 message.sign(text, passphrase);
 ```
 
@@ -130,7 +130,7 @@ const auto text = "Computer science is no more about computers than astronomy is
 PublicKey publicKey = PublicKey::fromHex("0275776018638e5c40f1b922901e96cac2caa734585ef302b4a2801ee9a338a456");
 std::vector<uint8_t> signature = HexToBytes("3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d611402200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93");
 
-Ark::Crypto::Utils::Message message(
+Ark::Crypto::Message message(
     text,
     publicKey,
     signature
@@ -260,7 +260,7 @@ void setup()
 
 
     const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
-    Ark::Crypto::Utils::Message message;
+    Ark::Crypto::Message message;
     message.sign(text, passphrase);
     Serial.println(BytesToHex(message.signature).c_str());
 }

@@ -14,7 +14,7 @@ TEST(transactions, deserialize_transfer) { // NOLINT
   ASSERT_EQ(0xFF, actual.header);
   ASSERT_EQ(1, actual.version);
   ASSERT_EQ(30, actual.network);
-  ASSERT_EQ(defaults::TransactionTypes::Transfer, actual.type);
+  ASSERT_EQ(TransactionTypes::Transfer, actual.type);
   ASSERT_EQ(41443847UL, actual.timestamp);
   ASSERT_STREQ(
       "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192",
@@ -46,7 +46,7 @@ TEST(transactions, deserialize_second_signature_registration) { // NOLINT
   ASSERT_EQ(0xFF, actual.header);
   ASSERT_EQ(1, actual.version);
   ASSERT_EQ(30, actual.network);
-  ASSERT_EQ(defaults::TransactionTypes::SecondSignatureRegistration, actual.type);
+  ASSERT_EQ(TransactionTypes::SecondSignatureRegistration, actual.type);
   ASSERT_EQ(41271867UL, actual.timestamp);
   ASSERT_STREQ(
       "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192",
@@ -66,8 +66,8 @@ TEST(transactions, deserialize_second_signature_registration) { // NOLINT
   ASSERT_TRUE(actual.verify());
 
   // special case as the type 1 transaction itself has no recipient
-  const auto publicKey = Ark::Crypto::Identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
-  const auto address = Ark::Crypto::Identities::Address::fromPublicKey(publicKey, actual.network);
+  const auto publicKey = Ark::Crypto::identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
+  const auto address = Ark::Crypto::identities::Address::fromPublicKey(publicKey.toBytes().data(), actual.network);
   ASSERT_STREQ(address.toString().c_str(), actual.recipient.c_str());
 }
 
@@ -88,7 +88,7 @@ TEST(transactions, deserialize_delegate_registration) { // NOLINT
   ASSERT_EQ(2, actual.type);
   ASSERT_EQ(1, actual.version);
   ASSERT_EQ(30, actual.network);
-  ASSERT_EQ(defaults::TransactionTypes::DelegateRegistration, actual.type);
+  ASSERT_EQ(TransactionTypes::DelegateRegistration, actual.type);
   ASSERT_EQ(41269424UL, actual.timestamp);
   ASSERT_STREQ(
       "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192",
@@ -124,7 +124,7 @@ TEST(transactions, deserialize_vote) { // NOLINT
   ASSERT_EQ(0xFF, actual.header);
   ASSERT_EQ(1, actual.version);
   ASSERT_EQ(30, actual.network);
-  ASSERT_EQ(defaults::TransactionTypes::Vote, actual.type);
+  ASSERT_EQ(TransactionTypes::Vote, actual.type);
   ASSERT_EQ(41269366UL, actual.timestamp);
   ASSERT_STREQ("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192", actual.senderPublicKey.c_str());
   ASSERT_TRUE(100000000ULL == actual.fee);
@@ -165,7 +165,7 @@ TEST(transactions, deserialize_multi_signature_registration) { // NOLINT
   ASSERT_EQ(0xFF, actual.header);
   ASSERT_EQ(1, actual.version);
   ASSERT_EQ(23, actual.network);
-  ASSERT_EQ(defaults::TransactionTypes::MultiSignatureRegistration, actual.type);
+  ASSERT_EQ(TransactionTypes::MultiSignatureRegistration, actual.type);
   ASSERT_EQ(10112114UL, actual.timestamp);
   ASSERT_STREQ("036928c98ee53a1f52ed01dd87db10ffe1980eb47cd7c0a7d688321f47b5d7d760", actual.senderPublicKey.c_str());
   ASSERT_TRUE(2000000000ULL == actual.fee);
@@ -208,7 +208,7 @@ TEST(transactions, deserialize_multi_signature_registration) { // NOLINT
   ASSERT_TRUE(actual.verify());
 
   // special case as the type 4 transaction itself has no recipient
-  const auto publicKey = Ark::Crypto::Identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
-  const auto address = Ark::Crypto::Identities::Address::fromPublicKey(publicKey, actual.network);
+  const auto publicKey = Ark::Crypto::identities::PublicKey::fromHex(actual.senderPublicKey.c_str());
+  const auto address = Ark::Crypto::identities::Address::fromPublicKey(publicKey.toBytes().data(), actual.network);
   ASSERT_STREQ(address.toString().c_str(), actual.recipient.c_str());
 }

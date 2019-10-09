@@ -1,3 +1,0 @@
-[submodule "lib/cpp-crypto"]
-	path = lib/cpp-crypto
-	url = https://github.com/ArkEcosystem/cpp-crypto.git

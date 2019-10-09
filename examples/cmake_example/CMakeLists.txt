@@ -16,16 +16,16 @@ if (MSVC)
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 endif()
 
-# clone submodules
-execute_process(
-	COMMAND git submodule update --init --recursive
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
+# clone submodules - Uncomment when used outside of the Ark cpp-crypto source tree
+#execute_process(
+#	COMMAND git submodule update --init --recursive
+#	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+#)
 
 add_subdirectory(lib/cpp-crypto/src)
 
 set(SOURCE_FILES main.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} Ark-Cpp-Crypto-lib)
+target_link_libraries(${PROJECT_NAME} ark_cpp_crypto)
 

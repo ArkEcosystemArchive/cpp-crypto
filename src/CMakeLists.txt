@@ -1,13 +1,29 @@
 
-cmake_minimum_required(VERSION 3.2.2)
+cmake_minimum_required(VERSION 3.2)
 
-project(Ark-Cpp-Crypto-lib C CXX)
+project(ark_cpp_crypto C CXX)
 
-set(BIP66_SRC
-    ${PROJECT_SOURCE_DIR}/lib/BIP66/src/bip66.cpp
-)
+# ------------------------------------------------------------------------------
+# External Libraries
+# ------------------------------------------------------------------------------
 
-set(BCL_SRC
+include(${CMAKE_SOURCE_DIR}/cmake/External.cmake)
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Internal Libraries
+# ------------------------------------------------------------------------------
+
+set(INTERNAL_LIBRARY_SOURCE_DIRS
+    ${PROJECT_SOURCE_DIR}/lib/bcl
+    ${PROJECT_SOURCE_DIR}/lib/rfc6979)
+
+include_directories(${INTERNAL_LIBRARY_SOURCE_DIRS})
+
+# ------------------------------------------------------------------------------
+
+set(BCL_SOURCE
     lib/bcl/Base58Check.cpp
     lib/bcl/CurvePoint.cpp
     lib/bcl/Ecdsa.cpp
@@ -17,59 +33,109 @@ set(BCL_SRC
     lib/bcl/Sha256.cpp
     lib/bcl/Sha512.cpp
     lib/bcl/Uint256.cpp
-    lib/bcl/Utils.cpp
-)
+    lib/bcl/Utils.cpp)
 
-set(uECC_SRC
-    lib/uECC/uECC.c
-)
+set(INTERNAL_LIBRARY_SOURCE ${BCL_SOURCE})
 
-set(COMMON_SRC
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# ARK C++ Crypto Source
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Common
+
+set(COMMON_SOURCE
     common/configuration.cpp
-    common/network.cpp
-    defaults/static_fees.cpp
-    helpers/crypto.cpp
+    common/network.cpp)
+
+# ------------------------------------------------------------------------------
+# Crypto
+
+set(CRYPTO_SOURCE
+    crypto/curve.cpp
+    crypto/hash.cpp
+    crypto/message.cpp
+    crypto/slot.cpp)
+
+# ------------------------------------------------------------------------------
+# Identities
+
+set(IDENTITIES_SOURCE
     identities/address.cpp
+    identities/keys.cpp
     identities/privatekey.cpp
     identities/publickey.cpp
-    identities/wif.cpp
+    identities/wif.cpp)
+
+# ------------------------------------------------------------------------------
+# Managers
+
+set(MANAGERS_SOURCE
     managers/fee_manager.cpp
     managers/network_manager.cpp
-    networks/devnet.cpp
-    networks/mainnet.cpp
-    networks/testnet.cpp
+)
+
+# ------------------------------------------------------------------------------
+# Transactions
+
+set(TRANSACTIONS_SOURCE
     transactions/builder.cpp
     transactions/deserializer.cpp
     transactions/serializer.cpp
-    transactions/transaction.cpp
-    utils/message.cpp
-    utils/slot.cpp
-)
+    transactions/transaction.cpp)
+
+# ------------------------------------------------------------------------------
+# Utils
+
+set(UTILS_SOURCE utils/base58.cpp)
+
+# ------------------------------------------------------------------------------
+# ARK C++ Crypto Library Source
+
+set(ARK_SOURCE
+    ${COMMON_SOURCE}
+    ${CRYPTO_SOURCE}
+    ${IDENTITIES_SOURCE}
+    ${MANAGERS_SOURCE}
+    ${TRANSACTIONS_SOURCE}
+    ${UTILS_SOURCE})
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Add the Source Files to the Library
+# ------------------------------------------------------------------------------
 
 add_library(${PROJECT_NAME} STATIC
-    ${BCL_SRC}
-    ${uECC_SRC}
-    ${BIP66_SRC}
-    ${COMMON_SRC}
-)
+            ${EXTERNAL_LIBRARY_SOURCE}
+            ${INTERNAL_LIBRARY_SOURCE}
+            ${ARK_SOURCE})
 
-set(cpp_crypto_build_include_dirs
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Set the Include Folders
+# ------------------------------------------------------------------------------
+
+set(ARK_CPP_CRYPTO_INCLUDE_DIRS
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
-)
+    ${PROJECT_SOURCE_DIR}/lib/)
 
-include_directories(${cpp_crypto_build_include_dirs})
-include_directories(${PROJECT_SOURCE_DIR}/lib/)
-include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
-include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
-include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
-include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
-include_directories(${PROJECT_SOURCE_DIR}/lib/BIP66/src)
+include_directories(${ARK_CPP_CRYPTO_INCLUDE_DIRS})
 
-target_include_directories( ${PROJECT_NAME} PUBLIC
-    ${cpp_crypto_build_include_dirs}
-)
+target_include_directories(${PROJECT_NAME} PUBLIC ${ARK_CPP_CRYPTO_INCLUDE_DIRS})
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Windows: Link to `crypt32`
+# ------------------------------------------------------------------------------
 
 if (MSVC)
     target_link_libraries(${PROJECT_NAME} PUBLIC crypt32)
 endif()
+
+# ------------------------------------------------------------------------------

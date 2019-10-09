@@ -6,38 +6,39 @@
 #include <string>
 #include <vector>
 
+#include "crypto/curve.hpp"
+#include "crypto/hash.hpp"
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
-#include "identities/privatekey.h"
-#include "helpers/crypto.h"
-#include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
-#include "helpers/json.h"
+#include "identities/address.hpp"
+#include "identities/keys.hpp"
+#include "identities/privatekey.hpp"
+#include "utils/base58.hpp"
+#include "utils/crypto_helpers.h"
+#include "utils/hex.hpp"
+#include "utils/json.h"
 
-#include "bcl/Sha256.hpp"
-
-using namespace Ark::Crypto::Identities;
+using namespace Ark::Crypto::identities;
 
 std::string Ark::Crypto::Transactions::Transaction::getId() const {
   auto bytes = this->toBytes(false, false);
-  const auto shaHash = Sha256::getHash(&bytes[0], bytes.size());
-  memcpy(&bytes[0], shaHash.value, Sha256Hash::HASH_LEN);
-  return BytesToHex(&bytes[0], &bytes[0] + Sha256Hash::HASH_LEN);
+  const auto hash = Ark::Crypto::Hash::sha256(bytes.data(), bytes.size());
+  memcpy(bytes.data(), hash.data(), HASH_32_BYTE_LEN);
+  return BytesToHex(bytes.begin(), bytes.begin() + HASH_32_BYTE_LEN);
 }
 
 /**/
 
 std::string Ark::Crypto::Transactions::Transaction::sign(
     const char* passphrase) {
-  PrivateKey privateKey = PrivateKey::fromPassphrase(passphrase);
-  this->senderPublicKey = Identities::PublicKey::fromPrivateKey(
-      privateKey).toString();
+  auto keys = Keys::fromPassphrase(passphrase);
+  this->senderPublicKey = BytesToHex(keys.publicKey);
 
   const auto bytes = this->toBytes();
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  const auto hash = Ark::Crypto::Hash::sha256(&bytes[0], bytes.size());
+  const auto pk = Keys::PrivateKey::fromPassphrase(passphrase);
 
-  std::vector<uint8_t> buffer;
-  cryptoSign(hash, privateKey, buffer);
+  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
+  Ark::Crypto::Curve::Ecdsa::sign(hash.data(), pk.data(), buffer);
 
   this->signature = BytesToHex(buffer.begin(), buffer.end());
   return this->signature;
@@ -47,12 +48,12 @@ std::string Ark::Crypto::Transactions::Transaction::sign(
 
 std::string Ark::Crypto::Transactions::Transaction::secondSign(
     const char* passphrase) {
-  PrivateKey privateKey = PrivateKey::fromPassphrase(passphrase);
   const auto bytes = this->toBytes(false);
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  const auto hash = Ark::Crypto::Hash::sha256(&bytes[0], bytes.size());
+  const auto pk = Keys::PrivateKey::fromPassphrase(passphrase);
 
-  std::vector<uint8_t> buffer;
-  cryptoSign(hash, privateKey, buffer);
+  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
+  Ark::Crypto::Curve::Ecdsa::sign(hash.data(), pk.data(), buffer);
 
   this->secondSignature = BytesToHex(buffer.begin(), buffer.end());
   return this->secondSignature;
@@ -81,16 +82,17 @@ bool Ark::Crypto::Transactions::Transaction::secondVerify(
 /**/
 
 bool Ark::Crypto::Transactions::Transaction::internalVerify(
-    std::string publicKey,
+    const std::string& publicKey,
     std::vector<uint8_t> bytes,
-    std::string signature) const {
+    const std::string& signature) const {
   if (bytes.empty()) { return false; };
-
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
-  const auto key = Identities::PublicKey::fromHex(publicKey.c_str());
+  const auto hash = Ark::Crypto::Hash::sha256(bytes.data(), bytes.size());
+  const auto key = identities::PublicKey::fromHex(publicKey.c_str());
   auto signatureBytes = HexToBytes(signature.c_str());
 
-  return cryptoVerify(key, hash, signatureBytes);
+  return Ark::Crypto::Curve::Ecdsa::verify(hash.data(),
+                                           key.toBytes().data(),
+                                           signatureBytes);
 }
 
 /**/
@@ -113,16 +115,15 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
       std::end(senderKeyBytes));
 
   const auto skiprecipient =
-    type == defaults::TransactionTypes::SecondSignatureRegistration
-    || type ==defaults::TransactionTypes::MultiSignatureRegistration;
+    type == TransactionTypes::SecondSignatureRegistration
+    || type ==TransactionTypes::MultiSignatureRegistration;
 
   if (!this->recipient.empty() && !skiprecipient) {
-    std::vector<std::uint8_t> recipientBytes = Address::bytesFromBase58Check(
-        this->recipient.c_str());
-    bytes.insert(
-        std::end(bytes),
-        std::begin(recipientBytes),
-        std::end(recipientBytes));
+    const auto hashPair = Base58::getHashPair(this->recipient.c_str());
+    pack(bytes, hashPair.version);
+    bytes.insert(std::end(bytes),
+                 hashPair.pubkeyHash.begin(),
+                 hashPair.pubkeyHash.end());
   } else {
     std::vector<uint8_t> filler(21, 0);
     bytes.insert(
@@ -155,7 +156,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
   pack(bytes, this->amount);
   pack(bytes, this->fee);
 
-  if (type == defaults::TransactionTypes::SecondSignatureRegistration) {
+  if (type == TransactionTypes::SecondSignatureRegistration) {
     // SECOND_SIGNATURE_REGISTRATION
     const auto publicKeyBytes = HexToBytes(
         this->asset.signature.publicKey.c_str());
@@ -163,20 +164,20 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
         std::end(bytes),
         std::begin(publicKeyBytes),
         std::end(publicKeyBytes));
-  } else if (type == defaults::TransactionTypes::DelegateRegistration) {
+  } else if (type == TransactionTypes::DelegateRegistration) {
     // DELEGATE_REGISTRATION
     bytes.insert(
         std::end(bytes),
         std::begin(this->asset.delegate.username),
         std::end(this->asset.delegate.username));
-  } else if (type == defaults::TransactionTypes::Vote) {
+  } else if (type == TransactionTypes::Vote) {
     // VOTE
     const auto joined = join(this->asset.votes);
     bytes.insert(
         std::end(bytes),
         std::begin(joined),
         std::end(joined));
-  } else if (type == defaults::TransactionTypes::MultiSignatureRegistration) {
+  } else if (type == TransactionTypes::MultiSignatureRegistration) {
     // MULTI_SIGNATURE_REGISTRATION
     pack(bytes, this->asset.multiSignature.min);
     pack(bytes, this->asset.multiSignature.lifetime);
@@ -209,7 +210,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
 
 /**/
 
-std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() {
+std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() const {
   //  buffers for variable and non-string type-values.
   char amount[24];
   char assetName[16];
@@ -293,7 +294,7 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   snprintf(type, sizeof(type), "%u", this->type);
 
   //  Version
-  snprintf(version, sizeof(version), "%d", this->version);
+  snprintf(version, sizeof(version), "%u", this->version);
 
   return {
     { "amount", amount },
@@ -316,10 +317,12 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
 
 /**/
 
-std::string Ark::Crypto::Transactions::Transaction::toJson() {
+std::string Ark::Crypto::Transactions::Transaction::toJson() const {
   std::map<std::string, std::string> txArray = this->toArray();
 
-  const size_t docCapacity = 900;
+  // Update this value if the size of the JSON document changes
+  static const size_t docCapacity = 913;
+
   DynamicJsonDocument doc(docCapacity);
 
   //  Amount

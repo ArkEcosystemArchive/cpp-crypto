@@ -10,46 +10,22 @@
 #ifndef COMMON_NETWORK_H
 #define COMMON_NETWORK_H
 
-#include <cstdint>
 #include <string>
 
 namespace Ark {
 namespace Crypto {
-/**/
-// Abstract Network class
-//
-// Default initialization is ARK Devnet
-class Network final {
- public:
-  Network();
-  Network(std::string nethash,
-          uint8_t slip44,
-          uint8_t wif,
-          uint8_t version,
-          std::string epoch)
-      : nethash_(nethash),
-        slip44_(slip44),
-        wif_(wif),
-        version_(version),
-        epoch_(epoch) {}
 
-  std::string nethash() const;
-  uint8_t slip44() const;
-  uint8_t wif() const;
-  uint8_t version() const;
-  std::string epoch() const;
+struct Network {
+  std::string nethash;
+  uint8_t slip44;
+  uint8_t wif;
+  uint8_t version;
+  std::string epoch;
 
-  bool operator==(const Network& rhs) const;
-  bool operator!=(const Network& rhs) const;
-
- private:
-  std::string nethash_;
-  uint8_t slip44_;
-  uint8_t wif_;
-  uint8_t version_;
-  std::string epoch_;
+  bool operator==(const Network& other) const;
+  bool operator!=(const Network& other) const;
 };
-/**/
+
 }  // namespace Crypto
 }  // namespace Ark
 

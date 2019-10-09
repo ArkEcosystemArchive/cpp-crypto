@@ -6,7 +6,7 @@
 
 #include <arkCrypto.h>
 
-#include "helpers/json.h"
+#include "utils/json.h"
 
 using namespace Ark::Crypto::Transactions;
 
@@ -50,6 +50,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("0", tArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", tArray["version"].c_str());
 
   // Type 1 //
   auto secondSignatureRegistration = Builder::buildSecondSignatureRegistration(
@@ -89,6 +92,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("1", ssArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", ssArray["version"].c_str());
 
   // Type 2 //
   auto delegateRegistration = Builder::buildDelegateRegistration(
@@ -127,6 +133,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("2", dArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", dArray["version"].c_str());
 
   // Type 3 //
   std::vector<std::string> votes = {
@@ -171,6 +180,9 @@ TEST(transactions, transaction_to_array) {  // NOLINT
 
   // Type
   ASSERT_STREQ("3", vArray["type"].c_str());
+  
+  // Version
+  ASSERT_STREQ("1", vArray["version"].c_str());
 }
 
 /**/
@@ -194,7 +206,7 @@ TEST(transactions, transaction_to_json) {  // NOLINT
 
   ASSERT_STREQ("10000000", tDoc["fee"].as<const char*>());
 
-  ASSERT_FALSE(tDoc["id"].as<std::string>().empty());
+  ASSERT_STRNE("", tDoc["id"].as<const char*>());
 
   ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
                tDoc["recipient"].as<const char*>());
@@ -202,13 +214,15 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
                tDoc["senderPublicKey"].as<const char*>());
 
-  ASSERT_FALSE(tDoc["signature"].as<std::string>().empty());
+  ASSERT_STRNE("", tDoc["signature"].as<const char*>());
 
   ASSERT_GT(tDoc["timestamp"].as<unsigned long>(), 50000000UL);
 
   ASSERT_LT(tDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(tDoc["type"].as<int>(), 0);
+  
+  ASSERT_EQ(1, tDoc["version"].as<int>());
 
   // Type 1 //
   auto secondSignatureRegistration = Builder::buildSecondSignatureRegistration(
@@ -230,21 +244,23 @@ TEST(transactions, transaction_to_json) {  // NOLINT
 
   ASSERT_STREQ("500000000", ssDoc["fee"].as<const char*>());
 
-  ASSERT_FALSE(ssDoc["id"].as<std::string>().empty());
+  ASSERT_STRNE("", ssDoc["id"].as<const char*>());
 
-  ASSERT_TRUE(ssDoc["recipient"].as<std::string>().empty());
+  ASSERT_STREQ("", ssDoc["recipient"].as<const char*>());
 
-  ASSERT_FALSE(ssDoc["secondSignature"].as<std::string>().empty());
+  ASSERT_STRNE("", ssDoc["secondSignature"].as<const char*>());
 
   ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
                ssDoc["senderPublicKey"].as<const char*>());
 
-  ASSERT_FALSE(ssDoc["signature"].as<std::string>().empty());
+  ASSERT_STRNE("", ssDoc["signature"].as<const char*>());
 
   ASSERT_GT(ssDoc["timestamp"].as<unsigned long>(), 50000000UL);
   ASSERT_LT(ssDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(ssDoc["type"].as<int>(), 1);
+  
+  ASSERT_EQ(1, ssDoc["version"].as<int>());
 
   // Type 2 //
   auto delegateRegistration = Builder::buildDelegateRegistration(
@@ -266,19 +282,21 @@ TEST(transactions, transaction_to_json) {  // NOLINT
 
   ASSERT_STREQ("2500000000", dDoc["fee"].as<const char*>());
 
-  ASSERT_FALSE(dDoc["id"].as<std::string>().empty());
+  ASSERT_STRNE("", dDoc["id"].as<const char*>());
 
-  ASSERT_TRUE(dDoc["recipient"].as<std::string>().empty());
+  ASSERT_STREQ("", dDoc["recipient"].as<const char*>());
 
   ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
                dDoc["senderPublicKey"].as<const char*>());
 
-  ASSERT_FALSE(dDoc["signature"].as<std::string>().empty());
+  ASSERT_STRNE("", dDoc["signature"].as<const char*>());
 
   ASSERT_GT(dDoc["timestamp"].as<unsigned long>(), 50000000UL);
   ASSERT_LT(dDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(dDoc["type"].as<int>(), 2);
+  
+  ASSERT_EQ(1, dDoc["version"].as<int>());
 
   // Type 3 //
   std::vector<std::string> votes = {
@@ -309,7 +327,7 @@ TEST(transactions, transaction_to_json) {  // NOLINT
 
   ASSERT_STREQ("100000000", vDoc["fee"].as<const char*>());
 
-  ASSERT_FALSE(vDoc["id"].as<std::string>().empty());
+  ASSERT_STRNE("", vDoc["id"].as<const char*>());
 
   ASSERT_STREQ("DPgZq5MK6rm5yVks9b7TrA22F8FwRvkCtF",
                vDoc["recipient"].as<const char*>());
@@ -317,12 +335,14 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_STREQ("02f21aca9b6d224ea86a1689f57910534af21c3cc9f80602fed252c13e275f0699",
                vDoc["senderPublicKey"].as<const char*>());
 
-  ASSERT_FALSE(vDoc["signature"].as<std::string>().empty());
+  ASSERT_STRNE("", vDoc["signature"].as<const char*>());
 
   ASSERT_GT(vDoc["timestamp"].as<unsigned long>(), 50000000UL);
   ASSERT_LT(vDoc["timestamp"].as<unsigned long>(), 1000000000UL);
 
   ASSERT_EQ(vDoc["type"].as<int>(), 3);
+  
+  ASSERT_EQ(1, vDoc["version"].as<int>());
 };
 
 /**/

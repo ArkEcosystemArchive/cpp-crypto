@@ -28,6 +28,12 @@
 #include <arkCrypto.h>
 /**/
 
+/**
+ * This is a small hex helper header included in ARK Cpp-Crypto
+ */
+#include "utils/hex.hpp"
+/**/
+
 /****************************************/
 
 void checkCrypto() {
@@ -134,7 +140,7 @@ void checkCrypto() {
    */
   const auto passphrase4 = "this is a top secret passphrase";
   const uint8_t wifByte = 0xaa;
-  WIF wifFromPassphrase = WIF::fromPassphrase(passphrase4, wifByte);
+  Wif wifFromPassphrase = Wif::fromPassphrase(passphrase4, wifByte);
     Serial.print("\nWIF from Passphrase: ");
     Serial.println(wifFromPassphrase.toString().c_str()); // the 'WIF' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
   /**/
@@ -151,10 +157,10 @@ void checkCrypto() {
    */
   const auto text = "Hello World";
   const auto passphrase5 = "this is a top secret passphrase";
-  Ark::Crypto::Utils::Message message;
+  Ark::Crypto::Message message;
   message.sign(text, passphrase5);
     Serial.print("\nSignature from Signed Message: ");
-    Serial.println(BytesToHex(message.signature).c_str()); // the 'message.signature' is a byte-array. Use 'BytesToHex()' to view the output. Arduino requires a 'c_str()' to 'print'.
+    Serial.println(BytesToHex(message.signature).c_str());
   // Additionally, you can verify the message.
     bool isValid = message.verify();
     Serial.print("\nSigned Message Signature is Verified: ");

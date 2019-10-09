@@ -11,34 +11,24 @@
 #define MANAGERS_FEE_MANAGER_HPP
 
 #include "common/fee_policy.hpp"
-#include "defaults/fee_policies.hpp"
+#include "defaults/static_fees.hpp"
 
 namespace Ark {
 namespace Crypto {
 namespace managers {
-/**/
+
 class FeeManager {
- private:
-  FeePolicy feePolicy_ = defaults::Fees::StaticFeePolicy();
-
  public:
-  // Default initialization: using ARK StaticFees
-  FeeManager() = default; 
-  virtual ~FeeManager() = default;
-
-  // FeePolicy initialization: Custom FeePolicy
-  FeeManager(const FeePolicy& policy) : feePolicy_(policy) {} 
-
-  uint64_t getFee(uint8_t type) const;
+  uint64_t getFee(uint8_t type) const ;
   void setFee(uint8_t type, uint64_t amount);
 
   FeePolicy getPolicy() const;
   void setPolicy(const FeePolicy& policy);
 
-  bool operator==(const FeeManager& rhs) const;
-  bool operator!=(const FeeManager& rhs) const;
+ protected:
+  FeePolicy feePolicy_ = StaticFeePolicy;
 };
-/**/
+
 }  // namespace managers
 }  // namespace Crypto
 }  // namespace Ark

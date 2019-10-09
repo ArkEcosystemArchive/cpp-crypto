@@ -5,11 +5,12 @@
 #include <string>
 #include <vector>
 
-#include "common/configuration.hpp"
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
-#include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
+#include "identities/address.hpp"
+#include "common/configuration.hpp"
+#include "utils/base58.hpp"
+#include "utils/crypto_helpers.h"
+#include "utils/hex.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -19,7 +20,7 @@ namespace Transactions {
 Serializer::Serializer(Transaction transaction)
     : _transaction(std::move(transaction)) {}
 
-std::string Serializer::serialize() {
+std::string Serializer::serialize() const {
   std::vector<uint8_t> bytes;
   bytes.push_back(0xff);
   bytes.push_back(
@@ -29,7 +30,7 @@ std::string Serializer::serialize() {
   bytes.push_back(
       _transaction.network > 0
         ? _transaction.network
-        : Configuration().getNetwork().version());
+        : Configuration().getNetwork().version);
   bytes.push_back(_transaction.type);
 
   pack(bytes, _transaction.timestamp);
@@ -53,7 +54,7 @@ std::string Serializer::serialize() {
 /**/
 
 void Serializer::serializeVendorField(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   if (_transaction.vendorField.length() > 0) {
     auto vendorFieldLength = static_cast<uint8_t>(
         _transaction.vendorField.length());
@@ -78,54 +79,51 @@ void Serializer::serializeVendorField(
 /**/
 
 void Serializer::serializeType(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   switch (_transaction.type) {
-    case defaults::TransactionTypes::Transfer: {
+    case TransactionTypes::Transfer: {
       serializeTransfer(bytes);
       break;
     };
-    case defaults::TransactionTypes::SecondSignatureRegistration: {
+    case TransactionTypes::SecondSignatureRegistration: {
       serializeSecondSignatureRegistration(bytes);
       break;
     };
-    case defaults::TransactionTypes::DelegateRegistration: {
+    case TransactionTypes::DelegateRegistration: {
       serializeDelegateRegistration(bytes);
       break;
     };
-    case defaults::TransactionTypes::Vote: {
+    case TransactionTypes::Vote: {
       serializeVote(bytes);
       break;
     };
-    case defaults::TransactionTypes::MultiSignatureRegistration: {
+    case TransactionTypes::MultiSignatureRegistration: {
       serializeMultiSignatureRegistration(bytes);
       break;
     };
-    case defaults::TransactionTypes::Ipfs: { break; };
-    case defaults::TransactionTypes::TimelockTransfer: { break; };
-    case defaults::TransactionTypes::MultiPayment: { break; };
-    case defaults::TransactionTypes::DelegateResignation: { break; };
+    case TransactionTypes::Ipfs: { break; };
+    case TransactionTypes::TimelockTransfer: { break; };
+    case TransactionTypes::MultiPayment: { break; };
+    case TransactionTypes::DelegateResignation: { break; };
   };
 }
 
 /**/
 
 void Serializer::serializeTransfer(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   pack(bytes, _transaction.amount);
   pack(bytes, _transaction.expiration);
 
-  std::vector<uint8_t> recipientBytes = Identities::Address::bytesFromBase58Check(
-      _transaction.recipient.c_str());
-  bytes.insert(
-      bytes.end(),
-      recipientBytes.begin(),
-      recipientBytes.end());
+  const auto hashPair = Base58::getHashPair(_transaction.recipient.c_str());
+  bytes.push_back(hashPair.version);
+  bytes.insert(bytes.end(), hashPair.pubkeyHash.begin(), hashPair.pubkeyHash.end());
 }
 
 /**/
 
 void Serializer::serializeSecondSignatureRegistration(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   std::vector<uint8_t> publicKeyBytes = HexToBytes(
       _transaction.asset.signature.publicKey.c_str());
   bytes.insert(
@@ -137,7 +135,7 @@ void Serializer::serializeSecondSignatureRegistration(
 /**/
 
 void Serializer::serializeDelegateRegistration(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   const auto username = _transaction.asset.delegate.username;
   bytes.push_back(static_cast<uint8_t>(username.size()));
   bytes.insert(
@@ -149,7 +147,7 @@ void Serializer::serializeDelegateRegistration(
 /**/
 
 void Serializer::serializeVote(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   std::string votes;
 
   for (const auto& vote : _transaction.asset.votes) {
@@ -168,7 +166,7 @@ void Serializer::serializeVote(
 /**/
 
 void Serializer::serializeMultiSignatureRegistration(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   std::string keysgroup;
   if (_transaction.version == 1) {
     for (const auto& kg : _transaction.asset.multiSignature.keysgroup) {
@@ -193,7 +191,7 @@ void Serializer::serializeMultiSignatureRegistration(
 /**/
 
 void Serializer::serializeSignatures(
-    std::vector<uint8_t>& bytes) {
+    std::vector<uint8_t>& bytes) const {
   if (_transaction.signature.length() > 0) {
     std::vector<uint8_t> signatureBytes = HexToBytes(
         _transaction.signature.c_str());
@@ -221,7 +219,6 @@ void Serializer::serializeSignatures(
 
   if (!_transaction.signatures.empty()) {
     bytes.push_back(0xff);
-    std::string joined = join(_transaction.signatures);
     for (const auto& signature : _transaction.signatures) {
       std::vector<uint8_t> signatureBytes = HexToBytes(signature.c_str());
       bytes.insert(

@@ -12,6 +12,8 @@
 #include "FieldInt.hpp"
 #include "Uint256.hpp"
 
+namespace bcl {
+
 
 /*
  * A point on the secp256k1 elliptic curve for Bitcoin use, in projective coordinates.
@@ -127,3 +129,6 @@ class CurvePoint final {
 	public: static const CurvePoint ZERO;  // Dummy point at infinity (normalized)
 	
 };
+
+
+}  // namespace bcl
