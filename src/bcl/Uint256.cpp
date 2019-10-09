@@ -11,6 +11,9 @@
 #include "Uint256.hpp"
 #include "Utils.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 using std::uint32_t;
 using std::uint64_t;
@@ -212,3 +215,6 @@ bool Uint256::operator>=(const Uint256 &other) const {
 // Static initializers
 const Uint256 Uint256::ZERO;
 const Uint256 Uint256::ONE("0000000000000000000000000000000000000000000000000000000000000001");
+
+
+}  // namespace bcl

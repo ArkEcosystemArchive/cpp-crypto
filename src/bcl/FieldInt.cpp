@@ -10,6 +10,9 @@
 #include <cstring>
 #include "FieldInt.hpp"
 
+namespace bcl {
+
+
 using std::uint32_t;
 using std::uint64_t;
 
@@ -178,3 +181,6 @@ bool FieldInt::operator>=(const Uint256 &other) const {
 
 // Static initializers
 const Uint256 FieldInt::MODULUS("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F");
+
+
+}  // namespace bcl

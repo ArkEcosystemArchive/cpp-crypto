@@ -9,14 +9,12 @@
 #include <vector>
 
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-#include "helpers/crypto.h"
-#include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
-
-#include "bcl/Sha256.hpp"
+#include "identities/address.hpp"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
+#include "utils/base58.hpp"
+#include "utils/crypto_helpers.h"
+#include "utils/hex.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -74,30 +72,30 @@ void Deserializer::deserializeHeader(Transaction& transaction) {
 void Deserializer::deserializeType(
     Transaction& transaction) {
   switch (transaction.type) {
-    case defaults::TransactionTypes::Transfer: {
+    case TransactionTypes::Transfer: {
       deserializeTransfer(transaction);
       break;
     };
-    case defaults::TransactionTypes::SecondSignatureRegistration: {
+    case TransactionTypes::SecondSignatureRegistration: {
       deserializeSecondSignatureRegistration(transaction);
       break;
     };
-    case defaults::TransactionTypes::DelegateRegistration: {
+    case TransactionTypes::DelegateRegistration: {
       deserializeDelegateRegistration(transaction);
       break;
     };
-    case defaults::TransactionTypes::Vote: {
+    case TransactionTypes::Vote: {
       deserializeVote(transaction);
       break;
     };
-    case defaults::TransactionTypes::MultiSignatureRegistration: {
+    case TransactionTypes::MultiSignatureRegistration: {
       deserializeMultiSignatureRegistration(transaction);
       break;
     };
-    case defaults::TransactionTypes::Ipfs: { break; };
-    case defaults::TransactionTypes::TimelockTransfer: { break; };
-    case defaults::TransactionTypes::MultiPayment: { break; };
-    case defaults::TransactionTypes::DelegateResignation: { break; };
+    case TransactionTypes::Ipfs: { break; };
+    case TransactionTypes::TimelockTransfer: { break; };
+    case TransactionTypes::MultiPayment: { break; };
+    case TransactionTypes::DelegateResignation: { break; };
   };
 }
 
@@ -107,8 +105,10 @@ void Deserializer::deserializeTransfer(
     Transaction& transaction) {
   unpack(&transaction.amount, &this->_binary[_assetOffset / 2]);
   unpack(&transaction.expiration, &this->_binary[_assetOffset / 2 + 8]);
-  transaction.recipient = Identities::Address::base58encode(
-      &this->_binary[(_assetOffset / 2) + 12]);
+
+  transaction.recipient = Base58::parseHash(
+      &this->_binary[(_assetOffset / 2) + 13],
+      this->_binary[(_assetOffset / 2) + 12]);
 
   _assetOffset += (8 + 4 + 21) * 2;
 };
@@ -198,8 +198,9 @@ void Deserializer::deserializeSignatures(
     Transaction& transaction) {
   std::string signature = this->_serialized.substr(_assetOffset);
 
-  size_t multiSignatureOffset = 0;
   if (!signature.empty()) {
+    size_t multiSignatureOffset = 0;
+
     size_t signatureLength = parseSignatureLength(signature.substr(2, 2));
     transaction.signature = this->_serialized.substr(
         _assetOffset,
@@ -247,16 +248,17 @@ void Deserializer::handleVersionOne(
     Transaction& transaction) {
   transaction.signSignature = transaction.secondSignature;
 
-  if (transaction.type == defaults::TransactionTypes::Vote) {
-    const auto publicKey = Identities::PublicKey::fromHex(
-        transaction.senderPublicKey.c_str());
-    const auto address = Identities::Address::fromPublicKey(
-        publicKey,
+  if (transaction.type == TransactionTypes::Vote) {
+    const auto address = identities::Address::fromPublicKey(
+        HexToBytesArray<PUBLICKEY_COMPRESSED_BYTE_LEN>(
+            transaction.senderPublicKey.c_str())
+            .data(),
         transaction.network);
+
     transaction.recipient = address.toString();
   };
 
-  if (transaction.type == defaults::TransactionTypes::MultiSignatureRegistration) {
+  if (transaction.type == TransactionTypes::MultiSignatureRegistration) {
     std::for_each(
         transaction.asset.multiSignature.keysgroup.begin(),
         transaction.asset.multiSignature.keysgroup.end(),
@@ -273,13 +275,14 @@ void Deserializer::handleVersionOne(
     transaction.id = transaction.getId();
   };
 
-  if (transaction.type == defaults::TransactionTypes::SecondSignatureRegistration
-      || transaction.type == defaults::TransactionTypes::MultiSignatureRegistration) {
-    const auto publicKey = Identities::PublicKey::fromHex(
-        transaction.senderPublicKey.c_str());
-    const auto address = Identities::Address::fromPublicKey(
-        publicKey,
+  if (transaction.type == TransactionTypes::SecondSignatureRegistration
+      || transaction.type == TransactionTypes::MultiSignatureRegistration) {
+    const auto address = identities::Address::fromPublicKey(
+        HexToBytesArray<PUBLICKEY_COMPRESSED_BYTE_LEN>(
+            transaction.senderPublicKey.c_str())
+            .data(),
         transaction.network);
+
     transaction.recipient = address.toString();
   };
 }

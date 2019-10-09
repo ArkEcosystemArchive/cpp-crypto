@@ -13,6 +13,9 @@
 #include "FieldInt.hpp"
 #include "Sha256.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 using std::uint32_t;
 
@@ -144,3 +147,6 @@ void Ecdsa::multiplyModOrder(Uint256 &x, const Uint256 &y) {
 	}
 	x = z;
 }
+
+
+}  // namespace bcl

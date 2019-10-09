@@ -10,14 +10,22 @@
 #ifndef NETWORKS_TESTNET_HPP
 #define NETWORKS_TESTNET_HPP
 
-#include "networks/networks.hpp"
+#include "common/network.hpp"
 
-// const Network Testnet {
-//   "d9acd04bde4234a81addb8482333b4ac906bed7be5a9970ce8ada428bd083192",  // nethash
-//   1,                                                                   // slip44
-//   0xba,                                                                // wif
-//   0x17,                                                                // version
-//   "2017-03-21T13:00:00.000Z"                                           // epoch
-// };
+namespace Ark {
+namespace Crypto {
+
+// Testnet
+// ARK Test Network
+const Network Testnet {
+    "d9acd04bde4234a81addb8482333b4ac906bed7be5a9970ce8ada428bd083192",  // nethash
+    1,                                                                   // slip44
+    0xba,                                                                // wif
+    0x17,                                                                // version
+    "2017-03-21T13:00:00.000Z"                                           // epoch
+};
+
+}  // namespace Crypto
+}  // namespace Ark
 
 #endif

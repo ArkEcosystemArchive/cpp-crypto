@@ -133,7 +133,7 @@ void checkCrypto() {
    */
   const auto passphrase4 = "this is a top secret passphrase";
   const uint8_t wifByte = 0xaa;
-  WIF wifFromPassphrase = WIF::fromPassphrase(passphrase4, wifByte);
+  Wif wifFromPassphrase = Wif::fromPassphrase(passphrase4, wifByte);
     Serial.print("\nWIF from Passphrase: ");
     Serial.println(wifFromPassphrase.toString().c_str()); // the 'WIF' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
   /**/

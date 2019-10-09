@@ -1,0 +1,40 @@
+name: Arduino
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types: [ready_for_review, synchronize, opened] # fix: synchronize triggers builds for PR merges with the base branch, currently causes duplicate builds as synchronize is treated the same as push for everything besides merges
+
+jobs:
+  arduino:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Dependencies
+        run: |
+          sudo apt-get install bzip2
+          yes | sudo apt install python-pip
+          pip install pyserial
+          pip install --upgrade pip
+          wget -O arduino-cli-linux64.tar.bz2 https://github.com/arduino/arduino-cli/releases/download/0.3.3-alpha.preview/arduino-cli-0.3.3-alpha.preview-linux64.tar.bz2
+          bunzip2 arduino-cli-linux64.tar.bz2
+          tar xvf arduino-cli-linux64.tar
+          sudo mv arduino-cli-0.3.3-alpha.preview-linux64 /usr/local/share/arduino-cli
+          sudo ln -s /usr/local/share/arduino-cli /usr/local/bin/arduino-cli
+          printf "board_manager:
+            additional_urls:
+              - https://dl.espressif.com/dl/package_esp32_index.json" >> .cli-config.yml
+          sudo mv .cli-config.yml /usr/local/share/
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32
+      - name: Build Arduino Sketch
+        run: |
+          mkdir -p ~/Arduino/libraries/cpp-crypto/
+          mv ${GITHUB_WORKSPACE}/* ~/Arduino/libraries/cpp-crypto/
+          arduino-cli lib install "ArduinoJson@6.12.0"
+          arduino-cli lib install "BIP66@0.2.0"
+          arduino-cli lib install "micro-ecc@1.0.0"
+          arduino-cli compile --output temp.bin -b esp32:esp32:esp32 ~/Arduino/libraries/cpp-crypto/examples/ESP32/ESP32.ino --debug

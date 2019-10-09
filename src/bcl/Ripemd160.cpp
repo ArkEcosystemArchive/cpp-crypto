@@ -11,6 +11,9 @@
 #include "Ripemd160.hpp"
 #include "Utils.hpp"
 
+namespace bcl {
+
+
 using std::uint8_t;
 using std::uint32_t;
 using std::size_t;
@@ -135,3 +138,6 @@ const unsigned char Ripemd160::SR[NUM_ROUNDS] = {
 	 9,  7, 15, 11,  8,  6,  6, 14, 12, 13,  5, 14, 13, 13,  7,  5,
 	15,  5,  8, 11, 14, 14,  6, 14,  6,  9, 12,  9, 12,  5, 15,  8,
 	 8,  5, 12,  9, 12,  5, 14,  6,  8, 13,  6,  5, 15, 13, 11, 11};
+
+
+}  // namespace bcl

@@ -1,3 +1,4 @@
+
 /**
  * This file is part of Ark Cpp Crypto.
  *
@@ -7,21 +8,19 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef NETWORKS_HPP
-#define NETWORKS_HPP
+#ifndef CRYPTO_HASH_HPP
+#define CRYPTO_HASH_HPP
 
-#include "common/network.hpp"
+#include "interfaces/identities.hpp"
 
 namespace Ark {
 namespace Crypto {
-/**/
-class Networks {
- public:
-  static const Network Devnet();
-  static const Network Mainnet();
-  static const Network Testnet();
+
+struct Hash {
+  static PubkeyHash ripemd160(const uint8_t* publicKeyBytes);
+  static Hash32 sha256(const uint8_t* inputBytes, size_t size);
 };
-/**/
+
 }  // namespace Crypto
 }  // namespace Ark
 
