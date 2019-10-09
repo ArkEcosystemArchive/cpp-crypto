@@ -2,6 +2,7 @@
 
 # run clang tidy
 cmake -DENABLE_CLANG_TIDY=ON -DUNIT_TEST=ON .
+
 make tidy > output.txt
 #if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
 # for now only fail the test on errors.  Change this as project matures
