@@ -32,7 +32,6 @@ jobs:
           arduino-cli core install esp32:esp32
       - name: Build Arduino Sketch
         run: |
-          bash ./extras/ARDUINO_IDE.sh --auto
           mkdir -p ~/Arduino/libraries/cpp-crypto/
           mv ${GITHUB_WORKSPACE}/* ~/Arduino/libraries/cpp-crypto/
           arduino-cli lib install "ArduinoJson@6.12.0"
