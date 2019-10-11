@@ -1,3 +1,6 @@
 plugins:
     cppcheck:
         enabled: true
+exclude_patterns:
+    - "src/lib/"
+    - "test/"
