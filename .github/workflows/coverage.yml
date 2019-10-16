@@ -33,14 +33,12 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Coverage -DUNIT_TEST=ON ..
           cmake --build .
       - name: Run Coverage Tests
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           cd build
           ./test/ark_cpp_crypto_tests
           lcov --directory . --include "*/src/*" --include "*/test/*" --exclude "*/src/lib/*" --exclude "*/extern/*" --capture --output-file coverage.info --ignore-errors gcov
           ./cc-test-reporter format-coverage --input-type lcov coverage.info
-          ./cc-test-reporter upload-coverage
+          ./cc-test-reporter upload-coverage -r ${{ secrets.CC_TEST_REPORTER_ID }}
 
   codecov:
     runs-on: ubuntu-latest
