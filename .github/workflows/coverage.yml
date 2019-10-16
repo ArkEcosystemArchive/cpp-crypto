@@ -1,0 +1,67 @@
+name: Coverage
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'develop'
+  pull_request:
+    types: [ready_for_review, synchronize, opened]
+
+jobs:
+  codeclimate:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set compiler to clang++
+        run: COMPILER=clang++
+      - name: Install Dependencies
+        run: brew install cmake lcov
+      - name: Make scripts executable
+        run: sudo chmod +x ./.github/workflows/test/clang_tidy.sh
+      - name: Create Build directory
+        run: mkdir build
+      - name: Setup Code Climate test-reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./build/cc-test-reporter
+          chmod +x ./build/cc-test-reporter
+      - name: Build
+        run: |
+          cd build
+          ./cc-test-reporter before-build
+          cmake -DCMAKE_BUILD_TYPE=Coverage -DUNIT_TEST=ON ..
+          cmake --build .
+      - name: Run Coverage Tests
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: |
+          cd build
+          ./test/ark_cpp_crypto_tests
+          lcov --directory . --include "*/src/*" --include "*/test/*" --exclude "*/src/lib/*" --exclude "*/extern/*" --capture --output-file coverage.info --ignore-errors gcov
+          ./cc-test-reporter format-coverage --input-type lcov coverage.info
+          ./cc-test-reporter upload-coverage
+
+  codecov:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Dependencies
+        run: |
+          sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get -y install g++-7 gcc-7 lcov
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+          sudo update-alternatives --config gcc
+      - name: Create Build directory
+        run: mkdir build
+      - name: Build
+        run: |
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Coverage -DUNIT_TEST=ON ..
+          cmake --build .
+      - name: Run Coverage Tests
+        run: ./build/test/ark_cpp_crypto_tests
+      - name: Upload Coverage Report
+        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}

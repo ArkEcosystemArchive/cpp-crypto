@@ -3,9 +3,10 @@ name: Test
 on:
   push:
     branches:
-      - "**"
+      - 'master'
+      - 'develop'
   pull_request:
-    types: [ready_for_review, synchronize, opened] # fix: synchronize triggers builds for PR merges with the base branch, currently causes duplicate builds as synchronize is treated the same as push for everything besides merges
+    types: [ready_for_review, synchronize, opened]
 
 jobs:
   arduino:
@@ -43,18 +44,16 @@ jobs:
         run: |
           sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get -y install g++-7 gcc-7 lcov
+          sudo apt-get -y install g++-7 gcc-7
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
           sudo update-alternatives --config gcc
       - name: Build
         run: |
           mkdir build && cd build
-          cmake -DCMAKE_BUILD_TYPE=Coverage -DUNIT_TEST=ON ..
+          cmake -DUNIT_TEST=ON ..
           cmake --build .
       - name: Run Tests
         run: ./build/test/ark_cpp_crypto_tests
-      - name: Codecov upload
-        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
   linux-clang-5:
     runs-on: ubuntu-latest
@@ -64,7 +63,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt install liblldb-5.0-dev python-lldb-5.0 lcov
+          sudo apt install liblldb-5.0-dev python-lldb-5.0
           sudo apt install clang-5.0 clang-tidy-5.0 clang-format-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libllvm5.0 lldb-5.0 llvm-5.0 llvm-5.0-dev
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-5.0 60
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 50
