@@ -38,7 +38,9 @@ jobs:
           ./test/ark_cpp_crypto_tests
           lcov --directory . --include "*/src/*" --include "*/test/*" --exclude "*/src/lib/*" --exclude "*/extern/*" --capture --output-file coverage.info --ignore-errors gcov
           ./cc-test-reporter format-coverage --input-type lcov coverage.info
-          ./cc-test-reporter upload-coverage -r ${{ secrets.CC_TEST_REPORTER_ID }}
+          ./cc-test-reporter upload-coverage
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
   codecov:
     runs-on: ubuntu-latest
