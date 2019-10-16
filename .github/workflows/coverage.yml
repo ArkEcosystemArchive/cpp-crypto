@@ -20,17 +20,14 @@ jobs:
         run: brew install cmake lcov
       - name: Make scripts executable
         run: sudo chmod +x ./.github/workflows/test/clang_tidy.sh
-      - name: Create Build directory
-        run: mkdir build
       - name: Setup Code Climate test-reporter
         run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./build/cc-test-reporter
-          chmod +x ./build/cc-test-reporter
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
       - name: Build & Run Coverage Tests
         run: |
-          cd build
           ./cc-test-reporter before-build
-          cmake -DCMAKE_BUILD_TYPE=Coverage -DUNIT_TEST=ON ..
+          cmake -DCMAKE_BUILD_TYPE=Coverage -DUNIT_TEST=ON .
           cmake --build .
           ./test/ark_cpp_crypto_tests
           lcov --directory . --include "*/src/*" --include "*/test/*" --exclude "*/src/lib/*" --exclude "*/extern/*" --capture --output-file coverage.info --ignore-errors gcov
