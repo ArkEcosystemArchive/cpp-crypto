@@ -50,13 +50,13 @@ inline void unpack(T* dst, uint8_t* src, size_t size = -1) {
 }
 
 // Join string vector
-inline std::string join(const std::vector<std::string>& strings) {
+inline std::string join(const std::vector<std::string>& strings, size_t offset = 0U) {
   return std::accumulate(
       strings.begin(),
       strings.end(),
       std::string(),
-      [](const std::string& a, const std::string& b)
-          -> std::string { return a + b; });
+      [&](const std::string& a, const std::string& b)
+          -> std::string { return a + b.substr(offset); });
 }
 
 #endif
