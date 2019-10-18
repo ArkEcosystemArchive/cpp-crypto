@@ -127,13 +127,13 @@ add_test(NAME test COMMAND ${PROJECT_NAME})
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
-# Coverage
+# Coverage 2:2
 # ------------------------------------------------------------------------------
 
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     include("${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake")
 
-    setup_target_for_coverage(${PROJECT_NAME}_coverage ${PROJECT_NAME}_tests coverage)
+    setup_target_for_coverage(${PROJECT_NAME}_coverage ${PROJECT_NAME} coverage)
 
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")

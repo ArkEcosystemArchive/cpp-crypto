@@ -5,12 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.7.0] - 2019-10-08
+
+## [0.7.0-arduino] - 2019-10-08
 
 ### Changed
 -   improved coverage and formatting ([#121])
 -   refactored utils implementation ([#133])
 -   refactored Identities implementation. ([#120])
+-   moved external libraries out of source tree ([#156])
 
 ## [0.6.0] - 2019-07-16
 
@@ -24,7 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 -   improved PlatformIO configuration ([#101])
 -   improved formatting and maintainability ([#98])
 -   improved Slots implementations ([#92])
--   moved external libraries out of source tree ([#156])
 
 ### Fixed
 -   fixed Transaction Json numeric serialization ([#103])
@@ -119,4 +121,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#121]: https://github.com/ArkEcosystem/cpp-crypto/pull/121
 [#133]: https://github.com/ArkEcosystem/cpp-crypto/pull/133
 [#156]: https://github.com/ArkEcosystem/cpp-crypto/pull/156
-[Unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0...develop
+[0.7.0-arduino]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0-arduino...0.7.0-arduino
+[0.7.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0-arduino...0.7.0
