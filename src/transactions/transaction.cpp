@@ -212,15 +212,15 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
 
 std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() const {
   //  buffers for variable and non-string type-values.
-  char amount[24];
-  char assetName[16];
-  char assetValue[512];
-  char fee[24];
-  char network[8];
-  char signatures[512];
-  char timestamp[36];
-  char type[8];
-  char version[8];
+  char amount[24] = {};
+  char assetName[16] = {};
+  char assetValue[512] = {};
+  char fee[24] = {};
+  char network[8] = {};
+  char signatures[512] = {};
+  char timestamp[36] = {};
+  char type[8] = {};
+  char version[8] = {};
 
   //  Amount
   snprintf(amount, sizeof(amount), "%" PRIu64, this->amount);
@@ -229,33 +229,33 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   if (this->type == 0) {
     // Transfer
     // do nothing
-  } else if (this->type == 1) {
+  }
+  else if (this->type == 1) {
     //  Second Signature Registration
-    strncpy(assetName, "publicKey", sizeof(assetName));
-    strncpy(
-        assetValue,
-        this->asset.signature.publicKey.c_str(),
-        this->asset.signature.publicKey.length() + 1);
-  } else if (this->type == 2) {
+    memmove(assetName, "publicKey", 10);
+    memmove(assetValue,
+           this->asset.signature.publicKey.c_str(),
+           this->asset.signature.publicKey.length() + 1);
+  }
+  else if (this->type == 2) {
     // Delegate Registration
-    strncpy(assetName, "username", sizeof(assetName));
-    strncpy(
-        assetValue,
-        this->asset.delegate.username.c_str(),
-        this->asset.delegate.username.length() + 1);
-  } else if (this->type == 3) {
+    memmove(assetName, "username", 9);
+    memmove(assetValue,
+           this->asset.delegate.username.c_str(),
+           this->asset.delegate.username.length() + 1);
+  }
+  else if (this->type == 3) {
     // Vote
-    strncpy(assetName, "votes", sizeof(assetName));
-    strncpy(assetValue, "", 1);
-    for (unsigned int i = 0; i < this->asset.votes.size(); ++i) {
-      strncat(
-          assetValue,
-          this->asset.votes[i].c_str(),
-          this->asset.votes[i].length() + 1);
-      if (i < this->asset.votes.size() - 1) {
-        strncat(assetValue, ",", 1);
-      };
-    };
+    memmove(assetName, "votes", 6);
+    for (unsigned int i = 0U; i < this->asset.votes.size(); ++i) {
+      uint8_t offset = i * this->asset.votes[i].length();
+      memmove(assetValue + offset + (i == 0U ? 0U : 1U),
+              this->asset.votes[i].c_str(),
+              this->asset.votes[i].length());
+      if (i > 0 && i < this->asset.votes.size()) {
+        memmove(assetValue + offset, ",", 1);
+      }
+    }
 
   // } else if (this->type == 4) {  //  Multisignature Registration
   //   //  TODO
@@ -273,22 +273,21 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   snprintf(fee, sizeof(fee), "%" PRIu64,  this->fee);
 
   //  Signatures
-  strcpy(signatures, "");
-  for (unsigned int i = 0; i < this->signatures.size(); ++i) {
-    strncat(
-        signatures,
-        this->signatures[i].c_str(),
-        this->signatures[i].length() + 1);
-    if (i < this->signatures.size() - 1) {
-      strncpy(signatures, ",", 1);
-    };
-  };
+  for (unsigned int i = 0U; i < this->signatures.size(); ++i) {
+      uint8_t offset = i * this->signatures[i].length();
+      memmove(signatures + offset + (i == 0U ? 0U : 1U),
+              this->signatures[i].c_str(),
+              this->signatures[i].length());
+    if (i > 1U && i < this->signatures.size()) {
+      memmove(signatures + i * this->signatures[i].length(), ",", 1);
+    }
+  }
 
   //  Network
   snprintf(network, sizeof(network), "%d", this->network);
 
   //  Timestamp
-  snprintf(timestamp, sizeof(timestamp), "%d", this->timestamp);
+  snprintf(timestamp, sizeof(timestamp), "%" PRIu32, this->timestamp);
 
   //  Type
   snprintf(type, sizeof(type), "%u", this->type);
@@ -384,7 +383,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() const {
   doc["recipient"] = txArray["recipient"];
 
   //  SecondSignature
-  if (std::strlen(txArray["secondSignature"].c_str()) > 0) {
+  if (txArray["secondSignature"].length() > 0U) {
     doc["secondSignature"] = txArray["secondSignature"];
   };
 
@@ -407,7 +406,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() const {
   };
 
   //  SignSignature
-  if (std::strlen(txArray["signSignature"].c_str()) > 0) {
+  if (txArray["signSignature"].length() > 0U) {
     doc["signSignature"] = txArray["signSignature"];
   };
 
@@ -418,7 +417,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() const {
   doc["type"] = atoi(txArray["type"].c_str());
 
   //  VendorField
-  if (std::strlen(txArray["vendorField"].c_str()) > 0) {
+  if (txArray["vendorField"].length() > 0U) {
     doc["vendorField"] = txArray["vendorField"];
   };
 
