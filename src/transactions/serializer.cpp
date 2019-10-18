@@ -2,6 +2,7 @@
 #include "transactions/serializer.h"
 
 #include <cstdint>
+#include <numeric>
 #include <string>
 #include <vector>
 
@@ -146,21 +147,22 @@ void Serializer::serializeDelegateRegistration(
 
 /**/
 
-void Serializer::serializeVote(
-    std::vector<uint8_t>& bytes) const {
+void Serializer::serializeVote(std::vector<uint8_t>& bytes) const {
   std::string votes;
 
-  for (const auto& vote : _transaction.asset.votes) {
-    votes += (vote[0] == '+' ? "01" : "00") + vote.substr(1);
-  };
+  votes = std::accumulate(_transaction.asset.votes.begin(),
+                          _transaction.asset.votes.end(),
+                          std::string(),
+                          [&](const std::string& a, const std::string& b)
+                              -> std::string {
+      return a + (b.at(0) == '+' ? "01" : "00") + b.substr(1);
+  });
 
   std::vector<uint8_t> voteBytes = HexToBytes(votes.c_str());
-  bytes.push_back(static_cast<uint8_t>(
-      _transaction.asset.votes.size()));
-  bytes.insert(
-      bytes.end(),
-      voteBytes.begin(),
-      voteBytes.end());
+
+  bytes.push_back(static_cast<uint8_t>(_transaction.asset.votes.size()));
+
+  bytes.insert(bytes.end(), voteBytes.begin(), voteBytes.end());
 }
 
 /**/
@@ -168,24 +170,20 @@ void Serializer::serializeVote(
 void Serializer::serializeMultiSignatureRegistration(
     std::vector<uint8_t>& bytes) const {
   std::string keysgroup;
-  if (_transaction.version == 1) {
-    for (const auto& kg : _transaction.asset.multiSignature.keysgroup) {
-      keysgroup += kg.substr(1);
-    };
-  } else {
-    keysgroup = join(_transaction.asset.multiSignature.keysgroup);
-  };
+
+  keysgroup = join(_transaction.asset.multiSignature.keysgroup,
+                   _transaction.version == 1U ? 1U : 0U);
 
   bytes.push_back(_transaction.asset.multiSignature.min);
+
   bytes.push_back(static_cast<uint8_t>(
       _transaction.asset.multiSignature.keysgroup.size()));
+
   bytes.push_back(_transaction.asset.multiSignature.lifetime);
 
   std::vector<uint8_t> keysgroupBytes = HexToBytes(keysgroup.c_str());
-  bytes.insert(
-      bytes.end(),
-      keysgroupBytes.begin(),
-      keysgroupBytes.end());
+
+  bytes.insert(bytes.end(), keysgroupBytes.begin(), keysgroupBytes.end());
 }
 
 /**/

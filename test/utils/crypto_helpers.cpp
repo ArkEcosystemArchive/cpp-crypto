@@ -19,12 +19,25 @@ TEST(utils, pack_unpack) {
 /**/
 
 TEST(utils, join) {
-  const auto strBuffer = "123";
-  std::vector<std::string> vstr(3);
-  vstr[0] = strBuffer[0];
-  vstr[1] = strBuffer[1];
-  vstr[2] = strBuffer[2];
+  const std::string strBuffer = "123";
+  const std::string strBuffer2 = "456";
+  std::vector<std::string> vstr { strBuffer, strBuffer2 };
 
   std::string joined = join(vstr);
-  ASSERT_STREQ(joined.c_str(), strBuffer);
+
+  ASSERT_STREQ(joined.c_str(), std::string(strBuffer + strBuffer2).c_str());
+}
+
+/**/
+
+TEST(utils, join_offset) {
+  const std::string strBuffer = "654";
+  const std::string strBuffer2 = "321";
+  std::vector<std::string> vstr { strBuffer, strBuffer2 };
+
+  std::string joined = join(vstr, 1);
+
+  ASSERT_STREQ(joined.c_str(),
+               std::string(strBuffer.substr(1) +
+                           strBuffer2.substr(1)).c_str());
 }

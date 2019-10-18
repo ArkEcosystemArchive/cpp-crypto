@@ -9,6 +9,8 @@
 
 #include "crypto/hash.hpp"
 
+#include <cstring>
+
 #include "interfaces/identities.hpp"
 
 #include "bcl/Ripemd160.hpp"
@@ -32,13 +34,11 @@ PubkeyHash Hash::ripemd160(const uint8_t*publicKeyBytes) {
 
 // Returns a 32-byte SHA256 hash of the input vector.
 Hash32 Hash::sha256(const uint8_t* inputBytes, size_t size) {
-  auto result = bcl::Sha256::getHash(inputBytes, size);
+  Hash32 hash32 {};
+  memmove(hash32.data(),
+          bcl::Sha256::getHash(inputBytes, size).value,
+          hash32.size());
 
-  Hash32 hash32;
-  uint8_t* ptr = result.value;
-  for (auto& e : hash32) {
-    e = *ptr++;
-  };
   return hash32;
 }
 
