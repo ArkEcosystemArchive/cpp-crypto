@@ -28,7 +28,7 @@
       "name": "ArduinoJson@6.12.0"
     },
     {
-      "name": "BIP66@0.1.2"
+      "name": "BIP66@0.2.1"
     }
   ],
   "export": {
