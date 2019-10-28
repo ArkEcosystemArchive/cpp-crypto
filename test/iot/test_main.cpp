@@ -20,12 +20,12 @@ void setup() {
   setDummyTime();
 
   testing::InitGoogleTest();
-
-  auto __attribute__((unused)) run = RUN_ALL_TESTS();
 }
 
 void loop() {
-  // do nothing
+  // loop the tests.
+  auto __attribute__((unused)) run = RUN_ALL_TESTS();
+  delay(1000);
 }
 
 #endif
