@@ -1,7 +1,8 @@
-
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "identities/privatekey.hpp"
+using namespace Ark::Crypto;
+using namespace Ark::Crypto::identities;
 
 #include "fixtures/identity.hpp"
 using namespace fixtures::identity;
