@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  **/
 
-// #ifndef CRYPTO_FIXTURES_IDENTITY_HPP
-// #define CRYPTO_FIXTURES_IDENTITY_HPP
+#ifndef CRYPTO_FIXTURES_IDENTITY_HPP
+#define CRYPTO_FIXTURES_IDENTITY_HPP
 
 #include <array>
 
@@ -93,4 +93,4 @@ namespace identity {  // NOLINT
 }  // Crypto
 }  // Ark
 
-// #endif
+#endif

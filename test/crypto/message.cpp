@@ -12,26 +12,6 @@ using namespace Ark::Crypto;
 using namespace fixtures::identity;
 using namespace fixtures::message;
 
-TEST(crypto, message_sign) {
-  Message message;
-  message.sign(tMessageString, tPassphrase);
-
-  ASSERT_STREQ(BytesToHex(message.signature.begin(),
-                          message.signature.end()).c_str(),
-               tSignatureString);
-}
-
-/**/
-
-TEST(crypto, message_verify) {
-  Message message(tMessageString,
-                  tPublicKeyBytes,
-                  { tMessageSignatureBytes.begin(),
-                    tMessageSignatureBytes.end() });
-  ASSERT_TRUE(message.verify());
-}
-
-/**/
 
 TEST(crypto, message_to_array) {
   Message message;

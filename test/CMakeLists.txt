@@ -42,8 +42,16 @@ set(COMMON_TEST_SOURCE
 # Crypto
 
 set(CRYPTO_TEST_SOURCE
-    ${PROJECT_SOURCE_DIR}/crypto/curve.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/curve_ecdsa_sign_null_hash32_privatekey.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/curve_ecdsa_sign_null_hash32_sha256.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/curve_ecdsa_sign_null_pk.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/curve_ecdsa_sign.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/curve_publickey.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/curve_verify_invalid.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/curve_verify_valid.cpp
     ${PROJECT_SOURCE_DIR}/crypto/hash.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/message_sign.cpp
+    ${PROJECT_SOURCE_DIR}/crypto/message_verify.cpp
     ${PROJECT_SOURCE_DIR}/crypto/message.cpp
     ${PROJECT_SOURCE_DIR}/crypto/slot.cpp)
 
@@ -59,6 +67,7 @@ set(DEFAULTS_TEST_SOURCE
 
 set(IDENTITIES_TEST_SOURCE
     ${PROJECT_SOURCE_DIR}/identities/address.cpp
+    ${PROJECT_SOURCE_DIR}/identities/keys_publickey.cpp
     ${PROJECT_SOURCE_DIR}/identities/keys.cpp
     ${PROJECT_SOURCE_DIR}/identities/privatekey.cpp
     ${PROJECT_SOURCE_DIR}/identities/publickey.cpp
@@ -83,9 +92,16 @@ set(NETWORKS_TEST_SOURCE
 # Transactions
 
 set(TRANSACTIONS_TEST_SOURCE
+    ${PROJECT_SOURCE_DIR}/transactions/builder_transfer_custom_network.cpp
     ${PROJECT_SOURCE_DIR}/transactions/builder.cpp
-    ${PROJECT_SOURCE_DIR}/transactions/deserializer.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/deserializer_delegate_registration.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/deserializer_multi_signature_registration.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/deserializer_second_signature_registration.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/deserializer_transfer.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/deserializer_vote.cpp
     ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_array.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp)
 
 # ------------------------------------------------------------------------------
