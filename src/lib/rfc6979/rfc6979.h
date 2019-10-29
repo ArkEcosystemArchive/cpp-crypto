@@ -48,7 +48,9 @@ struct secp256k1_rfc6979_hmac_sha256_t {
 //#ifdef WORDS_BIGENDIAN
 //#define BE32(x) (x)
 //#else
-#define BE32(p) ((((p)&0xFF) << 24) | (((p)&0xFF00) << 8) | (((p)&0xFF0000) >> 8) | (((p)&0xFF000000) >> 24))
+uint32_t BE32(uint32_t p) {
+  return ((((p)&0xFF) << 24u) | (((p)&0xFF00) << 8u) | (((p)&0xFF0000) >> 8u) | (((p)&0xFF000000) >> 24u));
+}
 //#endif
 
 inline void secp256k1_sha256_initialize(secp256k1_sha256_t *hash) {
@@ -170,7 +172,7 @@ inline void secp256k1_sha256_finalize(secp256k1_sha256_t *hash, unsigned char *o
   uint32_t sizedesc[2];
   uint32_t out[8];
   int i = 0;
-  sizedesc[0] = BE32(hash->bytes >> 29);
+  sizedesc[0] = BE32(static_cast<uint32_t>(hash->bytes) >> 29);
   sizedesc[1] = BE32(hash->bytes << 3);
   secp256k1_sha256_write(hash, pad, 1 + ((119 - (hash->bytes % 64)) % 64));
   secp256k1_sha256_write(hash, (const unsigned char *)sizedesc, 8);

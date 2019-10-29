@@ -65,7 +65,7 @@ public:
   uint8_t version = 0;
   TransactionAsset asset = {};
   uint32_t timelock_type = 0;
-  std::vector<std::string> signatures = {};
+  std::vector<std::string> signatures;
   std::string id = "";
   std::string recipient = "";
   std::string senderPublicKey = "";

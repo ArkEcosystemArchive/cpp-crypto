@@ -11,6 +11,7 @@
 #define INTERFACE_IDENTITIES_HPP
 
 #include <array>
+#include <cstdint>
 
 namespace Ark {
 namespace Crypto {
