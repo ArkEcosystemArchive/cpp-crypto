@@ -105,6 +105,11 @@ set(TRANSACTIONS_TEST_SOURCE
     ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json_type_1.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json_type_2.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json_type_3.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_array_type_0.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_array_type_1.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_array_type_2.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_array_type_3.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp)
 
 # ------------------------------------------------------------------------------
