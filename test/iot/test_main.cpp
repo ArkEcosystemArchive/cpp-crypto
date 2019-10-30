@@ -4,6 +4,8 @@
 
 #include <Arduino.h>
 
+#include "platform.hpp"
+
 // Set Dummy Time for testing board
 #include <sys/time.h>
 void setDummyTime() {
@@ -17,6 +19,8 @@ void setDummyTime() {
 void setup() {
   Serial.begin(115200);
 
+  optimize_for_testing();
+
   setDummyTime();
 
   testing::InitGoogleTest();
@@ -25,7 +29,7 @@ void setup() {
 void loop() {
   // loop the tests.
   auto __attribute__((unused)) run = RUN_ALL_TESTS();
-  delay(1000);
+  delay(1);
 }
 
 #endif
