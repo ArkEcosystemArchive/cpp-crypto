@@ -100,7 +100,6 @@ set(TRANSACTIONS_TEST_SOURCE
     ${PROJECT_SOURCE_DIR}/transactions/deserializer_transfer.cpp
     ${PROJECT_SOURCE_DIR}/transactions/deserializer_vote.cpp
     ${PROJECT_SOURCE_DIR}/transactions/serializer.cpp
-    ${PROJECT_SOURCE_DIR}/transactions/transaction_to_array.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json_type_0.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json_type_1.cpp
     ${PROJECT_SOURCE_DIR}/transactions/transaction_to_json_type_2.cpp
