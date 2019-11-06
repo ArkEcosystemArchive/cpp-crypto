@@ -53,9 +53,7 @@
   }  // namespace Crypto
   }  // namespace Ark
 
-#endif
-
-#if defined(ESP32) || defined(ESP8266)
+#else
 
   #include <ctime>
   #include <stdlib.h> /* strtol */
@@ -78,7 +76,7 @@
   // Get the Epoch of a given Network.
   uint64_t Slot::epoch(const Ark::Crypto::Network& network) {
     //  If unexpected ISO 8601 date/time length
-    if (network.epoch.length() != TIMESTAMP_LEN) {  
+    if (network.epoch.length() != TIMESTAMP_LEN) {
       return 0ULL;
     };
 

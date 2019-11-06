@@ -20,12 +20,15 @@ const auto COMPRESSED_PUBLICKEY_SIZE = 33U;
 const auto PRIVATEKEY_SIZE = 32U;
 const auto WIF_SIZE = 52U;
 
-#if (defined ARDUINO || defined ESP8266 || defined ESP32)
+#if defined(ESP8266) || defined(ESP32) || defined(ARDUINO_ARCH_SAMD)
 
 #define USE_IOT
 
 #include <Arduino.h>
+
+#if defined(ESP8266) || defined(ESP32)
 #include <pgmspace.h>
+#endif
 
 #endif
 
