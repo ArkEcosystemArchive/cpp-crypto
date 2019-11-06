@@ -49,7 +49,7 @@ inline void pack(std::vector<uint8_t>& dst, T& data) {
 // Read size bytes into dst from src
 template <typename T>
 inline void unpack(T* dst, uint8_t* src, size_t size = -1) {
-  memcpy(dst, src, size == -1 ? sizeof(*dst) : size);
+  memcpy(dst, src, size == static_cast<size_t>(-1) ? sizeof(*dst) : size);
 }
 
 // Join string vector
