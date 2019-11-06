@@ -15,9 +15,12 @@ sudo ln -s /usr/local/share/arduino-cli /usr/local/bin/arduino-cli
 printf "board_manager:
   additional_urls:
     - https://dl.espressif.com/dl/package_esp32_index.json
-    - http://arduino.esp8266.com/stable/package_esp8266com_index.json" >> .cli-config.yml
+    - http://arduino.esp8266.com/stable/package_esp8266com_index.json
+    - https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> .cli-config.yml
 sudo mv .cli-config.yml /usr/local/share/
 
 arduino-cli core update-index
 arduino-cli core install esp32:esp32
 arduino-cli core install esp8266:esp8266
+arduino-cli core install arduino:samd
+arduino-cli core install adafruit:samd
