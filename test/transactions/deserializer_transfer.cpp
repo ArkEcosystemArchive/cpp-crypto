@@ -1,7 +1,9 @@
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "defaults/transaction_types.hpp"
+#include "transactions/deserializer.h"
+using namespace Ark::Crypto;
 
 TEST(transactions, deserialize_transfer) { // NOLINT
   // transfer/passphrase-with-vendor-field.json

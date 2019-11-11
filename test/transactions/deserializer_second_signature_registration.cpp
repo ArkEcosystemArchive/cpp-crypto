@@ -1,7 +1,11 @@
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "defaults/transaction_types.hpp"
+#include "identities/address.hpp"
+#include "identities/publickey.hpp"
+#include "transactions/deserializer.h"
+using namespace Ark::Crypto;
 
 TEST(transactions, deserialize_second_signature_registration) { // NOLINT
   // second_signature_registration/second-passphrase.json

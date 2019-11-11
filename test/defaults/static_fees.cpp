@@ -3,7 +3,8 @@
 
 #include <cstdint>
 
-#include <arkCrypto.h>
+#include "defaults/static_fees.hpp"
+using namespace Ark::Crypto;
 
 namespace {
 constexpr const uint64_t kTransfer                    = 10000000ULL;

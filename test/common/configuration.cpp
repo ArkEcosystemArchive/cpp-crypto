@@ -3,7 +3,11 @@
 
 #include <cstdint>
 
-#include <arkCrypto.h>
+#include "common/configuration.hpp"
+#include "common/fee_policy.hpp"
+#include "networks/devnet.hpp"
+#include "networks/testnet.hpp"
+using namespace Ark::Crypto;
 
 namespace {
 const FeePolicy CustomFeePolicy = {

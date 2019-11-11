@@ -4,10 +4,9 @@
 #include <map>
 #include <string>
 
-#include <arkCrypto.h>
-
+#include "transactions/builder.h"
 #include "utils/json.h"
-
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::Transactions;
 
 TEST(transactions, transaction_to_json_type_3) {  // NOLINT

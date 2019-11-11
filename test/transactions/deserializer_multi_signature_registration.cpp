@@ -1,11 +1,19 @@
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include <cstdint>
+#include <string>
+#include <vector>
+
+#include "defaults/transaction_types.hpp"
+#include "identities/address.hpp"
+#include "identities/publickey.hpp"
+#include "transactions/deserializer.h"
+using namespace Ark::Crypto;
 
 TEST(transactions, deserialize_multi_signature_registration) { // NOLINT
   // multi_signature_registration/passphrase.json
-  Ark::Crypto::Transactions::Deserializer deserializer(
+  Transactions::Deserializer deserializer(
       "ff011704724c9a00036928c98ee53a1f52ed01dd87db10ffe1980eb47cd7c0a7d688321f47b5d7d76000943577000000000002031803543c"
       "6cc3545be6bac09c82721973a052c690658283472e88f24d14739f75acc80276dc5b8706a85ca9fdc46e571ac84e52fbb48e13ec7a165a80"
       "731b44ae89f1fc02e8d5d17eb17bbc8d7bf1001d29a2d25d1249b7bb7a5b7ad8b7422063091f4b3130440220324d89c5792e4a54ae70b4f1"

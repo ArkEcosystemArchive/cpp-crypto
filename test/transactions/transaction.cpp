@@ -4,10 +4,9 @@
 #include <map>
 #include <string>
 
-#include <arkCrypto.h>
-
+#include "transactions/transaction.h"
 #include "utils/json.h"
-
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::Transactions;
 
 TEST(transactions, transaction_default) {

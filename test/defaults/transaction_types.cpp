@@ -1,7 +1,10 @@
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include <cstdint>
+
+#include "defaults/transaction_types.hpp"
+using namespace Ark::Crypto;
 
 namespace {
 constexpr const uint8_t TransferType                    = 0;

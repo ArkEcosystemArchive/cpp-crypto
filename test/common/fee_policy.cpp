@@ -1,7 +1,8 @@
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "common/fee_policy.hpp"
+using namespace Ark::Crypto;
 
 namespace {
 const FeePolicy CustomFeePolicy = {
