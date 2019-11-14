@@ -33,6 +33,8 @@
 /**
  * This is a helper header that includes all the required Ark
  * headers required for this sketch.
+ * 
+ * Also set the CPU frequency to 160MHz using the Arduino IDE's 'Tools' menu.
 */
 #include "arkCrypto_esp8266.h"
 using namespace Ark::Crypto;

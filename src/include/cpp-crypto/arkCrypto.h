@@ -10,6 +10,6 @@
 #ifndef ARK_CRYPTO_H
 #define ARK_CRYPTO_H
 
-// This is a dummy include to force the Arduino library system to search for the library
+// This header forces the Arduino IDE to include ARK Crypto in its search path.
 
 #endif
