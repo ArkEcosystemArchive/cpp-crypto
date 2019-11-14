@@ -29,52 +29,23 @@
 /**
  * This is where you include the 'arkCrypto.h' header.
  * This allows your project to use Ark Cpp-Crypto.
+ * This header is empty and is just to force the inclusion
+ * of the library into the Arduino sketch
  */
 #include <arkCrypto.h>
 /**/
 
+/**
+ * This is a helper header that includes all the required Ark
+ * headers required for this sketch.
+*/
+#include "arkCrypto_atmega328p.h"
+using namespace Ark::Crypto;
+using namespace Ark::Crypto::identities;
+
 /****************************************/
 
 void checkCrypto() {
-  /**
-   * Create a BridgeChain transaction, tailored for your custom network.
-   */
-  static const Network MyBridgechainNetwork = {
-    "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df",
-    1, 0x53, 0xaa,
-    "2019-04-12T13:00:00.000Z"
-  };
-
-  const Configuration MyBridgechainConfiguration(MyBridgechainNetwork);
-
-  auto myBridgechainTransaction = Builder::buildTransfer(
-          "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
-          100000000ULL,
-          "this is a custom bridgechain transaction",
-          "this is a top secret passphrase",
-          "this is a top secret passphrase too",
-          MyBridgechainConfiguration);
-
-    Serial.print("\nBridgechain Transaction: ");
-    Serial.println(myBridgechainTransaction.toJson().c_str());
-
-  /**/
-
-  /********************/
-
-  /**
-   * This is how you can check the default 'Network' "Transaction 'Fees' by type.
-   * In this example, it should return a 'uint64_t' integer of '10000000' as the default 'Fee' for a 'Transaction' of 'Type' '0'.
-   */
-    Configuration config;
-    unsigned long typeZeroTransactionFee = config.getFee(0);
-    Serial.print("\nType 0 default Transaction Fee: ");
-    Serial.println(typeZeroTransactionFee); // The response is a 'uint64_t' integer.
-
-  /**/
-
-  /********************/
-
   /**
    * The following methods allows you to create an ARK address.
    * This is done by passing a 12-word 'Passphrase' and the 'Network' 'Version' "byte".
@@ -83,6 +54,7 @@ void checkCrypto() {
    * Given the passphrase "this is a top secret passphrase",
    * and the 'Devnet' 'Version' byte (0x1E); the ARK Address should be "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib"
    */
+  {
   const auto passphrase = "this is a top secret passphrase";
   const uint8_t networkVersion = 0x1E;
 
@@ -91,9 +63,10 @@ void checkCrypto() {
     Serial.println(arkAddress.toString().c_str()); // The 'Address' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
   /**/
 
-
+  }
   /********************/
-
+#if 0
+{
   /**
    * The following methods allows create a 'PrivateKey'.
    * This is done by passing a 12-word 'Passphrase'.
@@ -107,9 +80,9 @@ void checkCrypto() {
     Serial.print("\nPrivateKey from Passphrase: ");
     Serial.println(privateKeyFromPassphrase.toString().c_str()); // The 'PrivateKey' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
   /**/
-
+}
   /********************/
-
+{
   /**
    * The following methods allows create a 'PublicKey'.
    * This is done by passing a 12-word 'Passphrase'.
@@ -122,9 +95,9 @@ void checkCrypto() {
     Serial.print("\nPublicKey from Passphrase: ");
     Serial.println(publicKeyFromPassphrase.toString().c_str()); // the 'PublicKey' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
   /**/
-
+}
   /********************/
-
+{
   /**
    * The following methods allows create a 'WIF'-style "PrivateKey".
    * 'WIF' stands for "Wallet Import Format"
@@ -142,7 +115,9 @@ void checkCrypto() {
     Serial.print("\nWIF from Passphrase: ");
     Serial.println(wifFromPassphrase.toString().c_str()); // the 'WIF' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
   /**/
-};
+}
+#endif
+}
 
 /****************************************/
 

@@ -100,25 +100,25 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_CPP_CRYPTO_DIR}/arkCrypto.h ${SRC_DIR}
 
   echo -e "Moving 'common' headers.\n"
-  mv ${INCLUDE_COMMON_DIR}/configuration.hpp  ${SRC_COMMON_DIR}
-  mv ${INCLUDE_COMMON_DIR}/fee_policy.hpp     ${SRC_COMMON_DIR}
-  mv ${INCLUDE_COMMON_DIR}/network.hpp        ${SRC_COMMON_DIR}
+#  mv ${INCLUDE_COMMON_DIR}/configuration.hpp  ${SRC_COMMON_DIR}
+#  mv ${INCLUDE_COMMON_DIR}/fee_policy.hpp     ${SRC_COMMON_DIR}
+#  mv ${INCLUDE_COMMON_DIR}/network.hpp        ${SRC_COMMON_DIR}
 
   echo -e "Moving 'crypto' headers.\n"
-  mv ${INCLUDE_CRYPTO_DIR}/message.hpp  ${SRC_CRYPTO_DIR}
-  mv ${INCLUDE_CRYPTO_DIR}/slot.hpp     ${SRC_CRYPTO_DIR}
+#  mv ${INCLUDE_CRYPTO_DIR}/message.hpp  ${SRC_CRYPTO_DIR}
+#  mv ${INCLUDE_CRYPTO_DIR}/slot.hpp     ${SRC_CRYPTO_DIR}
 
   echo -e "Moving 'defaults' headers.\n"
   mkdir ${SRC_DEFAULTS_DIR}
-  mv ${INCLUDE_DEFAULTS_DIR}/static_fees.hpp        ${SRC_DEFAULTS_DIR}
-  mv ${INCLUDE_DEFAULTS_DIR}/transaction_types.hpp  ${SRC_DEFAULTS_DIR}
+#  mv ${INCLUDE_DEFAULTS_DIR}/static_fees.hpp        ${SRC_DEFAULTS_DIR}
+#  mv ${INCLUDE_DEFAULTS_DIR}/transaction_types.hpp  ${SRC_DEFAULTS_DIR}
 
   echo -e "Moving 'identites' headers.\n"
   mv ${INCLUDE_IDENTITIES_DIR}/address.hpp    ${SRC_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/keys.hpp       ${SRC_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/privatekey.hpp ${SRC_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/publickey.hpp  ${SRC_IDENTITIES_DIR}
-  mv ${INCLUDE_IDENTITIES_DIR}/wif.hpp        ${SRC_IDENTITIES_DIR}
+#  mv ${INCLUDE_IDENTITIES_DIR}/keys.hpp       ${SRC_IDENTITIES_DIR}
+#  mv ${INCLUDE_IDENTITIES_DIR}/privatekey.hpp ${SRC_IDENTITIES_DIR}
+#  mv ${INCLUDE_IDENTITIES_DIR}/publickey.hpp  ${SRC_IDENTITIES_DIR}
+#  mv ${INCLUDE_IDENTITIES_DIR}/wif.hpp        ${SRC_IDENTITIES_DIR}
 
   echo -e "Moving 'interfaces' headers.\n"
   mkdir ${SRC_INTERFACES_DIR}
@@ -126,22 +126,22 @@ if [[ -d ${INCLUDE_DIR} ]]; then
 
   echo -e "Moving 'networks' headers.\n"
   mkdir ${SRC_NETWORKS_DIR}
-  mv ${INCLUDE_NETWORKS_DIR}/devnet.hpp   ${SRC_NETWORKS_DIR}
-  mv ${INCLUDE_NETWORKS_DIR}/mainnet.hpp  ${SRC_NETWORKS_DIR}
-  mv ${INCLUDE_NETWORKS_DIR}/testnet.hpp  ${SRC_NETWORKS_DIR}
+#  mv ${INCLUDE_NETWORKS_DIR}/devnet.hpp   ${SRC_NETWORKS_DIR}
+#  mv ${INCLUDE_NETWORKS_DIR}/mainnet.hpp  ${SRC_NETWORKS_DIR}
+#  mv ${INCLUDE_NETWORKS_DIR}/testnet.hpp  ${SRC_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
-  mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
+#  mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
+#  mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h ${SRC_TRANSACTIONS_DIR}
+#  mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
+#  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
 
   echo -e "Backing up, moving, and removing dependencies from the 'src/lib' directory.\n"
   mkdir ${EXTRAS_BACKUP_DIR}
   mkdir ${EXTRAS_LIB_DIR}
-  mv ${SRC_LIB_DIR}/date        ${EXTRAS_LIB_DIR}
-  mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
-  mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
+#  mv ${SRC_LIB_DIR}/date        ${EXTRAS_LIB_DIR}
+#  mv ${SRC_LIB_DIR}/bcl         ${SRC_DIR}
+#  mv ${SRC_LIB_DIR}/rfc6979     ${SRC_DIR}
 
   echo -e "Moving Docs to the './extras' directory.\n"
   mv ${PROJECT_ROOT}/docs ${EXTRAS_DIR}
