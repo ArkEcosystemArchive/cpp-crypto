@@ -1,7 +1,9 @@
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "common/network.hpp"
+#include "networks/devnet.hpp"
+using namespace Ark::Crypto;
 
 namespace {
 const Network CustomNetwork {

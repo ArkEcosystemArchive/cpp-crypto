@@ -1,7 +1,12 @@
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include <string>
+#include <vector>
+
+#include "defaults/transaction_types.hpp"
+#include "transactions/deserializer.h"
+using namespace Ark::Crypto;
 
 TEST(transactions, deserialize_vote) { // NOLINT
   // vote/second-passphrase.json
