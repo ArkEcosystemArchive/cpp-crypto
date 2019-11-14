@@ -21,3 +21,4 @@ sudo mv .cli-config.yml /usr/local/share/
 arduino-cli core update-index
 arduino-cli core install esp32:esp32
 arduino-cli core install esp8266:esp8266
+arduino-cli core install arduino:avr
