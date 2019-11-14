@@ -22,6 +22,11 @@
 /****************************************/
 
 /**
+ * Include the dummy avr_stl file to bring in the C++ STL
+ */
+#include <avr_stl.h>
+
+/**
  * This is where you include the 'arkCrypto.h' header.
  * This allows your project to use Ark Cpp-Crypto.
  */
