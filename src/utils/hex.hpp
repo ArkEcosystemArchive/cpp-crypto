@@ -13,6 +13,7 @@
 #include <array>
 #include <string>
 #include <vector>
+#include <cctype>
 
 /**
  * Hex Helpers
@@ -48,7 +49,7 @@ inline std::string BytesToHex(const T& vch) {
 
 namespace {
 constexpr size_t HEX_TABLE_LEN = 256U;
-constexpr std::array<int8_t, HEX_TABLE_LEN> HexTable = {{
+const std::array<int8_t, HEX_TABLE_LEN> HexTable = {{
     #include "utils/hex.table"
 }};
 }  // namespace

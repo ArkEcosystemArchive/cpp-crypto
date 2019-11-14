@@ -2,6 +2,8 @@
 #include "transactions/transaction.h"
 
 #include <cstdlib>
+#include <cinttypes>
+#include <cstdint>
 #include <map>
 #include <string>
 #include <vector>

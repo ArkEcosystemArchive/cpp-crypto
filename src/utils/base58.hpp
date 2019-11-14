@@ -12,6 +12,9 @@
 
 #include "interfaces/identities.hpp"
 
+#include <string>
+#include <cstdint>
+
 namespace Ark {
 namespace Crypto {
 

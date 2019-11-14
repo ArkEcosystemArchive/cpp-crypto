@@ -13,10 +13,11 @@
 #include <array>
 #include <string>
 #include <vector>
+#include <cctype>
 
 namespace {
 const size_t ALPHANUM_TABLE_LEN = 128U;
-constexpr std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
+const std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
     #include "utils/str.table"
 }};
 }  // namespace
