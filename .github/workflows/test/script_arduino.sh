@@ -14,4 +14,4 @@ arduino-cli compile --output temp.bin -b esp32:esp32:esp32 ~/Arduino/libraries/c
 
 arduino-cli compile --output temp.bin -b esp8266:esp8266:nodemcu ~/Arduino/libraries/cpp-crypto/examples/arduino/ESP8266/ESP8266.ino --debug
 
-arduino-cli compile --output temp.bin -v -b arduino:avr:uno ~/Arduino/libraries/cpp-crypto/examples/arduino/ATMEGA328P/ATMEGA328P.ino --debug
+arduino-cli compile --output temp.bin -v -b arduino:avr:uno --build-properties build.extra_flags=-D__avr_libc_does_not_implement_long_long_in_printf_or_scanf ~/Arduino/libraries/cpp-crypto/examples/arduino/ATMEGA328P/ATMEGA328P.ino --debug
