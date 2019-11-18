@@ -27,7 +27,6 @@ namespace {
 constexpr const char* MESSAGE_KEY    = "message";
 constexpr const char* PUBLICKEY_KEY  = "publickey";
 constexpr const char* SIGNATURE_KEY  = "signature";
-constexpr const size_t MAGIC_JSON_SIZE = 120U;
 }  // namespace
 
 // Create an empty Message object for building and signing.
@@ -83,12 +82,13 @@ Message::toArray() const {
 
 // Create a Json'ified string of the Signed Message.
 std::string Message::toJson() const {
+  const size_t MAGIC_JSON_SIZE = 120U;
   std::map<std::string, std::string> messageArray = this->toArray();
 
   const size_t docLength = this->message.length() +
-                           (PUBLICKEY_COMPRESSED_BYTE_LEN + 1) +  // + `/0` 
-                           (Curve::Ecdsa::MAX_SIG_LEN + 1);       // + `/0` 
-                           
+                           (PUBLICKEY_COMPRESSED_BYTE_LEN + 1) +  // + `/0`
+                           (Curve::Ecdsa::MAX_SIG_LEN + 1);       // + `/0`
+
   const size_t docCapacity = JSON_OBJECT_SIZE(3) + docLength + MAGIC_JSON_SIZE;
   DynamicJsonDocument doc(docCapacity);
 

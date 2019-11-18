@@ -15,18 +15,16 @@
 #include <vector>
 #include <cctype>
 
-namespace {
-const size_t ALPHANUM_TABLE_LEN = 128U;
-const std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
-    #include "utils/str.table"
-}};
-}  // namespace
-
 /**/
 
 // Checks string length with bounds and char checking.
 // returned length excludes the null terminator.
 inline size_t strlenSafe(const char* str) {
+  const size_t ALPHANUM_TABLE_LEN = 128U;
+  const std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
+      #include "utils/str.table"
+  }};
+
   size_t count = 0;
   while (str[count] != 0 ||
          isspace(str[count]) ||

@@ -61,20 +61,20 @@
 
   namespace Ark {
   namespace Crypto {
-  namespace {
-  constexpr const uint8_t TIMESTAMP_LEN = 24U;
-  constexpr const uint8_t OFFSET_YEAR    = 0U;
-  constexpr const uint8_t OFFSET_MONTH   = 5U;
-  constexpr const uint8_t OFFSET_DAY     = 8U;
-  constexpr const uint8_t OFFSET_HOUR    = 11U;
-  constexpr const uint8_t OFFSET_MINUTE  = 14U;
-  constexpr const uint8_t OFFSET_SECOND  = 17U;
-  constexpr const uint8_t BASE10         = 10U;
-  constexpr const uint16_t YEAR_1900     = 1900U;
-  }  // namespace
+
 
   // Get the Epoch of a given Network.
   uint64_t Slot::epoch(const Ark::Crypto::Network& network) {
+    const uint8_t TIMESTAMP_LEN = 24U;
+    const uint8_t OFFSET_YEAR    = 0U;
+    const uint8_t OFFSET_MONTH   = 5U;
+    const uint8_t OFFSET_DAY     = 8U;
+    const uint8_t OFFSET_HOUR    = 11U;
+    const uint8_t OFFSET_MINUTE  = 14U;
+    const uint8_t OFFSET_SECOND  = 17U;
+    const uint8_t BASE10         = 10U;
+    const uint16_t YEAR_1900     = 1900U;
+
     //  If unexpected ISO 8601 date/time length
     if (network.epoch.length() != TIMESTAMP_LEN) {
       return 0ULL;
