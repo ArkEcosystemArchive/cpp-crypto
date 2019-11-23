@@ -1,433 +1,526 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
-#include "transactions/transaction.h"
+#include "transactions/transaction.hpp"
 
-#include <cstdlib>
+#include <cstddef>
+#include <cstdint>
 #include <map>
 #include <string>
 #include <vector>
 
 #include "crypto/curve.hpp"
 #include "crypto/hash.hpp"
-#include "defaults/transaction_types.hpp"
-#include "identities/address.hpp"
+
 #include "identities/keys.hpp"
-#include "identities/privatekey.hpp"
+
+#include "transactions/deserializer.hpp"
+#include "transactions/serializer.hpp"
+
+#include "transactions/defaults/offsets.hpp"
+
+#include "transactions/transaction_data.hpp"
+
 #include "utils/base58.hpp"
-#include "utils/crypto_helpers.h"
 #include "utils/hex.hpp"
 #include "utils/json.h"
+#include "utils/str.hpp"
 
-using namespace Ark::Crypto::identities;
+////////////////////////////////////////////////////////////////////////////////
 
-std::string Ark::Crypto::Transactions::Transaction::getId() const {
-  auto bytes = this->toBytes(false, false);
-  const auto hash = Ark::Crypto::Hash::sha256(bytes.data(), bytes.size());
-  memcpy(bytes.data(), hash.data(), HASH_32_BYTE_LEN);
-  return BytesToHex(bytes.begin(), bytes.begin() + HASH_32_BYTE_LEN);
+namespace Ark {
+namespace Crypto {
+namespace transactions {
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Compute the unique transaction ID.
+auto Transaction::getId() const -> Hash32 {
+    const auto serialized = this->toBytes(false, false);
+    return Hash::sha256(serialized.data(), serialized.size());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-std::string Ark::Crypto::Transactions::Transaction::sign(
-    const char* passphrase) {
-  auto keys = Keys::fromPassphrase(passphrase);
-  this->senderPublicKey = BytesToHex(keys.publicKey);
-
-  const auto bytes = this->toBytes();
-  const auto hash = Ark::Crypto::Hash::sha256(&bytes[0], bytes.size());
-  const auto pk = Keys::PrivateKey::fromPassphrase(passphrase);
-
-  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
-  Ark::Crypto::Curve::Ecdsa::sign(hash.data(), pk.data(), buffer);
-
-  this->signature = BytesToHex(buffer.begin(), buffer.end());
-  return this->signature;
-}
-
-/**/
-
-std::string Ark::Crypto::Transactions::Transaction::secondSign(
-    const char* passphrase) {
-  const auto bytes = this->toBytes(false);
-  const auto hash = Ark::Crypto::Hash::sha256(&bytes[0], bytes.size());
-  const auto pk = Keys::PrivateKey::fromPassphrase(passphrase);
-
-  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
-  Ark::Crypto::Curve::Ecdsa::sign(hash.data(), pk.data(), buffer);
-
-  this->secondSignature = BytesToHex(buffer.begin(), buffer.end());
-  return this->secondSignature;
-}
-
-/**/
-
-bool Ark::Crypto::Transactions::Transaction::verify() const {
-  return this->internalVerify(
-      this->senderPublicKey,
-      this->toBytes(),
-      this->signature);
-}
-
-/**/
-
-bool Ark::Crypto::Transactions::Transaction::secondVerify(
-    const char* secondPublicKey) const {
-  std::string secondPublicKeyString = secondPublicKey;
-  return this->internalVerify(
-      secondPublicKeyString,
-      this->toBytes(false),
-      this->secondSignature);
-}
-
-/**/
-
-bool Ark::Crypto::Transactions::Transaction::internalVerify(
-    const std::string& publicKey,
-    std::vector<uint8_t> bytes,
-    const std::string& signature) const {
-  if (bytes.empty()) { return false; };
-  const auto hash = Ark::Crypto::Hash::sha256(bytes.data(), bytes.size());
-  const auto key = identities::PublicKey::fromHex(publicKey.c_str());
-  auto signatureBytes = HexToBytes(signature.c_str());
-
-  return Ark::Crypto::Curve::Ecdsa::verify(hash.data(),
-                                           key.toBytes().data(),
-                                           signatureBytes);
-}
-
-/**/
-
-std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
-    bool skipSignature,
-    bool skipSecondSignature) const {
-  std::vector<uint8_t> bytes;
-
-  if (this->type == 0 && amount < 1ULL) { return bytes; };
-
-  pack(bytes, this->type);
-  pack(bytes, this->timestamp);
-
-  const auto senderKeyBytes = HexToBytes(
-      this->senderPublicKey.c_str());
-  bytes.insert(
-      std::end(bytes),
-      std::begin(senderKeyBytes),
-      std::end(senderKeyBytes));
-
-  const auto skiprecipient =
-    type == TransactionTypes::SecondSignatureRegistration
-    || type ==TransactionTypes::MultiSignatureRegistration;
-
-  if (!this->recipient.empty() && !skiprecipient) {
-    const auto hashPair = Base58::getHashPair(this->recipient.c_str());
-    pack(bytes, hashPair.version);
-    bytes.insert(std::end(bytes),
-                 hashPair.pubkeyHash.begin(),
-                 hashPair.pubkeyHash.end());
-  } else {
-    std::vector<uint8_t> filler(21, 0);
-    bytes.insert(
-        std::end(bytes),
-        std::begin(filler),
-        std::end(filler));
-  };
-
-  if (!this->vendorField.empty() && vendorField.length() <= 255) {
-    bytes.insert(
-        std::end(bytes),
-        std::begin(this->vendorField),
-        std::end(this->vendorField));
-    size_t diff = 64 - vendorField.length();
-    if (diff > 0) {
-      std::vector<uint8_t> filler(diff, 0);
-      bytes.insert(
-          std::end(bytes),
-          std::begin(filler),
-          std::end(filler));
-    };
-  } else {
-    std::vector<uint8_t> filler(64, 0);
-    bytes.insert(
-        std::end(bytes),
-        std::begin(filler),
-        std::end(filler));
-  };
-
-  pack(bytes, this->amount);
-  pack(bytes, this->fee);
-
-  if (type == TransactionTypes::SecondSignatureRegistration) {
-    // SECOND_SIGNATURE_REGISTRATION
-    const auto publicKeyBytes = HexToBytes(
-        this->asset.signature.publicKey.c_str());
-    bytes.insert(
-        std::end(bytes),
-        std::begin(publicKeyBytes),
-        std::end(publicKeyBytes));
-  } else if (type == TransactionTypes::DelegateRegistration) {
-    // DELEGATE_REGISTRATION
-    bytes.insert(
-        std::end(bytes),
-        std::begin(this->asset.delegate.username),
-        std::end(this->asset.delegate.username));
-  } else if (type == TransactionTypes::Vote) {
-    // VOTE
-    const auto joined = join(this->asset.votes);
-    bytes.insert(
-        std::end(bytes),
-        std::begin(joined),
-        std::end(joined));
-  } else if (type == TransactionTypes::MultiSignatureRegistration) {
-    // MULTI_SIGNATURE_REGISTRATION
-    pack(bytes, this->asset.multiSignature.min);
-    pack(bytes, this->asset.multiSignature.lifetime);
-    const auto joined = join(this->asset.multiSignature.keysgroup);
-    bytes.insert(
-        std::end(bytes),
-        std::begin(joined),
-        std::end(joined));
-  };
-
-  if (!skipSignature && !this->signature.empty()) {
-    const auto signatureBytes = HexToBytes(this->signature.c_str());
-    bytes.insert(
-        std::end(bytes),
-        std::begin(signatureBytes),
-        std::end(signatureBytes));
-  };
-
-  if (!skipSecondSignature && !this->secondSignature.empty()) {
-    const auto secondSignatureBytes = HexToBytes(
-        this->secondSignature.c_str());
-    bytes.insert(
-        std::end(bytes),
-        std::begin(secondSignatureBytes),
-        std::end(secondSignatureBytes));
-  };
-
-  return bytes;
-}
-
-/**/
-
-std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() const {
-  //  buffers for variable and non-string type-values.
-  char amount[24] = {};
-  char assetName[16] = {};
-  char assetValue[512] = {};
-  char fee[24] = {};
-  char network[8] = {};
-  char signatures[512] = {};
-  char timestamp[36] = {};
-  char type[8] = {};
-  char version[8] = {};
-
-  //  Amount
-  snprintf(amount, sizeof(amount), "%" PRIu64, this->amount);
-
-  //  Asset
-  if (this->type == 0) {
-    // Transfer
-    // do nothing
-  }
-  else if (this->type == 1) {
-    //  Second Signature Registration
-    memmove(assetName, "publicKey", 10);
-    memmove(assetValue,
-           this->asset.signature.publicKey.c_str(),
-           this->asset.signature.publicKey.length() + 1);
-  }
-  else if (this->type == 2) {
-    // Delegate Registration
-    memmove(assetName, "username", 9);
-    memmove(assetValue,
-           this->asset.delegate.username.c_str(),
-           this->asset.delegate.username.length() + 1);
-  }
-  else if (this->type == 3) {
-    // Vote
-    memmove(assetName, "votes", 6);
-    for (unsigned int i = 0U; i < this->asset.votes.size(); ++i) {
-      uint8_t offset = i * this->asset.votes[i].length();
-      memmove(assetValue + offset + (i == 0U ? 0U : 1U),
-              this->asset.votes[i].c_str(),
-              this->asset.votes[i].length());
-      if (i > 0 && i < this->asset.votes.size()) {
-        memmove(assetValue + offset, ",", 1);
-      }
+// Sign the transaction using a passphrase.
+auto Transaction::sign(const std::string &passphrase) -> bool {
+    if (passphrase.empty()) {
+        return false;
     }
 
-  // } else if (this->type == 4) {  //  Multisignature Registration
-  //   //  TODO
-  // } else if (this->type == 5) {  //  IPFS
-  //   //  TBD
-  // } else if (this->type == 6) {  //  Timelock Registration
-  //   //  TBD
-  // } else if (this->type == 7) {  //  Multi-Payment
-  //   //  TBD
-  // } else if (this->type == 8) {  //  Delegate Resignation
-  //   //  TBD
-  };
+    const auto keys = identities::Keys::fromPassphrase(passphrase.c_str());
 
-  //  Fee
-  snprintf(fee, sizeof(fee), "%" PRIu64,  this->fee);
+    memmove(&this->data.senderPublicKey,
+            keys.publicKey.data(),
+            PUBLICKEY_COMPRESSED_LEN);
 
-  //  Signatures
-  for (unsigned int i = 0U; i < this->signatures.size(); ++i) {
-      uint8_t offset = i * this->signatures[i].length();
-      memmove(signatures + offset + (i == 0U ? 0U : 1U),
-              this->signatures[i].c_str(),
-              this->signatures[i].length());
-    if (i > 1U && i < this->signatures.size()) {
-      memmove(signatures + i * this->signatures[i].length(), ",", 1);
+    const auto serialized = this->toBytes(true, true);
+    const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
+
+    this->data.signature.reserve(SIGNATURE_ECDSA_MAX);
+
+    return Curve::Ecdsa::sign(hash32.data(),
+                              keys.privateKey.data(),
+                              &this->data.signature);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Sign the Transaction using a Second Passphrase.
+auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
+    if (this->data.signature.empty() || secondPassphrase.empty()) {
+        return false;
     }
-  }
 
-  //  Network
-  snprintf(network, sizeof(network), "%d", this->network);
+    const auto keys = identities::Keys::fromPassphrase(secondPassphrase.c_str());
 
-  //  Timestamp
-  snprintf(timestamp, sizeof(timestamp), "%" PRIu32, this->timestamp);
+    const auto serialized = this->toBytes(false, true);
+    const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
-  //  Type
-  snprintf(type, sizeof(type), "%u", this->type);
-
-  //  Version
-  snprintf(version, sizeof(version), "%u", this->version);
-
-  return {
-    { "amount", amount },
-    { assetName, assetValue },
-    { "fee", fee },
-    { "id", this->id },
-    { "network", network },
-    { "recipient", this->recipient },
-    { "secondSignature", this->secondSignature },
-    { "senderPublicKey", this->senderPublicKey },
-    { "signature", this->signature },
-    { "signatures", signatures },
-    { "signSignature", this->signSignature },
-    { "timestamp", timestamp },
-    { "type", type },
-    { "vendorField", this->vendorField },
-    { "version", version }
-  };
+    this->data.secondSignature.reserve(SIGNATURE_ECDSA_MAX);
+    
+    return Curve::Ecdsa::sign(hash32.data(),
+                              keys.privateKey.data(),
+                              &this->data.secondSignature);
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-std::string Ark::Crypto::Transactions::Transaction::toJson() const {
-  std::map<std::string, std::string> txArray = this->toArray();
+// Verify the Transaction.
+auto Transaction::verify() const -> bool {
+    // skip both signatures,
+    // neither should be present in the signing hash.
+    const auto serialized = this->toBytes(true, true);
+    const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
-  // Update this value if the size of the JSON document changes
-  static const size_t docCapacity = 913;
-
-  DynamicJsonDocument doc(docCapacity);
-
-  //  Amount
-  // >= Core v.2.5 'amount' json is string-type
-  doc["amount"] = txArray["amount"];
-
-  //  Asset
-  if (this->type == 0) {
-    // Transfer
-    //do nothing
-  } else if (this->type == 1) {
-    // Second Signature Registration
-    JsonObject tAsset = doc.createNestedObject("asset");
-    JsonObject signature = tAsset.createNestedObject("signature");
-    signature["publicKey"] = txArray["publicKey"];
-  } else if (this->type == 2) {
-    // Delegate Registration
-    JsonObject dAsset = doc.createNestedObject("asset");
-    JsonObject delegate = dAsset.createNestedObject("delegate");
-    delegate["username"] = txArray["username"];
-  } else if (this->type == 3) {
-    //  Vote
-    JsonObject vAsset = doc.createNestedObject("asset");
-    JsonArray votes = vAsset.createNestedArray("votes");
-
-    std::string::size_type lastPos = txArray["votes"].find_first_not_of(',', 0);
-    std::string::size_type pos = txArray["votes"].find_first_of(',', lastPos);
-    while (std::string::npos != pos || std::string::npos != lastPos) {
-      votes.add(txArray["votes"].substr(lastPos, pos - lastPos));
-      lastPos = txArray["votes"].find_first_not_of(',', pos);
-      pos = txArray["votes"].find_first_of(',', lastPos);
-    };
-
-  // } else if (this->type == 4) {  //  Multisignature Registration
-  //   //  TODO
-  // } else if (this->type == 5) {  //  IPFS
-  //   //  TBD
-  // } else if (this->type == 6) {  //  Timelock Registration
-  //   //  TBD
-  // } else if (this->type == 7) {  //  Multi-Payment
-  //   //  TBD
-  // } else if (this->type == 8) {  //  Delegate Resignation
-  //   //  TBD
-  };
-
-  //  Fee
-  // >= Core v.2.5 'fee' json is string-type
-  doc["fee"] = txArray["fee"];
-
-  //  Id
-  doc["id"] = txArray["id"];
-
-  //  Network
-  if (txArray["network"] != "0") {
-    doc["network"] = atoi(txArray["network"].c_str());
-  };
-
-  //  recipient
-  doc["recipient"] = txArray["recipient"];
-
-  //  SecondSignature
-  if (txArray["secondSignature"].length() > 0U) {
-    doc["secondSignature"] = txArray["secondSignature"];
-  };
-
-  //  SenderPublicKey
-  doc["senderPublicKey"] = txArray["senderPublicKey"];
-
-  //  Signature
-  doc["signature"] = txArray["signature"];
-
-  //  Signatures
-  if (!this->signatures.empty()) {
-    JsonArray signatures = doc.createNestedArray("signatures");
-    std::string::size_type lastPos = txArray["signatures"].find_first_not_of(',', 0);
-    std::string::size_type pos = txArray["signatures"].find_first_of(',', lastPos);
-    while (std::string::npos != pos || std::string::npos != lastPos) {
-      signatures.add(txArray["signatures"].substr(lastPos, pos - lastPos));
-      lastPos = txArray["signatures"].find_first_not_of(',', pos);
-      pos = txArray["signatures"].find_first_of(',', lastPos);
-    };
-  };
-
-  //  SignSignature
-  if (txArray["signSignature"].length() > 0U) {
-    doc["signSignature"] = txArray["signSignature"];
-  };
-
-  //  Timestamp
-  doc["timestamp"] = strtoul(txArray["timestamp"].c_str(), nullptr, 10);
-
-  //  Type
-  doc["type"] = atoi(txArray["type"].c_str());
-
-  //  VendorField
-  if (txArray["vendorField"].length() > 0U) {
-    doc["vendorField"] = txArray["vendorField"];
-  };
-
-  //  Version
-  if (txArray["version"] != "0") {
-    doc["version"] = atoi(txArray["version"].c_str());
-  };
-
-  char jsonChar[docCapacity];
-  serializeJson(doc, jsonChar, docCapacity);
-
-  return jsonChar;
+    return Curve::Ecdsa::verify(hash32.data(),
+                                this->data.senderPublicKey.data(),
+                                this->data.signature);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Verify the Transaction using a Second PublicKey.
+auto Transaction::secondVerify(const uint8_t *secondPublicKey) const -> bool {
+    // include only the first signature,
+    // that should be present signing hash for a second signing.
+    const auto serialized = this->toBytes(false, true);
+    const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
+
+    return Curve::Ecdsa::verify(hash32.data(),
+                                secondPublicKey,
+                                this->data.secondSignature);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Deserialize the given Hex string via AIP11.
+auto Transaction::deserialize(const std::vector<uint8_t> &serialized) -> bool {
+    return Deserializer::deserialize(&this->data, serialized);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Serialize the object via AIP11.
+auto Transaction::serialize() -> std::vector<uint8_t> {
+    return Serializer::serialize(this->data);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Turn the Transaction into its byte representation.
+auto Transaction::toBytes(bool excludeSignature,
+                          bool excludeSecondSignature) const
+                                -> std::vector<uint8_t> {
+    return Serializer::serialize(this->data,
+                                 { excludeSignature, excludeSecondSignature });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Turn the transaction into a standardized array.
+//
+// This concept of an array in is quite different compared to other ARK SDKs.
+// C++11 doesn't have an 'Any' type, so we'll need to use a string map here.
+//
+// Json Sizes are approximated using 'https://arduinojson.org/v6/assistant/'
+//
+// --
+auto Transaction::toMap() const -> std::map<std::string, std::string> {
+    std::map<std::string, std::string> map;
+
+    size_t txSize       = 0UL;
+    size_t jsonSize     = 0UL;
+
+    // Start with the Transaction's Asset.
+    switch (this->data.type) {
+        // Tranfer
+        case TRANSFER_TYPE: {
+            map = Transfer::getMap(this->data.asset.transfer);
+            txSize = TRANSACTION_TYPE_TRANSFER_SIZE;
+            const auto extraBytes = 413;
+            jsonSize = JSON_OBJECT_SIZE(11) + extraBytes;
+            break;
+        }
+
+        // Second Signature Registration
+        case SECOND_SIGNATURE_TYPE: {
+            map = SecondSignature::getMap(this->data.asset.secondSignature);
+            txSize = PUBLICKEY_COMPRESSED_LEN;
+            const auto extraBytes = 438;
+            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
+                       JSON_OBJECT_SIZE(9) +
+                       extraBytes;
+            break;
+        }
+
+        // Delegate Registration
+        case DELEGATE_REGISTRATION_TYPE: {
+            map = DelegateRegistration::getMap(
+                    this->data.asset.delegateRegistration);
+            txSize = strtol(map["usernameLen"].c_str(), nullptr, BASE_10);
+            const auto extraBytes = 382;
+            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
+                       JSON_OBJECT_SIZE(9) +
+                       extraBytes;
+            break;
+        }
+
+        // Vote
+        case VOTE_TYPE: {
+            map = Vote::getMap(this->data.asset.vote);
+            txSize = VOTES_LEN;
+            const auto extraBytes = 427;
+            jsonSize = JSON_ARRAY_SIZE(1) +
+                       JSON_OBJECT_SIZE(1) +
+                       JSON_OBJECT_SIZE(9) +
+                       extraBytes;
+            break;
+        }
+
+        // MultiSignature Registration
+        // case MULTI_SIGNATURE_TYPE:  // TODO
+
+        // Ipfs
+        case IPFS_TYPE: {
+            map = Ipfs::getMap(this->data.asset.ipfs);
+            txSize = strtol(map["ipfsLen"].c_str(), nullptr, BASE_10);
+            const auto extraBytes = 403;
+            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
+                       JSON_OBJECT_SIZE(9) +
+                       extraBytes;
+            break;
+        }
+
+        // MultiPayment
+        case MULTI_PAYMENT_TYPE: {
+            map = MultiPayment::getMap(this->data.asset.multiPayment);
+            const auto n_payments = strtol(map["n_payments"].c_str(),
+                                           nullptr,
+                                           BASE_10);
+            txSize = n_payments * (sizeof(uint64_t) + ADDRESS_STR_LEN);
+            const auto extraBytes = (40 * n_payments);
+            jsonSize = JSON_ARRAY_SIZE(n_payments) +
+                       JSON_OBJECT_SIZE(1) +
+                       (n_payments * JSON_OBJECT_SIZE(2)) +
+                       JSON_OBJECT_SIZE(9) +
+                       extraBytes;
+            break;
+        }
+
+        // Delegate Resignation
+        case DELEGATE_RESIGNATION_TYPE: {
+            const auto extraBytes = 348;
+            jsonSize = JSON_OBJECT_SIZE(8) + extraBytes;
+            break;
+        }
+
+        // Htlc Lock
+        case HTLC_LOCK_TYPE: {
+            map = HtlcLock::getMap(this->data.asset.htlcLock);
+            txSize = HTLC_LOCK_SIZE;
+            const auto extraBytes = 509;
+            jsonSize = JSON_OBJECT_SIZE(1) +
+                       (2 * JSON_OBJECT_SIZE(2)) +
+                       JSON_OBJECT_SIZE(11) +
+                       extraBytes;
+            break;
+        }
+
+        // Htlc Claim
+        case HTLC_CLAIM_TYPE: {
+            map = HtlcClaim::getMap(this->data.asset.htlcClaim);
+            txSize = HASH_64_LEN;
+            const auto extraBytes = 480;
+            jsonSize = JSON_OBJECT_SIZE(1) +
+                       JSON_OBJECT_SIZE(2) +
+                       JSON_OBJECT_SIZE(9) +
+                       extraBytes;
+            break;
+        }
+
+        // Htlc Refund
+        case HTLC_REFUND_TYPE: {
+            map = HtlcRefund::getMap(this->data.asset.htlcRefund);
+            txSize = HASH_32_LEN;
+            const auto extraBytes = 435;
+            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
+                       JSON_OBJECT_SIZE(9) +
+                       extraBytes;
+            break;
+        }
+
+        default: return {};
+    }
+
+    // Continue with the Common variables
+    
+    //  Version
+    map.emplace("version", UintToString(this->data.version));
+
+    //  Network
+    map.emplace("network", UintToString(this->data.network));
+
+    //  Type
+    map.emplace("type", UintToString(this->data.type));
+
+    if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
+        // Nonce
+        map.emplace("nonce", UintToString(this->data.nonce));
+    }
+    else if (this->data.version == TRANSACTION_VERSION_TYPE_1) {
+        // Timestamp
+        map.emplace("timestamp", UintToString(this->data.timestamp));
+    }
+
+    // Sender PublicKey
+    map.emplace("senderPublicKey", BytesToHex(this->data.senderPublicKey));
+
+    //  Fee
+    map.emplace("fee", UintToString(this->data.fee));
+
+    // VendorField
+    if (!this->data.vendorField.empty()) {
+        map.emplace("vendorField", BytesToHex(this->data.vendorField));
+        txSize += this->data.vendorField.size();
+    }
+
+    // Signature
+    if (!this->data.signature.empty()) {
+        map.emplace("signature", BytesToHex(this->data.signature));
+    }
+
+    // Second Signature
+    if (!this->data.secondSignature.empty()) {
+        map.emplace("secondSignature", BytesToHex(this->data.secondSignature));
+    }
+
+    // Transaction Id
+    map.emplace("id", BytesToHex(this->getId()));
+
+    if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
+        txSize += VF_OFFSET;
+    }
+    else if (this->data.version == TRANSACTION_VERSION_TYPE_1) {
+        txSize += v1::VF_OFFSET;
+    }
+
+    map.emplace("txSize", UintToString(txSize));
+    map.emplace("jsonSize", UintToString(jsonSize));
+
+    return map;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Turn the Transaction into a JSON string using `toMap` as the source.
+auto Transaction::toJson() const -> std::string {
+    auto txArray = this->toMap();
+
+    const auto jsonSize = strtol(txArray["jsonSize"].c_str(), nullptr, BASE_10);
+    const auto docCapacity = jsonSize;
+    DynamicJsonDocument doc(docCapacity);
+
+    // Version
+    doc["version"] = strtol(txArray["version"].c_str(), nullptr, BASE_10);
+
+    // Network
+    doc["network"] = strtol(txArray["network"].c_str(), nullptr, BASE_10);
+
+    // Type
+    doc["type"] = strtol(txArray["type"].c_str(), nullptr, BASE_10);
+
+    if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
+        // Nonce
+        doc["nonce"] = txArray["nonce"];
+    }
+    else if (this->data.version == TRANSACTION_VERSION_TYPE_1) {
+        // Timestamp
+        doc["timestamp"] = txArray["timestamp"];
+    }
+
+    // Sender PublicKey
+    doc["senderPublicKey"] = txArray["senderPublicKey"];
+
+    // Fee
+    doc["fee"] = txArray["fee"];
+
+    // VendorField
+    if (!this->data.vendorField.empty()) {
+        doc["vendorField"] = txArray["vendorField"];
+    }
+
+    // Assets
+    switch (this->data.type) {
+        // Tranfer
+        case TRANSFER_TYPE: {
+            // Amount
+            doc["amount"] = txArray["amount"];
+            // Expiration
+            doc["expiration"] = strtol(txArray["expiration"].c_str(),
+                                       nullptr,
+                                       BASE_10);
+            // RecipientId
+            doc["recipientId"] = txArray["recipientId"];
+            break;
+        }
+
+        // Second Signature Registration
+        case SECOND_SIGNATURE_TYPE: {
+            JsonObject asset = doc.createNestedObject("asset");
+            JsonObject secondSignature = asset.createNestedObject("signature");
+            secondSignature["publicKey"] = txArray["publicKey"];
+            break;
+        }
+
+        // Delegate Registration
+        case DELEGATE_REGISTRATION_TYPE: {
+            JsonObject asset = doc.createNestedObject("asset");
+            JsonObject registration = asset.createNestedObject("delegate");
+            registration["username"] = txArray["username"];
+            break;
+        }
+
+        // Vote
+        case VOTE_TYPE: {
+            JsonObject asset = doc.createNestedObject("asset");
+            JsonArray votes = asset.createNestedArray("votes");
+            votes.add(txArray["votes"]);
+            break;
+        }
+
+        // MultiSignature Registration
+        // case MULTI_SIGNATURE_TYPE:  // TODO
+
+        // Ipfs
+        case IPFS_TYPE: {
+            JsonObject asset = doc.createNestedObject("asset");
+            asset["ipfs"] = txArray["ipfs"];
+            break;
+        }
+
+        // MultiPayment
+        case MULTI_PAYMENT_TYPE: {
+            JsonObject asset = doc.createNestedObject("asset");
+            JsonArray payments = asset.createNestedArray("payments");
+
+            const auto paymentsStr = txArray["amounts"];
+            const auto addressesStr = txArray["addresses"];
+            const auto n_payments = strtol(txArray["n_payments"].c_str(),
+                                           nullptr,
+                                           BASE_10);
+
+            for (uint8_t i = 0U; i < n_payments; ++i) {
+                JsonObject payment_n = payments.createNestedObject();
+
+                payment_n["amount"] = paymentsStr
+                        .substr(0, paymentsStr.find(',', 0));
+
+                payment_n["recipientId"] = addressesStr
+                    .substr(i + (i * ADDRESS_STR_LEN), ADDRESS_STR_LEN);
+            }
+
+            break;
+        }
+
+        // Delegate Resignation
+        case DELEGATE_RESIGNATION_TYPE: { break; }
+
+        // HTLC Lock
+        case HTLC_LOCK_TYPE: {
+            // Amount
+            doc["amount"] = txArray["amount"];
+            // RecipientId
+            doc["recipientId"] = txArray["recipientId"];
+
+            JsonObject asset = doc.createNestedObject("asset");
+            JsonObject lock = asset.createNestedObject("lock");
+            // Secret Hash
+            lock["secretHash"] = txArray["secretHash"];
+
+            JsonObject expiration = lock.createNestedObject("expiration");
+            // Expiration Type
+            expiration["type"] = strtol(txArray["expirationType"].c_str(),
+                                        nullptr,
+                                        BASE_10);
+            // Expiration Value
+            expiration["value"] = strtol(txArray["expiration"].c_str(),
+                                         nullptr,
+                                         BASE_10);
+            break;
+        }
+
+        // HTLC Claim
+        case HTLC_CLAIM_TYPE: {
+            JsonObject asset = doc.createNestedObject("asset");
+            JsonObject claim = asset.createNestedObject("claim");
+            // Lock Transaction Id
+            claim["lockTransactionId"] = txArray["lockTransactionId"];
+            // Unlock Secret
+            claim["unlockSecret"] = txArray["unlockSecret"];
+            break;
+        }
+
+        // HTLC Refund
+        case HTLC_REFUND_TYPE: {
+            JsonObject asset = doc.createNestedObject("asset");
+            JsonObject refund = asset.createNestedObject("refund");
+            // Lock Transaction Id
+            refund["lockTransactionId"] = txArray["lockTransactionId"];
+            break;
+        }
+
+        default: return {};
+    }
+
+    // Signature
+    if (!this->data.signature.empty()) {
+        doc["signature"] = txArray["signature"];
+    }
+
+    // Second Signature
+    if (!this->data.secondSignature.empty()) {
+        doc["secondSignature"] = txArray["secondSignature"];
+    }
+
+    // Transaction Id
+    doc["id"] = txArray["id"];
+
+    std::string jsonStr;
+    jsonStr.reserve(docCapacity);
+    serializeJson(doc, jsonStr);
+
+    return jsonStr;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+}  // namespace transactions
+}  // namespace Crypto
+}  // namespace Ark

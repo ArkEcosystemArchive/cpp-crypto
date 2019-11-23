@@ -7,77 +7,87 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef UTILS_HEX_HPP
-#define UTILS_HEX_HPP
+#ifndef ARK_UTILS_HEX_HPP
+#define ARK_UTILS_HEX_HPP
 
 #include <array>
 #include <string>
 #include <vector>
 
-/**
- * Hex Helpers
- **/
-template <typename T>
-inline std::string BytesToHex(
-    const T itbegin,
-    const T itend) {
-  const char hexmap[16] = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-    'a', 'b', 'c', 'd', 'e', 'f'
-  };
+#include "interfaces/constants.h"
 
-  std::string rv;
-  rv.reserve((itend - itbegin) * 3);
-  for (T it = itbegin; it < itend; ++it) {
-    const auto val = static_cast<uint8_t>(*it);
-    rv.push_back(hexmap[val >> 4]);
-    rv.push_back(hexmap[val & 15]);
-  }
-
-  return rv;
-};
-
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-inline std::string BytesToHex(const T& vch) {
-  return BytesToHex(vch.begin(), vch.end());
-};
+inline std::string BytesToHex(const T itbegin, const T itend) {
+    static const char hexmap[16] = {
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'a', 'b', 'c', 'd', 'e', 'f'
+    };
 
-/****/
+    std::string rv;
+    rv.reserve((itend - itbegin) * 3);
 
-namespace {
-constexpr size_t HEX_TABLE_LEN = 256U;
-constexpr std::array<int8_t, HEX_TABLE_LEN> HexTable = {{
+    for (T it = itbegin; it < itend; ++it) {
+        const auto val = static_cast<uint8_t>(*it);
+        rv.push_back(hexmap[val >> 4]);
+        rv.push_back(hexmap[val & 15]);
+    }
+
+    return rv;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename T> inline std::string BytesToHex(const T& vch) {
+    return BytesToHex(vch.begin(), vch.end());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+static constexpr size_t HEX_TABLE_LEN = 256U;
+
+static constexpr std::array<int8_t, HEX_TABLE_LEN> HexTable = {{
     #include "utils/hex.table"
 }};
-}  // namespace
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
 inline int8_t HexDigit(char c) {
   return HexTable[static_cast<uint8_t>(c)];
-};
+}
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
 inline std::vector<uint8_t> HexToBytes(const char* psz) {
-  // convert hex dump to vector
-  std::vector<uint8_t> vch;
-  for (;;) {
-    while (isspace(*psz) != 0) { psz++; };
-    auto c = HexDigit(*psz++);
-    if (c == static_cast<int8_t>(-1)) { break; };
-    int8_t n = (c << 4);
-    c = HexDigit(*psz++);
-    if (c == static_cast<int8_t>(-1)) { break; };
-    n |= c;
-    vch.push_back(n);
-  };
-  return vch;
-};
+    // convert hex dump to vector
+    std::vector<uint8_t> vch;
 
-/**/
+    for (;;) {
+        while (isspace(*psz) != 0) { psz++; };
+
+        auto c = HexDigit(*psz++);
+        if (c == static_cast<int8_t>(-1)) {
+            break;
+        };
+
+        int8_t n = (c << 4);
+        c = HexDigit(*psz++);
+        if (c == static_cast<int8_t>(-1)) {
+            break;
+        };
+
+        n |= c;
+
+        vch.push_back(n);
+    }
+
+    return vch;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Hex string to Byte Array.
 // Same as HexToBytes, but using std::array.
@@ -90,19 +100,25 @@ inline std::vector<uint8_t> HexToBytes(const char* psz) {
 // Examples:
 // auto privateKeyFromHex = HexToBytesArray<>(my_privatekey_hex_string);
 // auto publicKeyFromHex = HexToBytesArray<33>(my_publickey_hex_string);
-template<size_t SIZE = 32>
-inline std::array<uint8_t, SIZE> HexToBytesArray(const char* psz) {
-  if (psz == nullptr) { return {0}; };
+template<size_t SIZE = HASH_32_LEN>
+inline std::array<uint8_t, SIZE> HexToBytesArray(const char *psz) {
+    if (psz == nullptr) { return std::array<uint8_t, SIZE>();; };
 
-  std::array<uint8_t, SIZE> arr;
-  for (auto& e : arr) {
-    while (isspace(*psz) != 0) { psz++; };
-    auto a = HexTable[ static_cast<int8_t>(*psz++) ] << 4;
-    auto b = HexTable[ static_cast<int8_t>(*psz++) ];
-    if ((a | b) < 0) { return {0}; };
-    e = a |= b;
-  };
-  return arr;
+    std::array<uint8_t, SIZE> arr;
+    for (auto &e : arr) {
+        while (isspace(*psz) != 0) { psz++; };
+
+        auto a = HexTable[ static_cast<int8_t>(*psz++) ] << 4;
+        auto b = HexTable[ static_cast<int8_t>(*psz++) ];
+
+        if ((a | b) < 0) { return std::array<uint8_t, SIZE>(); };
+
+        e = a |= b;
+    };
+
+    return arr;
 };
+
+////////////////////////////////////////////////////////////////////////////////
 
 #endif

@@ -7,35 +7,73 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef UTILS_STR_HPP
-#define UTILS_STR_HPP
+#ifndef ARK_UTILS_STR_HPP
+#define ARK_UTILS_STR_HPP
 
+#include <algorithm>
 #include <array>
 #include <string>
 #include <vector>
 
-/**/
+#include "interfaces/constants.h"
+
+////////////////////////////////////////////////////////////////////////////////
+
+static const size_t ALPHANUM_TABLE_LEN = 128U;
+
+static constexpr std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
+    #include "utils/str.table"
+}};
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Checks string length with bounds and char checking.
 // returned length excludes the null terminator.
 inline size_t strlenSafe(const char* str) {
-  const size_t ALPHANUM_TABLE_LEN = 128U;
-  const std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
-      #include "utils/str.table"
-  }};
+    size_t count = 0;
+    while (str[count] != 0 ||
+           isspace(str[count]) ||
+           AlphaNumericTable.at(str[count] > 0)) {
+        count++;
+    };
 
-  size_t count = 0;
-  while (str[count] != 0 ||
-         isspace(str[count]) ||
-         AlphaNumericTable.at(str[count] > 0)) { count++; };
-  return count;
+    return count;
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Converts an ASCII string to a uint8_t/bytes vector representation.
 inline const std::vector<uint8_t> StringToBytes(const std::string& str) {
-  return { str.begin(), str.end() };
+    return { str.begin(), str.end() };
 };
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+inline const std::string UintToString(const uint64_t &amount) {
+    if (amount == 0ULL) {
+        return "0";
+    }
+
+    const uint8_t STRING_SIZE   = 20U;
+    const char *STRING_TABLE    = "0123456789";
+
+    std::string result;
+    result.reserve(STRING_SIZE);
+
+    uint64_t q = amount;
+
+    while (q) {
+        result += STRING_TABLE[q % BASE_10];
+        q /= BASE_10;
+    }
+
+    std::reverse(result.begin(), result.end());
+
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 #endif

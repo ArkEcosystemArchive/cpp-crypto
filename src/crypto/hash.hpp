@@ -8,17 +8,22 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef CRYPTO_HASH_HPP
-#define CRYPTO_HASH_HPP
+#ifndef ARK_CRYPTO_HASH_HPP
+#define ARK_CRYPTO_HASH_HPP
 
 #include "interfaces/identities.hpp"
 
 namespace Ark {
 namespace Crypto {
 
+////////////////////////////////////////////////////////////////////////////////
+
 struct Hash {
-  static PubkeyHash ripemd160(const uint8_t* publicKeyBytes);
-  static Hash32 sha256(const uint8_t* inputBytes, size_t size);
+    static PubkeyHash ripemd160(const uint8_t *publicKeyBytes);
+    static Hash32 sha256(const uint8_t *inputBytes, const size_t size);
+
+////////////////////////////////////////////////////////////////////////////////
+
 };
 
 }  // namespace Crypto

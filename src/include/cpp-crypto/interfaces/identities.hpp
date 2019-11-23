@@ -7,65 +7,87 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef INTERFACE_IDENTITIES_HPP
-#define INTERFACE_IDENTITIES_HPP
+#ifndef ARK_INTERFACE_IDENTITIES_HPP
+#define ARK_INTERFACE_IDENTITIES_HPP
 
 #include <array>
+#include <cstdint>
+
+#include "interfaces/constants.h"
 
 namespace Ark {
 namespace Crypto {
 
-////////// Misc //////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-const size_t BASE58_ALPHABET_LEN  = 58U;
-const size_t HASH_20_BYTE_LEN     = 20U;
-const size_t HASH_32_BYTE_LEN     = 32U;
-const size_t HASH_64_BYTE_LEN     = 64U;
+// Hash
+typedef std::array<uint8_t, HASH_32_LEN> Hash32;
 
-typedef std::array<uint8_t, HASH_32_BYTE_LEN> Hash32;
-
-////////// Identities //////////
-
-// Address
-const uint8_t ADDRESS_DEFAULT_VERSION = 0x1e;  // (30) Base58 'D' | Devnet
-const size_t  ADDRESS_STRING_LEN      = 34U;
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // PubkeyHash
 // A 20 Byte Array.
 // Used by Ripemd160 as a hash of the PublicKey.
 // An Address is derived using a Network Version-byte and a PubkeyHash.
-typedef std::array<uint8_t, HASH_20_BYTE_LEN> PubkeyHash;
+typedef std::array<uint8_t, HASH_20_LEN> PubkeyHash;
+
+////////////////////////////////////////////////////////////////////////////////
 
 // PubkeyHashPair
 //
 // Base58 version byte.
 // Ripemd160 PubkeyHash.
 struct PubkeyHashPair {
-  uint8_t version;
-  PubkeyHash pubkeyHash;
+    uint8_t version;
+    PubkeyHash pubkeyHash;
+
+    PubkeyHashPair() : version(), pubkeyHash() {}
+    PubkeyHashPair(const uint8_t version, const PubkeyHash &pubkeyHash)
+        : version(version) {
+        memmove(this->pubkeyHash.data(), pubkeyHash.data(), HASH_20_LEN);
+    }
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
+// AddressHash - 21 Bytes
+// NetworkVersion + PubkeyHash
+//
+// ex: 171dfc69b54c7fe901e91d5a9ab78388645e2427ea
+typedef std::array<uint8_t, ADDRESS_HASH_LEN> AddressHash;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 // Privatekey
-const size_t PRIVATEKEY_BYTE_LEN    = 32U;
-const size_t PRIVATEKEY_STRING_LEN  = 64U;
 typedef std::array<uint8_t, PRIVATEKEY_BYTE_LEN> PrivateKeyBytes;
 
-// PublicKey
-const size_t PUBLICKEY_COMPRESSED_BYTE_LEN    = 33U;
-const size_t PUBLICKEY_COMPRESSED_STRING_LEN  = 66U;
-const size_t PUBLICKEY_UNCOMPRESSED_BYTE_LEN  = 65U;
-typedef std::array<uint8_t, PUBLICKEY_COMPRESSED_BYTE_LEN> PublicKeyBytes;
-typedef std::array<uint8_t, PUBLICKEY_UNCOMPRESSED_BYTE_LEN> PublicKeyPoint;
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-// Wif
-const size_t WIF_DEFAULT_VERSION  = 0xaa;  // (170) Base58 'S'
-const size_t WIF_STRING_LEN       = 52U;
+// PublicKey
+typedef std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN>   PublicKeyBytes;
+typedef std::array<uint8_t, PUBLICKEY_UNCOMPRESSED_LEN> PublicKeyPoint;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // KeyPair
 struct KeyPair {
-  PrivateKeyBytes privateKey;
-  PublicKeyBytes publicKey;
+    PrivateKeyBytes privateKey;
+    PublicKeyBytes publicKey;
+
+    KeyPair() : privateKey(), publicKey() {}
+    KeyPair(const PrivateKeyBytes &privateKey, const PublicKeyBytes &publicKey) {
+        memmove(this->privateKey.data(), privateKey.data(), HASH_32_LEN);
+        memmove(this->publicKey.data(), publicKey.data(), PUBLICKEY_COMPRESSED_LEN);
+    }
 };
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

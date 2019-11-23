@@ -7,23 +7,41 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef MANAGERS_NETWORK_MANAGER_HPP
-#define MANAGERS_NETWORK_MANAGER_HPP
+#ifndef ARK_MANAGERS_NETWORK_MANAGER_HPP
+#define ARK_MANAGERS_NETWORK_MANAGER_HPP
 
 #include "common/network.hpp"
+
 #include "networks/devnet.hpp"
 
 namespace Ark {
 namespace Crypto {
 namespace managers {
 
+// Network Manager
+// Network Getter/Setter for the common/Configuration-type.
 class NetworkManager {
- public:
-  Network getNetwork() const;
-  void setNetwork(const Network& network);
+  public:
 
- protected:
-  Network network_ = Devnet;
+////////////////////////////////////////////////////////////////////////////////
+
+    auto getNetwork() const -> Network {
+        return this->network_;
+    }
+
+////////////////////////////////////////////////////////////////////////////////
+
+    void setNetwork(const Network &network) {
+        this->network_ = network;
+    }
+
+////////////////////////////////////////////////////////////////////////////////
+
+  protected:
+    Network network_ = Devnet;
+
+////////////////////////////////////////////////////////////////////////////////
+
 };
 
 }  // namespace managers

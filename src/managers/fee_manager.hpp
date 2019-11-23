@@ -1,3 +1,4 @@
+
 /**
  * This file is part of Ark Cpp Crypto.
  *
@@ -7,27 +8,58 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef MANAGERS_FEE_MANAGER_HPP
-#define MANAGERS_FEE_MANAGER_HPP
+#ifndef ARK_MANAGERS_FEE_MANAGER_HPP
+#define ARK_MANAGERS_FEE_MANAGER_HPP
 
 #include "common/fee_policy.hpp"
-#include "defaults/static_fees.hpp"
+
+#include "transactions/defaults/fees.hpp"
 
 namespace Ark {
 namespace Crypto {
 namespace managers {
 
+////////////////////////////////////////////////////////////////////////////////
+
+// FeeManager
+// Fee Getter/Setter for the common/Configuration-type.
 class FeeManager {
- public:
-  uint64_t getFee(uint8_t type) const ;
-  void setFee(uint8_t type, uint64_t amount);
+  public:
 
-  FeePolicy getPolicy() const;
-  void setPolicy(const FeePolicy& policy);
+////////////////////////////////////////////////////////////////////////////////
 
- protected:
-  FeePolicy feePolicy_ = StaticFeePolicy;
+    auto getFee(const uint8_t type) const -> uint64_t {
+      return type < this->feePolicy_.size() ? this->feePolicy_.at(type) : 0ULL;
+    }
+  
+////////////////////////////////////////////////////////////////////////////////
+
+    void setFee(const uint8_t type, const uint64_t amount) {
+        this->feePolicy_.insert(this->feePolicy_.begin() + type, amount);
+    }
+
+////////////////////////////////////////////////////////////////////////////////
+
+    auto getPolicy() const -> FeePolicy {
+        return this->feePolicy_;
+    }
+
+////////////////////////////////////////////////////////////////////////////////
+
+    void setPolicy(const FeePolicy &policy){
+        this->feePolicy_ = policy;
+    }
+
+////////////////////////////////////////////////////////////////////////////////
+
+  protected:
+    FeePolicy feePolicy_ = transactions::StaticFeePolicy;
+
+////////////////////////////////////////////////////////////////////////////////
+
 };
+
+////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace managers
 }  // namespace Crypto

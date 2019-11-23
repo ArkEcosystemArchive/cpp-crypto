@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef IDENTITIES_PRIVATEKEY_HPP
-#define IDENTITIES_PRIVATEKEY_HPP
+#ifndef ARK_IDENTITIES_PRIVATEKEY_HPP
+#define ARK_IDENTITIES_PRIVATEKEY_HPP
 
 #include <string>
 
@@ -18,19 +18,23 @@ namespace Ark {
 namespace Crypto {
 namespace identities {
 
+////////////////////////////////////////////////////////////////////////////////
+
 class PrivateKey {
- public:
-  explicit PrivateKey(const PrivateKeyBytes& privateKeyBytes);
+  public:
+    explicit PrivateKey(const PrivateKeyBytes &privateKeyBytes);
 
-  PrivateKeyBytes toBytes() const noexcept;
-  std::string toString() const;
+    PrivateKeyBytes toBytes() const noexcept;
+    std::string toString() const;
 
-  static PrivateKey fromPassphrase(const char* passphrase);
-  static PrivateKey fromHex(const char* privateKeyHex);
+    static PrivateKey fromPassphrase(const char *passphrase);
+    static PrivateKey fromHex(const char *privateKeyHex);
 
- private:
-  PrivateKeyBytes privateKeyBytes_;
+  private:
+    PrivateKeyBytes privateKeyBytes_;
 };
+
+////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace identities
 }  // namespace Crypto

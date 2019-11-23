@@ -1,292 +1,273 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
-#include "transactions/deserializer.h"
+#include "transactions/deserializer.hpp"
 
-#include <algorithm>
+#include <cstdbool>
 #include <cstdint>
-#include <iterator>
-#include <numeric>
-#include <string>
+#include <cstring>
 #include <vector>
 
-#include "defaults/transaction_types.hpp"
-#include "identities/address.hpp"
-#include "identities/privatekey.hpp"
-#include "identities/publickey.hpp"
-#include "utils/base58.hpp"
-#include "utils/crypto_helpers.h"
-#include "utils/hex.hpp"
+#include "interfaces/constants.h"
+
+#include "transactions/defaults/offsets.hpp"
+
+#include "transactions/transaction_data.hpp"
+
+#include "utils/unpack.h"
 
 namespace Ark {
 namespace Crypto {
-namespace Transactions {
+namespace transactions {
 
-Deserializer::Deserializer(const std::string& serialized)
-    : _serialized(serialized),
-      _binary(HexToBytes(serialized.c_str())),
-      _assetOffset(0) {}
+////////////////////////////////////////////////////////////////////////////////
 
-Transaction Deserializer::deserialize() {
-  Transaction transaction;
+// Deserialize Common
+//
+// @param TransactionData *data: The Transaction Data destination.
+// @param const std::vector<uint8_t> &buffer
+//
+// ---
+// Internals:
+//
+// Header - 1 Byte:
+// - data->header = buffer.at(0);
+//
+// Transaction Version - 1 Byte:
+// - data->version = buffer.at(1);
+//
+// Network Version - 1 Byte:
+// - data->network = buffer.at(2);
+//
+// TypeGroup - 4 Bytes:
+// - data->typeGroup = unpack4LE(&buffer, 3); 
+//
+// Transaction Type - 2 Bytes:
+// - data->type = unpack2LE(&buffer, 7);
+//
+// Nonce - 8 Bytes:
+// - data->nonce = unpack8LE(&buffer, 9);
+//
+// SenderPublicKey - 33 Bytes:
+// - memmove(&data->senderPublicKey, &buffer.at(17), 33);
+//
+// Fee - 8 bytes
+// - data->fee = unpack8LE(&buffer, 50);
+//
+// VendorField Length - 1 Byte:
+// - buffer.at(58);
+//
+// VendorField - 0 - 255 Bytes:
+// - data->vendorField.insert(data->vendorField.begin(), &buffer.at(59), &buffer.at(59 + data->vendorField.size()));
+//
+// ---
+static void deserializeCommon(TransactionData *data,
+                              const std::vector<uint8_t> &buffer) {
+    data->header        = buffer.at(HEADER_OFFSET);                 // 1 Byte
+    data->version       = buffer.at(VERSION_OFFSET);                // 1 Byte
+    data->network       = buffer.at(NETWORK_OFFSET);                // 1 Byte
 
-  deserializeHeader(transaction);
-  deserializeType(transaction);
-  deserializeSignatures(transaction);
+    data->typeGroup     = unpack4LE(buffer, TYPEGROUP_OFFSET);      // 4 Bytes
+    data->type          = unpack2LE(buffer, TYPE_OFFSET);           // 2 Bytes
+    data->nonce         = unpack8LE(buffer, NONCE_OFFSET);          // 8 Bytes
 
-  if (transaction.version == 1) {
-    handleVersionOne(transaction);
-  };
+    memmove(data->senderPublicKey.data(),                           // 21 Bytes
+            &buffer.at(SENDER_PUBLICKEY_OFFSET),
+            PUBLICKEY_COMPRESSED_LEN);
 
-  return transaction;
-}
+    data->fee           = unpack8LE(buffer, FEE_OFFSET);           // 8 Bytes
 
-/**/
-
-void Deserializer::deserializeHeader(Transaction& transaction) {
-  unpack(&transaction.header,     &this->_binary[0]);  // 1 Byte
-  unpack(&transaction.version,    &this->_binary[1]);  // 1 Byte
-  unpack(&transaction.network,    &this->_binary[2]);  // 1 Byte
-  unpack(&transaction.type,       &this->_binary[3]);  // 1 Byte
-  unpack(&transaction.timestamp,  &this->_binary[4]);  // 4 Byte
-
-  // 33 Byte
-  transaction.senderPublicKey = BytesToHex(
-      this->_binary.begin() + 8,
-      this->_binary.begin() + 33 + 8);
-
-  unpack(&transaction.fee, &this->_binary[41]);  // 8 Byte
-
-  uint8_t vendorFieldOffset = (41 + 8 + 1) * 2;
-  uint8_t vendorFieldLength = 0;
-  unpack(&vendorFieldLength, &this->_binary[49]);  // 1 Byte
-  if (vendorFieldLength > 0) {
-    transaction.vendorFieldHex = this->_serialized.substr(
-        vendorFieldOffset,
-        vendorFieldLength * 2);
-  };
-
-  _assetOffset = vendorFieldOffset + vendorFieldLength * 2;
-}
-
-/**/
-
-void Deserializer::deserializeType(
-    Transaction& transaction) {
-  switch (transaction.type) {
-    case TransactionTypes::Transfer: {
-      deserializeTransfer(transaction);
-      break;
+    if (buffer.at(VF_LEN_OFFSET) != 0U) {
+        data->vendorField.insert(                           // 0 <=> 255 Bytes
+                data->vendorField.begin(),
+                &buffer.at(VF_OFFSET),
+                &buffer.at(VF_OFFSET + buffer.at(VF_LEN_OFFSET)));
     };
-    case TransactionTypes::SecondSignatureRegistration: {
-      deserializeSecondSignatureRegistration(transaction);
-      break;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Deserialize Common v1
+//
+// @param TransactionData *data: The Transaction Data destination.
+// @param const std::vector<uint8_t> &buffer
+//
+// ---
+// Internals:
+//
+// Header - 1 Byte:
+// - data->header = buffer.at(0);
+//
+// Transaction Version - 1 Byte:
+// - data->version = buffer.at(1);
+//
+// Network Version - 1 Byte:
+// - data->network = buffer.at(2);
+//
+// Transaction Type - 1 Byte:
+// - data->type = buffer.at(3);
+//
+// Timestamp - 4 Bytes
+// - data->timestamp = unpack4LE(buffer, 4);
+//
+// SenderPublicKey - 33 Bytes:
+// - memmove(&data->senderPublicKey &buffer.at(8), 33);
+//
+// Fee - 8 bytes
+// - data->fee = unpack8LE(buffer, 41);
+//
+// VendorField Length - 1 Byte:
+// - buffer.at(49)
+//
+// VendorField - 0 - 255 Bytes:
+// - data->vendorField.insert(data->vendorField.begin(), &buffer.at(50), &buffer.at(50 + buffer.at(49)));
+//
+// ---
+static void deserializeCommonV1(TransactionData *data,
+                                const std::vector<uint8_t> &buffer) {
+    data->header        = buffer.at(HEADER_OFFSET);                 // 1 Byte
+    data->version       = buffer.at(VERSION_OFFSET);                // 1 Byte
+    data->network       = buffer.at(NETWORK_OFFSET);                // 1 Byte
+
+    data->type          = buffer.at(v1::TYPE_OFFSET);               // 1 Bytes
+
+    data->timestamp     = unpack4LE(buffer, v1::TIMESTAMP_OFFSET);  // 4 Bytes
+
+    memmove(data->senderPublicKey.data(),                           // 33 Bytes
+            &buffer.at(v1::SENDER_PUBLICKEY_OFFSET),
+            PUBLICKEY_COMPRESSED_LEN);
+
+    data->fee        = unpack8LE(buffer, v1::FEE_OFFSET);           // 8 Bytes
+
+    if (buffer.at(v1::VF_LEN_OFFSET) != 0U) {
+        data->vendorField.insert(                           // 0 <=> 255 Bytes
+                data->vendorField.begin(),
+                &buffer.at(v1::VF_OFFSET),
+                &buffer.at(v1::VF_OFFSET + buffer.at(v1::VF_LEN_OFFSET)));
     };
-    case TransactionTypes::DelegateRegistration: {
-      deserializeDelegateRegistration(transaction);
-      break;
-    };
-    case TransactionTypes::Vote: {
-      deserializeVote(transaction);
-      break;
-    };
-    case TransactionTypes::MultiSignatureRegistration: {
-      deserializeMultiSignatureRegistration(transaction);
-      break;
-    };
-    case TransactionTypes::Ipfs: { break; };
-    case TransactionTypes::TimelockTransfer: { break; };
-    case TransactionTypes::MultiPayment: { break; };
-    case TransactionTypes::DelegateResignation: { break; };
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+static auto deserializeAsset(TransactionData *transaction,
+                             const std::vector<uint8_t> &buffer,
+                             const uint8_t offset) -> uint32_t {
+  switch (transaction->type) {
+    case TRANSFER_TYPE:
+        return Transfer::Deserialize(
+                &transaction->asset.transfer,
+                &buffer.at(offset));
+
+    case SECOND_SIGNATURE_TYPE:
+        return SecondSignature::Deserialize(
+                &transaction->asset.secondSignature,
+                &buffer.at(offset));
+
+    case DELEGATE_REGISTRATION_TYPE:
+        return DelegateRegistration::Deserialize(
+                &transaction->asset.delegateRegistration,
+                &buffer.at(offset));
+
+    case VOTE_TYPE:
+        return Vote::Deserialize(
+                &transaction->asset.vote,
+                &buffer.at(offset));
+
+    // case MULTI_SIGNATURE_TYPE:  // TODO
+
+    case IPFS_TYPE:
+        return Ipfs::Deserialize(
+                &transaction->asset.ipfs,
+                &buffer.at(offset));
+
+    case MULTI_PAYMENT_TYPE:
+        return MultiPayment::Deserialize(
+                &transaction->asset.multiPayment,
+                &buffer.at(offset));
+
+    case DELEGATE_RESIGNATION_TYPE: return 0UL;
+
+    case HTLC_LOCK_TYPE:
+        return HtlcLock::Deserialize(
+                &transaction->asset.htlcLock,
+                &buffer.at(offset));
+    
+    case HTLC_CLAIM_TYPE:
+        return HtlcClaim::Deserialize(
+                &transaction->asset.htlcClaim,
+                &buffer.at(offset));
+
+    case HTLC_REFUND_TYPE:
+        return HtlcRefund::Deserialize(
+                &transaction->asset.htlcRefund,
+                &buffer.at(offset));
+
+    default: return 0UL;
   };
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-void Deserializer::deserializeTransfer(
-    Transaction& transaction) {
-  unpack(&transaction.amount, &this->_binary[_assetOffset / 2]);
-  unpack(&transaction.expiration, &this->_binary[_assetOffset / 2 + 8]);
+static void deserializeSignatures(TransactionData *transaction,
+                                  const uint8_t *buffer) {
+    uint8_t signatureLength = buffer[1] + 2U;
+    if (signatureLength >= SIGNATURE_ECDSA_MIN &&
+        signatureLength <= SIGNATURE_ECDSA_MAX) {
+        transaction->signature.reserve(SIGNATURE_ECDSA_MAX);
+        transaction->signature.insert(transaction->signature.begin(),
+                                      buffer,
+                                      buffer + signatureLength);
+    }
 
-  transaction.recipient = Base58::parseHash(
-      &this->_binary[(_assetOffset / 2) + 13],
-      this->_binary[(_assetOffset / 2) + 12]);
-
-  _assetOffset += (8 + 4 + 21) * 2;
-};
-
-void Deserializer::deserializeSecondSignatureRegistration(
-    Transaction& transaction) {
-  transaction.asset.signature.publicKey = this->_serialized.substr(
-      _assetOffset,
-      66);
-  _assetOffset += 66;
-};
-
-void Deserializer::deserializeDelegateRegistration(
-    Transaction& transaction) {
-  uint8_t usernameLength = 0;
-  unpack(&usernameLength, &this->_binary[_assetOffset / 2]);
-  usernameLength &= 0xff;
-
-  std::string username = this->_serialized.substr(
-      (_assetOffset / 2 + 1) * 2, usernameLength * 2);
-
-  std::vector<uint8_t> bytes = HexToBytes(username.c_str());
-  transaction.asset.delegate.username = std::string(
-      bytes.begin(),
-      bytes.end());
-  _assetOffset += (usernameLength + 1) * 2;
-};
-
-void Deserializer::deserializeVote(
-    Transaction& transaction) {
-  uint8_t voteLength = 0;
-  unpack(&voteLength, &this->_binary[_assetOffset / 2]);
-  voteLength &= 0xff;
-
-  for (uint8_t i = 0; i < voteLength; i++) {
-    std::string vote = this->_serialized.substr(
-        _assetOffset + 2 + i * 2 * 32,
-        68);
-    vote = (vote[1] == '1' ? "+" : "-") + vote.substr(2);
-    transaction.asset.votes.push_back(vote);
-  };
-
-  _assetOffset += 2 + voteLength * 34 * 2;
+    uint8_t secondSignatureLength = buffer[signatureLength + 1U] + 2U;
+    if (secondSignatureLength >= SIGNATURE_ECDSA_MIN &&
+        secondSignatureLength <= SIGNATURE_ECDSA_MAX) {
+        transaction->secondSignature.reserve(SIGNATURE_ECDSA_MAX);
+        transaction->secondSignature.insert(
+                transaction->secondSignature.begin(),
+                buffer + signatureLength,
+                buffer + secondSignatureLength);
+    }
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-void Deserializer::deserializeMultiSignatureRegistration(
-    Transaction& transaction) {
-  uint8_t min = 0;
-  unpack(&min, &this->_binary[_assetOffset / 2]);
-  min &= 0xff;
+// Deserialize Transaction Data
+//
+// @param TransactionData *data
+// @param const std::vector<uint8_t> &buffer
+//
+// ---
+auto Deserializer::deserialize(TransactionData *data,
+                               const std::vector<uint8_t> &buffer) -> bool {
+    uint32_t assetOffset = 0UL;
 
-  uint8_t count = 0;
-  unpack(&count, &this->_binary[_assetOffset / 2 + 1]);
-  count &= 0xff;
+    // Use v2 or v1, otherwise return with no changes to the Tx Data.
+    if (buffer.at(VERSION_OFFSET) == 0x02) {
+        deserializeCommon(data, buffer);
+        assetOffset = VF_OFFSET + data->vendorField.size();
+    }
+    else if(buffer.at(VERSION_OFFSET) == 0x01) {
+        deserializeCommonV1(data, buffer);
+        assetOffset = v1::VF_OFFSET + data->vendorField.size();
+    }
+    else { return false; }
 
-  uint8_t lifetime = 0;
-  unpack(&lifetime, &this->_binary[_assetOffset / 2 + 2]);
-  lifetime &= 0xff;
+    uint32_t assetSize = deserializeAsset(data, buffer, assetOffset);
 
-  transaction.asset.multiSignature.min = min;
-  transaction.asset.multiSignature.lifetime = lifetime;
+    deserializeSignatures(data, &buffer[assetOffset + assetSize]);
 
-  for (uint8_t i = 0; i < count; i++) {
-    std::string key = this->_serialized.substr(
-        _assetOffset + 6 + i * 66,
-        66);
-    transaction.asset.multiSignature.keysgroup.push_back(key);
-  };
-
-  _assetOffset += 6 + count * 66;
+    return true;
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-static uint8_t parseSignatureLength(const std::string& hex) {
-  if (hex.length() > 2) { return 0; };
-  unsigned int length;
-  sscanf(hex.c_str(), "%x", &length);
-  return static_cast<uint8_t>(length + 2);
-}
-
-/**/
-
-void Deserializer::deserializeSignatures(
-    Transaction& transaction) {
-  std::string signature = this->_serialized.substr(_assetOffset);
-
-  if (!signature.empty()) {
-    size_t multiSignatureOffset = 0;
-
-    size_t signatureLength = parseSignatureLength(signature.substr(2, 2));
-    transaction.signature = this->_serialized.substr(
-        _assetOffset,
-        signatureLength * 2);
-    multiSignatureOffset += signatureLength * 2;
-    transaction.secondSignature = this->_serialized.substr(
-        (_assetOffset + signatureLength * 2));
-
-    if (!transaction.secondSignature.empty()) {
-      if (transaction.secondSignature.substr(0, 2) == "ff") {
-        transaction.secondSignature = "";
-      } else {
-        size_t secondSignatureLength = parseSignatureLength(
-            transaction.secondSignature.substr(2, 2));
-        transaction.secondSignature = transaction.secondSignature.substr(
-            0,
-            secondSignatureLength * 2);
-        multiSignatureOffset += secondSignatureLength * 2;
-      };
-    };
-
-    std::string signatures = this->_serialized.substr(
-        _assetOffset + multiSignatureOffset);
-    if (!signatures.empty() && signatures.substr(0, 2) == "ff") {
-      signatures = signatures.substr(2);
-
-      while (!signatures.empty()) {
-        size_t multiSignatureLength = parseSignatureLength(
-            signatures.substr(2, 2));
-        if (multiSignatureLength > 0) {
-          transaction.signatures.push_back(
-              signatures.substr(0,
-              multiSignatureLength * 2));
-        };
-
-        signatures = signatures.substr(multiSignatureLength * 2);
-      };
-    };
-  };
-}
-
-/**/
-
-void Deserializer::handleVersionOne(
-    Transaction& transaction) {
-  transaction.signSignature = transaction.secondSignature;
-
-  if (transaction.type == TransactionTypes::Vote) {
-    const auto address = identities::Address::fromPublicKey(
-        HexToBytesArray<PUBLICKEY_COMPRESSED_BYTE_LEN>(
-            transaction.senderPublicKey.c_str())
-            .data(),
-        transaction.network);
-
-    transaction.recipient = address.toString();
-  };
-
-  if (transaction.type == TransactionTypes::MultiSignatureRegistration) {
-    std::for_each(
-        transaction.asset.multiSignature.keysgroup.begin(),
-        transaction.asset.multiSignature.keysgroup.end(),
-        [](std::string& key) { key.insert(0, "+"); }
-    );
-  };
-
-  if (!transaction.vendorFieldHex.empty()) {
-    const auto bytes = HexToBytes(transaction.vendorFieldHex.c_str());
-    transaction.vendorField = std::string(bytes.begin(), bytes.end());
-  };
-
-  if (transaction.id.empty()) {
-    transaction.id = transaction.getId();
-  };
-
-  if (transaction.type == TransactionTypes::SecondSignatureRegistration
-      || transaction.type == TransactionTypes::MultiSignatureRegistration) {
-    const auto address = identities::Address::fromPublicKey(
-        HexToBytesArray<PUBLICKEY_COMPRESSED_BYTE_LEN>(
-            transaction.senderPublicKey.c_str())
-            .data(),
-        transaction.network);
-
-    transaction.recipient = address.toString();
-  };
-}
-
-}  // namespace Transactions
+}  // namespace transactions
 }  // namespace Crypto
 }  // namespace Ark

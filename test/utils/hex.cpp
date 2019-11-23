@@ -1,59 +1,76 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
 #include "utils/hex.hpp"
 
 #include "fixtures/message.hpp"
+
+#include "test_helpers.h"
+
+////////////////////////////////////////////////////////////////////////////////
+
 using namespace Ark::Crypto;
 using namespace fixtures::message;
 
-TEST(utils, hex_bytes_to_hex) {
-  const auto result = BytesToHex(tMessageSignatureBytes.begin(),
-                                 tMessageSignatureBytes.end());
-  ASSERT_STREQ(result.c_str(), tSignatureString);
+////////////////////////////////////////////////////////////////////////////////
+
+TEST(utils_hex, bytes_to_hex) {
+    const auto result = BytesToHex(tMessageSignatureBytes.begin(),
+                                   tMessageSignatureBytes.end());
+    ASSERT_STREQ(tSignatureString, result.c_str());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-TEST(utils, hex_hex_to_bytes) {
-  const auto result = HexToBytes(tSignatureString);
-  for (auto i = 0U; i < result.size(); ++i) {
-    ASSERT_TRUE(result.at(i) == tMessageSignatureBytes.at(i));
-  };
+TEST(utils_hex, hex_to_bytes) {
+    const auto result = HexToBytes(tSignatureString);
+    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+                          result.data(),
+                          result.size()));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-TEST(utils, hex_hex_to_bytes_spaces) {
-  const auto result = HexToBytes(tSignatureStringSpaces);
-  for (auto i = 0U; i < result.size(); ++i) {
-    ASSERT_TRUE(result.at(i) == tMessageSignatureBytes.at(i));
-  };
+TEST(utils_hex, hex_to_bytes_spaces) {
+    const auto result = HexToBytes(tSignatureStringSpaces);
+    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+                          result.data(),
+                          result.size()));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-TEST(utils, hex_hex_to_bytes_array) {
-  const auto result = HexToBytesArray<>(tSignatureString);
-  for (auto i = 0U; i < result.size(); ++i) {
-    ASSERT_TRUE(result.at(i) == tMessageSignatureBytes[i]);
-  };
+TEST(utils_hex, hex_to_bytes_array) {
+    const auto result = HexToBytesArray<>(tSignatureString);
+    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+                          result.data(),
+                          result.size()));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-TEST(utils, hex_hex_to_bytes_array_spaces) {
-  const auto result = HexToBytesArray<>(tSignatureStringSpaces);
-  for (auto i = 0U; i < result.size(); ++i) {
-    ASSERT_TRUE(result.at(i) == tMessageSignatureBytes.at(i));
-  };
+TEST(utils_hex, hex_to_bytes_array_spaces) {
+    const auto result = HexToBytesArray<>(tSignatureStringSpaces);
+    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+                          result.data(),
+                          result.size()));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
-TEST(utils, hex_hex_to_bytes_array_null_input) {
-  const auto result = HexToBytesArray<>(nullptr);
-  for (unsigned char i : result) {
-    ASSERT_EQ(result.at(i), 0);
-  };
+TEST(utils_hex, hex_to_bytes_array_null_input) {
+    const auto result = HexToBytesArray<>(nullptr);
+    for (auto &e : result) {
+        ASSERT_EQ(0U, e);
+    }
 }
+
+////////////////////////////////////////////////////////////////////////////////

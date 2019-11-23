@@ -15,41 +15,45 @@
 namespace Ark {
 namespace Crypto {
 
+////////////////////////////////////////////////////////////////////////////////
+
 // Network initialization: Custom Network w/StaticFees
-Configuration::Configuration(const Network& network) {
-  setNetwork(network);
+Configuration::Configuration(const Network &network) {
+    setNetwork(network);
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
 // FeePolicy initialization: ARK Devnet w/Custom Fees
-Configuration::Configuration(const FeePolicy& policy) {
-  setPolicy(policy);
+Configuration::Configuration(const FeePolicy &policy) {
+    setPolicy(policy);
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
 // Network & Fee initialization: Custom Network w/Custom Fees
-Configuration::Configuration(const Network& network, const FeePolicy& policy) {
-  setNetwork(network);
-  setPolicy(policy);
+Configuration::Configuration(const Network &network, const FeePolicy &policy) {
+    setNetwork(network);
+    setPolicy(policy);
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
 // Compares the Network and FeePolicy for equality.
-bool Configuration::operator==(const Configuration& other) const {
-  return this->network_ == other.network_ &&
-         this->feePolicy_ == other.feePolicy_;
+auto Configuration::operator==(const Configuration &other) const -> bool {
+    return this->network_ == other.network_ &&
+           this->feePolicy_ == other.feePolicy_;
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
 
 // Compares the Network and FeePolicy for inequality.
-bool Configuration::operator!=(const Configuration& other) const {
-  return this->network_ != other.network_ ||
-         this->feePolicy_ != other.feePolicy_;
+auto Configuration::operator!=(const Configuration &other) const -> bool {
+    return this->network_ != other.network_ ||
+           this->feePolicy_ != other.feePolicy_;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

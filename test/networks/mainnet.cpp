@@ -1,21 +1,34 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
 #include "networks/mainnet.hpp"
 
-namespace {  // NOLINT
-using namespace Ark::Crypto;
-constexpr const char* kNethash    = "6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988";
-constexpr const uint8_t kSlip44   = 111;
-constexpr const uint8_t kWif      = 0xaa;
-constexpr const uint8_t kVersion  = 0x17;
-constexpr const char* kEpoch      = "2017-03-21T13:00:00.000Z";
-};  // namespace
+////////////////////////////////////////////////////////////////////////////////
 
-TEST(networks, mainnet) {
-  ASSERT_STREQ(Mainnet.nethash.c_str(),  kNethash);
-  ASSERT_EQ(Mainnet.slip44,              kSlip44);
-  ASSERT_EQ(Mainnet.wif,                 kWif);
-  ASSERT_EQ(Mainnet.version,             kVersion);
-  ASSERT_STREQ(Mainnet.epoch.c_str(),    kEpoch);
+using namespace Ark::Crypto;
+
+////////////////////////////////////////////////////////////////////////////////
+
+TEST(networks, mainnet) {  // NOLINT
+  const char* NETHASH       = "6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988";
+  const uint8_t SLIP44      = 111U;
+  const uint8_t WIF         = 0xaa;
+  const uint8_t VERSION     = 0x17;
+  const char* EPOCH         = "2017-03-21T13:00:00.000Z";
+
+  ASSERT_STREQ(NETHASH,     Mainnet.nethash.c_str());
+  ASSERT_EQ(SLIP44,         Mainnet.slip44);
+  ASSERT_EQ(WIF,            Mainnet.wif);
+  ASSERT_EQ(VERSION,        Mainnet.version);
+  ASSERT_STREQ(EPOCH,       Mainnet.epoch.c_str());
 }
+
+////////////////////////////////////////////////////////////////////////////////

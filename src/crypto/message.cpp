@@ -14,94 +14,116 @@
 #include <vector>
 
 #include "interfaces/identities.hpp"
+
 #include "crypto/curve.hpp"
 #include "crypto/hash.hpp"
+
 #include "identities/keys.hpp"
+
 #include "utils/hex.hpp"
 #include "utils/json.h"
 
 namespace Ark {
 namespace Crypto {
 
-namespace {
-constexpr const char* MESSAGE_KEY    = "message";
-constexpr const char* PUBLICKEY_KEY  = "publickey";
-constexpr const char* SIGNATURE_KEY  = "signature";
-}  // namespace
+////////////////////////////////////////////////////////////////////////////////
+
+static constexpr const char* MESSAGE_KEY        = "message";
+static constexpr const char* PUBLICKEY_KEY      = "publickey";
+static constexpr const char* SIGNATURE_KEY      = "signature";
+
+static constexpr const uint8_t MAGIC_JSON_SIZE          = 120U;
+static constexpr const uint8_t MAGIC_JSON_OBJ_SIZE      = 3U;
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Create an empty Message object for building and signing.
-Message::Message() : publicKey({}), signature(Curve::Ecdsa::MAX_SIG_LEN) {}
+Message::Message() : publicKey() {
+        signature.reserve(SIGNATURE_ECDSA_MAX);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Create a Signed Message object for verification.
-Message::Message(std::string message,
-                 const PublicKeyBytes& publicKeyBytes,
-                 std::vector<uint8_t> signature)
-                 : message(std::move(message)),
-                   publicKey(publicKeyBytes),
-                   signature(std::move(signature)) {};
+Message::Message(const std::string &message,
+                 const uint8_t *publicKeyBytes,
+                 const uint8_t *signature) {
+    this->message = message;
 
-bool Message::sign(const std::string& message, const std::string& passphrase) {
-  this->message = message;
+    memmove(&this->publicKey, publicKeyBytes, PUBLICKEY_COMPRESSED_LEN);
 
-  const auto keys = identities::Keys::fromPassphrase(passphrase.c_str());
-  this->publicKey = keys.publicKey;
+    this->signature.insert(this->signature.begin(),
+                           signature,
+                           signature + signature[1] + 2U);
+};
 
-  const auto messageBytes =
-      reinterpret_cast<const unsigned char *>(message.c_str());
-  const auto hash = Hash::sha256(messageBytes, this->message.size());
+////////////////////////////////////////////////////////////////////////////////
 
-  std::vector<uint8_t> buffer(Curve::Ecdsa::MAX_SIG_LEN);
-  Curve::Ecdsa::sign(hash.data(), keys.privateKey.data(), buffer);
+auto Message::sign(const std::string &message, const std::string &passphrase)
+        -> bool {
+    this->message = message;
 
-  buffer.resize(buffer[1] + 2);
-  this->signature = std::move(buffer);
+    const auto keys = identities::Keys::fromPassphrase(passphrase.c_str());
+    this->publicKey = keys.publicKey;
 
-  return true;
+    const auto hash = Hash::sha256((uint8_t *)message.data(),
+                                   this->message.size());
+
+    return Curve::Ecdsa::sign(hash.data(),
+                              keys.privateKey.data(),
+                              &this->signature);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Verify a Signed Message object.
-bool Message::verify() const {
-  const auto messageBytes =
-      reinterpret_cast<const unsigned char *>(this->message.c_str());
-  const auto hash = Hash::sha256(messageBytes, this->message.size());
+auto Message::verify() const -> bool {
+    const auto hash = Hash::sha256((uint8_t *)this->message.data(),
+                                   this->message.size());
 
-  return Curve::Ecdsa::verify(hash.data(),
-                              this->publicKey.data(),
-                              this->signature);
+    return Curve::Ecdsa::verify(hash.data(),
+                                this->publicKey.data(),
+                                this->signature);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Create a string map of the Signed Message objects.
-std::map<std::string, std::string>
-Message::toArray() const {
-  return {
-    { MESSAGE_KEY, this->message },
-    { PUBLICKEY_KEY, BytesToHex(this->publicKey.begin(), this->publicKey.end()) },
-    { SIGNATURE_KEY, BytesToHex(this->signature.begin(), this->signature.end()) }
-  };
+auto Message::toMap() const -> std::map<std::string, std::string> {
+    return {
+        { MESSAGE_KEY, this->message },
+        { PUBLICKEY_KEY, BytesToHex(this->publicKey) },
+        { SIGNATURE_KEY, BytesToHex(this->signature) }
+    };
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Create a Json'ified string of the Signed Message.
-std::string Message::toJson() const {
-  const size_t MAGIC_JSON_SIZE = 120U;
-  std::map<std::string, std::string> messageArray = this->toArray();
+auto Message::toJson() const -> std::string {
+    auto messageArray = this->toMap();
 
-  const size_t docLength = this->message.length() +
-                           (PUBLICKEY_COMPRESSED_BYTE_LEN + 1) +  // + `/0`
-                           (Curve::Ecdsa::MAX_SIG_LEN + 1);       // + `/0`
+    const size_t docLength = this->message.length() +
+                             (PUBLICKEY_COMPRESSED_LEN + 1U) +  // + `/0` 
+                             (this->signature.size() + 1U);     // + `/0` 
+                            
+    const size_t docCapacity = JSON_OBJECT_SIZE(MAGIC_JSON_OBJ_SIZE) +
+                                                docLength +
+                                                MAGIC_JSON_SIZE;
+    DynamicJsonDocument doc(docCapacity);
 
-  const size_t docCapacity = JSON_OBJECT_SIZE(3) + docLength + MAGIC_JSON_SIZE;
-  DynamicJsonDocument doc(docCapacity);
+    doc[MESSAGE_KEY]        = messageArray[MESSAGE_KEY];
+    doc[PUBLICKEY_KEY]      = messageArray[PUBLICKEY_KEY];
+    doc[SIGNATURE_KEY]      = messageArray[SIGNATURE_KEY];
 
-  doc[MESSAGE_KEY] = messageArray[MESSAGE_KEY];
-  doc[PUBLICKEY_KEY] = messageArray[PUBLICKEY_KEY];
-  doc[SIGNATURE_KEY] = messageArray[SIGNATURE_KEY];
+    std::string jsonStr;
+    jsonStr.reserve(docCapacity);
+    serializeJson(doc, jsonStr);
 
-  std::string jsonStr;
-  jsonStr.reserve(docCapacity);
-  serializeJson(doc, &jsonStr[0], docCapacity);
-
-  return jsonStr;
+    return jsonStr;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark
