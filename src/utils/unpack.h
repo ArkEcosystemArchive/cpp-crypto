@@ -23,7 +23,7 @@
 *********************************************************************************/
 
 #ifndef ARK_UTILS_UNPACK_H
-#define ARKUTILS_UNPACK_H
+#define ARK_UTILS_UNPACK_H
 
 #include <cstdint>
 
