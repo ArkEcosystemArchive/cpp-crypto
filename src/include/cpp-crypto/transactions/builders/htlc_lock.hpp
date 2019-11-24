@@ -11,7 +11,7 @@
 #define ARK_TRANSACTIONS_BUILDERS_HTLC_LOCK_HPP
 
 #include <cstdint>
-#include <cstring>
+#include <utility>
 
 #include "transactions/builders/common.hpp"
 
@@ -45,9 +45,10 @@ class HtlcLock : public Common<HtlcLock> {
 
     // Secret Hash
     HtlcLock &secretHash(const uint8_t *secretHash) {
-        memmove(this->transaction.data.asset.htlcLock.secretHash.data(),
-                secretHash,
-                HASH_32_LEN);
+        std::move(secretHash,
+                  secretHash + HASH_32_LEN,
+                  this->transaction.data.asset.htlcLock.secretHash.begin());
+
         return *this;
     }
 
@@ -71,9 +72,10 @@ class HtlcLock : public Common<HtlcLock> {
 
     // RecipientId - uint8_t[21] (network.version + pubkeyHash)
     HtlcLock &recipientId(const uint8_t *addressHash) {
-        memmove(this->transaction.data.asset.htlcLock.recipientId.data(),
-                addressHash,
-                ADDRESS_HASH_LEN);
+        std::move(addressHash,
+                  addressHash + ADDRESS_HASH_LEN,
+                  this->transaction.data.asset.htlcLock.recipientId.begin());
+
         return *this;
     }
 
@@ -83,9 +85,10 @@ class HtlcLock : public Common<HtlcLock> {
     HtlcLock &recipientId(std::string recipientId) {
         const auto hashPair = Base58::getHashPair(recipientId.c_str());
         this->transaction.data.asset.htlcLock.recipientId.at(0) = hashPair.version;
-        memmove(&this->transaction.data.asset.htlcLock.recipientId.at(1),
-                hashPair.pubkeyHash.data(),
-                ADDRESS_HASH_LEN);
+        std::move(hashPair.pubkeyHash.begin(),
+                  hashPair.pubkeyHash.end(),
+                  &this->transaction.data.asset.htlcLock.recipientId.at(1));
+
         return *this;
     }
 };

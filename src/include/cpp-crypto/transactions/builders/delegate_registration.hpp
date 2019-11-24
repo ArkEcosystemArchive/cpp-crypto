@@ -11,7 +11,7 @@
 #define ARK_TRANSACTIONS_BUILDERS_DELEGATE_REGISTRATION_HPP
 
 #include <cstdint>
-#include <cstring>
+#include <utility>
 
 #include "transactions/builders/common.hpp"
 
@@ -37,9 +37,11 @@ class DelegateRegistration : public Common<DelegateRegistration> {
     DelegateRegistration &username(const uint8_t *username,
                                    const size_t length) {
         this->transaction.data.asset.delegateRegistration.length = length;
-        memmove(this->transaction.data.asset.delegateRegistration.username.data(),
-                username,
-                length);
+        std::move(username,
+                  username + length,
+                  this->transaction.data.asset
+                        .delegateRegistration
+                        .username.begin());
 
         return *this;
     }
@@ -48,10 +50,14 @@ class DelegateRegistration : public Common<DelegateRegistration> {
 
     // Username - std::string
     DelegateRegistration &username(const std::string &username) {
-        this->transaction.data.asset.delegateRegistration.length = username.length();
-        memmove(this->transaction.data.asset.delegateRegistration.username.data(),
-                username.data(),
-                username.length());
+        this->transaction.data.asset
+                .delegateRegistration.length = username.length();
+
+        std::move(username.begin(),
+                  username.end(),
+                  this->transaction.data.asset
+                        .delegateRegistration
+                        .username.begin());
 
         return *this;
     }

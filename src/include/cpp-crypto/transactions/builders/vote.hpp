@@ -11,7 +11,7 @@
 #define ARK_TRANSACTIONS_BUILDERS_VOTE_HPP
 
 #include <cstdint>
-#include <cstring>
+#include <utility>
 
 #include "transactions/builders/common.hpp"
 
@@ -34,9 +34,10 @@ class Vote : public Common<Vote> {
     // - { 1(n_votes), 00/01('-'/'+'), publicKeyBytes }
     Vote &votes(const uint8_t *votes) {
         this->transaction.data.asset.vote.count = 1U;
-        memmove(this->transaction.data.asset.vote.votes.data(),
-                votes,
-                VOTES_LEN);
+        std::move(votes,
+                  votes + VOTES_LEN,
+                  this->transaction.data.asset.vote.votes.begin());
+
         return *this;
     }
 };

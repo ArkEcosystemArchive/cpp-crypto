@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -64,17 +66,20 @@ TEST(transactions_htlc_claim, serialize_ecdsa) {
     data.type           = TYPE_9_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_9_FEE;
 
-    memmove(&data.asset.htlcClaim.id,
-            TYPE_9_LOCK_TX_ID,
-            sizeof(TYPE_9_LOCK_TX_ID));
+    std::move(TYPE_9_LOCK_TX_ID,
+              TYPE_9_LOCK_TX_ID + HASH_32_LEN,
+              data.asset.htlcClaim.id.begin());
 
-    memmove(&data.asset.htlcClaim.secret,
-            TYPE_9_UNLOCK_SECRET,
-            sizeof(TYPE_9_UNLOCK_SECRET));
+
+    std::move(TYPE_9_UNLOCK_SECRET,
+              TYPE_9_UNLOCK_SECRET + HASH_32_LEN,
+              data.asset.htlcClaim.secret.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_9_SIGNATURE,
@@ -90,8 +95,13 @@ TEST(transactions_htlc_claim, serialize_ecdsa) {
 TEST(transactions_htlc_claim, getMap) {
     HtlcClaim claim;
 
-    memmove(&claim.id, TYPE_9_LOCK_TX_ID, HASH_32_LEN);
-    memmove(&claim.secret, TYPE_9_UNLOCK_SECRET, HASH_32_LEN);
+    std::move(TYPE_9_LOCK_TX_ID,
+              TYPE_9_LOCK_TX_ID + HASH_32_LEN,
+              claim.id.begin());
+
+    std::move(TYPE_9_UNLOCK_SECRET,
+              TYPE_9_UNLOCK_SECRET + HASH_32_LEN,
+              claim.secret.begin());
 
     const auto claimMap = HtlcClaim::getMap(claim);
 

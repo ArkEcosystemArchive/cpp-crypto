@@ -9,6 +9,8 @@
 
 #include "identities/keys.hpp"
 
+#include <utility>
+
 #include "crypto/curve.hpp"
 #include "crypto/hash.hpp"
 
@@ -31,8 +33,10 @@ auto Keys::fromPassphrase(const char *passphrase) -> KeyPair {
 
 // Returns KeyPair from PrivateKey bytes.
 auto Keys::fromPrivateKey(const uint8_t *privateKeyBytes) -> KeyPair {
-    PrivateKeyBytes privateKey;
-    memmove(privateKey.data(), privateKeyBytes, PRIVATEKEY_BYTE_LEN);
+    PrivateKeyBytes privateKey {};
+    std::move(privateKeyBytes,
+              privateKeyBytes + PRIVATEKEY_BYTE_LEN,
+              privateKey.begin());
 
     return { privateKey, PublicKey::fromPrivateKey(privateKeyBytes) };
 }

@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "crypto/curve.hpp"
@@ -56,9 +57,9 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
 
     const auto keys = identities::Keys::fromPassphrase(passphrase.c_str());
 
-    memmove(&this->data.senderPublicKey,
-            keys.publicKey.data(),
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(keys.publicKey.begin(),
+              keys.publicKey.end(),
+              this->data.senderPublicKey.begin());
 
     const auto serialized = this->toBytes(true, true);
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());

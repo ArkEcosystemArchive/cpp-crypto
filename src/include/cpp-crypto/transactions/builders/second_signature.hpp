@@ -11,7 +11,7 @@
 #define ARK_TRANSACTIONS_BUILDERS_SECOND_SIGNATURE_HPP
 
 #include <cstdint>
-#include <cstring>
+#include <utility>
 
 #include "transactions/builders/common.hpp"
 
@@ -32,9 +32,10 @@ class SecondSignature : public Common<SecondSignature> {
   public:
     // Second Signature PublicKey
     SecondSignature &publicKey(const uint8_t *secondPublicKey) {
-        memmove(this->transaction.data.asset.secondSignature.publicKey.data(),
-                secondPublicKey,
-                PUBLICKEY_COMPRESSED_LEN);
+        std::move(secondPublicKey,
+                  secondPublicKey + PUBLICKEY_COMPRESSED_LEN,
+                  this->transaction.data.asset.secondSignature.publicKey.begin());
+
         return *this;
     }
 };

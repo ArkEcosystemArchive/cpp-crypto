@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -78,7 +80,9 @@ TEST(transactions_multi_payment, serialize_ecdsa) {
     data.type           = TYPE_6_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_6_FEE;
 
@@ -96,9 +100,9 @@ TEST(transactions_multi_payment, serialize_ecdsa) {
 
         data.asset.multiPayment.addresses.at(i).at(0) = TYPE_6_BYTES[offset];
 
-        memmove(&data.asset.multiPayment.addresses.at(i).at(1),
-                &TYPE_6_BYTES[offset + 1U],
-                HASH_20_LEN);
+        std::move(&TYPE_6_BYTES[offset + 1U],
+                  &TYPE_6_BYTES[offset + 1U] + HASH_20_LEN,
+                  &data.asset.multiPayment.addresses.at(i).at(1));
 
         offset += ADDRESS_HASH_LEN;
     }

@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/serializer.hpp"
 #include "transactions/transaction_data.hpp"
 
@@ -37,18 +39,18 @@ TEST(transactions_serializer, serialize_invalid_version) {
     data.type           = TYPE_0_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(data.senderPublicKey.data(),
-            COMMON_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_0_FEE;
 
     data.asset.transfer.amount      = TYPE_0_AMOUNT;
     data.asset.transfer.expiration  = TYPE_0_EXPIRATION;
 
-    memmove(&data.asset.transfer.recipientId,
-            TYPE_0_RECIPIENT,
-            sizeof(TYPE_0_RECIPIENT));
+    std::move(TYPE_0_RECIPIENT,
+              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              data.asset.transfer.recipientId.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_0_SIGNATURE,

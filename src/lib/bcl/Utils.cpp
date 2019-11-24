@@ -29,7 +29,7 @@ int Utils::parseHexDigit(int ch) {
 
 void Utils::copyBytes(void *dest, const void *src, std::size_t count) {
 	if (count > 0)
-		std::memmove(dest, src, count);
+		memmove(dest, src, count);
 }
 
 

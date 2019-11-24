@@ -12,6 +12,7 @@
 
 #include <cstdint>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "transactions/builders/common.hpp"
@@ -54,9 +55,10 @@ class Transfer : public Common<Transfer> {
 
     // RecipientId - uint8_t[21] (network.version + pubkeyHash)
     Transfer &recipientId(const uint8_t *addressHash) {
-        memmove(this->transaction.data.asset.transfer.recipientId.data(),
-                addressHash,
-                ADDRESS_HASH_LEN);
+        std::move(addressHash,
+                  addressHash + ADDRESS_HASH_LEN,
+                  this->transaction.data.asset.transfer.recipientId.begin());
+
         return *this;
     }
 
@@ -66,9 +68,10 @@ class Transfer : public Common<Transfer> {
     Transfer &recipientId(std::string recipientId) {
         const auto hashPair = Base58::getHashPair(recipientId.c_str());
         this->transaction.data.asset.transfer.recipientId.at(0) = hashPair.version;
-        memmove(&this->transaction.data.asset.transfer.recipientId.at(1),
-                hashPair.pubkeyHash.data(),
-                ADDRESS_HASH_LEN);
+        std::move(hashPair.pubkeyHash.begin(),
+                  hashPair.pubkeyHash.end(),
+                  &this->transaction.data.asset.transfer.recipientId.at(1));
+
         return *this;
     }
 

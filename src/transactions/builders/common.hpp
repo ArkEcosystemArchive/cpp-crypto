@@ -12,6 +12,7 @@
 
 #include <cstdint>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "common/configuration.hpp"
@@ -87,9 +88,10 @@ template<class T> class Common {
 
     // Sender PublicKey
     T &senderPublicKey(const uint8_t *senderPublicKey) {
-        memmove(&this->transaction.data.senderPublicKey,
-                senderPublicKey,
-                PUBLICKEY_COMPRESSED_LEN);
+        std::move(senderPublicKey,
+                  senderPublicKey + PUBLICKEY_COMPRESSED_LEN,
+                  this->transaction.data.senderPublicKey.begin());
+
         return reinterpret_cast<T&>(*this);
     }
 

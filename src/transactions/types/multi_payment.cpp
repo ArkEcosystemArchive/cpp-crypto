@@ -11,10 +11,10 @@
 
 #include <array>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <numeric>  // std::accumulate
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "interfaces/constants.h"
@@ -50,7 +50,7 @@ namespace transactions {
 // - payments.amounts.at(i)  = unpack8LE(buffer, offset);
 //
 // Addresses - n_payments * vector<array[21]> Bytes
-// - memmove(&payments.addresses.at(i), &buffer[offset], 21);
+// - std::move(&buffer[pos], &buffer[pos + 21], payments->addresses.at(i).begin());
 //
 // ---
 auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
@@ -71,10 +71,9 @@ auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
 
         pos += sizeof(uint64_t);
 
-        payments->addresses.at(i).at(0) = buffer[pos];          // 1 Byte
-        memmove(&payments->addresses.at(i).at(1),               // 20 Bytes
-                &buffer[pos + 1U],
-                HASH_20_LEN);
+        std::move(&buffer[pos],                                 // 21 Bytes
+                  &buffer[pos + ADDRESS_HASH_LEN],
+                  payments->addresses.at(i).begin());
 
         pos += ADDRESS_HASH_LEN;
     }
@@ -135,7 +134,7 @@ static inline auto checkBuffer(const MultiPayment &payments,
 // - memmove(&buffer[offset], &payments.amounts.at(i), sizeof(uint64_t))
 //
 // Addresses - n_payments * vector<array[21]> Bytes
-// - memmove(&buffer[offset], &payments.addresses.at(i), 21);
+// - std::move(payments.addresses.at(i).begin(), payments.addresses.at(i).end(), &buffer[pos]);
 //
 // ---
 auto MultiPayment::Serialize(const MultiPayment &payments,
@@ -159,11 +158,9 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
 
         pos += sizeof(uint64_t);
 
-        buffer[pos] = payments.addresses.at(i).at(0);           // 1 Byte
-
-        memmove(&buffer[pos + sizeof(uint8_t)],                 // 20 Bytes
-                &payments.addresses.at(i).at(sizeof(uint8_t)),
-                HASH_20_LEN);
+        std::move(payments.addresses.at(i).begin(),             // 21 Bytes
+                  payments.addresses.at(i).end(),
+                  &buffer[pos]);
 
         pos += ADDRESS_HASH_LEN;
     }

@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -101,18 +103,18 @@ TEST(transactions_transfer, serialize_ecdsa) {
     data.type           = TYPE_0_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(data.senderPublicKey.data(),
-            COMMON_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_0_FEE;
 
     data.asset.transfer.amount      = TYPE_0_AMOUNT;
     data.asset.transfer.expiration  = TYPE_0_EXPIRATION;
 
-    memmove(&data.asset.transfer.recipientId,
-            TYPE_0_RECIPIENT,
-            sizeof(TYPE_0_RECIPIENT));
+    std::move(TYPE_0_RECIPIENT,
+              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              data.asset.transfer.recipientId.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_0_SIGNATURE,
@@ -133,7 +135,9 @@ TEST(transactions_transfer, serialize_vendorfield_ecdsa) {
     data.type           = TYPE_0_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_0_FEE;
 
@@ -144,9 +148,9 @@ TEST(transactions_transfer, serialize_vendorfield_ecdsa) {
     data.asset.transfer.amount       = TYPE_0_AMOUNT;
     data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    memmove(&data.asset.transfer.recipientId,
-            TYPE_0_RECIPIENT,
-            sizeof(TYPE_0_RECIPIENT));
+    std::move(TYPE_0_RECIPIENT,
+              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              data.asset.transfer.recipientId.begin());
 
     data.signature.insert(data.signature.begin(),
                          TYPE_0_VF_SIGNATURE,
@@ -164,7 +168,10 @@ TEST(transactions_transfer, getMap) {
 
     transfer.amount         = TYPE_0_AMOUNT;
     transfer.expiration     = TYPE_0_EXPIRATION;
-    memmove(&transfer.recipientId, TYPE_0_RECIPIENT, ADDRESS_HASH_LEN);
+
+    std::move(TYPE_0_RECIPIENT,
+              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              transfer.recipientId.begin());
 
     const auto transferMap = Transfer::getMap(transfer);
 

@@ -11,7 +11,7 @@
 
 #include <cstdbool>
 #include <cstdint>
-#include <cstring>
+#include <utility>
 #include <vector>
 
 #include "interfaces/constants.h"
@@ -55,7 +55,7 @@ namespace transactions {
 // - data->nonce = unpack8LE(&buffer, 9);
 //
 // SenderPublicKey - 33 Bytes:
-// - memmove(&data->senderPublicKey, &buffer.at(17), 33);
+// - std::move(&buffer.at(17), &buffer.at(50), data->senderPublicKey.begin());
 //
 // Fee - 8 bytes
 // - data->fee = unpack8LE(&buffer, 50);
@@ -77,9 +77,9 @@ static void deserializeCommon(TransactionData *data,
     data->type          = unpack2LE(buffer, TYPE_OFFSET);           // 2 Bytes
     data->nonce         = unpack8LE(buffer, NONCE_OFFSET);          // 8 Bytes
 
-    memmove(data->senderPublicKey.data(),                           // 21 Bytes
-            &buffer.at(SENDER_PUBLICKEY_OFFSET),
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(&buffer.at(SENDER_PUBLICKEY_OFFSET),                  // 21 Bytes
+              &buffer.at(SENDER_PUBLICKEY_OFFSET + PUBLICKEY_COMPRESSED_LEN),
+              data->senderPublicKey.begin());
 
     data->fee           = unpack8LE(buffer, FEE_OFFSET);           // 8 Bytes
 
@@ -117,7 +117,7 @@ static void deserializeCommon(TransactionData *data,
 // - data->timestamp = unpack4LE(buffer, 4);
 //
 // SenderPublicKey - 33 Bytes:
-// - memmove(&data->senderPublicKey &buffer.at(8), 33);
+// - std::move(&buffer.at(8), &buffer.at(41) data->senderPublicKey.begin());
 //
 // Fee - 8 bytes
 // - data->fee = unpack8LE(buffer, 41);
@@ -139,9 +139,9 @@ static void deserializeCommonV1(TransactionData *data,
 
     data->timestamp     = unpack4LE(buffer, v1::TIMESTAMP_OFFSET);  // 4 Bytes
 
-    memmove(data->senderPublicKey.data(),                           // 33 Bytes
-            &buffer.at(v1::SENDER_PUBLICKEY_OFFSET),
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(&buffer.at(v1::SENDER_PUBLICKEY_OFFSET),              // 33 Bytes
+              &buffer.at(v1::SENDER_PUBLICKEY_OFFSET + PUBLICKEY_COMPRESSED_LEN),
+              data->senderPublicKey.begin());
 
     data->fee        = unpack8LE(buffer, v1::FEE_OFFSET);           // 8 Bytes
 

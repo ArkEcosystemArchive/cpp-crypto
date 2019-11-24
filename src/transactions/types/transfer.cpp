@@ -10,9 +10,9 @@
 #include "transactions/types/transfer.hpp"
 
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "utils/base58.hpp"
 #include "utils/hex.hpp"
@@ -42,7 +42,7 @@ namespace transactions {
 // - transfer.expiration = unpack4LE(buffer, sizeof(uint64_t));
 //
 // Recipient - 21 Bytes:
-// - memmove(&transfer.recipientId, &buffer[sizeof(uint64_t) + sizeof(uint32_t)], 33);
+// - std::move(&buffer[12], &buffer[33], transfer->recipientId.begin());
 //
 // ---
 auto Transfer::Deserialize(Transfer *transfer, const uint8_t *buffer)
@@ -50,9 +50,9 @@ auto Transfer::Deserialize(Transfer *transfer, const uint8_t *buffer)
     transfer->amount        = unpack8LE(buffer, 0U);                 // 8 Bytes
     transfer->expiration    = unpack4LE(buffer, sizeof(uint64_t));   // 4 Bytes
 
-    memmove(&transfer->recipientId,                                 // 21 Bytes
-            &buffer[sizeof(uint64_t) + sizeof(uint32_t)],
-            ADDRESS_HASH_LEN);
+    std::move(&buffer[sizeof(uint64_t) + sizeof(uint32_t)],         // 21 Bytes
+              &buffer[sizeof(uint64_t) + sizeof(uint32_t)] + ADDRESS_HASH_LEN,
+              transfer->recipientId.begin());
 
     return TRANSACTION_TYPE_TRANSFER_SIZE;                          // 33 Bytes
 }
@@ -76,7 +76,7 @@ auto Transfer::Deserialize(Transfer *transfer, const uint8_t *buffer)
 // - memmove(&buffer[sizeof(uint64_t)], &transfer.expiration, sizeof(uint32_t));
 //
 // Recipient - 21 Bytes:
-// - memmove(&buffer[sizeof(uint64_t) + sizeof(uint32_t)], transfer.recipientId, 33);
+// - std::move(transfer.recipientId.begin(), transfer.recipientId.end(), &buffer[12]);
 //
 // ---
 auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> uint32_t {
@@ -88,9 +88,9 @@ auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> uint32_t 
             &transfer.expiration,
             sizeof(uint32_t));
 
-    memmove(&buffer[sizeof(uint64_t) + sizeof(uint32_t)],           // 21 Bytes
-            &transfer.recipientId,
-            ADDRESS_HASH_LEN);
+    std::move(transfer.recipientId.begin(),                         // 21 Bytes
+              transfer.recipientId.end(),
+              &buffer[sizeof(uint64_t) + sizeof(uint32_t)]);
 
     return TRANSACTION_TYPE_TRANSFER_SIZE;                          // 33 Bytes
 }

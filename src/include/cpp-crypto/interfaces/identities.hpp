@@ -12,6 +12,7 @@
 
 #include <array>
 #include <cstdint>
+#include <utility>
 
 #include "interfaces/constants.h"
 
@@ -46,7 +47,9 @@ struct PubkeyHashPair {
     PubkeyHashPair() : version(), pubkeyHash() {}
     PubkeyHashPair(const uint8_t version, const PubkeyHash &pubkeyHash)
         : version(version) {
-        memmove(this->pubkeyHash.data(), pubkeyHash.data(), HASH_20_LEN);
+        std::move(pubkeyHash.begin(),
+                  pubkeyHash.end(),
+                  this->pubkeyHash.begin());
     }
 };
 
@@ -81,8 +84,13 @@ struct KeyPair {
 
     KeyPair() : privateKey(), publicKey() {}
     KeyPair(const PrivateKeyBytes &privateKey, const PublicKeyBytes &publicKey) {
-        memmove(this->privateKey.data(), privateKey.data(), HASH_32_LEN);
-        memmove(this->publicKey.data(), publicKey.data(), PUBLICKEY_COMPRESSED_LEN);
+        std::move(privateKey.begin(),
+                  privateKey.end(),
+                  this->privateKey.begin());
+
+        std::move(publicKey.begin(),
+                  publicKey.end(),
+                  this->publicKey.begin());
     }
 };
 

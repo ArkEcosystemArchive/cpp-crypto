@@ -9,6 +9,7 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
 #include <vector>
 
 #include "transactions/deserializer.hpp"
@@ -66,13 +67,15 @@ TEST(transactions_delegate_registration_v1, serialize) {
     data.fee             = v1::TYPE_2_FEE;
     data.timestamp       = v1::TYPE_2_TIMESTAMP;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.asset.delegateRegistration.length = v1::TYPE_2_USERNAME_LENGTH;
 
-    memmove(&data.asset.delegateRegistration.username,
-            v1::TYPE_2_USERNAME,
-            v1::TYPE_2_USERNAME_LENGTH);
+    std::move(v1::TYPE_2_USERNAME,
+              v1::TYPE_2_USERNAME + v1::TYPE_2_USERNAME_LENGTH,
+              data.asset.delegateRegistration.username.begin());
 
     data.signature.insert(data.signature.begin(),
                           v1::TYPE_2_SIGNATURE,

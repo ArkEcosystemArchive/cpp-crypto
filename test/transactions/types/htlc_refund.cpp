@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -60,13 +62,15 @@ TEST(transactions_htlc_refund, serialize_ecdsa) {
     data.type           = TYPE_10_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_10_FEE;
 
-    memmove(&data.asset.htlcRefund.id,
-            TYPE_10_LOCK_TX_ID,
-            sizeof(TYPE_10_LOCK_TX_ID));
+    std::move(TYPE_10_LOCK_TX_ID,
+              TYPE_10_LOCK_TX_ID + HASH_32_LEN,
+              data.asset.htlcRefund.id.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_10_SIGNATURE,
@@ -82,7 +86,9 @@ TEST(transactions_htlc_refund, serialize_ecdsa) {
 TEST(transactions_htlc_refund, getMap) {
     HtlcRefund refund;
 
-    memmove(&refund.id, TYPE_10_LOCK_TX_ID, HASH_32_LEN);
+    std::move(TYPE_10_LOCK_TX_ID,
+              TYPE_10_LOCK_TX_ID + HASH_32_LEN,
+              refund.id.begin());
 
     const auto refundMap = HtlcRefund::getMap(refund);
 

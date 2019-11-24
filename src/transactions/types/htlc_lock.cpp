@@ -13,6 +13,7 @@
 #include <cstring>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "interfaces/constants.h"
 #include "interfaces/identities.hpp"
@@ -44,7 +45,7 @@ namespace transactions {
 // - lock.amount = unpack8LE(buffer, 0);
 //
 // Secret Hash - 32 Bytes
-// - memmove(&lock.secretHash, &buffer[8], 32);
+// - std::move(&buffer[8], &buffer[40], lock->secretHash.begin());
 //
 // Expiration Type- 1 Byte
 // - lock.expirationType = buffer[40];
@@ -53,30 +54,37 @@ namespace transactions {
 // - lock.expirationValue = unpack4LE(buffer, 41);
 //
 // Recipient - 21 Bytes
-// - memmove(&lock.recipientId, &buffer[45], 21);
+// - std::move(&buffer[45], &buffer[66], lock->recipientId.begin());
 //
 // ---
 auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> uint32_t {
-    lock->amount             = unpack8LE(buffer, 0U);               // 8 Bytes
+    uint32_t offset = 0UL;
 
-    memmove(&lock->secretHash,                                      // 32 Bytes
-            &buffer[sizeof(uint64_t)],
-            HASH_32_LEN);
+    lock->amount = unpack8LE(buffer, offset);                       // 8 Bytes
 
-    lock->expirationType = buffer[sizeof(uint64_t) + HASH_32_LEN];  // 1 Byte
+    offset += sizeof(uint64_t);
 
-    lock->expiration = unpack4LE(buffer, sizeof(uint64_t) +         // 4 Bytes
-                                         HASH_32_LEN +
-                                         sizeof(uint8_t));
+    std::move(&buffer[offset],                                      // 32 Bytes
+              &buffer[offset + HASH_32_LEN],
+              lock->secretHash.begin());
 
-    memmove(&lock->recipientId,                                     // 21 Bytes
-            &buffer[sizeof(uint64_t) +
-                    HASH_32_LEN +
-                    sizeof(uint8_t) +
-                    sizeof(uint32_t)],
-            ADDRESS_HASH_LEN);
+    offset += HASH_32_LEN;
 
-    return HTLC_LOCK_SIZE;                                          // 66 Bytes
+    lock->expirationType = buffer[offset];                          // 1 Byte
+
+    offset += sizeof(uint8_t);
+
+    lock->expiration = unpack4LE(buffer, offset);                   // 4 Bytes
+
+    offset += sizeof(uint32_t);
+
+    std::move(&buffer[offset],                                      // 21 Bytes
+              &buffer[offset + ADDRESS_HASH_LEN],
+              lock->recipientId.begin());
+
+    offset += ADDRESS_HASH_LEN;
+
+    return offset;                                                  // 66 Bytes
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -92,43 +100,49 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> uint32_t {
 // Internals:
 //
 // Amount - 8 Bytes:
-// - memmove(buffer, &lock.amount, sizeof(uint64_t));
+// - memmove(buffer, &lock.amount, 8);
 //
 // Secret Hash - 32 Bytes
-// - memmove(&buffer[8], &lock.secretHash, 32);
+// - std::move(lock.secretHash.begin(), lock.secretHash.end(), &buffer[8]);;
 //
 // Expiration Type- 1 Byte
 // - buffer[40] = lock.expirationType;
 //
 // Expiration Value - 4 Bytes
-// - memmove(&buffer[41], &lock.expirationValue, 4);
+// - memmove(&buffer[offset], &lock.expiration, 8);
 //
 // Recipient - 21 Bytes
-// - memmove(&buffer[45], &lock.recipientId, 21)
+// - std::move(lock.recipientId.begin(), lock.recipientId.end(), &buffer[45]);
 //
 // ---
 auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> uint32_t {
+    uint32_t offset = 0;
+
     memmove(buffer, &lock.amount, sizeof(uint64_t));                // 8 Bytes
 
-    memmove(&buffer[sizeof(uint64_t)],                              // 32 Bytes
-            &lock.secretHash,
-            HASH_32_LEN);
+    offset += sizeof(uint64_t);
 
-    buffer[sizeof(uint64_t) + HASH_32_LEN] = lock.expirationType;   // 1 Byte
+    std::move(lock.secretHash.begin(),                              // 32 Bytes
+              lock.secretHash.end(),
+              &buffer[offset]);
 
-    memmove(&buffer[sizeof(uint64_t) +                              // 4 Bytes
-                    HASH_32_LEN + sizeof(uint8_t)],
-            &lock.expiration,
-            sizeof(uint32_t));
+    offset += HASH_32_LEN;
 
-    memmove(&buffer[sizeof(uint64_t) +                              // 21 Bytes
-                    HASH_32_LEN +
-                    sizeof(uint8_t) +
-                    sizeof(uint32_t)],
-            &lock.recipientId,
-            ADDRESS_HASH_LEN);  
+    buffer[offset] = lock.expirationType;                           // 1 Byte
 
-    return HTLC_LOCK_SIZE;                                          // 66 Bytes
+    offset += sizeof(uint8_t);
+
+    memmove(&buffer[offset], &lock.expiration, sizeof(uint32_t));   // 4 Bytes
+
+    offset += sizeof(uint32_t);
+
+    std::move(lock.recipientId.begin(),                             // 21 Bytes
+              lock.recipientId.end(),
+              &buffer[offset]);
+
+    offset += ADDRESS_HASH_LEN;
+
+    return offset;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -61,13 +63,15 @@ TEST(transactions_second_signature, serialize_ecdsa) {
     data.type           = TYPE_1_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_1_FEE;
 
-    memmove(&data.asset.secondSignature.publicKey,
-            TYPE_1_SECOND_PUBLICKEY,
-            sizeof(TYPE_1_SECOND_PUBLICKEY));
+    std::move(TYPE_1_SECOND_PUBLICKEY,
+              TYPE_1_SECOND_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.asset.secondSignature.publicKey.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_1_SIGNATURE,
@@ -83,9 +87,9 @@ TEST(transactions_second_signature, serialize_ecdsa) {
 TEST(transactions_second_signature, getMap) {
     SecondSignature secondSignature;
 
-    memmove(&secondSignature.publicKey,
-            TYPE_1_SECOND_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(TYPE_1_SECOND_PUBLICKEY,
+              TYPE_1_SECOND_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              secondSignature.publicKey.begin());
 
     const auto secondSignatureMap = SecondSignature::getMap(secondSignature);
 

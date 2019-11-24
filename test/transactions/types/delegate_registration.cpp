@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -62,15 +64,17 @@ TEST(transactions_delegate_registration, serialize_ecdsa) {
     data.type           = TYPE_2_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_2_FEE;
 
     data.asset.delegateRegistration.length = TYPE_2_USERNAME_LENGTH;
 
-    memmove(&data.asset.delegateRegistration.username,
-            TYPE_2_USERNAME,
-            TYPE_2_USERNAME_LENGTH);
+    std::move(TYPE_2_USERNAME,
+              TYPE_2_USERNAME + TYPE_2_USERNAME_LENGTH,
+              data.asset.delegateRegistration.username.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_2_SIGNATURE,
@@ -87,9 +91,10 @@ TEST(transactions_delegate_registration, getMap) {
     DelegateRegistration delegateRegistration;
 
     delegateRegistration.length = TYPE_2_USERNAME_LENGTH;
-    memmove(&delegateRegistration.username,
-            TYPE_2_USERNAME,
-            TYPE_2_USERNAME_LENGTH);
+
+    std::move(TYPE_2_USERNAME,
+              TYPE_2_USERNAME + TYPE_2_USERNAME_LENGTH,
+              delegateRegistration.username.begin());
 
     const auto delegateRegistrationMap =
         DelegateRegistration::getMap(delegateRegistration);

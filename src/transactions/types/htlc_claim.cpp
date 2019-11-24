@@ -10,9 +10,9 @@
 #include "transactions/types/htlc_claim.hpp"
 
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "interfaces/constants.h"
 
@@ -35,16 +35,18 @@ namespace transactions {
 // Internals:
 //
 // Lock Transaction Id - 32 Bytes:
-// - memmove(&claim.id, &buffer[0], 32);
+// - std::move(buffer, buffer + 32, claim->id.begin()); 
 //
 // Unlock Secret - UTF-8 encoded - 32 Bytes
-// - memmove(&claim.secret, &buffer[HASH_32_LEN], 32);
+// - std::move(&buffer[32], &buffer[64], claim->secret.begin());
 //
 // ---
 auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> uint32_t {
-    memmove(&claim->id, buffer, HASH_32_LEN);                       // 32 Bytes
+    std::move(buffer, &buffer[HASH_32_LEN], claim->id.begin());     // 32 Bytes
 
-    memmove(&claim->secret, &buffer[HASH_32_LEN], HASH_32_LEN);     // 32 Bytes
+    std::move(&buffer[HASH_32_LEN],                                 // 32 Bytes
+              &buffer[HASH_32_LEN + HASH_32_LEN],
+              claim->secret.begin());
 
     return HASH_64_LEN;                                             // 64 Bytes
 }
@@ -62,18 +64,18 @@ auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> uint32_t
 // Internals:
 //
 // Lock Transaction Id - 32 Bytes:
-// - memmove(buffer, &claim.id, 32);
+// - std::move(claim.id.begin(), claim.id.end(), buffer);
 //
 // Unlock Secret - UTF-8 encoded - 32 Bytes
-// - memmove(&buffer[32], &claim.secret, 32);
+// - std::move(claim.secret.begin(), \claim.secret.end(), &buffer[32]);
 //
 // ---
 auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> uint32_t {
-    memmove(buffer, claim.id.data(), HASH_32_LEN);                  // 32 Bytes
+    std::move(claim.id.begin(), claim.id.end(), buffer);            // 32 Bytes
 
-    memmove(&buffer[HASH_32_LEN],                                   // 32 Bytes
-            claim.secret.data(),
-            claim.secret.size());
+    std::move(claim.secret.begin(),                                 // 32 Bytes
+              claim.secret.end(),
+              &buffer[HASH_32_LEN]);
 
     return HASH_64_LEN;                                             // 64 Bytes
 }

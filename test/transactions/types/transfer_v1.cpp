@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -100,11 +102,13 @@ TEST(transactions_transfer_v1, serialize) {
 
     data.asset.transfer.amount = v1::TYPE_0_AMOUNT;
 
-    memmove(&data.asset.transfer.recipientId,
-            v1::TYPE_0_RECIPIENT,
-            sizeof(v1::TYPE_0_RECIPIENT));
+    std::move(v1::TYPE_0_RECIPIENT,
+              v1::TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              data.asset.transfer.recipientId.begin());
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.signature.insert(data.signature.begin(),
                           v1::TYPE_0_SIGNATURE,
@@ -128,11 +132,13 @@ TEST(transactions_transfer_v1, serialize_vendorfield) {
 
     data.asset.transfer.amount = v1::TYPE_0_AMOUNT;
 
-    memmove(&data.asset.transfer.recipientId,
-            v1::TYPE_0_RECIPIENT,
-            sizeof(v1::TYPE_0_RECIPIENT));
+    std::move(v1::TYPE_0_RECIPIENT,
+              v1::TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              data.asset.transfer.recipientId.begin());
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.vendorField.insert(data.signature.begin(),
                            v1::TYPE_0_VF,

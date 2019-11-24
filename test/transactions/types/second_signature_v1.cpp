@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -59,11 +61,13 @@ TEST(transactions_v1, serialize_second_signature_registration) {
     data.fee            = v1::TYPE_1_FEE;
     data.timestamp      = v1::TYPE_1_TIMESTAMP;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
-    memmove(&data.asset.secondSignature.publicKey,
-            v1::TYPE_1_SECOND_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(v1::TYPE_1_SECOND_PUBLICKEY,
+              v1::TYPE_1_SECOND_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.asset.secondSignature.publicKey.begin());
 
     data.signature.insert(data.signature.begin(),
                           v1::TYPE_1_SIGNATURE,

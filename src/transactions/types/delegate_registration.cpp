@@ -10,9 +10,9 @@
 #include "transactions/types/delegate_registration.hpp"
 
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "utils/str.hpp"
 
@@ -36,21 +36,21 @@ namespace transactions {
 // - registration.length = buffer[0];
 //
 // Username - 3 <=> 20 Bytes:
-// - memmove(&registration.username, &buffer[1], registration.length);
+// - std::move(&buffer[sizeof(uint8_t)],  &buffer[1 + registration->length], registration->username.begin());
 //
 // ---
 auto DelegateRegistration::Deserialize(DelegateRegistration *registration,
                                        const uint8_t *buffer) -> uint32_t {
-    registration->length = buffer[0];                                // 1 Byte
+    registration->length = buffer[0];                               // 1 Byte
 
     if (registration->length < USERNAME_MIN ||
         registration->length > USERNAME_MAX) {
         return 0UL;
     }
 
-    memmove(&registration->username,                                 // 3 <=> 20
-            &buffer[sizeof(uint8_t)],
-            registration->length);  
+    std::move(&buffer[sizeof(uint8_t)],                             // 3 <=> 20
+              &buffer[sizeof(uint8_t) + registration->length],
+              registration->username.begin());
 
     return sizeof(uint8_t) + registration->length;                   // 4 <=> 21
 }
@@ -71,7 +71,7 @@ auto DelegateRegistration::Deserialize(DelegateRegistration *registration,
 // - buffer[0] = registration.length;
 //
 // Username - 3 <=> 20 Bytes:
-// - memmove(&buffer[1], &registration.username, registration.length);
+// - std::move(registration.username.begin(), registration.username.end(),&buffer[1]);
 //
 // ---
 auto DelegateRegistration::Serialize(const DelegateRegistration &registration,
@@ -83,9 +83,9 @@ auto DelegateRegistration::Serialize(const DelegateRegistration &registration,
         return 0UL;
     }
 
-    memmove(&buffer[sizeof(uint8_t)],                               // 3 <=> 20
-            &registration.username,
-            registration.length);  
+    std::move(registration.username.begin(),                       // 3 <=> 20
+              registration.username.end(),
+              &buffer[sizeof(uint8_t)]);
 
     return sizeof(uint8_t) + registration.length;                   // 4 <=> 21
 }

@@ -10,9 +10,9 @@
 #include "transactions/types/vote.hpp"
 
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "interfaces/constants.h"
 
@@ -35,13 +35,15 @@ namespace transactions {
 // Internals:
 //
 // Vote - 1 + 33 Bytes:
-// - memmove(&vote.data, buffer, 1 + 33);
+// - std::move(&buffer[1], &buffer[35] + VOTES_LEN, vote->votes.begin());
 //
 // ---
 auto Vote::Deserialize(Vote *vote, const uint8_t *buffer) -> uint32_t {
     vote->count = buffer[0];                                        // 1 Byte
 
-    memmove(&vote->votes, &buffer[sizeof(uint8_t)], VOTE_LEN);      // 34 Bytes
+    std::move(&buffer[sizeof(uint8_t)],                             // 34 Bytes
+              &buffer[sizeof(uint8_t)] + VOTES_LEN,
+              vote->votes.begin());
 
     return sizeof(uint8_t) + VOTE_LEN;                              // 35 Bytes
 }
@@ -62,15 +64,15 @@ auto Vote::Deserialize(Vote *vote, const uint8_t *buffer) -> uint32_t {
 // - buffer[0] = 1;
 //
 // Vote - 2 + 33 Bytes:
-// - memmove(buffer, &vote.data, 1 + 33);
+// - std::move(vote.votes.begin(), vote.votes.end(), &buffer[1])
 //
 // ---
 auto Vote::Serialize(const Vote &vote, uint8_t *buffer) -> uint32_t {
     buffer[0] = vote.count;                                         // 1 Byte
 
-    memmove(&buffer[sizeof(uint8_t)],                               // 34 Bytes
-            &vote.votes,
-            vote.count * VOTE_LEN);
+    std::move(vote.votes.begin(),                                   // 34 Bytes
+              vote.votes.end(),
+              &buffer[sizeof(uint8_t)]);
 
     return sizeof(uint8_t) + vote.count * VOTE_LEN;                 // 35 Bytes
 }

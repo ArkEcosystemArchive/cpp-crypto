@@ -11,6 +11,7 @@
 
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "interfaces/identities.hpp"
@@ -50,12 +51,14 @@ Message::Message(const std::string &message,
                  const uint8_t *signature) {
     this->message = message;
 
-    memmove(&this->publicKey, publicKeyBytes, PUBLICKEY_COMPRESSED_LEN);
+    std::move(publicKeyBytes,
+              publicKeyBytes + PUBLICKEY_COMPRESSED_LEN,
+              this->publicKey.begin());
 
     this->signature.insert(this->signature.begin(),
                            signature,
                            signature + signature[1] + 2U);
-};
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 

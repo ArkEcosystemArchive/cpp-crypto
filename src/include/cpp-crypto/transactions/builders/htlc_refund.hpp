@@ -11,7 +11,7 @@
 #define ARK_TRANSACTIONS_BUILDERS_HTLC_REFUND_HPP
 
 #include <cstdint>
-#include <cstring>
+#include <utility>
 
 #include "transactions/builders/common.hpp"
 
@@ -32,9 +32,10 @@ class HtlcRefund : public Common<HtlcRefund> {
   public:
     // Lock Transaction Id
     HtlcRefund &lockTransactionId(const uint8_t *lockTransactionId) {
-        memmove(this->transaction.data.asset.htlcRefund.id.data(),
-                lockTransactionId,
-                HASH_32_LEN);
+        std::move(lockTransactionId,
+                  lockTransactionId + HASH_32_LEN,
+                  this->transaction.data.asset.htlcRefund.id.begin());
+
         return *this;
     }
 };

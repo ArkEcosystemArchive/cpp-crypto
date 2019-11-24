@@ -10,6 +10,7 @@
 #include "utils/base58.hpp"
 
 #include <array>
+#include <utility>
 
 #include "interfaces/identities.hpp"
 #include "utils/str.hpp"
@@ -48,7 +49,7 @@ auto Base58::checkEncode(const uint8_t *data, const uint8_t length)
         return {};
     }
 
-    memmove(tmp.data(), data, length);
+    std::move(data, data + length, tmp.begin());
     while ((zeroCount < length) && (tmp.at(zeroCount) == 0U)) {
         ++zeroCount;
     }

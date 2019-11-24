@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -70,22 +72,23 @@ TEST(transactions_htlc_lock, serialize_ecdsa) {
     data.type           = TYPE_8_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_8_FEE;
 
     data.asset.htlcLock.amount = TYPE_8_AMOUNT;
 
-    memmove(data.asset.htlcLock.secretHash.data(),
-            TYPE_8_SECRET_HASH,
-            sizeof(TYPE_8_SECRET_HASH));
+    std::move(TYPE_8_SECRET_HASH, TYPE_8_SECRET_HASH + HASH_32_LEN, data.asset.htlcLock.secretHash.begin());
+
 
     data.asset.htlcLock.expirationType   = TYPE_8_EXPIRATION_TYPE;
     data.asset.htlcLock.expiration       = TYPE_8_EXPIRATION_VALUE;
 
-    memmove(&data.asset.htlcLock.recipientId,
-            TYPE_8_RECIPIENT,
-            ADDRESS_HASH_LEN);
+    std::move(TYPE_8_RECIPIENT,
+              TYPE_8_RECIPIENT + ADDRESS_HASH_LEN,
+              data.asset.htlcLock.recipientId.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_8_SIGNATURE,
@@ -101,11 +104,18 @@ TEST(transactions_htlc_lock, serialize_ecdsa) {
 TEST(transactions_htlc_lock, getMap) {
     HtlcLock lock;
 
-    lock.amount = TYPE_8_AMOUNT;
-    memmove(&lock.secretHash, TYPE_8_SECRET_HASH, HASH_32_LEN);
-    lock.expirationType = TYPE_8_EXPIRATION_TYPE;
-    lock.expiration = TYPE_8_EXPIRATION_VALUE;
-    memmove(&lock.recipientId, TYPE_8_RECIPIENT, ADDRESS_HASH_LEN);
+    lock.amount             = TYPE_8_AMOUNT;
+
+    std::move(TYPE_8_SECRET_HASH,
+              TYPE_8_SECRET_HASH + HASH_32_LEN,
+              lock.secretHash.begin());
+
+    lock.expirationType     = TYPE_8_EXPIRATION_TYPE;
+    lock.expiration         = TYPE_8_EXPIRATION_VALUE;
+
+    std::move(TYPE_8_RECIPIENT,
+              TYPE_8_RECIPIENT + ADDRESS_HASH_LEN,
+              lock.recipientId.begin());
 
     const auto lockMap = HtlcLock::getMap(lock);
 

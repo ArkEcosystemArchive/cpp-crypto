@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "identities/keys.hpp"
 
 #include "types/fixtures/common.hpp"
@@ -53,18 +55,18 @@ TEST(transactions_transaction, get_id) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    memmove(&transaction.data.senderPublicKey,
-            COMMON_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              transaction.data.senderPublicKey.begin());
 
     transaction.data.fee                         = TYPE_0_FEE;
 
     transaction.data.asset.transfer.amount       = TYPE_0_AMOUNT;
     transaction.data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    memmove(&transaction.data.asset.transfer.recipientId,
-            TYPE_0_RECIPIENT,
-            sizeof(TYPE_0_RECIPIENT));
+    std::move(TYPE_0_RECIPIENT,
+              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              transaction.data.asset.transfer.recipientId.begin());
 
     transaction.data.signature.insert(
             transaction.data.signature.begin(),
@@ -88,18 +90,18 @@ TEST(transactions_transaction, sign) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    memmove(&transaction.data.senderPublicKey,
-            COMMON_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              transaction.data.senderPublicKey.begin());
 
     transaction.data.fee                         = TYPE_0_FEE;
 
     transaction.data.asset.transfer.amount       = TYPE_0_AMOUNT;
     transaction.data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    memmove(&transaction.data.asset.transfer.recipientId,
-            TYPE_0_RECIPIENT,
-            sizeof(TYPE_0_RECIPIENT));
+    std::move(TYPE_0_RECIPIENT,
+              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              transaction.data.asset.transfer.recipientId.begin());
 
     transaction.sign("this is a top secret passphrase");
 
@@ -124,17 +126,17 @@ TEST(transactions_transaction, sign_second) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    memmove(&transaction.data.senderPublicKey,
-            COMMON_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              transaction.data.senderPublicKey.begin());
 
     transaction.data.fee                         = TYPE_0_FEE;
     transaction.data.asset.transfer.amount       = TYPE_0_AMOUNT;
     transaction.data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    memmove(&transaction.data.asset.transfer.recipientId,
-            TYPE_0_RECIPIENT,
-            sizeof(TYPE_0_RECIPIENT));
+    std::move(TYPE_0_RECIPIENT,
+              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
+              transaction.data.asset.transfer.recipientId.begin());
 
     transaction.sign("this is a top secret passphrase");
 

@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -62,14 +64,17 @@ TEST(transactions_vote, serialize_ecdsa) {
     data.type           = TYPE_3_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    memmove(&data.senderPublicKey,
-            COMMON_PUBLICKEY,
-            PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.fee            = TYPE_3_FEE;
 
     data.asset.vote.count = 1U;
-    memmove(&data.asset.vote.votes, TYPE_3_VOTE, sizeof(TYPE_3_VOTE));
+
+    std::move(TYPE_3_VOTE,
+              TYPE_3_VOTE + VOTE_LEN,
+              data.asset.vote.votes.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_3_SIGNATURE,
@@ -86,7 +91,8 @@ TEST(transactions_vote, getMap) {
     Vote vote;
 
     vote.count = TYPE_3_VOTE_COUNT;
-    memmove(&vote.votes, TYPE_3_VOTE, VOTE_LEN);
+
+    std::move(TYPE_3_VOTE, TYPE_3_VOTE + VOTE_LEN, vote.votes.begin());
 
     const auto voteMap = Vote::getMap(vote);
 

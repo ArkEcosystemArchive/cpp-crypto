@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <utility>
+
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
@@ -65,11 +67,15 @@ TEST(transactions_vote_v1, serialize) {
     data.fee            = v1::TYPE_3_FEE;
     data.timestamp      = v1::TYPE_3_TIMESTAMP;
 
-    memmove(&data.senderPublicKey, COMMON_PUBLICKEY, PUBLICKEY_COMPRESSED_LEN);
+    std::move(COMMON_PUBLICKEY,
+              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+              data.senderPublicKey.begin());
 
     data.asset.vote.count = 1U;
 
-    memmove(&data.asset.vote.votes, v1::TYPE_3_VOTE, sizeof(v1::TYPE_3_VOTE));
+    std::move(v1::TYPE_3_VOTE,
+              v1::TYPE_3_VOTE + VOTES_LEN,
+              data.asset.vote.votes.begin());
 
     data.signature.insert(data.signature.begin(),
                           v1::TYPE_3_SIGNATURE,
