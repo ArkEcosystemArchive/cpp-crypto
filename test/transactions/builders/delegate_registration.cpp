@@ -17,12 +17,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_builders, delegate_registration) {
     const auto transaction = builder::DelegateRegistration()
         .network(COMMON_MAINNET)
@@ -38,7 +35,6 @@ TEST(transactions_builders, delegate_registration) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_builders, delegate_registration_string) {
     const auto transaction = builder::DelegateRegistration()
         .network(COMMON_MAINNET)
@@ -52,5 +48,3 @@ TEST(transactions_builders, delegate_registration_string) {
 
     ASSERT_TRUE(transaction.verify());
 }
-
-////////////////////////////////////////////////////////////////////////////////

@@ -16,14 +16,11 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace fixtures::identity;
 using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, publickey_compute) {
     const auto publicKey = Curve::PublicKey::compute(tPrivateKeyBytes.data());
 
@@ -33,7 +30,6 @@ TEST(crypto_curve, publickey_compute) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, publickey_compute_invalid) {
     const auto publicKey = Curve::PublicKey::compute(
             invalid::tPrivateKeyBytes.data());
@@ -44,7 +40,6 @@ TEST(crypto_curve, publickey_compute_invalid) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, publickey_compress) {
     const auto compressed = Curve::PublicKey::compress(
                 tUncompressedPublicKeyBytes.data());
@@ -55,7 +50,6 @@ TEST(crypto_curve, publickey_compress) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, publickey_decompress) {
     const auto decompressed = Curve::PublicKey::decompress(
                 tPublicKeyBytes.data());
@@ -66,15 +60,11 @@ TEST(crypto_curve, publickey_decompress) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, publickey_validate) {
     ASSERT_TRUE(Curve::PublicKey::validate(tPublicKeyBytes.data()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, publickey_validate_invalid) {
     ASSERT_FALSE(Curve::PublicKey::validate(invalid::tPublicKeyBytes.data()));
 }
-
-////////////////////////////////////////////////////////////////////////////////

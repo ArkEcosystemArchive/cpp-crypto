@@ -21,7 +21,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Delegate Registration (Type 2) - 4 <=> 21 Bytes
 //
 // @param DelegateRegistration *registration.
@@ -56,7 +55,6 @@ auto DelegateRegistration::Deserialize(DelegateRegistration *registration,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Delegate Registration (Type 2) - 4 <=> 21 Bytes
 //
 // @param const DelegateRegistration &registration.
@@ -91,7 +89,6 @@ auto DelegateRegistration::Serialize(const DelegateRegistration &registration,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the Delegate Registration Username.
 auto DelegateRegistration::getMap(const DelegateRegistration &registration) 
         -> std::map<std::string, std::string> {
@@ -106,8 +103,6 @@ auto DelegateRegistration::getMap(const DelegateRegistration &registration)
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

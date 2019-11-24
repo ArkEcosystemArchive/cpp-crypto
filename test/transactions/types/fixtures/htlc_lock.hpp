@@ -16,7 +16,6 @@
 #include "common.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // {
 //     "data": {
 //         "version": 2,
@@ -43,7 +42,6 @@
 // }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static constexpr const uint8_t TYPE_8_TYPE                  = 8U;
 static constexpr const uint64_t TYPE_8_FEE                  = 10000000ULL;
 static constexpr const uint64_t TYPE_8_AMOUNT               = 1ULL;
@@ -52,7 +50,6 @@ static constexpr const uint32_t TYPE_8_EXPIRATION_VALUE     = 81242895UL;
 static constexpr const uint64_t TYPE_8_VF_LENGTH            = 0U;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static constexpr const char* TYPE_8_AMOUNT_STRING               = "1";
 static constexpr const char* TYPE_8_SECRET_STRING               = "09b9a28393efd02fcd76a21b0f0f55ba2aad8f3640ff8cae86de033a9cfbd78c";
 static constexpr const char* TYPE_8_EXPIRATION_TYPE_STRING      = "1";
@@ -60,7 +57,6 @@ static constexpr const char* TYPE_8_EXPIRATION_VALUE_STRING     = "81242895";
 static constexpr const char* TYPE_8_RECIPIENT_STRING            = "AJWRd23HNEhPLkK1ymMnwnDBX2a7QBZqff";
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // ff02170100000008000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192809698000000000000010000000000000009b9a28393efd02fcd76a21b0f0f55ba2aad8f3640ff8cae86de033a9cfbd78c010fabd704171dfc69b54c7fe901e91d5a9ab78388645e2427ea3044022034491f6ee88278248c3b0ddd62b7ee0cb68e0ff93a51008899240b32d111b90a022043b10dd604f2d6256c75e50b5423612824a971c1876528af983ebb8145403e86
 static const std::vector<uint8_t> TYPE_8_BYTES = {
     255, 2,   23,  1,   0,   0,   0,   8,   0,   1,   0,   0,   0,   0,   0,
@@ -77,17 +73,20 @@ static const std::vector<uint8_t> TYPE_8_BYTES = {
     13,  214, 4,   242, 214, 37,  108, 117, 229, 11,  84,  35,  97,  40,  36,
     169, 113, 193, 135, 101, 40,  175, 152, 62,  187, 129, 69,  64,  62,  134 };
 
+////////////////////////////////////////////////////////////////////////////////
 // 09b9a28393efd02fcd76a21b0f0f55ba2aad8f3640ff8cae86de033a9cfbd78c
 static constexpr const uint8_t TYPE_8_SECRET_HASH[] = {
     9,   185, 162, 131, 147, 239, 208, 47,  205, 118, 162,
     27,  15,  15,  85,  186, 42,  173, 143, 54,  64,  255,
     140, 174, 134, 222, 3,   58,  156, 251, 215, 140 };
 
+////////////////////////////////////////////////////////////////////////////////
 // base58Decode(AJWRd23HNEhPLkK1ymMnwnDBX2a7QBZqff)
 static constexpr const uint8_t TYPE_8_RECIPIENT[] = {
     23, 29,  252, 105, 181, 76,  127, 233, 1,  233, 29,
     90, 154, 183, 131, 136, 100, 94,  36,  39, 234 };
 
+////////////////////////////////////////////////////////////////////////////////
 // 3044022034491f6ee88278248c3b0ddd62b7ee0cb68e0ff93a51008899240b32d111b90a022043b10dd604f2d6256c75e50b5423612824a971c1876528af983ebb8145403e86
 static constexpr const uint8_t TYPE_8_SIGNATURE[] = {
     48,  68,  2,   32,  52,  73,  31,  110, 232, 130, 120, 36,  140, 59,
@@ -95,7 +94,5 @@ static constexpr const uint8_t TYPE_8_SIGNATURE[] = {
     153, 36,  11,  50,  209, 17,  185, 10,  2,   32,  67,  177, 13,  214,
     4,   242, 214, 37,  108, 117, 229, 11,  84,  35,  97,  40,  36,  169,
     113, 193, 135, 101, 40,  175, 152, 62,  187, 129, 69,  64,  62,  134 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 #endif

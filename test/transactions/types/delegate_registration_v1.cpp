@@ -20,12 +20,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_delegate_registration_v1, deserialize) {
     TransactionData data;
 
@@ -58,7 +55,6 @@ TEST(transactions_delegate_registration_v1, deserialize) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_delegate_registration_v1, serialize) {
     TransactionData data;
 
@@ -90,5 +86,3 @@ TEST(transactions_delegate_registration_v1, serialize) {
                           Serializer::serialize(data).data(),
                           v1::TYPE_2_BYTES.size()));
 }
-
-////////////////////////////////////////////////////////////////////////////////

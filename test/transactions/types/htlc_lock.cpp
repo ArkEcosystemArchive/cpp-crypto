@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_htlc_lock, deserialize_ecdsa) {
     TransactionData data;
 
@@ -63,7 +60,6 @@ TEST(transactions_htlc_lock, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_htlc_lock, serialize_ecdsa) {
     TransactionData data;
 
@@ -100,7 +96,6 @@ TEST(transactions_htlc_lock, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_htlc_lock, getMap) {
     HtlcLock lock;
 
@@ -134,5 +129,3 @@ TEST(transactions_htlc_lock, getMap) {
     ASSERT_STREQ(TYPE_8_RECIPIENT_STRING,
                  lockMap.find("recipientId")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

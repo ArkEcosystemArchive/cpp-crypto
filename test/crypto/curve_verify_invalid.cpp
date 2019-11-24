@@ -14,14 +14,11 @@
 #include "fixtures/identity.hpp"
 #include "fixtures/message.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace fixtures::identity;
 using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, verify_invalid) {
     std::vector<uint8_t> temp = {
         tMessageSignatureBytes.begin(),
@@ -32,5 +29,3 @@ TEST(crypto_curve, verify_invalid) {
                                       invalid::tPublicKeyBytes.data(),
                                       temp));
 }
-
-////////////////////////////////////////////////////////////////////////////////

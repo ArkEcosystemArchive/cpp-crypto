@@ -28,7 +28,6 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static constexpr const char* MESSAGE_KEY        = "message";
 static constexpr const char* PUBLICKEY_KEY      = "publickey";
 static constexpr const char* SIGNATURE_KEY      = "signature";
@@ -37,14 +36,12 @@ static constexpr const uint8_t MAGIC_JSON_SIZE          = 120U;
 static constexpr const uint8_t MAGIC_JSON_OBJ_SIZE      = 3U;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Create an empty Message object for building and signing.
 Message::Message() : publicKey() {
         signature.reserve(SIGNATURE_ECDSA_MAX);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Create a Signed Message object for verification.
 Message::Message(const std::string &message,
                  const uint8_t *publicKeyBytes,
@@ -61,7 +58,6 @@ Message::Message(const std::string &message,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 auto Message::sign(const std::string &message, const std::string &passphrase)
         -> bool {
     this->message = message;
@@ -78,7 +74,6 @@ auto Message::sign(const std::string &message, const std::string &passphrase)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Verify a Signed Message object.
 auto Message::verify() const -> bool {
     const auto hash = Hash::sha256((uint8_t *)this->message.data(),
@@ -90,7 +85,6 @@ auto Message::verify() const -> bool {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Create a string map of the Signed Message objects.
 auto Message::toMap() const -> std::map<std::string, std::string> {
     return {
@@ -101,7 +95,6 @@ auto Message::toMap() const -> std::map<std::string, std::string> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Create a Json'ified string of the Signed Message.
 auto Message::toJson() const -> std::string {
     auto messageArray = this->toMap();
@@ -125,8 +118,6 @@ auto Message::toJson() const -> std::string {
 
     return jsonStr;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

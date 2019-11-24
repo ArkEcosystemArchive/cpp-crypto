@@ -16,14 +16,11 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace fixtures::identity;
 using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_curve, ecdsa_sign) {
     std::vector<uint8_t> signature = {};
     ASSERT_TRUE(Curve::Ecdsa::sign(tMessageSha256Bytes.data(),
@@ -34,5 +31,3 @@ TEST(crypto_curve, ecdsa_sign) {
                           signature.data(),
                           signature.size()));
 }
-
-////////////////////////////////////////////////////////////////////////////////

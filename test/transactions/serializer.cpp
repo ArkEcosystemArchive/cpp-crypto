@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Break serialization with an invalid version.
 // All other cases are tested via transaction types.
 TEST(transactions_serializer, serialize_invalid_version) {
@@ -60,5 +57,3 @@ TEST(transactions_serializer, serialize_invalid_version) {
 
     ASSERT_TRUE(serialized.empty());
 }
-
-////////////////////////////////////////////////////////////////////////////////

@@ -15,7 +15,6 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 auto Network::operator==(const Network& other) const -> bool {
     bool numbersMatch = (this->slip44 == other.slip44) &&
                         (this->wif == other.wif) &&
@@ -27,7 +26,6 @@ auto Network::operator==(const Network& other) const -> bool {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 auto Network::operator!=(const Network& other) const -> bool {
     bool numbersMatch = (this->slip44 != other.slip44) ||
                         (this->wif != other.wif) ||
@@ -37,8 +35,6 @@ auto Network::operator!=(const Network& other) const -> bool {
 
     return numbersMatch || stringsMatch;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

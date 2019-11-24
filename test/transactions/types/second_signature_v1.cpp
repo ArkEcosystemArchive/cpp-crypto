@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_v1, deserialize_second_signature_registration) {
     TransactionData data;
 
@@ -52,7 +49,6 @@ TEST(transactions_v1, deserialize_second_signature_registration) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_v1, serialize_second_signature_registration) {
     TransactionData data;
 
@@ -77,5 +73,3 @@ TEST(transactions_v1, serialize_second_signature_registration) {
                           Serializer::serialize(data).data(),
                           v1::TYPE_1_BYTES.size()));
 }
-
-////////////////////////////////////////////////////////////////////////////////

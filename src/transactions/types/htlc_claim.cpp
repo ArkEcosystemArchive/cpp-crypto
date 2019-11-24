@@ -23,7 +23,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Htlc Claim (Type 8) - 64 Bytes
 //
 // @param HtlcClaim *claim
@@ -52,7 +51,6 @@ auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> uint32_t
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Htlc Claim (Type 8) - 64 Bytes
 //
 // @param const HtlcClaim &claim
@@ -81,7 +79,6 @@ auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> uint32_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the Htlc Claim asset.
 auto HtlcClaim::getMap(const HtlcClaim &claim)
         -> std::map<std::string, std::string> {
@@ -97,8 +94,6 @@ auto HtlcClaim::getMap(const HtlcClaim &claim)
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

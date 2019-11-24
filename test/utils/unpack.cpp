@@ -15,7 +15,6 @@
 #include <cstdint>
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_unpack, le_2) {
     const uint16_t AMOUNT_16 = 1ULL;
     const std::array<uint8_t, sizeof(uint16_t)>
@@ -25,7 +24,6 @@ TEST(utils_unpack, le_2) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_unpack, le_4) {
     const uint32_t AMOUNT_32 = 1ULL;
     const std::array<uint8_t, sizeof(uint32_t)>
@@ -36,7 +34,6 @@ TEST(utils_unpack, le_4) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_unpack, le_8) {
     const uint64_t AMOUNT_64 = 1ULL;
     const std::array<uint8_t, sizeof(uint64_t)>
@@ -44,5 +41,3 @@ TEST(utils_unpack, le_8) {
 
     ASSERT_EQ(AMOUNT_64, unpack8LE(AMOUNT_64_ARRAY_LE, 0));
 }
-
-////////////////////////////////////////////////////////////////////////////////

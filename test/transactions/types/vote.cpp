@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_vote, deserialize_ecdsa) {
     TransactionData data;
 
@@ -55,7 +52,6 @@ TEST(transactions_vote, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_vote, serialize_ecdsa) {
     TransactionData data;
 
@@ -86,7 +82,6 @@ TEST(transactions_vote, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_vote, getMap) {
     Vote vote;
 
@@ -99,5 +94,3 @@ TEST(transactions_vote, getMap) {
     ASSERT_STREQ(TYPE_3_VOTES_STRING,
                  voteMap.find("votes")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

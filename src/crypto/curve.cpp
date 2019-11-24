@@ -33,9 +33,7 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
-////////// Curve::Ecdsa //////////
-
+////////////////////////////////////////////////////////////////////////////////
 // Curve::Ecdsa::sign
 //
 // Sign the input hash with a privateKey using SECP256K1 ECDSA.
@@ -89,7 +87,6 @@ auto Curve::Ecdsa::sign(const uint8_t *hash32,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Curve::Ecdsa::verify
 //
 // Verify a hash and publicKey against a signature using SECP256K1 ECDSA.
@@ -139,9 +136,6 @@ auto Curve::Ecdsa::verify(const uint8_t *hash32,
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
-////////// Curve::PublicKey //////////
-
 // Curve::PublicKey::compute
 //
 // Compute a compressed-type publicKey from a privateKey byte-array.
@@ -165,7 +159,6 @@ auto Curve::PublicKey::compute(const uint8_t *privateKeyBytes) -> PublicKeyBytes
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Curve::PublicKey::compress
 //
 // Compresses an uncompressed publicKey curvepoint.
@@ -185,7 +178,6 @@ auto Curve::PublicKey::compress(const uint8_t *uncompressed) -> PublicKeyBytes {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Curve::PublicKey::decompress
 //
 // Decompresses a compressed publicKey.
@@ -206,7 +198,6 @@ auto Curve::PublicKey::decompress(const uint8_t *compressed) -> PublicKeyPoint {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Curve::PublicKey::validate
 //
 // Validate a compressed publicKey.
@@ -221,8 +212,6 @@ auto Curve::PublicKey::validate(const uint8_t *publicKeyBytes) -> bool {
     const struct uECC_Curve_t* curve = uECC_secp256k1();
     return uECC_valid_public_key(decompress(publicKeyBytes).data(), curve) != 0;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

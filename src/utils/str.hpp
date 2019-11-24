@@ -18,15 +18,14 @@
 #include "interfaces/constants.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static const size_t ALPHANUM_TABLE_LEN = 128U;
 
+////////////////////////////////////////////////////////////////////////////////
 static constexpr std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
     #include "utils/str.table"
 }};
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Checks string length with bounds and char checking.
 // returned length excludes the null terminator.
 inline size_t strlenSafe(const char* str) {
@@ -42,7 +41,6 @@ inline size_t strlenSafe(const char* str) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
 // Converts an ASCII string to a uint8_t/bytes vector representation.
 inline const std::vector<uint8_t> StringToBytes(const std::string& str) {
     return { str.begin(), str.end() };
@@ -50,7 +48,7 @@ inline const std::vector<uint8_t> StringToBytes(const std::string& str) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
+// Convert an Unsigned Integer to its string representation.
 inline const std::string UintToString(const uint64_t &amount) {
     if (amount == 0ULL) {
         return "0";
@@ -73,7 +71,5 @@ inline const std::string UintToString(const uint64_t &amount) {
 
     return result;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 #endif

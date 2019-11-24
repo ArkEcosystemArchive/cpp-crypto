@@ -21,7 +21,6 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 auto Base58::checkEncode(const uint8_t *data, const uint8_t length)
         -> std::string {
     const std::array<uint8_t, BASE58_ALPHABET_LEN> BASE58ALPHABET = {
@@ -88,7 +87,6 @@ auto Base58::checkEncode(const uint8_t *data, const uint8_t length)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a Version-byte and Ripemd160 Hash as a pair.
 // Expects a c_string address as input.
 auto Base58::getHashPair(const char *address) -> PubkeyHashPair {
@@ -100,7 +98,6 @@ auto Base58::getHashPair(const char *address) -> PubkeyHashPair {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a formatted Address string.
 // Expects a 20-byte Ripemd160 Address hash a Network version-byte.
 auto Base58::parseAddressHash(const AddressHash &addressHash) -> std::string {
@@ -112,7 +109,6 @@ auto Base58::parseAddressHash(const AddressHash &addressHash) -> std::string {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a formatted Address string.
 // Expects a 20-byte Ripemd160 Address hash a Network version-byte.
 auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, const uint8_t version)
@@ -123,7 +119,6 @@ auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, const uint8_t version)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a Wif string from PrivateKey-bytes and a Wif version-byte.
 auto Base58::getWif(const uint8_t *privateKeyBytes, const uint8_t version)
         -> std::string {
@@ -136,7 +131,6 @@ auto Base58::getWif(const uint8_t *privateKeyBytes, const uint8_t version)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns PrivateKey bytes from a Wif string and a Wif version-byte.
 auto Base58::parseWif(const char *wif, uint8_t* outVersion) -> PrivateKeyBytes {
     if (!Base58::validate(wif, WIF_STRING_LEN)) {
@@ -157,15 +151,12 @@ auto Base58::parseWif(const char *wif, uint8_t* outVersion) -> PrivateKeyBytes {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
 static const size_t BASE58_TABLE_LEN = 128U;
 static const std::array<int8_t, BASE58_TABLE_LEN> Base58Table = {{
   #include "base58.table"
 }};
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Validates that a given string is Base58 encoded.
 // An Address will be 34-chars.
 // A Wif will be 52-chars.
@@ -183,8 +174,6 @@ auto Base58::validate(const char *str, const size_t size) -> bool {
 
     return true;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

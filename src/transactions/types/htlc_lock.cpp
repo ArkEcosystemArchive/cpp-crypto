@@ -30,7 +30,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Htlc Lock Transaction (Type 8) - 66 Bytes
 //
 // @param HtlcLock *lock
@@ -88,7 +87,6 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> uint32_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Htlc Lock Transaction (Type 8) - 70 Bytes
 //
 // @param const HtlcLock &lock
@@ -146,7 +144,6 @@ auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> uint32_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the Htlc Lock asset.
 auto HtlcLock::getMap(const HtlcLock &lock)
         -> std::map<std::string, std::string> {
@@ -169,8 +166,6 @@ auto HtlcLock::getMap(const HtlcLock &lock)
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

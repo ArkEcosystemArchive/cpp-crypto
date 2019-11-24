@@ -17,12 +17,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_builders, htlc_lock) {
     const auto transaction = builder::HtlcLock()
         .network(COMMON_MAINNET)
@@ -42,7 +39,6 @@ TEST(transactions_builders, htlc_lock) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_builders, htlc_lock_string) {
     const auto transaction = builder::HtlcLock()
         .network(COMMON_MAINNET)
@@ -60,5 +56,3 @@ TEST(transactions_builders, htlc_lock_string) {
 
     ASSERT_TRUE(transaction.verify());
 }
-
-////////////////////////////////////////////////////////////////////////////////

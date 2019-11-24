@@ -18,12 +18,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_builders, transfer_address_hash) {
     const auto transaction = builder::Transfer()
         .network(COMMON_MAINNET)
@@ -65,7 +62,6 @@ TEST(transactions_builders, transfer_address_hash) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_builder, transfer_address_string) {
     const std::vector<uint8_t> signature = {
         TYPE_0_SIGNATURE,
@@ -88,7 +84,6 @@ TEST(transactions_builder, transfer_address_string) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_builder, transfer_sign) {
     const auto transaction = builder::Transfer()
         .network(COMMON_MAINNET)
@@ -104,5 +99,3 @@ TEST(transactions_builder, transfer_sign) {
 
     ASSERT_TRUE(transaction.verify());
 }
-
-////////////////////////////////////////////////////////////////////////////////

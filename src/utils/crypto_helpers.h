@@ -16,7 +16,6 @@
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Write data into dst
 template <typename T>
 inline void pack(std::vector<uint8_t> &dst, T &data) {
@@ -25,7 +24,6 @@ inline void pack(std::vector<uint8_t> &dst, T &data) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Read size bytes into dst from src
 template <typename T>
 inline void unpack(T *dst, uint8_t *src, size_t size = -1) {
@@ -33,7 +31,6 @@ inline void unpack(T *dst, uint8_t *src, size_t size = -1) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Join string vector
 inline auto join(const std::vector<std::string> &strings) -> std::string {
     return std::accumulate(strings.begin(),
@@ -42,7 +39,5 @@ inline auto join(const std::vector<std::string> &strings) -> std::string {
                            [](const std::string &a, const std::string &b)
                                     -> std::string { return a + b; });
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 #endif

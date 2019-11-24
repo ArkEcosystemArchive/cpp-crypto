@@ -17,21 +17,21 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// Network Configuration Class
 class Configuration : public managers::NetworkManager,
                       public managers::FeeManager {
   public:
+    ////////////////////////////////////////////////////////////////////////////
     // Default initialization: ARK Devnet w/StaticFees
     Configuration() = default;
     explicit Configuration(const Network &network);
     explicit Configuration(const FeePolicy &policy);
     Configuration(const Network &network, const FeePolicy &policy);
 
+    ////////////////////////////////////////////////////////////////////////////
     bool operator==(const Configuration &other) const;
     bool operator!=(const Configuration &other) const;
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

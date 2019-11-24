@@ -23,7 +23,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Second Signature Registration (Type 1) - 33 Bytes
 //
 // @param SecondSignature *registration
@@ -48,7 +47,6 @@ auto SecondSignature::Deserialize(SecondSignature *registration,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Second Signature Registration (Type 1) - 33 Bytes
 //
 // @param const SecondSignature &registration
@@ -73,7 +71,6 @@ auto SecondSignature::Serialize(const SecondSignature &registration,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the Second Signature's PublicKey.
 auto SecondSignature::getMap(const SecondSignature &registration)
         -> std::map<std::string, std::string> {
@@ -84,8 +81,6 @@ auto SecondSignature::getMap(const SecondSignature &registration)
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

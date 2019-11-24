@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer, deserialize_ecdsa) {
     TransactionData data;
 
@@ -57,7 +54,6 @@ TEST(transactions_transfer, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer, deserialize_vendorfield_ecdsa) {
     TransactionData data;
 
@@ -94,7 +90,6 @@ TEST(transactions_transfer, deserialize_vendorfield_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer, serialize_ecdsa) {
     TransactionData data;
 
@@ -126,7 +121,6 @@ TEST(transactions_transfer, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer, serialize_vendorfield_ecdsa) {
     TransactionData data;
 
@@ -162,7 +156,6 @@ TEST(transactions_transfer, serialize_vendorfield_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer, getMap) {
     Transfer transfer;
 
@@ -184,5 +177,3 @@ TEST(transactions_transfer, getMap) {
     ASSERT_STREQ(TYPE_0_RECIPIENT_ID_STRING,
                  transferMap.find("recipientId")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

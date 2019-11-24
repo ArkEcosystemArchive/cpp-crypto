@@ -15,7 +15,6 @@
 #include "utils/crypto_helpers.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_crypto_helpers, unpack) {
     std::vector<uint8_t> packBuffer;
     const uint8_t packValue = 23U;
@@ -27,7 +26,6 @@ TEST(utils_crypto_helpers, unpack) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_crypto_helpers, join) {
     const auto strBuffer = "123";
     std::vector<std::string> vstr(3);
@@ -38,5 +36,3 @@ TEST(utils_crypto_helpers, join) {
     std::string joined = join(vstr);
     ASSERT_STREQ(strBuffer, joined.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

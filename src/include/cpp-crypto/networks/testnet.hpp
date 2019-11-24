@@ -16,7 +16,6 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Testnet
 // ARK Test Network
 const Network Testnet {
@@ -26,8 +25,6 @@ const Network Testnet {
     0x17,                                                                // version
     "2017-03-21T13:00:00.000Z"                                           // epoch
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

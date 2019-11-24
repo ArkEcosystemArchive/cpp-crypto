@@ -19,34 +19,35 @@ namespace Ark {
 namespace Crypto {
 
 struct Curve {
-
-////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////////////////
     // Generate Signatures based in ECDSA Cryptography.
     struct Ecdsa {
+        ////////////////////////////////////////////////////////////////////////
         static bool sign(const uint8_t *hash32,
                          const uint8_t *privateKeyBytes,
                          std::vector<uint8_t> *outSignature);
 
+        ////////////////////////////////////////////////////////////////////////
         static bool verify(const uint8_t *hash32,
                            const uint8_t *publicKeyBytes,
                            const std::vector<uint8_t> &signature);
-  };
-
-////////////////////////////////////////////////////////////////////////////////
-
-    // Primitive PublicKey operations.
-    struct PublicKey {
-        static PublicKeyBytes compute(const uint8_t *privateKeyBytes);
-
-        static PublicKeyBytes compress(const uint8_t *uncompressed);
-        static PublicKeyPoint decompress(const uint8_t *compressed);
-
-        static bool validate(const uint8_t *publicKeyBytes);  
     };
 
-////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Primitive PublicKey operations.
+    struct PublicKey {
+        ////////////////////////////////////////////////////////////////////////
+        static PublicKeyBytes compute(const uint8_t *privateKeyBytes);
 
+        ////////////////////////////////////////////////////////////////////////
+        static PublicKeyBytes compress(const uint8_t *uncompressed);
+
+        ////////////////////////////////////////////////////////////////////////
+        static PublicKeyPoint decompress(const uint8_t *compressed);
+
+        ////////////////////////////////////////////////////////////////////////
+        static bool validate(const uint8_t *publicKeyBytes);  
+    };
 };
 
 }  // namespace Crypto

@@ -13,19 +13,15 @@
 
 #include "networks/devnet.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_slots, epoch) {
     const auto arkEpoch = 1490101200ULL;
     ASSERT_EQ(arkEpoch, Slot::epoch(Devnet));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_slots, time) {
     // 28 Jan 2019(in seconds) - Ark Epoch (seconds)
     const auto testTime = (1548725761ULL - 1490101200ULL); 
@@ -37,5 +33,3 @@ TEST(crypto_slots, time) {
     // also check that the 'slotTime' is not too large (e.g. from an overflow).
     ASSERT_LT(slotTime, (testTime) + 315360000ULL); // 315360000s = 10yrs
 }
-
-////////////////////////////////////////////////////////////////////////////////

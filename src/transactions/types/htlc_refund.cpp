@@ -23,7 +23,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Htlc Refund (Type 10) - 32 Bytes
 //
 // @param HtlcRefund *refund
@@ -45,7 +44,6 @@ auto HtlcRefund::Deserialize(HtlcRefund *refund, const uint8_t *buffer) -> uint3
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Htlc Refund (Type 10) - 32 Bytes
 //
 // @param const HtlcRefund &refund
@@ -67,7 +65,6 @@ auto HtlcRefund::Serialize(const HtlcRefund &refund, uint8_t *buffer) -> uint32_
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the the Htlc Refund Id.
 auto HtlcRefund::getMap(const HtlcRefund &refund)
         -> std::map<std::string, std::string> {
@@ -78,8 +75,6 @@ auto HtlcRefund::getMap(const HtlcRefund &refund)
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

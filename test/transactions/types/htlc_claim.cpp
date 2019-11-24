@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_htlc_claim, deserialize_ecdsa) {
     TransactionData data;
 
@@ -57,7 +54,6 @@ TEST(transactions_htlc_claim, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_htlc_claim, serialize_ecdsa) {
     TransactionData data;
 
@@ -91,7 +87,6 @@ TEST(transactions_htlc_claim, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_htlc_claim, getMap) {
     HtlcClaim claim;
 
@@ -111,5 +106,3 @@ TEST(transactions_htlc_claim, getMap) {
     ASSERT_STREQ(TYPE_9_SECRET_STRING,
                  claimMap.find("unlockSecret")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

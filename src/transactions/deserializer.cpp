@@ -27,7 +27,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Common
 //
 // @param TransactionData *data: The Transaction Data destination.
@@ -92,7 +91,6 @@ static void deserializeCommon(TransactionData *data,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Common v1
 //
 // @param TransactionData *data: The Transaction Data destination.
@@ -154,7 +152,6 @@ static void deserializeCommonV1(TransactionData *data,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static auto deserializeAsset(TransactionData *transaction,
                              const std::vector<uint8_t> &buffer,
                              const uint8_t offset) -> uint32_t {
@@ -213,7 +210,6 @@ static auto deserializeAsset(TransactionData *transaction,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static void deserializeSignatures(TransactionData *transaction,
                                   const uint8_t *buffer) {
     uint8_t signatureLength = buffer[1] + 2U;
@@ -237,7 +233,6 @@ static void deserializeSignatures(TransactionData *transaction,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Transaction Data
 //
 // @param TransactionData *data
@@ -265,8 +260,6 @@ auto Deserializer::deserialize(TransactionData *data,
 
     return true;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

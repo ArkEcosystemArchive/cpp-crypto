@@ -16,12 +16,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Break deserialization with an invalid version.
 // All other cases are tested via transaction types.
 TEST(transactions_deserializer, deserialize_invalid_version) {
@@ -35,5 +32,3 @@ TEST(transactions_deserializer, deserialize_invalid_version) {
     ASSERT_FALSE(Deserializer::deserialize(&data, invalidBytes));
 
 }
-
-////////////////////////////////////////////////////////////////////////////////

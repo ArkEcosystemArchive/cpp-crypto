@@ -24,7 +24,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Transfer (Type 0) - 33 bytes
 //
 // @param Transfer *transfer
@@ -58,7 +57,6 @@ auto Transfer::Deserialize(Transfer *transfer, const uint8_t *buffer)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Transfer (Type 0) - 33 bytes
 //
 // @param const Transfer &transfer
@@ -96,7 +94,6 @@ auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> uint32_t 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the Transfer asset.
 auto Transfer::getMap(const Transfer &transfer)
         -> std::map<std::string, std::string> {
@@ -113,8 +110,6 @@ auto Transfer::getMap(const Transfer &transfer)
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

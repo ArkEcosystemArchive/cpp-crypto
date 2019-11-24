@@ -24,13 +24,11 @@ namespace Crypto {
 namespace identities {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Constructs an Address from a 20-byte PubkeyHash and Address Version.
 Address::Address(const PubkeyHash &pubkeyHash, const uint8_t version)
         : pubkeyHash_(pubkeyHash), version_(version) {}
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Constructs an Address from a 34-character Address string.
 Address::Address(const char* addressString) : pubkeyHash_(), version_() {
     if (Base58::validate(addressString, ADDRESS_STR_LEN)) {
@@ -41,26 +39,22 @@ Address::Address(const char* addressString) : pubkeyHash_(), version_() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns the Base58 Address Version-byte.
 auto Address::version() const noexcept -> uint8_t { return this->version_; }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns the internal 20-byte Ripemd160 PublicKey Hash.
 auto Address::toBytes() const noexcept -> PubkeyHash {
     return this->pubkeyHash_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a 34-character formatted Address string.
 auto Address::toString() const -> std::string {
     return Base58::parsePubkeyHash(this->pubkeyHash_.data(), this->version_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns an Address object from a given Passphrase and Address Version.
 auto Address::fromPassphrase(const char *passphrase,
                              const uint8_t version) -> Address {
@@ -69,7 +63,6 @@ auto Address::fromPassphrase(const char *passphrase,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns an Address object from PublicKey-bytes and an Address Version.
 auto Address::fromPublicKey(const uint8_t *publicKeyBytes,
                             const uint8_t version) -> Address {
@@ -86,14 +79,11 @@ auto Address::fromPrivateKey(const uint8_t *privateKeyBytes,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Validates an Address object.
 auto Address::validate(const Address &address, const uint8_t version) -> bool {
     const auto hashPair = Base58::getHashPair(address.toString().c_str());
     return hashPair.version == version;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace identities
 }  // namespace Crypto

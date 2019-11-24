@@ -15,13 +15,10 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_hex, bytes_to_hex) {
     const auto result = BytesToHex(tMessageSignatureBytes.begin(),
                                    tMessageSignatureBytes.end());
@@ -29,7 +26,6 @@ TEST(utils_hex, bytes_to_hex) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_hex, hex_to_bytes) {
     const auto result = HexToBytes(tSignatureString);
     ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
@@ -38,7 +34,6 @@ TEST(utils_hex, hex_to_bytes) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_hex, hex_to_bytes_spaces) {
     const auto result = HexToBytes(tSignatureStringSpaces);
     ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
@@ -47,7 +42,6 @@ TEST(utils_hex, hex_to_bytes_spaces) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_hex, hex_to_bytes_array) {
     const auto result = HexToBytesArray<>(tSignatureString);
     ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
@@ -56,7 +50,6 @@ TEST(utils_hex, hex_to_bytes_array) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_hex, hex_to_bytes_array_spaces) {
     const auto result = HexToBytesArray<>(tSignatureStringSpaces);
     ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
@@ -65,12 +58,9 @@ TEST(utils_hex, hex_to_bytes_array_spaces) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(utils_hex, hex_to_bytes_array_null_input) {
     const auto result = HexToBytesArray<>(nullptr);
     for (auto &e : result) {
         ASSERT_EQ(0U, e);
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////

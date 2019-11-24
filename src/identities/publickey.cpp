@@ -25,20 +25,17 @@ namespace Crypto {
 namespace identities {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Construct a PublicKey object from a 33-byte PublicKey array.
 PublicKey::PublicKey(const PublicKeyBytes &publicKeyBytes)
         : publicKeyBytes_(publicKeyBytes) {}
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a 33-byte Compressed PublicKey array.
 auto PublicKey::toBytes() const noexcept -> PublicKeyBytes {
     return this->publicKeyBytes_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a 32-character Hex-represented-string of a PublicKey.
 auto PublicKey::toString() const -> std::string {
     return BytesToHex(this->publicKeyBytes_.begin(),
@@ -46,7 +43,6 @@ auto PublicKey::toString() const -> std::string {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a PublicKey object from a given Passphrase string.
 auto PublicKey::fromPassphrase(const char *passphrase) -> PublicKey {
     return PublicKey(
@@ -55,7 +51,6 @@ auto PublicKey::fromPassphrase(const char *passphrase) -> PublicKey {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a PublicKey object from a 64-char PublicKey Hex string.
 auto PublicKey::fromHex(const char *publicKeyHex) -> PublicKey {
     if (strlenSafe(publicKeyHex) != PUBLICKEY_COMPRESSED_STR_LEN) {
@@ -69,8 +64,6 @@ auto PublicKey::fromHex(const char *publicKeyHex) -> PublicKey {
             ? PublicKey(publicKeyBytes)
             : PublicKey(PublicKeyBytes());
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace identities
 }  // namespace Crypto

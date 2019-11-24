@@ -22,33 +22,34 @@ namespace Ark {
 namespace Crypto {
 namespace transactions {
 
-////////////////////////////////////////////////////////////////////////////////
-
 const size_t HTLC_LOCK_SIZE = 66U;
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// Type 8 - Htlc Lock
 struct HtlcLock {
+    ////////////////////////////////////////////////////////////////////////////
     uint64_t                                amount;
     std::array<uint8_t, HASH_32_LEN>        secretHash;
     uint8_t                                 expirationType;
     uint32_t                                expiration;
     AddressHash                             recipientId;
 
+    ////////////////////////////////////////////////////////////////////////////
     static uint32_t Deserialize(HtlcLock *lock, const uint8_t *buffer);
 
+    ////////////////////////////////////////////////////////////////////////////
     static uint32_t Serialize(const HtlcLock &lock, uint8_t *buffer);
 
+    ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(const HtlcLock &lock);
 
+    ////////////////////////////////////////////////////////////////////////////
     HtlcLock() : amount(0ULL),
                  secretHash(),
                  expirationType(0U),
                  expiration(0UL),
                  recipientId() {}
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

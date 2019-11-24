@@ -12,13 +12,10 @@
 #include "transactions/defaults/fees.hpp"
 #include "transactions/defaults/types.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_defaults, fees_and_types) {  // NOLINT
   const auto feePolicy = StaticFeePolicy;
 
@@ -34,5 +31,3 @@ TEST(transactions_defaults, fees_and_types) {  // NOLINT
     ASSERT_EQ(HTLC_CLAIM_FEE,               feePolicy.at(HTLC_CLAIM_TYPE));
     ASSERT_EQ(HTLC_REFUND_FEE,              feePolicy.at(HTLC_REFUND_TYPE));
 }
-
-////////////////////////////////////////////////////////////////////////////////

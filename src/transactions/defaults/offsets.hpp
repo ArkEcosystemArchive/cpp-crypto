@@ -22,7 +22,7 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// v2 Transcation Offsets
 static const uint8_t HEADER_OFFSET              = 0U;
 static const uint8_t VERSION_OFFSET             = 1U;
 static const uint8_t NETWORK_OFFSET             = 2U;
@@ -35,7 +35,7 @@ static const uint8_t VF_LEN_OFFSET              = 58U;
 static const uint8_t VF_OFFSET                  = 59U;
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// v1 Transaction Offsets
 namespace v1 {
 static const uint8_t HEADER_OFFSET              = 0U;
 static const uint8_t VERSION_OFFSET             = 1U;
@@ -47,8 +47,6 @@ static const uint8_t FEE_OFFSET                 = 41U;
 static const uint8_t VF_LEN_OFFSET              = 49U;
 static const uint8_t VF_OFFSET                  = 50U;
 }  // namespace v1
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

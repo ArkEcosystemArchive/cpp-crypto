@@ -18,14 +18,11 @@
 
 #include "utils/hex.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace fixtures::identity;
 using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(crypto_message, verify) {
     Message message(tMessageString,
                     tPublicKeyBytes.data(),
@@ -33,5 +30,3 @@ TEST(crypto_message, verify) {
 
     ASSERT_TRUE(message.verify());
 }
-
-////////////////////////////////////////////////////////////////////////////////

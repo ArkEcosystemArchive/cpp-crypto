@@ -19,7 +19,6 @@
 #include "common.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // {
 //     "data": {
 //         "version": 2,
@@ -49,7 +48,6 @@
 // }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static constexpr const uint8_t TYPE_6_TYPE              = 6U;
 static constexpr const uint64_t TYPE_6_FEE              = 10000000ULL;
 static constexpr const uint8_t TYPE_6_ASSET_OFFSET      = 59U;
@@ -57,14 +55,15 @@ static constexpr const uint16_t TYPE_6_N_PAYMENTS       = 100U;
 static constexpr const uint64_t TYPE_6_AMOUNT           = 1ULL;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static constexpr const char* TYPE_6_N_PAYMENTS_STRING = "100";
 
+////////////////////////////////////////////////////////////////////////////////
 static constexpr const char* TYPE_6_AMOUNTS_STRING =
     "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
     "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
     "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
 
+////////////////////////////////////////////////////////////////////////////////
 static constexpr const char* TYPE_6_ADDRESSES_STRING =
     "DHKxXag9PjfjHBbPg3HQS5WCaQZdgDf6yi,DBzGiUk8UVjB2dKCfGRixknB7Ki3Zhqthp,"
     "DFa7vn1LvWAyTuVDrQUr5NKaM73cfjx2Cp,DSGsxX84gif4ipAxZjjCE2k2YpHmsNTJeY,"
@@ -118,17 +117,18 @@ static constexpr const char* TYPE_6_ADDRESSES_STRING =
     "DMca1DGMxj8w59dWYmji1YC1xLP7AmL6rA,DM6emC4WnxyP2RzrNW5VMS2n3sNfz6Xpci";
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // 1e85af65ad6aa3a1df5bc9a6f59b9f3d394f643a23
 static constexpr const uint8_t TYPE_6_FIRST_ADDRESS[] = {
     30,  133, 175, 101, 173, 106, 163, 161, 223, 91, 201,
     166, 245, 155, 159, 61,  57,  79,  100, 58,  35 };
 
+////////////////////////////////////////////////////////////////////////////////
 // 1eaf0ba9bd7cb2a23220eac8310f793fd9e846bf69
 static constexpr const uint8_t TYPE_6_LAST_ADDRESS[] = {
     30,  175, 11, 169, 189, 124, 178, 162, 50,  32, 234,
     200, 49,  15, 121, 63,  217, 232, 70,  191, 105 };
 
+////////////////////////////////////////////////////////////////////////////////
 // 3045022100a6c327cb6798cb3dc8b282b64358dc4c24a72bff61e347009c1e0ad2a1cc6d8c022028cf62c3d0ea8c3ca6113f63b4e827bd8db8201a478f5ff40c309bbb9987a9b4
 static constexpr const uint8_t TYPE_6_SIGNATURE[] = {
     48,  69,  2,   33,  0,   166, 195, 39,  203, 103, 152, 203, 61,  200, 178,
@@ -137,6 +137,7 @@ static constexpr const uint8_t TYPE_6_SIGNATURE[] = {
     140, 60,  166, 17,  63,  99,  180, 232, 39,  189, 141, 184, 32,  26,  71,
     143, 95,  244, 12,  48,  155, 187, 153, 135, 169, 180 };
 
+////////////////////////////////////////////////////////////////////////////////
 static const std::vector<uint64_t> TYPE_6_AMOUNTS = {
     1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL,
     1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL,
@@ -150,6 +151,7 @@ static const std::vector<uint64_t> TYPE_6_AMOUNTS = {
     1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL
 };
 
+////////////////////////////////////////////////////////////////////////////////
 static const std::vector<std::array<uint8_t, ADDRESS_HASH_LEN> > TYPE_6_ADDRESSES = {
     { 30, 133, 175, 101, 173, 106, 163, 161, 223,  91, 201, 166, 245, 155, 159,  61,  57,  79, 100,  58,  35 },
     { 30,  75,  29, 161, 170, 169, 188, 174, 197, 170, 246, 118,   4, 120,   1,   7,  12,  76,  18,  71, 193 },
@@ -253,6 +255,7 @@ static const std::vector<std::array<uint8_t, ADDRESS_HASH_LEN> > TYPE_6_ADDRESSE
     { 30, 175,  11, 169, 189, 124, 178, 162,  50,  32, 234, 200,  49,  15, 121,  63, 217, 232,  70, 191, 105 }
 };
 
+////////////////////////////////////////////////////////////////////////////////
 // ff021e0100000006000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed1928096980000000000006400
 // 01000000000000001e85af65ad6aa3a1df5bc9a6f59b9f3d394f643a2301000000000000001e4b1da1aaa9bcaec5aaf676047801070c4c1247c1
 // 01000000000000001e726cd0d3e02920bcc14f6d57a5f72f64d270cee301000000000000001ee7d3776b7e6f1619aada38a5fc71a7b7f3b9bac8
@@ -510,7 +513,5 @@ static const std::vector<uint8_t> TYPE_6_BYTES = {
     40,  207, 98,  195, 208, 234, 140, 60,  166, 17,  63,  99,  180, 232, 39,
     189, 141, 184, 32,  26,  71,  143, 95,  244, 12,  48,  155, 187, 153, 135,
     169, 180 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 #endif

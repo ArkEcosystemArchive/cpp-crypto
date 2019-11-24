@@ -21,13 +21,13 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 class Deserializer {
-    public:
-      static bool deserialize(TransactionData *data, const std::vector<uint8_t> &buffer);
+  public:
+    ////////////////////////////////////////////////////////////////////////////
+    // Deserialize Transaction Data
+    static bool deserialize(TransactionData *data,
+                            const std::vector<uint8_t> &buffer);
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

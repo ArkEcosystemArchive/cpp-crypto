@@ -17,7 +17,7 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// ARK Transaction Types
 enum TransactionTypes : uint8_t {
     TRANSFER_TYPE                   = 0U,
     SECOND_SIGNATURE_TYPE           = 1U,
@@ -31,8 +31,6 @@ enum TransactionTypes : uint8_t {
     HTLC_CLAIM_TYPE                 = 9U,
     HTLC_REFUND_TYPE                = 10U
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

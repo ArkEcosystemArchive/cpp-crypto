@@ -25,7 +25,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Ipfs Transaction (Type 5) - 0 <=> 255 Bytes
 //
 // @param Ipfs *ipfs
@@ -53,7 +52,6 @@ auto Ipfs::Deserialize(Ipfs *ipfs, const uint8_t *buffer) -> uint32_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Ipfs Transaction (Type 5) - 0 <=> 255 Bytes
 //
 // @param const Ipfs &ipfs
@@ -79,7 +77,6 @@ auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> uint32_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the Ipfs Hash, Base58-encoded.
 auto Ipfs::getMap(const Ipfs &ipfs) -> std::map<std::string, std::string> {
     std::map<std::string, std::string> map;
@@ -90,8 +87,6 @@ auto Ipfs::getMap(const Ipfs &ipfs) -> std::map<std::string, std::string> {
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

@@ -15,14 +15,11 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
 using namespace fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_wif, construct_bytes) {
     Wif wif(tPrivateKeyBytes, tWifVersion);
 
@@ -34,7 +31,6 @@ TEST(identities_wif, construct_bytes) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_wif, construct_string) {
     Wif wif(tWifString);
 
@@ -46,7 +42,6 @@ TEST(identities_wif, construct_string) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_wif, construct_string_invlaid) {
     Wif wif(invalid::tWifString);
 
@@ -58,14 +53,12 @@ TEST(identities_wif, construct_string_invlaid) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_wif, get_version) {
     Wif wif(tWifString);
     ASSERT_EQ(tWifVersion, wif.version());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_wif, to_bytes) {
     Wif wif(tWifString);
 
@@ -77,7 +70,6 @@ TEST(identities_wif, to_bytes) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_wif, to_string) {
     Wif wif(tPrivateKeyBytes, tWifVersion);
 
@@ -86,7 +78,6 @@ TEST(identities_wif, to_string) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_wif, from_passphrase) {
     Wif wif = Wif::fromPassphrase(tPassphrase, tWifVersion);
 
@@ -96,5 +87,3 @@ TEST(identities_wif, from_passphrase) {
 
     ASSERT_EQ(tWifVersion, wif.version());
 }
-
-////////////////////////////////////////////////////////////////////////////////

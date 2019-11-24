@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_second_signature, deserialize_ecdsa) {
     TransactionData data;
 
@@ -54,7 +51,6 @@ TEST(transactions_second_signature, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_second_signature, serialize_ecdsa) {
     TransactionData data;
 
@@ -83,7 +79,6 @@ TEST(transactions_second_signature, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_second_signature, getMap) {
     SecondSignature secondSignature;
 
@@ -96,5 +91,3 @@ TEST(transactions_second_signature, getMap) {
     ASSERT_STREQ(TYPE_1_PUBLICKEY_STRING,
                  secondSignatureMap.find("publicKey")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

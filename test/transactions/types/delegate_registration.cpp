@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_delegate_registration, deserialize_ecdsa) {
     TransactionData data;
 
@@ -55,7 +52,6 @@ TEST(transactions_delegate_registration, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_delegate_registration, serialize_ecdsa) {
     TransactionData data;
 
@@ -86,7 +82,6 @@ TEST(transactions_delegate_registration, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_delegate_registration, getMap) {
     DelegateRegistration delegateRegistration;
 
@@ -105,5 +100,3 @@ TEST(transactions_delegate_registration, getMap) {
     ASSERT_STREQ(TYPE_2_USERNAME_STRING,
                  delegateRegistrationMap.find("username")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

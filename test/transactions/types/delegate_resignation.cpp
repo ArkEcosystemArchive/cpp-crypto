@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_delegate_resignation, deserialize_ecdsa) {
     TransactionData data;
 
@@ -49,7 +46,6 @@ TEST(transactions_delegate_resignation, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_delegate_resignation, serialize_ecdsa) {
     TransactionData data;
 
@@ -72,5 +68,3 @@ TEST(transactions_delegate_resignation, serialize_ecdsa) {
                           Serializer::serialize(data).data(),
                           TYPE_7_BYTES.size()));
 }
-
-////////////////////////////////////////////////////////////////////////////////

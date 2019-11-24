@@ -11,12 +11,9 @@
 
 #include "networks/devnet.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(networks, devnet) {
     const char* NETHASH         = "2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867";
     const uint8_t SLIP44        = 1U;
@@ -30,5 +27,3 @@ TEST(networks, devnet) {
     ASSERT_EQ(VERSION,          Devnet.version);
     ASSERT_STREQ(EPOCH,         Devnet.epoch.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

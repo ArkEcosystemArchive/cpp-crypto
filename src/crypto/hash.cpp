@@ -19,7 +19,6 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns the RIPEMD160 hash of a publicKey bytes.
 // Expects a 33-byte compressed PublicKey array.
 auto Hash::ripemd160(const uint8_t *publicKeyBytes) -> PubkeyHash {
@@ -31,8 +30,6 @@ auto Hash::ripemd160(const uint8_t *publicKeyBytes) -> PubkeyHash {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
 // Returns a 32-byte SHA256 hash of the input vector.
 auto Hash::sha256(const uint8_t *inputBytes, const size_t size) -> Hash32 {
     auto result = bcl::Sha256::getHash(inputBytes, size);
@@ -45,8 +42,6 @@ auto Hash::sha256(const uint8_t *inputBytes, const size_t size) -> Hash32 {
 
     return hash32;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

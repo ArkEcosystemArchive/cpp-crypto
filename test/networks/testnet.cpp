@@ -11,12 +11,9 @@
 
 #include "networks/testnet.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(networks, testnet) {  // NOLINT
     const char* NETHASH     = "d9acd04bde4234a81addb8482333b4ac906bed7be5a9970ce8ada428bd083192";
     const uint8_t SLIP44    = 1U;
@@ -30,5 +27,3 @@ TEST(networks, testnet) {  // NOLINT
     ASSERT_EQ(VERSION,      Testnet.version);
     ASSERT_STREQ(EPOCH,     Testnet.epoch.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

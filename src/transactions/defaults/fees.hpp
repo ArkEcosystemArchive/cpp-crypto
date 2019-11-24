@@ -17,7 +17,7 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// Default Transaction Fees
 static const uint64_t TRANSFER_FEE                  = 10000000ULL;
 static const uint64_t SECOND_SIGNATURE_FEE          = 500000000ULL;
 static const uint64_t DELEGATE_REGISTRATION_FEE     = 2500000000ULL;
@@ -31,7 +31,7 @@ static const uint64_t HTLC_CLAIM_FEE                = 0ULL;
 static const uint64_t HTLC_REFUND_FEE               = 0ULL;
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// The Default Fee Policy
 const FeePolicy StaticFeePolicy {
     TRANSFER_FEE,                   // 10000000ULL
     SECOND_SIGNATURE_FEE,           // 500000000ULL
@@ -45,8 +45,6 @@ const FeePolicy StaticFeePolicy {
     HTLC_CLAIM_FEE,                 // 0ULL
     HTLC_REFUND_FEE                 // 0ULL
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

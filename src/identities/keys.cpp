@@ -23,14 +23,12 @@ namespace Crypto {
 namespace identities {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns KeyPair from a given passphrase.
 auto Keys::fromPassphrase(const char *passphrase) -> KeyPair {
     return fromPrivateKey(PrivateKey::fromPassphrase(passphrase).data());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns KeyPair from PrivateKey bytes.
 auto Keys::fromPrivateKey(const uint8_t *privateKeyBytes) -> KeyPair {
     PrivateKeyBytes privateKey {};
@@ -42,14 +40,12 @@ auto Keys::fromPrivateKey(const uint8_t *privateKeyBytes) -> KeyPair {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns KeyPair from a given WIF string.
 auto Keys::fromWif(const char *wif) -> KeyPair {
     return fromPrivateKey(Keys::PrivateKey::fromWif(wif, nullptr).data());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a PrivateKey 32-byte array from a passphrase.
 auto Keys::PrivateKey::fromPassphrase(const char *passphrase)
         -> PrivateKeyBytes {
@@ -57,7 +53,6 @@ auto Keys::PrivateKey::fromPassphrase(const char *passphrase)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Returns a PrivateKey 32-byte array from a 52-char WIF string.
 auto Keys::PrivateKey::fromWif(const char *wif,
                                uint8_t *outVersion) -> PrivateKeyBytes {
@@ -65,15 +60,11 @@ auto Keys::PrivateKey::fromWif(const char *wif,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-
 // Returns a 33-byte PublicKey array from a 32-byte PrivateKey.
 auto Keys::PublicKey::fromPrivateKey(const uint8_t *privateKeyBytes)
         -> PublicKeyBytes {
     return Curve::PublicKey::compute(privateKeyBytes);
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace identities
 }  // namespace Crypto

@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer_v1, deserialize) {
     TransactionData data;
 
@@ -55,7 +52,6 @@ TEST(transactions_transfer_v1, deserialize) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer_v1, deserialize_vendorfield) {
     TransactionData data;
 
@@ -90,7 +86,6 @@ TEST(transactions_transfer_v1, deserialize_vendorfield) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer_v1, serialize) {
     TransactionData data;
 
@@ -120,7 +115,6 @@ TEST(transactions_transfer_v1, serialize) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transfer_v1, serialize_vendorfield) {
     TransactionData data;
 
@@ -153,5 +147,3 @@ TEST(transactions_transfer_v1, serialize_vendorfield) {
                           Serializer::serialize(data).data(),
                           v1::TYPE_0_BYTES.size()));
 }
-
-////////////////////////////////////////////////////////////////////////////////

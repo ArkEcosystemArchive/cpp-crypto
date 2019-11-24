@@ -23,24 +23,23 @@ namespace transactions {
 namespace builder {
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// Forward Declaration
 class SecondSignature;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 class SecondSignature : public Common<SecondSignature> {
   public:
+    ////////////////////////////////////////////////////////////////////////////
     // Second Signature PublicKey
     SecondSignature &publicKey(const uint8_t *secondPublicKey) {
-        std::move(secondPublicKey,
-                  secondPublicKey + PUBLICKEY_COMPRESSED_LEN,
-                  this->transaction.data.asset.secondSignature.publicKey.begin());
+        std::move(
+            secondPublicKey,
+            secondPublicKey + PUBLICKEY_COMPRESSED_LEN,
+            this->transaction.data.asset.secondSignature.publicKey.begin());
 
         return *this;
     }
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace builder
 }  // namespace transactions

@@ -26,7 +26,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Common
 //
 // @param const TransactionData &data
@@ -102,7 +101,6 @@ static void serializeCommon(const TransactionData &transaction,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Common V1
 //
 // @param const TransactionData &data
@@ -168,7 +166,6 @@ static void serializeCommonV1(const TransactionData &transaction,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static auto serializeAsset(const TransactionData &transaction,
                            std::vector<uint8_t> &buffer,
                            const uint8_t offset) -> uint32_t {
@@ -228,7 +225,6 @@ static auto serializeAsset(const TransactionData &transaction,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 static auto serializeSignatures(const TransactionData &data,
                                 std::vector<uint8_t> &buffer,
                                 const uint32_t offset,
@@ -255,7 +251,6 @@ static auto serializeSignatures(const TransactionData &data,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Transaction Data
 //
 // @param const TransactionData &data
@@ -294,8 +289,6 @@ auto Serializer::serialize(const TransactionData &data,
 
     return buffer;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

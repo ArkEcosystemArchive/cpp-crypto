@@ -17,14 +17,11 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
 using namespace Ark::Crypto::fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_keys, from_passphrase) {
     auto keys = Keys::fromPassphrase(tPassphrase);
 
@@ -38,7 +35,6 @@ TEST(identities_keys, from_passphrase) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_keys, from_privatekey) {
     auto keys = Keys::fromPrivateKey(tPrivateKeyBytes.data());
 
@@ -52,7 +48,6 @@ TEST(identities_keys, from_privatekey) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_keys, from_wif) {
     auto keys = Keys::fromWif(tWifString);
 
@@ -66,7 +61,6 @@ TEST(identities_keys, from_wif) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_keys, privatekey_from_passphrase) {
     auto privateKey = Keys::PrivateKey::fromPassphrase(tPassphrase);
 
@@ -76,7 +70,6 @@ TEST(identities_keys, privatekey_from_passphrase) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_keys, privatekey_from_wif) {
     uint8_t outVersion;
     auto privateKey = Keys::PrivateKey::fromWif(tWifString, &outVersion);
@@ -87,5 +80,3 @@ TEST(identities_keys, privatekey_from_wif) {
 
     ASSERT_EQ(tWifVersion, outVersion);
 }
-
-////////////////////////////////////////////////////////////////////////////////

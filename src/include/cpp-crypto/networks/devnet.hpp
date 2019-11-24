@@ -16,7 +16,6 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Devnet
 // Default ARK Development Network
 const Network Devnet {
@@ -26,8 +25,6 @@ const Network Devnet {
     0x1e,                                                                // version
     "2017-03-21T13:00:00.000Z"                                           // epoch
 };
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

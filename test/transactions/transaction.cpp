@@ -33,20 +33,16 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, constructor_default) {
     Transaction transaction;
     ASSERT_FALSE(transaction.verify());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, get_id) {
     Transaction transaction;
 
@@ -81,7 +77,6 @@ TEST(transactions_transaction, get_id) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, sign) {
     Transaction transaction;
 
@@ -117,7 +112,6 @@ TEST(transactions_transaction, sign) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, sign_second) {
     Transaction transaction;
 
@@ -151,7 +145,6 @@ TEST(transactions_transaction, sign_second) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, deserialize) {
     Transaction transaction;
     ASSERT_TRUE(transaction.deserialize(TYPE_0_BYTES));
@@ -159,7 +152,6 @@ TEST(transactions_transaction, deserialize) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, serialize) {
     Transaction transaction;
 
@@ -171,7 +163,6 @@ TEST(transactions_transaction, serialize) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, to_bytes) {
     Transaction transaction;
 
@@ -183,7 +174,6 @@ TEST(transactions_transaction, to_bytes) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_transaction, to_map_to_json) {  // NOLINT
     Transaction transferTx;
     transferTx.deserialize(TYPE_0_BYTES);
@@ -254,5 +244,3 @@ TEST(transactions_transaction, to_map_to_json) {  // NOLINT
     const std::string htlcRefundResponse = R"({"version":2,"network":23,"type":10,"nonce":"1","senderPublicKey":"034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192","fee":"0","asset":{"refund":{"lockTransactionId":"50f301306d8da58d62332ce3a361d9fd4a01b0a89ca914517b685e2d3714e24e"}},"signature":"30450221009b2b4d9070095d566b2570ba723c5c1935877e669eaf88f188f0fcac51fa5a4a022022e46ad51939c78b719b6ab37536d5331ea3e414a25d24776b056346fe6feb3c","id":"ff58b3f891b8395b407d21ee7c2c10aa3fe1303e815677f1fa88b399ff185ff2"})";
     ASSERT_STREQ(htlcRefundResponse.c_str(), htlcRefundJson.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

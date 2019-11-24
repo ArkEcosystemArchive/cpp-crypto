@@ -16,14 +16,11 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
 using namespace Ark::Crypto::fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_keys, publickey_from_privatekey) {
     auto publicKey = Keys::PublicKey::fromPrivateKey(tPrivateKeyBytes.data());
 
@@ -31,5 +28,3 @@ TEST(identities_keys, publickey_from_privatekey) {
                           publicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 }
-
-////////////////////////////////////////////////////////////////////////////////

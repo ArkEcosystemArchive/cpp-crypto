@@ -23,7 +23,6 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize Vote Transaction (Type 3) - 35 Bytes
 //
 // @param Vote *vote
@@ -49,7 +48,6 @@ auto Vote::Deserialize(Vote *vote, const uint8_t *buffer) -> uint32_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize Vote Transaction (Type 3) - 35 Bytes
 //
 // @param const Vote &vote
@@ -78,7 +76,6 @@ auto Vote::Serialize(const Vote &vote, uint8_t *buffer) -> uint32_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Return a Map of the Vote asset.
 auto Vote::getMap(const Vote &vote) -> std::map<std::string, std::string> {
     std::map<std::string, std::string> map;
@@ -96,8 +93,6 @@ auto Vote::getMap(const Vote &vote) -> std::map<std::string, std::string> {
 
     return map;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

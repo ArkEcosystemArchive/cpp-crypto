@@ -27,30 +27,28 @@
 
 #include <cstdint>
 
-//////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////////
 #define FLAG_1_BYTE     0xFF
 #define FLAG_2_BYTE     0xFFFF
 #define FLAG_4_BYTE     0xFFFFFFFF
 #define FLAG_8_BYTE     0xFFFFFFFFFFFFFFFF
 
-//////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////////
 #define unpack2LE(src, offset)                                                  \
         ((((uint16_t)src[offset]                    & FLAG_1_BYTE)          |   \
           ((uint16_t)src[offset + 1U]               & FLAG_1_BYTE)  << 8U)      \
                                                     & FLAG_2_BYTE)
 
+////////////////////////////////////////////////////////////////////////////////
 #define unpack4LE(src, offset)                                                  \
         ((((uint32_t)unpack2LE(src, offset)         & FLAG_2_BYTE)          |   \
           ((uint32_t)unpack2LE(src, offset + 2U)    & FLAG_2_BYTE)  << 16U)     \
                                                     & FLAG_4_BYTE)
 
+////////////////////////////////////////////////////////////////////////////////
 #define unpack8LE(src, offset)                                                  \
         ((((uint64_t)unpack4LE(src, offset)         & FLAG_4_BYTE)          |   \
           ((uint64_t)unpack4LE(src, offset + 4U)    & FLAG_4_BYTE)  << 32U)     \
                                                     & FLAG_8_BYTE)
-
-//////////////////////////////////////////////////////////////////////
 
 #endif

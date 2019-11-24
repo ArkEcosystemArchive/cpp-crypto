@@ -19,12 +19,9 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_ipfs, deserialize_ecdsa) {
     TransactionData data;
 
@@ -53,7 +50,6 @@ TEST(transactions_ipfs, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_ipfs, serialize_ecdsa) {
     TransactionData data;
 
@@ -82,7 +78,6 @@ TEST(transactions_ipfs, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_ipfs, getMap) {
     Ipfs ipfs;
 
@@ -98,5 +93,3 @@ TEST(transactions_ipfs, getMap) {
     ASSERT_STREQ(TYPE_5_IPFS_STRING,
                  ipfsMap.find("ipfs")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////

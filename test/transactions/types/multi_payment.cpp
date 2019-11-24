@@ -23,12 +23,9 @@
 
 #ifndef USE_IOT
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_multi_payment, deserialize_ecdsa) {
     TransactionData data;
 
@@ -71,7 +68,6 @@ TEST(transactions_multi_payment, deserialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(transactions_multi_payment, serialize_ecdsa) {
     TransactionData data;
 
@@ -117,7 +113,6 @@ TEST(transactions_multi_payment, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // MultiPayment Map setup can be quite a bit of overhead.
 // Let's save some trade a little space for Deserialization overhead.
 TEST(transactions_multi_payment, getMap) {
@@ -135,7 +130,5 @@ TEST(transactions_multi_payment, getMap) {
     ASSERT_STREQ(TYPE_6_ADDRESSES_STRING,
                  multiPaymentMap.find("addresses")->second.c_str());
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 #endif // #ifndef USE_IOT

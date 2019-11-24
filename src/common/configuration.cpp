@@ -16,21 +16,18 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Network initialization: Custom Network w/StaticFees
 Configuration::Configuration(const Network &network) {
     setNetwork(network);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // FeePolicy initialization: ARK Devnet w/Custom Fees
 Configuration::Configuration(const FeePolicy &policy) {
     setPolicy(policy);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Network & Fee initialization: Custom Network w/Custom Fees
 Configuration::Configuration(const Network &network, const FeePolicy &policy) {
     setNetwork(network);
@@ -38,7 +35,6 @@ Configuration::Configuration(const Network &network, const FeePolicy &policy) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Compares the Network and FeePolicy for equality.
 auto Configuration::operator==(const Configuration &other) const -> bool {
     return this->network_ == other.network_ &&
@@ -46,14 +42,11 @@ auto Configuration::operator==(const Configuration &other) const -> bool {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Compares the Network and FeePolicy for inequality.
 auto Configuration::operator!=(const Configuration &other) const -> bool {
     return this->network_ != other.network_ ||
            this->feePolicy_ != other.feePolicy_;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

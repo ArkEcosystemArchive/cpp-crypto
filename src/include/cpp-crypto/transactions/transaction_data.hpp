@@ -22,7 +22,7 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// Transaction Data Model
 typedef struct transaction_data_t {
     uint8_t                 header;
     uint8_t                 version;
@@ -57,7 +57,6 @@ typedef struct transaction_data_t {
                            vendorField() {}
 } TransactionData;
 
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

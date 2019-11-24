@@ -15,14 +15,11 @@
 
 #include "test_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
 using namespace fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_publickey, construct_bytes) {
     PublicKey publicKey(tPublicKeyBytes);
 
@@ -32,7 +29,6 @@ TEST(identities_publickey, construct_bytes) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_publickey, to_bytes) {
     auto publicKey = PublicKey::fromHex(tPublicKeyHex);
 
@@ -42,14 +38,12 @@ TEST(identities_publickey, to_bytes) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_publickey, to_string) {
     PublicKey publicKey(tPublicKeyBytes);
     ASSERT_STREQ(tPublicKeyHex, publicKey.toString().c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_publickey, from_passphrase) {
     auto publicKey = PublicKey::fromPassphrase(tPassphrase);
     const auto publicKeyBytes = publicKey.toBytes();
@@ -60,7 +54,6 @@ TEST(identities_publickey, from_passphrase) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_publickey, from_hex) {
     auto publicKey = PublicKey::fromHex(tPublicKeyHex);
     const auto publicKeyBytes = publicKey.toBytes();
@@ -71,7 +64,6 @@ TEST(identities_publickey, from_hex) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_publickey, from_hex_invalid_chars) {
     const auto publicKey = PublicKey::fromHex(invalid::tPublicKeyHex);
 
@@ -81,7 +73,6 @@ TEST(identities_publickey, from_hex_invalid_chars) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 TEST(identities_publickey, from_hex_invalid_length) {
     const auto publicKey = PublicKey::fromHex(&tPublicKeyHex[1]);
 
@@ -89,5 +80,3 @@ TEST(identities_publickey, from_hex_invalid_length) {
         ASSERT_EQ(0U, e);
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////

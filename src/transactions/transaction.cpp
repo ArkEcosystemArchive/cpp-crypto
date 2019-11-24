@@ -33,14 +33,11 @@
 #include "utils/json.h"
 #include "utils/str.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
 namespace Ark {
 namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Compute the unique transaction ID.
 auto Transaction::getId() const -> Hash32 {
     const auto serialized = this->toBytes(false, false);
@@ -48,7 +45,6 @@ auto Transaction::getId() const -> Hash32 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Sign the transaction using a passphrase.
 auto Transaction::sign(const std::string &passphrase) -> bool {
     if (passphrase.empty()) {
@@ -72,7 +68,6 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Sign the Transaction using a Second Passphrase.
 auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
     if (this->data.signature.empty() || secondPassphrase.empty()) {
@@ -92,7 +87,6 @@ auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Verify the Transaction.
 auto Transaction::verify() const -> bool {
     // skip both signatures,
@@ -106,7 +100,6 @@ auto Transaction::verify() const -> bool {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Verify the Transaction using a Second PublicKey.
 auto Transaction::secondVerify(const uint8_t *secondPublicKey) const -> bool {
     // include only the first signature,
@@ -120,21 +113,18 @@ auto Transaction::secondVerify(const uint8_t *secondPublicKey) const -> bool {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Deserialize the given Hex string via AIP11.
 auto Transaction::deserialize(const std::vector<uint8_t> &serialized) -> bool {
     return Deserializer::deserialize(&this->data, serialized);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Serialize the object via AIP11.
 auto Transaction::serialize() -> std::vector<uint8_t> {
     return Serializer::serialize(this->data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Turn the Transaction into its byte representation.
 auto Transaction::toBytes(bool excludeSignature,
                           bool excludeSecondSignature) const
@@ -144,7 +134,6 @@ auto Transaction::toBytes(bool excludeSignature,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Turn the transaction into a standardized array.
 //
 // This concept of an array in is quite different compared to other ARK SDKs.
@@ -339,7 +328,6 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // Turn the Transaction into a JSON string using `toMap` as the source.
 auto Transaction::toJson() const -> std::string {
     auto txArray = this->toMap();
@@ -519,8 +507,6 @@ auto Transaction::toJson() const -> std::string {
 
     return jsonStr;
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto

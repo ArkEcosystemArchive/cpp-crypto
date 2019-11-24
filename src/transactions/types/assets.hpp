@@ -29,7 +29,7 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// AIP-11 Transaction Assets
 typedef struct tx_asset_t {
     Transfer                    transfer;               // Type 0
     SecondSignature             secondSignature;        // Type 1
@@ -43,8 +43,6 @@ typedef struct tx_asset_t {
     HtlcClaim                   htlcClaim;              // Type 9
     HtlcRefund                  htlcRefund;             // Type 10
 } Asset;
-
-////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace transactions
 }  // namespace Crypto
