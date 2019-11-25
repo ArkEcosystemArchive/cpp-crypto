@@ -147,7 +147,6 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
     uint32_t pos = offset + sizeof(uint16_t);
 
     for (uint8_t i = 0U; i < payments.n_payments; ++i) {
-
         memmove(&buffer[pos],                                   // 8 Bytes
                 &payments.amounts.at(i),
                 sizeof(uint64_t));
