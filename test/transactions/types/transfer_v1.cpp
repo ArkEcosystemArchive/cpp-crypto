@@ -134,7 +134,7 @@ TEST(transactions_transfer_v1, serialize_vendorfield) {
               COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
               data.senderPublicKey.begin());
 
-    data.vendorField.insert(data.signature.begin(),
+    data.vendorField.insert(data.vendorField.begin(),
                            v1::TYPE_0_VF,
                            v1::TYPE_0_VF + sizeof(v1::TYPE_0_VF));
 
