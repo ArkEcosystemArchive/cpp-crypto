@@ -11,6 +11,7 @@
 
 #include <array>
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <numeric>  // std::accumulate
 #include <string>
