@@ -108,12 +108,12 @@ template<class T> class Common {
     ////////////////////////////////////////////////////////////////////////////
     // VendorField - std::string
     T &vendorField(const std::string &vendorField) {
-        const auto vf = reinterpret_cast<const char *>(vendorField.c_str());
+        const auto vf = reinterpret_cast<const uint8_t *>(vendorField.c_str());
 
         this->transaction.data.vendorField.insert(
             this->transaction.data.vendorField.begin(),
             vf,
-            vendorField.size());
+            vf + vendorField.length());
 
         return reinterpret_cast<T&>(*this);
     }
