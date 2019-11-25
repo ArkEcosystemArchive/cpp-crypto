@@ -1,4 +1,3 @@
-
 /**
  * This file is part of Ark Cpp Crypto.
  *
@@ -59,7 +58,7 @@ auto Curve::Ecdsa::sign(const uint8_t *hash32,
     }
 
     // Create the Signing nonce
-    Hash32 nonce32;
+    Hash32 nonce32 {};
     nonce_function_rfc6979(nonce32.data(),
                            hash32,
                            privateKeyBytes,
@@ -150,7 +149,7 @@ auto Curve::Ecdsa::verify(const uint8_t *hash32,
 auto Curve::PublicKey::compute(const uint8_t *privateKeyBytes) -> PublicKeyBytes {
     const struct uECC_Curve_t *curve = uECC_secp256k1();
 
-    PublicKeyPoint uncompressed;
+    PublicKeyPoint uncompressed {};
     if (uECC_compute_public_key(privateKeyBytes, &uncompressed[0], curve) == 0) {
         return PublicKeyBytes();
     };
@@ -171,7 +170,7 @@ auto Curve::PublicKey::compute(const uint8_t *privateKeyBytes) -> PublicKeyBytes
 // ---
 auto Curve::PublicKey::compress(const uint8_t *uncompressed) -> PublicKeyBytes {
     const struct uECC_Curve_t* curve = uECC_secp256k1();
-    PublicKeyBytes compressed;
+    PublicKeyBytes compressed {};
     uECC_compress(uncompressed, compressed.data(), curve);
 
     return compressed;
@@ -191,7 +190,7 @@ auto Curve::PublicKey::compress(const uint8_t *uncompressed) -> PublicKeyBytes {
 // ---
 auto Curve::PublicKey::decompress(const uint8_t *compressed) -> PublicKeyPoint {
     const struct uECC_Curve_t* curve = uECC_secp256k1();
-    PublicKeyPoint decompressed;
+    PublicKeyPoint decompressed {};
     uECC_decompress(compressed, decompressed.data(), curve);
 
     return decompressed;

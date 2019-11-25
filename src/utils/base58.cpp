@@ -144,7 +144,7 @@ auto Base58::parseWif(const char *wif, uint8_t* outVersion) -> PrivateKeyBytes {
                                                 outVersion,
                                                 &compressed);
 
-    PrivateKeyBytes privateKey;
+    PrivateKeyBytes privateKey {};
     num.getBigEndianBytes(privateKey.data());
 
     return privateKey;
