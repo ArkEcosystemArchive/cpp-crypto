@@ -13,10 +13,12 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/vote.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +27,7 @@ TEST(transactions_builders, vote) {
         .network(COMMON_MAINNET)
         .type(TYPE_3_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_3_FEE)
         .votes(TYPE_3_VOTE)
         .signature(TYPE_3_SIGNATURE, sizeof(TYPE_3_SIGNATURE))

@@ -18,14 +18,14 @@
 namespace v1 {
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const uint8_t TYPE_2_TYPE                  = 2U;
-static constexpr const uint32_t TYPE_2_TIMESTAMP            = 41269424UL;
-static constexpr const uint64_t TYPE_2_FEE                  = 2500000000ULL;
-static constexpr const uint64_t TYPE_2_USERNAME_LENGTH      = 9U;
+constexpr uint8_t TYPE_2_TYPE               = 2U;
+constexpr uint32_t TYPE_2_TIMESTAMP         = 41269424UL;
+constexpr uint64_t TYPE_2_FEE               = 2500000000ULL;
+constexpr uint64_t TYPE_2_USERNAME_LENGTH   = 9U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // ff011e02b0b87502034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19200f90295000000000009626f6c646e696e6a613045022100f21b742fa052cd18de43328e1d068539ba7cbe9d33a9dcbd862a82871383955d0220053b06d22ed3e3ad6168c6b27aa0ec68e7e40958c7709aec0e1555087ea9ad94304402207da580da4feec955edcb8e8eb36947867b439de3d28d38e58c844fd8c45b564302200e6741b6ad11c2588a57b3afd180df1e9b345d48a9c2ae98be57dced869cf38c
-static const std::vector<uint8_t> TYPE_2_BYTES = {
+const std::vector<uint8_t> TYPE_2_BYTES = {
     255, 1,   30,  2,   176, 184, 117, 2,   3,   65,  81,  163, 236, 70,  181,
     103, 10,  104, 43,  10,  99,  57,  79,  134, 53,  135, 209, 188, 151, 72,
     59,  27,  108, 112, 235, 88,  231, 240, 174, 209, 146, 0,   249, 2,   149,
@@ -43,12 +43,12 @@ static const std::vector<uint8_t> TYPE_2_BYTES = {
 
 ////////////////////////////////////////////////////////////////////////////////
 // boldninja
-static constexpr const uint8_t TYPE_2_USERNAME[] = {
+constexpr uint8_t TYPE_2_USERNAME[] = {
     98,  111, 108, 100, 110, 105, 110, 106, 97 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3045022100f21b742fa052cd18de43328e1d068539ba7cbe9d33a9dcbd862a82871383955d0220053b06d22ed3e3ad6168c6b27aa0ec68e7e40958c7709aec0e1555087ea9ad94
-static constexpr const uint8_t TYPE_2_SIGNATURE[] = {
+constexpr uint8_t TYPE_2_SIGNATURE[] = {
     48,  69,  2,   33,  0,   242, 27,  116, 47,  160, 82,  205, 24,  222, 67,
     50,  142, 29,  6,   133, 57,  186, 124, 190, 157, 51,  169, 220, 189, 134,
     42,  130, 135, 19,  131, 149, 93,  2,   32,  5,   59,  6,   210, 46,  211,
@@ -57,7 +57,7 @@ static constexpr const uint8_t TYPE_2_SIGNATURE[] = {
 
 ////////////////////////////////////////////////////////////////////////////////
 // 304402207da580da4feec955edcb8e8eb36947867b439de3d28d38e58c844fd8c45b564302200e6741b6ad11c2588a57b3afd180df1e9b345d48a9c2ae98be57dced869cf38c
-static constexpr const uint8_t TYPE_2_SECOND_SIG[] = {
+constexpr uint8_t TYPE_2_SECOND_SIG[] = {
     48,  68,  2,   32,  125, 165, 128, 218, 79,  238, 201, 85,  237, 203,
     142, 142, 179, 105, 71,  134, 123, 67,  157, 227, 210, 141, 56,  229,
     140, 132, 79,  216, 196, 91,  86,  67,  2,   32,  14,  103, 65,  182,

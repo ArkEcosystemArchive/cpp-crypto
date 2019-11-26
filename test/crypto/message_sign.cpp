@@ -19,15 +19,13 @@
 #include "utils/hex.hpp"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_message, sign) {
     Message message;
-    message.sign(tMessageString, tPassphrase);
+    message.sign(fixtures::MessageString, fixtures::Passphrase);
 
-    ASSERT_STREQ(tSignatureString,
+    ASSERT_STREQ(fixtures::MessageSignatureString,
                  BytesToHex(message.signature.begin(),
                             message.signature.begin() +
                             2U + message.signature.at(1)).c_str());

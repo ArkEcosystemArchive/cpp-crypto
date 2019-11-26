@@ -17,33 +17,32 @@
 
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
-using namespace fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_wif, construct_bytes) {
-    Wif wif(tPrivateKeyBytes, tWifVersion);
+    Wif wif(fixtures::PrivateKeyBytes, fixtures::WifVersion);
 
-    ASSERT_TRUE(array_cmp(tPrivateKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
                           wif.toBytes().data(),
                           HASH_20_LEN));
 
-    ASSERT_EQ(tWifVersion, wif.version());
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_wif, construct_string) {
-    Wif wif(tWifString);
+    Wif wif(fixtures::WifString);
 
-    ASSERT_TRUE(array_cmp(tPrivateKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
                           wif.toBytes().data(),
                           HASH_20_LEN));
 
-    ASSERT_EQ(tWifVersion, wif.version());
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_wif, construct_string_invlaid) {
-    Wif wif(invalid::tWifString);
+    Wif wif(fixtures::invalid::WifString);
 
     for (auto &e : wif.toBytes()) {
         ASSERT_EQ(0U, e);
@@ -54,36 +53,36 @@ TEST(identities_wif, construct_string_invlaid) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_wif, get_version) {
-    Wif wif(tWifString);
-    ASSERT_EQ(tWifVersion, wif.version());
+    Wif wif(fixtures::WifString);
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_wif, to_bytes) {
-    Wif wif(tWifString);
+    Wif wif(fixtures::WifString);
 
-    ASSERT_TRUE(array_cmp(tPrivateKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
                           wif.toBytes().data(),
                           HASH_20_LEN));
 
-    ASSERT_EQ(tWifVersion, wif.version());
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_wif, to_string) {
-    Wif wif(tPrivateKeyBytes, tWifVersion);
+    Wif wif(fixtures::PrivateKeyBytes, fixtures::WifVersion);
 
-    ASSERT_STREQ(tWifString, wif.toString().c_str());
-    ASSERT_EQ(tWifVersion, wif.version());
+    ASSERT_STREQ(fixtures::WifString, wif.toString().c_str());
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_wif, from_passphrase) {
-    Wif wif = Wif::fromPassphrase(tPassphrase, tWifVersion);
+    Wif wif = Wif::fromPassphrase(fixtures::Passphrase, fixtures::WifVersion);
 
-    ASSERT_TRUE(array_cmp(tPrivateKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
                           wif.toBytes().data(),
                           HASH_20_LEN));
 
-    ASSERT_EQ(tWifVersion, wif.version());
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }

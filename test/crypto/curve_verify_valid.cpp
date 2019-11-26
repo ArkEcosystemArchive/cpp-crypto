@@ -15,17 +15,14 @@
 #include "fixtures/message.hpp"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
-
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_curve, verify_valid) {
     std::vector<uint8_t> temp = {
-        tMessageSignatureBytes.begin(),
-        tMessageSignatureBytes.end()
+        fixtures::MessageSignatureBytes.begin(),
+        fixtures::MessageSignatureBytes.end()
     };
 
-    ASSERT_TRUE(Curve::Ecdsa::verify(tMessageSha256Bytes.data(),
-                                     tPublicKeyBytes.data(),
+    ASSERT_TRUE(Curve::Ecdsa::verify(fixtures::MessageSha256Bytes.data(),
+                                     fixtures::PublicKeyBytes.data(),
                                      temp));
 }

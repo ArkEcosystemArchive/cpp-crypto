@@ -13,10 +13,12 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/delegate_registration.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +27,7 @@ TEST(transactions_builders, delegate_registration) {
         .network(COMMON_MAINNET)
         .type(TYPE_2_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME, sizeof(TYPE_2_USERNAME))
         .fee(TYPE_2_FEE)
         .signature(TYPE_2_SIGNATURE, sizeof(TYPE_2_SIGNATURE))
@@ -40,7 +42,7 @@ TEST(transactions_builders, delegate_registration_string) {
         .network(COMMON_MAINNET)
         .type(TYPE_2_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME_STRING)
         .fee(TYPE_2_FEE)
         .signature(TYPE_2_SIGNATURE, sizeof(TYPE_2_SIGNATURE))

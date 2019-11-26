@@ -17,55 +17,54 @@
 
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
-using namespace fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_publickey, construct_bytes) {
-    PublicKey publicKey(tPublicKeyBytes);
+    PublicKey publicKey(fixtures::PublicKeyBytes);
 
-    ASSERT_TRUE(array_cmp(tPublicKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           publicKey.toBytes().data(),
                           PUBLICKEY_COMPRESSED_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_publickey, to_bytes) {
-    auto publicKey = PublicKey::fromHex(tPublicKeyHex);
+    auto publicKey = PublicKey::fromHex(fixtures::PublicKeyHex);
 
-    ASSERT_TRUE(array_cmp(tPublicKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           publicKey.toBytes().data(),
                           PUBLICKEY_COMPRESSED_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_publickey, to_string) {
-    PublicKey publicKey(tPublicKeyBytes);
-    ASSERT_STREQ(tPublicKeyHex, publicKey.toString().c_str());
+    PublicKey publicKey(fixtures::PublicKeyBytes);
+    ASSERT_STREQ(fixtures::PublicKeyHex, publicKey.toString().c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_publickey, from_passphrase) {
-    auto publicKey = PublicKey::fromPassphrase(tPassphrase);
+    auto publicKey = PublicKey::fromPassphrase(fixtures::Passphrase);
     const auto publicKeyBytes = publicKey.toBytes();
 
-    ASSERT_TRUE(array_cmp(tPublicKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           publicKeyBytes.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_publickey, from_hex) {
-    auto publicKey = PublicKey::fromHex(tPublicKeyHex);
+    auto publicKey = PublicKey::fromHex(fixtures::PublicKeyHex);
     const auto publicKeyBytes = publicKey.toBytes();
 
-    ASSERT_TRUE(array_cmp(tPublicKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           publicKeyBytes.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_publickey, from_hex_invalid_chars) {
-    const auto publicKey = PublicKey::fromHex(invalid::tPublicKeyHex);
+    const auto publicKey = PublicKey::fromHex(fixtures::invalid::PublicKeyHex);
 
     for (auto &e : publicKey.toBytes()) {
         ASSERT_EQ(0U, e);
@@ -74,7 +73,7 @@ TEST(identities_publickey, from_hex_invalid_chars) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_publickey, from_hex_invalid_length) {
-    const auto publicKey = PublicKey::fromHex(&tPublicKeyHex[1]);
+    const auto publicKey = PublicKey::fromHex(&fixtures::PublicKeyHex[1]);
 
     for (auto &e : publicKey.toBytes()) {
         ASSERT_EQ(0U, e);

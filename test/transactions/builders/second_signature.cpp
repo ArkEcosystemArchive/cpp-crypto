@@ -13,10 +13,12 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/second_signature.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +27,7 @@ TEST(transactions_builders, second_signature) {
         .network(COMMON_MAINNET)
         .type(TYPE_1_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_1_FEE)
         .publicKey(TYPE_1_SECOND_PUBLICKEY)
         .signature(TYPE_1_SIGNATURE, sizeof(TYPE_1_SIGNATURE))

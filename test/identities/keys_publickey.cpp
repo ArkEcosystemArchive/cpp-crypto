@@ -18,13 +18,13 @@
 
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
-using namespace Ark::Crypto::fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_keys, publickey_from_privatekey) {
-    auto publicKey = Keys::PublicKey::fromPrivateKey(tPrivateKeyBytes.data());
+    auto publicKey = Keys::PublicKey::fromPrivateKey(
+            fixtures::PrivateKeyBytes.data());
 
-    ASSERT_TRUE(array_cmp(tPublicKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           publicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 }

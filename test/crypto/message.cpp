@@ -19,24 +19,22 @@
 #include "utils/hex.hpp"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_message, to_map) {
     Message message;
-    message.sign(tMessageString, tPassphrase);
+    message.sign(fixtures::MessageString, fixtures::Passphrase);
     auto map = message.toMap();
 
-    ASSERT_STREQ(tMessageString,        map["message"].c_str());
-    ASSERT_STREQ(tPublicKeyHex,         map["publickey"].c_str());
-    ASSERT_STREQ(tSignatureString,      map["signature"].c_str());
+    ASSERT_STREQ(fixtures::MessageString,           map["message"].c_str());
+    ASSERT_STREQ(fixtures::PublicKeyHex,            map["publickey"].c_str());
+    ASSERT_STREQ(fixtures::MessageSignatureString,  map["signature"].c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_message, to_json) {
     Message message;
-    message.sign(tMessageString, tPassphrase);
+    message.sign(fixtures::MessageString, fixtures::Passphrase);
 
-    ASSERT_STREQ(tMessageJsonString, message.toJson().c_str());
+    ASSERT_STREQ(fixtures::MessageJsonString, message.toJson().c_str());
 }

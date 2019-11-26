@@ -37,16 +37,16 @@
 // }
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const uint8_t TYPE_9_TYPE          = 9U;
-static constexpr const uint64_t TYPE_9_FEE          = 0ULL;
+constexpr uint8_t TYPE_9_TYPE       = 9U;
+constexpr uint64_t TYPE_9_FEE       = 0ULL;
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const char* TYPE_9_LOCK_ID_STRING = "50f301306d8da58d62332ce3a361d9fd4a01b0a89ca914517b685e2d3714e24e";
-static constexpr const char* TYPE_9_SECRET_STRING = "f5ea877a311ced90cf4524cb489e972f";
+constexpr auto TYPE_9_LOCK_ID_STRING    = "50f301306d8da58d62332ce3a361d9fd4a01b0a89ca914517b685e2d3714e24e";
+constexpr auto TYPE_9_SECRET_STRING     = "f5ea877a311ced90cf4524cb489e972f";
 
 ////////////////////////////////////////////////////////////////////////////////
 // ff02170100000009000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19200000000000000000050f301306d8da58d62332ce3a361d9fd4a01b0a89ca914517b685e2d3714e24e66356561383737613331316365643930636634353234636234383965393732663045022100d47a071dadebfae4e9115f35ae29429d0ada7bcb1668dc9babde9613108ecc8302201d97dd366a8816f81581dc5be46f3a859b66e48532c80fb7fa19da63dfc3c01f
-static const std::vector<uint8_t> TYPE_9_BYTES = {
+const std::vector<uint8_t> TYPE_9_BYTES = {
     255, 2,   23,  1,   0,   0,   0,   9,   0,   1,   0,   0,   0,   0,   0,
     0,   0,   3,   65,  81,  163, 236, 70,  181, 103, 10,  104, 43,  10,  99,
     57,  79,  134, 53,  135, 209, 188, 151, 72,  59,  27,  108, 112, 235, 88,
@@ -63,19 +63,19 @@ static const std::vector<uint8_t> TYPE_9_BYTES = {
 
 ////////////////////////////////////////////////////////////////////////////////
 // 50f301306d8da58d62332ce3a361d9fd4a01b0a89ca914517b685e2d3714e24e
-static constexpr const uint8_t TYPE_9_LOCK_TX_ID[] = {
+constexpr uint8_t TYPE_9_LOCK_TX_ID[] = {
     80, 243, 1,   48,  109, 141, 165, 141, 98,  51,  44, 227, 163, 97, 217, 253,
     74, 1,   176, 168, 156, 169, 20,  81,  123, 104, 94, 45,  55,  20, 226, 78 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // f5ea877a311ced90cf4524cb489e972f | UTF-8
-static constexpr const uint8_t TYPE_9_UNLOCK_SECRET[] = {
+constexpr uint8_t TYPE_9_UNLOCK_SECRET[] = {
     102, 53,  101, 97, 56, 55, 55, 97, 51, 49, 49, 99,  101, 100, 57, 48,
     99,  102, 52,  53, 50, 52, 99, 98, 52, 56, 57, 101, 57,  55,  50, 102 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3045022100d47a071dadebfae4e9115f35ae29429d0ada7bcb1668dc9babde9613108ecc8302201d97dd366a8816f81581dc5be46f3a859b66e48532c80fb7fa19da63dfc3c01f
-static constexpr const uint8_t TYPE_9_SIGNATURE[] = {
+constexpr uint8_t TYPE_9_SIGNATURE[] = {
     48,  69,  2,   33,  0,   212, 122, 7,   29,  173, 235, 250, 228, 233, 17,
     95,  53,  174, 41,  66,  157, 10,  218, 123, 203, 22,  104, 220, 155, 171,
     222, 150, 19,  16,  142, 204, 131, 2,   32,  29,  151, 221, 54,  106, 136,

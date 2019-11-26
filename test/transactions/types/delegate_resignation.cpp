@@ -14,11 +14,13 @@
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
+#include "fixtures/identity.hpp"
 #include "fixtures/common.hpp"
 #include "fixtures/delegate_resignation.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +36,7 @@ TEST(transactions_delegate_resignation, deserialize_ecdsa) {
     ASSERT_EQ(TYPE_7_TYPE,              data.type);
     ASSERT_EQ(COMMON_NONCE,             data.nonce);
 
-    ASSERT_TRUE(array_cmp(COMMON_PUBLICKEY,
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           data.senderPublicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 
@@ -54,8 +56,8 @@ TEST(transactions_delegate_resignation, serialize_ecdsa) {
     data.type           = TYPE_7_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.fee            = TYPE_7_FEE;

@@ -19,14 +19,12 @@
 #include "utils/hex.hpp"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_message, verify) {
-    Message message(tMessageString,
-                    tPublicKeyBytes.data(),
-                    tMessageSignatureBytes.data());
+    Message message(fixtures::MessageString,
+                    fixtures::PublicKeyBytes.data(),
+                    fixtures::MessageSignatureBytes.data());
 
     ASSERT_TRUE(message.verify());
 }

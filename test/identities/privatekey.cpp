@@ -17,46 +17,45 @@
 
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
-using namespace fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_privatekey, construct_bytes) {
-    PrivateKey privateKey(tPrivateKeyBytes);    
-    ASSERT_STREQ(tPrivateKeyHex, privateKey.toString().c_str());
+    PrivateKey privateKey(fixtures::PrivateKeyBytes);    
+    ASSERT_STREQ(fixtures::PrivateKeyHex, privateKey.toString().c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_privatekey, to_bytes) {
-    auto privateKey = PrivateKey::fromHex(tPrivateKeyHex);
+    auto privateKey = PrivateKey::fromHex(fixtures::PrivateKeyHex);
 
-    ASSERT_TRUE(array_cmp(tPrivateKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
                           privateKey.toBytes().data(),
                           PRIVATEKEY_BYTE_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_privatekey, to_string) {
-    PrivateKey privateKey(tPrivateKeyBytes);
-    ASSERT_STREQ(tPrivateKeyHex, privateKey.toString().c_str());
+    PrivateKey privateKey(fixtures::PrivateKeyBytes);
+    ASSERT_STREQ(fixtures::PrivateKeyHex, privateKey.toString().c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_privatekey, from_passphrase) {
-    PrivateKey privateKey = PrivateKey::fromPassphrase(tPassphrase);
-    ASSERT_STREQ(tPrivateKeyHex, privateKey.toString().c_str());
+    PrivateKey privateKey = PrivateKey::fromPassphrase(fixtures::Passphrase);
+    ASSERT_STREQ(fixtures::PrivateKeyHex, privateKey.toString().c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_privatekey, from_hex) {
-    auto privateKey = PrivateKey::fromHex(tPrivateKeyHex);
-    ASSERT_TRUE(array_cmp(tPrivateKeyBytes.data(),
+    auto privateKey = PrivateKey::fromHex(fixtures::PrivateKeyHex);
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
                           privateKey.toBytes().data(),
                           PRIVATEKEY_BYTE_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_privatekey, from_hex_invalid_chars) {
-    auto privateKey = PrivateKey::fromHex(invalid::tPrivateKeyHex);
+    auto privateKey = PrivateKey::fromHex(fixtures::invalid::PrivateKeyHex);
 
     for (auto &e : privateKey.toBytes()) {
         ASSERT_EQ(0U, e);
@@ -65,7 +64,7 @@ TEST(identities_privatekey, from_hex_invalid_chars) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_privatekey, from_hex_invalid_length) {
-    auto privateKey = PrivateKey::fromHex(&tPrivateKeyHex[1]);
+    auto privateKey = PrivateKey::fromHex(&fixtures::PrivateKeyHex[1]);
 
     for (auto &e : privateKey.toBytes()) {
         ASSERT_EQ(0U, e);

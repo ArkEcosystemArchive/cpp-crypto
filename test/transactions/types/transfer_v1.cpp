@@ -14,11 +14,13 @@
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
+#include "fixtures/identity.hpp"
 #include "fixtures/common.hpp"
 #include "fixtures/transfer_v1.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +35,7 @@ TEST(transactions_transfer_v1, deserialize) {
     ASSERT_EQ(v1::TYPE_0_TYPE,          data.type);
     ASSERT_EQ(v1::TYPE_0_TIMESTAMP,     data.timestamp);
 
-    ASSERT_TRUE(array_cmp(COMMON_PUBLICKEY,
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           data.senderPublicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 
@@ -63,7 +65,7 @@ TEST(transactions_transfer_v1, deserialize_vendorfield) {
     ASSERT_EQ(v1::TYPE_0_TYPE,              data.type);
     ASSERT_EQ(v1::TYPE_0_VF_TIMESTAMP,      data.timestamp);
 
-    ASSERT_TRUE(array_cmp(COMMON_PUBLICKEY,
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           data.senderPublicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 
@@ -101,8 +103,8 @@ TEST(transactions_transfer_v1, serialize) {
               v1::TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               data.asset.transfer.recipientId.begin());
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.signature.insert(data.signature.begin(),
@@ -130,8 +132,8 @@ TEST(transactions_transfer_v1, serialize_vendorfield) {
               v1::TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               data.asset.transfer.recipientId.begin());
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.vendorField.insert(data.vendorField.begin(),

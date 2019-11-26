@@ -14,11 +14,13 @@
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
+#include "fixtures/identity.hpp"
 #include "fixtures/common.hpp"
 #include "fixtures/second_signature_v1.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +35,7 @@ TEST(transactions_v1, deserialize_second_signature_registration) {
     ASSERT_EQ(v1::TYPE_1_TYPE,          data.type);
     ASSERT_EQ(v1::TYPE_1_TIMESTAMP,     data.timestamp);
 
-    ASSERT_TRUE(array_cmp(COMMON_PUBLICKEY,
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           data.senderPublicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 
@@ -57,8 +59,8 @@ TEST(transactions_v1, serialize_second_signature_registration) {
     data.fee            = v1::TYPE_1_FEE;
     data.timestamp      = v1::TYPE_1_TIMESTAMP;
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     std::move(v1::TYPE_1_SECOND_PUBLICKEY,

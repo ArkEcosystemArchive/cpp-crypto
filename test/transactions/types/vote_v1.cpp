@@ -14,11 +14,13 @@
 #include "transactions/deserializer.hpp"
 #include "transactions/serializer.hpp"
 
+#include "fixtures/identity.hpp"
 #include "fixtures/common.hpp"
 #include "fixtures/vote_v1.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +35,7 @@ TEST(transactions_vote_v1, deserialize) {
     ASSERT_EQ(v1::TYPE_3_TYPE,          data.type);
     ASSERT_EQ(v1::TYPE_3_TIMESTAMP,     data.timestamp);
 
-    ASSERT_TRUE(array_cmp(COMMON_PUBLICKEY,
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           data.senderPublicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 
@@ -63,8 +65,8 @@ TEST(transactions_vote_v1, serialize) {
     data.fee            = v1::TYPE_3_FEE;
     data.timestamp      = v1::TYPE_3_TIMESTAMP;
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.asset.vote.count = 1U;

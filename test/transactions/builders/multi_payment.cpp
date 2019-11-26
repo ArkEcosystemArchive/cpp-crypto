@@ -13,10 +13,12 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/multi_payment.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +26,7 @@ TEST(transactions_builders, multi_payment) {
     const auto transaction = builder::MultiPayment()
         .type(TYPE_6_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_6_FEE)
         .n_payments(TYPE_6_N_PAYMENTS)
         .amounts(TYPE_6_AMOUNTS)

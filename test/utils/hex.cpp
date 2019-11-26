@@ -16,43 +16,42 @@
 #include "test_helpers.h"
 
 using namespace Ark::Crypto;
-using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_hex, bytes_to_hex) {
-    const auto result = BytesToHex(tMessageSignatureBytes.begin(),
-                                   tMessageSignatureBytes.end());
-    ASSERT_STREQ(tSignatureString, result.c_str());
+    const auto result = BytesToHex(fixtures::MessageSignatureBytes.begin(),
+                                   fixtures::MessageSignatureBytes.end());
+    ASSERT_STREQ(fixtures::MessageSignatureString, result.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_hex, hex_to_bytes) {
-    const auto result = HexToBytes(tSignatureString);
-    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+    const auto result = HexToBytes(fixtures::MessageSignatureString);
+    ASSERT_TRUE(array_cmp(fixtures::MessageSignatureBytes.data(),
                           result.data(),
                           result.size()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_hex, hex_to_bytes_spaces) {
-    const auto result = HexToBytes(tSignatureStringSpaces);
-    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+    const auto result = HexToBytes(fixtures::MessageSignatureStringSpaces);
+    ASSERT_TRUE(array_cmp(fixtures::MessageSignatureBytes.data(),
                           result.data(),
                           result.size()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_hex, hex_to_bytes_array) {
-    const auto result = HexToBytesArray<>(tSignatureString);
-    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+    const auto result = HexToBytesArray<>(fixtures::MessageSignatureString);
+    ASSERT_TRUE(array_cmp(fixtures::MessageSignatureBytes.data(),
                           result.data(),
                           result.size()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_hex, hex_to_bytes_array_spaces) {
-    const auto result = HexToBytesArray<>(tSignatureStringSpaces);
-    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+    const auto result = HexToBytesArray<>(fixtures::MessageSignatureStringSpaces);
+    ASSERT_TRUE(array_cmp(fixtures::MessageSignatureBytes.data(),
                           result.data(),
                           result.size()));
 }

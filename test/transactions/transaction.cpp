@@ -11,6 +11,8 @@
 
 #include <utility>
 
+#include "fixtures/identity.hpp"
+
 #include "identities/keys.hpp"
 
 #include "types/fixtures/common.hpp"
@@ -51,8 +53,8 @@ TEST(transactions_transaction, get_id) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               transaction.data.senderPublicKey.begin());
 
     transaction.data.fee                         = TYPE_0_FEE;
@@ -85,8 +87,8 @@ TEST(transactions_transaction, sign) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               transaction.data.senderPublicKey.begin());
 
     transaction.data.fee                         = TYPE_0_FEE;
@@ -98,7 +100,7 @@ TEST(transactions_transaction, sign) {
               TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               transaction.data.asset.transfer.recipientId.begin());
 
-    transaction.sign("this is a top secret passphrase");
+    transaction.sign(fixtures::Passphrase);
 
     ASSERT_TRUE(array_cmp(TYPE_0_TX_ID,
                           transaction.getId().data(),
@@ -120,8 +122,8 @@ TEST(transactions_transaction, sign_second) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               transaction.data.senderPublicKey.begin());
 
     transaction.data.fee                         = TYPE_0_FEE;
@@ -132,12 +134,11 @@ TEST(transactions_transaction, sign_second) {
               TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               transaction.data.asset.transfer.recipientId.begin());
 
-    transaction.sign("this is a top secret passphrase");
+    transaction.sign(fixtures::Passphrase);
 
-    const auto secondPassphrase = "this is a top secret passphrase too";
-    transaction.secondSign(secondPassphrase);
+    transaction.secondSign(fixtures::SecondPassphrase);
 
-    const auto keys = identities::Keys::fromPassphrase(secondPassphrase);
+    const auto keys = identities::Keys::fromPassphrase(fixtures::SecondPassphrase);
 
     ASSERT_TRUE(transaction.verify());
 

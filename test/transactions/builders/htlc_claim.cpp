@@ -13,10 +13,12 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/htlc_claim.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +27,7 @@ TEST(transactions_builders, htlc_claim) {
         .network(COMMON_MAINNET)
         .type(TYPE_9_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_9_FEE)
         .lockTransactionId(TYPE_9_LOCK_TX_ID)
         .unlockSecret(TYPE_9_UNLOCK_SECRET)

@@ -14,11 +14,13 @@
 #include "transactions/serializer.hpp"
 #include "transactions/transaction_data.hpp"
 
+#include "fixtures/identity.hpp"
 #include "types/fixtures/transfer.hpp"
 #include "types/fixtures/common.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,8 +38,8 @@ TEST(transactions_serializer, serialize_invalid_version) {
     data.type           = TYPE_0_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(COMMON_PUBLICKEY,
-              COMMON_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
+    std::move(fixtures::PublicKeyBytes.begin(),
+              fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.fee            = TYPE_0_FEE;

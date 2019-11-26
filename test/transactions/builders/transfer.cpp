@@ -13,11 +13,13 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/common.hpp"
 #include "transactions/types/fixtures/transfer.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,7 +28,7 @@ TEST(transactions_builders, transfer_address_hash) {
         .network(COMMON_MAINNET)
         .type(TYPE_0_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)
@@ -40,7 +42,7 @@ TEST(transactions_builders, transfer_address_hash) {
     ASSERT_EQ(TYPE_0_TYPE,          transaction.data.type);
     ASSERT_EQ(COMMON_NONCE,         transaction.data.nonce);
 
-    ASSERT_TRUE(array_cmp(COMMON_PUBLICKEY,
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
                           transaction.data.senderPublicKey.data(),
                           PUBLICKEY_COMPRESSED_LEN));
 
@@ -72,7 +74,7 @@ TEST(transactions_builder, transfer_address_string) {
         .network(COMMON_MAINNET)
         .type(TYPE_0_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)
@@ -89,7 +91,7 @@ TEST(transactions_builder, transfer_sign) {
         .network(COMMON_MAINNET)
         .type(TYPE_0_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)

@@ -13,10 +13,12 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/ipfs.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +27,7 @@ TEST(transactions_builders, ipfs) {
         .network(COMMON_MAINNET)
         .type(TYPE_5_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_5_FEE)
         .ipfs(TYPE_5_DAG, sizeof(TYPE_5_DAG))
         .signature(TYPE_5_SIGNATURE, sizeof(TYPE_5_SIGNATURE))

@@ -48,23 +48,23 @@
 // }
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const uint8_t TYPE_6_TYPE              = 6U;
-static constexpr const uint64_t TYPE_6_FEE              = 10000000ULL;
-static constexpr const uint8_t TYPE_6_ASSET_OFFSET      = 59U;
-static constexpr const uint16_t TYPE_6_N_PAYMENTS       = 100U;
-static constexpr const uint64_t TYPE_6_AMOUNT           = 1ULL;
+constexpr uint8_t TYPE_6_TYPE               = 6U;
+constexpr uint64_t TYPE_6_FEE               = 10000000ULL;
+constexpr uint8_t TYPE_6_ASSET_OFFSET       = 59U;
+constexpr uint16_t TYPE_6_N_PAYMENTS        = 100U;
+constexpr uint64_t TYPE_6_AMOUNT            = 1ULL;
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const char* TYPE_6_N_PAYMENTS_STRING = "100";
+constexpr auto TYPE_6_N_PAYMENTS_STRING = "100";
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const char* TYPE_6_AMOUNTS_STRING =
+constexpr auto TYPE_6_AMOUNTS_STRING =
     "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
     "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
     "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const char* TYPE_6_ADDRESSES_STRING =
+constexpr auto TYPE_6_ADDRESSES_STRING =
     "DHKxXag9PjfjHBbPg3HQS5WCaQZdgDf6yi,DBzGiUk8UVjB2dKCfGRixknB7Ki3Zhqthp,"
     "DFa7vn1LvWAyTuVDrQUr5NKaM73cfjx2Cp,DSGsxX84gif4ipAxZjjCE2k2YpHmsNTJeY,"
     "DQhzMRvVoCYCiZH2iSyuqCTcayz7z4XTKx,DMSD6fFT1Xcxh4ErYExr5MtGnEuDcYu22m,"
@@ -118,19 +118,19 @@ static constexpr const char* TYPE_6_ADDRESSES_STRING =
 
 ////////////////////////////////////////////////////////////////////////////////
 // 1e85af65ad6aa3a1df5bc9a6f59b9f3d394f643a23
-static constexpr const uint8_t TYPE_6_FIRST_ADDRESS[] = {
+constexpr uint8_t TYPE_6_FIRST_ADDRESS[] = {
     30,  133, 175, 101, 173, 106, 163, 161, 223, 91, 201,
     166, 245, 155, 159, 61,  57,  79,  100, 58,  35 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // 1eaf0ba9bd7cb2a23220eac8310f793fd9e846bf69
-static constexpr const uint8_t TYPE_6_LAST_ADDRESS[] = {
+constexpr uint8_t TYPE_6_LAST_ADDRESS[] = {
     30,  175, 11, 169, 189, 124, 178, 162, 50,  32, 234,
     200, 49,  15, 121, 63,  217, 232, 70,  191, 105 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3045022100a6c327cb6798cb3dc8b282b64358dc4c24a72bff61e347009c1e0ad2a1cc6d8c022028cf62c3d0ea8c3ca6113f63b4e827bd8db8201a478f5ff40c309bbb9987a9b4
-static constexpr const uint8_t TYPE_6_SIGNATURE[] = {
+constexpr uint8_t TYPE_6_SIGNATURE[] = {
     48,  69,  2,   33,  0,   166, 195, 39,  203, 103, 152, 203, 61,  200, 178,
     130, 182, 67,  88,  220, 76,  36,  167, 43,  255, 97,  227, 71,  0,   156,
     30,  10,  210, 161, 204, 109, 140, 2,   32,  40,  207, 98,  195, 208, 234,
@@ -138,7 +138,7 @@ static constexpr const uint8_t TYPE_6_SIGNATURE[] = {
     143, 95,  244, 12,  48,  155, 187, 153, 135, 169, 180 };
 
 ////////////////////////////////////////////////////////////////////////////////
-static const std::vector<uint64_t> TYPE_6_AMOUNTS = {
+const std::vector<uint64_t> TYPE_6_AMOUNTS = {
     1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL,
     1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL,
     1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL, 1ULL,
@@ -152,7 +152,7 @@ static const std::vector<uint64_t> TYPE_6_AMOUNTS = {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-static const std::vector<std::array<uint8_t, ADDRESS_HASH_LEN> > TYPE_6_ADDRESSES = {
+const std::vector<std::array<uint8_t, ADDRESS_HASH_LEN> > TYPE_6_ADDRESSES = {
     { 30, 133, 175, 101, 173, 106, 163, 161, 223,  91, 201, 166, 245, 155, 159,  61,  57,  79, 100,  58,  35 },
     { 30,  75,  29, 161, 170, 169, 188, 174, 197, 170, 246, 118,   4, 120,   1,   7,  12,  76,  18,  71, 193 },
     { 30, 114, 108, 208, 211, 224,  41,  32, 188, 193,  79, 109,  87, 165, 247,  47, 100, 210, 112, 206, 227 },
@@ -309,7 +309,7 @@ static const std::vector<std::array<uint8_t, ADDRESS_HASH_LEN> > TYPE_6_ADDRESSE
 // 01000000000000001eb4b42b7ecd576bdfac4886c2a11bfceecc31d83201000000000000001eaf0ba9bd7cb2a23220eac8310f793fd9e846bf69
 // 3045022100a6c327cb6798cb3dc8b282b64358dc4c24a72bff61e347009c1e0ad2a1cc6d8c022028cf62c3d0ea8c3ca6113f63b4e827bd8db820
 // 1a478f5ff40c309bbb9987a9b4
-static const std::vector<uint8_t> TYPE_6_BYTES = {
+const std::vector<uint8_t> TYPE_6_BYTES = {
     255, 2,   30,  1,   0,   0,   0,   6,   0,   1,   0,   0,   0,   0,   0,
     0,   0,   3,   65,  81,  163, 236, 70,  181, 103, 10,  104, 43,  10,  99,
     57,  79,  134, 53,  135, 209, 188, 151, 72,  59,  27,  108, 112, 235, 88,

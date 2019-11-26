@@ -17,17 +17,15 @@
 #include "test_helpers.h"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_curve, ecdsa_sign) {
     std::vector<uint8_t> signature = {};
-    ASSERT_TRUE(Curve::Ecdsa::sign(tMessageSha256Bytes.data(),
-                                   tPrivateKeyBytes.data(),
+    ASSERT_TRUE(Curve::Ecdsa::sign(fixtures::MessageSha256Bytes.data(),
+                                   fixtures::PrivateKeyBytes.data(),
                                    &signature));
 
-    ASSERT_TRUE(array_cmp(tMessageSignatureBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::MessageSignatureBytes.data(),
                           signature.data(),
                           signature.size()));
 }

@@ -18,7 +18,6 @@
 #include "test_helpers.h"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, check_encode) {
@@ -35,13 +34,13 @@ TEST(utils_base58, check_encode_invalid) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, get_hash_pair) {
-    auto hashPair = Base58::getHashPair(tAddressString);
+    auto hashPair = Base58::getHashPair(fixtures::AddressString);
 
-    ASSERT_TRUE(array_cmp(tAddressBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::AddressBytes.data(),
                           hashPair.pubkeyHash.data(),
                           HASH_20_LEN));
 
-    ASSERT_EQ(tAddressVersion, hashPair.version);
+    ASSERT_EQ(fixtures::AddressVersion, hashPair.version);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,62 +52,64 @@ TEST(utils_base58, parse_address_hash) {
 
     // D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib
     auto address = Base58::parseAddressHash(addressHash);
-    ASSERT_STREQ(tAddressString, address.c_str());
+    ASSERT_STREQ(fixtures::AddressString, address.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, parse_hash) {
-    auto address = Base58::parsePubkeyHash(tAddressBytes.data(), tAddressVersion);
-    ASSERT_STREQ(tAddressString, address.c_str());
+    auto address = Base58::parsePubkeyHash(fixtures::AddressBytes.data(),
+                                           fixtures::AddressVersion);
+    ASSERT_STREQ(fixtures::AddressString, address.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, get_wif) {
-    auto wif = Base58::getWif(tPrivateKeyBytes.data(), tWifVersion);
-    ASSERT_STREQ(tWifString, wif.c_str());
+    auto wif = Base58::getWif(fixtures::PrivateKeyBytes.data(),
+                              fixtures::WifVersion);
+    ASSERT_STREQ(fixtures::WifString, wif.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, parse_wif) {
     uint8_t outVersion;
-    auto privateKey = Base58::parseWif(tWifString, &outVersion);
+    auto privateKey = Base58::parseWif(fixtures::WifString, &outVersion);
 
-    ASSERT_TRUE(array_cmp(tPrivateKeyBytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
                           privateKey.data(),
                           PRIVATEKEY_BYTE_LEN));
 
-    ASSERT_EQ(tWifVersion, outVersion);
+    ASSERT_EQ(fixtures::WifVersion, outVersion);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, parse_wif_invalid) {
     uint8_t outVersion;
-    auto privateKey = Base58::parseWif(invalid::tWifString, &outVersion);
+    auto privateKey = Base58::parseWif(fixtures::invalid::WifString, &outVersion);
 
     for (auto &e : privateKey) {
         ASSERT_EQ(0U, e);
     }
 
-    ASSERT_NE(tWifVersion, outVersion);
+    ASSERT_NE(fixtures::WifVersion, outVersion);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, validate) {
-    ASSERT_TRUE(Base58::validate(tWifString, WIF_STRING_LEN));
+    ASSERT_TRUE(Base58::validate(fixtures::WifString, WIF_STRING_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, validate_zero_size) {
-    ASSERT_FALSE(Base58::validate(tWifString, 0));
+    ASSERT_FALSE(Base58::validate(fixtures::WifString, 0));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, validate_invalid_size) {
-    ASSERT_FALSE(Base58::validate(tWifString, WIF_STRING_LEN - 1));
+    ASSERT_FALSE(Base58::validate(fixtures::WifString, WIF_STRING_LEN - 1));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 TEST(utils_base58, validate_invalid_char) {
-    ASSERT_FALSE(Base58::validate(invalid::tWifString, WIF_STRING_LEN));
+    ASSERT_FALSE(Base58::validate(fixtures::invalid::WifString, WIF_STRING_LEN));
 }

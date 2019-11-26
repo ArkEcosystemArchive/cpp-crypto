@@ -13,10 +13,12 @@
 
 #include "interfaces/constants.h"
 
+#include "fixtures/identity.hpp"
 #include "transactions/types/fixtures/htlc_refund.hpp"
 
 #include "test_helpers.h"
 
+using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +27,7 @@ TEST(transactions_builders, htlc_refund) {
         .network(COMMON_MAINNET)
         .type(TYPE_10_TYPE)
         .nonce(COMMON_NONCE)
-        .senderPublicKey(COMMON_PUBLICKEY)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_10_FEE)
         .lockTransactionId(TYPE_10_LOCK_TX_ID)
         .signature(TYPE_10_SIGNATURE, sizeof(TYPE_10_SIGNATURE))

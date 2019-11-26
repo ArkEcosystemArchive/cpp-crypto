@@ -32,13 +32,13 @@
 // }
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const uint8_t TYPE_7_TYPE          = 7U;
-static constexpr const uint64_t TYPE_7_FEE          = 2500000000ULL;
-static constexpr const uint64_t TYPE_7_VF_LENGTH    = 0U;
+constexpr uint8_t TYPE_7_TYPE           = 7U;
+constexpr uint64_t TYPE_7_FEE           = 2500000000ULL;
+constexpr uint64_t TYPE_7_VF_LENGTH     = 0U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // ff02170100000007000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19200f9029500000000003045022100aa113ddefb502d868219339d16b8d448c8e69c8e320664e12903cc84420c159d02201b6206c7cb9442f6ef07dd0824aeb0cc393d8f9f9909988da6687c44ef897070
-static const std::vector<uint8_t> TYPE_7_BYTES = {
+const std::vector<uint8_t> TYPE_7_BYTES = {
     255, 2,   23,  1,   0,   0,   0,   7,   0,   1,   0,  0,   0,   0,   0,
     0,   0,   3,   65,  81,  163, 236, 70,  181, 103, 10, 104, 43,  10,  99,
     57,  79,  134, 53,  135, 209, 188, 151, 72,  59,  27, 108, 112, 235, 88,
@@ -51,7 +51,7 @@ static const std::vector<uint8_t> TYPE_7_BYTES = {
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3045022100aa113ddefb502d868219339d16b8d448c8e69c8e320664e12903cc84420c159d02201b6206c7cb9442f6ef07dd0824aeb0cc393d8f9f9909988da6687c44ef897070
-static constexpr const uint8_t TYPE_7_SIGNATURE[] = {
+constexpr uint8_t TYPE_7_SIGNATURE[] = {
     48, 69,  2,   33,  0,   170, 17,  61,  222, 251, 80, 45, 134, 130, 25,
     51, 157, 22,  184, 212, 72,  200, 230, 156, 142, 50, 6,  100, 225, 41,
     3,  204, 132, 66,  12,  21,  157, 2,   32,  27,  98, 6,  199, 203, 148,

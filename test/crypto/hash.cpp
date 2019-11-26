@@ -17,20 +17,21 @@
 #include "test_helpers.h"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_hash_ripemd, hash_160) {
-    auto ripeHash = Hash::ripemd160(tPublicKeyBytes.data());
-    ASSERT_TRUE(array_cmp(tAddressBytes.data(), ripeHash.data(), HASH_20_LEN));
+    auto ripeHash = Hash::ripemd160(fixtures::PublicKeyBytes.data());
+    ASSERT_TRUE(array_cmp(fixtures::AddressBytes.data(),
+                          ripeHash.data(),
+                          HASH_20_LEN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_hash_sha256, hash_256) {
-    auto shaHash = Hash::sha256(tMessageBytes.data(), tMessageBytes.size());
+    auto shaHash = Hash::sha256(fixtures::MessageBytes.data(),
+                                fixtures::MessageBytes.size());
 
-    ASSERT_TRUE(array_cmp(tMessageSha256Bytes.data(),
+    ASSERT_TRUE(array_cmp(fixtures::MessageSha256Bytes.data(),
                           shaHash.data(),
                           HASH_32_LEN));
 }

@@ -16,14 +16,13 @@
 #include "test_helpers.h"
 
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const auto PassphraseLength = 31U;
+constexpr auto PassphraseLength = 31U;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_str, strlen_safe) {
-    const auto passphrase = tPassphrase;
+    const auto passphrase = fixtures::Passphrase;
     for (auto i = 0U; i < PassphraseLength; ++i) {
         ASSERT_EQ(strlenSafe(&passphrase[i]), PassphraseLength - i);
     }
@@ -31,8 +30,8 @@ TEST(utils_str, strlen_safe) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_str, string_to_bytes) {
-    const auto passphraseBytes = StringToBytes(tPassphrase);
-    ASSERT_TRUE(array_cmp(tPassphraseBytes.data(),
+    const auto passphraseBytes = StringToBytes(fixtures::Passphrase);
+    ASSERT_TRUE(array_cmp(fixtures::PassphraseBytes.data(),
                           passphraseBytes.data(),
                           passphraseBytes.size()));
 
