@@ -228,7 +228,7 @@ static void deserializeSignatures(TransactionData *transaction,
         transaction->secondSignature.insert(
                 transaction->secondSignature.begin(),
                 buffer + signatureLength,
-                buffer + secondSignatureLength);
+                buffer + signatureLength + secondSignatureLength);
     }
 }
 
