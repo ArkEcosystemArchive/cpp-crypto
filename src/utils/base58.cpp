@@ -10,6 +10,7 @@
 #include "utils/base58.hpp"
 
 #include <array>
+#include <cstddef>
 #include <utility>
 
 #include "interfaces/identities.hpp"
@@ -21,7 +22,7 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-auto Base58::checkEncode(const uint8_t *data, const uint8_t length)
+auto Base58::checkEncode(const uint8_t *data, const size_t length)
         -> std::string {
     const std::array<uint8_t, BASE58_ALPHABET_LEN> BASE58ALPHABET = {
         '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -40,9 +41,9 @@ auto Base58::checkEncode(const uint8_t *data, const uint8_t length)
     std::vector<uint8_t> buffer;
     buffer.resize(tmpSize);
 
-    uint8_t j;
-    uint8_t startAt;
-    uint8_t zeroCount = 0;
+    size_t j;
+    size_t startAt;
+    size_t zeroCount = 0;
 
     if (length > tmp.size()) {
         return {};
@@ -56,8 +57,8 @@ auto Base58::checkEncode(const uint8_t *data, const uint8_t length)
     j = 2U * length;
     startAt = zeroCount;
     while (startAt < length) {
-        uint16_t remainder = 0U;
-        uint8_t divLoop;
+        size_t remainder = 0U;
+        size_t divLoop;
 
         for (divLoop = startAt; divLoop < length; divLoop++) {
             auto digit256 = (uint16_t)(tmp.at(divLoop) & limitFlag);

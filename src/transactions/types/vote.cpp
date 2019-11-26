@@ -37,7 +37,7 @@ namespace transactions {
 // - std::move(&buffer[1], &buffer[35] + VOTES_LEN, vote->votes.begin());
 //
 // ---
-auto Vote::Deserialize(Vote *vote, const uint8_t *buffer) -> uint32_t {
+auto Vote::Deserialize(Vote *vote, const uint8_t *buffer) -> size_t {
     vote->count = buffer[0];                                        // 1 Byte
 
     std::move(&buffer[sizeof(uint8_t)],                             // 34 Bytes
@@ -65,7 +65,7 @@ auto Vote::Deserialize(Vote *vote, const uint8_t *buffer) -> uint32_t {
 // - std::move(vote.votes.begin(), vote.votes.end(), &buffer[1])
 //
 // ---
-auto Vote::Serialize(const Vote &vote, uint8_t *buffer) -> uint32_t {
+auto Vote::Serialize(const Vote &vote, uint8_t *buffer) -> size_t {
     buffer[0] = vote.count;                                         // 1 Byte
 
     std::move(vote.votes.begin(),                                   // 34 Bytes

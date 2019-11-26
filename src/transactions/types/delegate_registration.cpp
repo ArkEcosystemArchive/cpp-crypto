@@ -39,7 +39,7 @@ namespace transactions {
 //
 // ---
 auto DelegateRegistration::Deserialize(DelegateRegistration *registration,
-                                       const uint8_t *buffer) -> uint32_t {
+                                       const uint8_t *buffer) -> size_t {
     registration->length = buffer[0];                               // 1 Byte
 
     if (registration->length < USERNAME_MIN ||
@@ -73,7 +73,7 @@ auto DelegateRegistration::Deserialize(DelegateRegistration *registration,
 //
 // ---
 auto DelegateRegistration::Serialize(const DelegateRegistration &registration,
-                                     uint8_t *buffer) -> uint32_t {
+                                     uint8_t *buffer) -> size_t {
     buffer[0] = registration.length;                                // 1 Byte
 
     if (registration.length < USERNAME_MIN ||

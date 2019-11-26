@@ -30,10 +30,10 @@ struct Ipfs {
     std::vector<uint8_t> dag;
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(Ipfs *ipfs, const uint8_t *buffer);
+    static size_t Deserialize(Ipfs *ipfs, const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const Ipfs &ipfs, uint8_t *buffer);
+    static size_t Serialize(const Ipfs &ipfs, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(const Ipfs &ipfs);

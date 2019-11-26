@@ -29,10 +29,10 @@ struct HtlcClaim {
     std::array<uint8_t, HASH_32_LEN>    secret;
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(HtlcClaim *claim, const uint8_t *buffer);
+    static size_t Deserialize(HtlcClaim *claim, const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const HtlcClaim &claim, uint8_t *buffer);
+    static size_t Serialize(const HtlcClaim &claim, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(const HtlcClaim &claim);

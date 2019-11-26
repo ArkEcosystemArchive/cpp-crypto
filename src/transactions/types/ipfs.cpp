@@ -39,7 +39,7 @@ namespace transactions {
 // - ipfs->dag.insert(ipfs->dag.begin(), buffer, buffer + ipfs->dag.size());
 //
 // ---
-auto Ipfs::Deserialize(Ipfs *ipfs, const uint8_t *buffer) -> uint32_t {
+auto Ipfs::Deserialize(Ipfs *ipfs, const uint8_t *buffer) -> size_t {
     const size_t ipfsLen = buffer[1] + 2U;
 
     if (buffer[1] == 0U || ipfsLen > IPFS_LIMIT) {
@@ -66,7 +66,7 @@ auto Ipfs::Deserialize(Ipfs *ipfs, const uint8_t *buffer) -> uint32_t {
 // - std::move(ipfs.dag.begin(), ipfs.dag.end(), buffer);
 //
 // ---
-auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> uint32_t {
+auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> size_t {
     if (ipfs.dag.size() > IPFS_LIMIT) {
         return 0UL;
     }

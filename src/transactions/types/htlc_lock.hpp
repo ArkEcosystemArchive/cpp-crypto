@@ -35,10 +35,10 @@ struct HtlcLock {
     AddressHash                             recipientId;
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(HtlcLock *lock, const uint8_t *buffer);
+    static size_t Deserialize(HtlcLock *lock, const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const HtlcLock &lock, uint8_t *buffer);
+    static size_t Serialize(const HtlcLock &lock, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(const HtlcLock &lock);

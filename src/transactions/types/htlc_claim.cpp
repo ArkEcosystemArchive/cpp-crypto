@@ -40,7 +40,7 @@ namespace transactions {
 // - std::move(&buffer[32], &buffer[64], claim->secret.begin());
 //
 // ---
-auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> uint32_t {
+auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> size_t {
     std::move(buffer, &buffer[HASH_32_LEN], claim->id.begin());     // 32 Bytes
 
     std::move(&buffer[HASH_32_LEN],                                 // 32 Bytes
@@ -68,7 +68,7 @@ auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> uint32_t
 // - std::move(claim.secret.begin(), \claim.secret.end(), &buffer[32]);
 //
 // ---
-auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> uint32_t {
+auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> size_t {
     std::move(claim.id.begin(), claim.id.end(), buffer);            // 32 Bytes
 
     std::move(claim.secret.begin(),                                 // 32 Bytes

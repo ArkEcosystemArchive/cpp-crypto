@@ -89,7 +89,7 @@ TEST(transactions_multi_payment, serialize_ecdsa) {
     data.asset.multiPayment.amounts.resize(TYPE_6_N_PAYMENTS);
     data.asset.multiPayment.addresses.resize(TYPE_6_N_PAYMENTS);
 
-    uint32_t offset = TYPE_6_ASSET_OFFSET + sizeof(uint16_t);
+    size_t offset = TYPE_6_ASSET_OFFSET + sizeof(uint16_t);
 
     for (uint8_t i = 0U; i < TYPE_6_N_PAYMENTS; ++i) {
         data.asset.multiPayment.amounts.at(i) = TYPE_6_AMOUNT;

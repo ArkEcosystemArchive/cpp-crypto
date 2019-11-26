@@ -54,7 +54,7 @@ namespace transactions {
 //
 // ---
 auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
-        -> uint32_t {
+        -> size_t {
     payments->n_payments = unpack2LE(buffer, 0U);               // 2 Bytes
 
     if (payments->n_payments > MULTI_PAYMENT_NETWORK_LIMIT) {
@@ -64,9 +64,9 @@ auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
     payments->amounts.resize(payments->n_payments);
     payments->addresses.resize(payments->n_payments);
 
-    uint32_t pos = sizeof(uint16_t);
+    size_t pos = sizeof(uint16_t);
 
-    for (uint32_t i = 0UL; i < payments->n_payments; ++i) {
+    for (size_t i = 0UL; i < payments->n_payments; ++i) {
         payments->amounts.at(i)  = unpack8LE(buffer, pos);      // 8 Bytes
 
         pos += sizeof(uint64_t);
@@ -136,7 +136,7 @@ static inline auto checkBuffer(const MultiPayment &payments,
 // ---
 auto MultiPayment::Serialize(const MultiPayment &payments,
                              std::vector<uint8_t> &buffer,
-                             const size_t offset) -> uint32_t {
+                             const size_t offset) -> size_t {
     if (!checkBuffer(payments, buffer, offset)) {
         return 0UL;
     }
@@ -145,9 +145,9 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
             &payments.n_payments,
             sizeof(uint16_t));
 
-    uint32_t pos = offset + sizeof(uint16_t);
+    size_t pos = offset + sizeof(uint16_t);
 
-    for (uint8_t i = 0U; i < payments.n_payments; ++i) {
+    for (size_t i = 0U; i < payments.n_payments; ++i) {
         memmove(&buffer[pos],                                   // 8 Bytes
                 &payments.amounts.at(i),
                 sizeof(uint64_t));

@@ -28,10 +28,10 @@ struct HtlcRefund {
     std::array<uint8_t, HASH_32_LEN> id;
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(HtlcRefund *refund, const uint8_t *buffer);
+    static size_t Deserialize(HtlcRefund *refund, const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const HtlcRefund &refund, uint8_t *buffer);
+    static size_t Serialize(const HtlcRefund &refund, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(const HtlcRefund &refund);

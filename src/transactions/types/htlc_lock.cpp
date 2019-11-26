@@ -56,8 +56,8 @@ namespace transactions {
 // - std::move(&buffer[45], &buffer[66], lock->recipientId.begin());
 //
 // ---
-auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> uint32_t {
-    uint32_t offset = 0UL;
+auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
+    size_t offset = 0UL;
 
     lock->amount = unpack8LE(buffer, offset);                       // 8 Bytes
 
@@ -113,8 +113,8 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> uint32_t {
 // - std::move(lock.recipientId.begin(), lock.recipientId.end(), &buffer[45]);
 //
 // ---
-auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> uint32_t {
-    uint32_t offset = 0;
+auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
+    size_t offset = 0;
 
     memmove(buffer, &lock.amount, sizeof(uint64_t));                // 8 Bytes
 

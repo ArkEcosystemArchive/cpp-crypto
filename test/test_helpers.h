@@ -25,10 +25,10 @@
 // ---
 static inline bool array_cmp(const uint8_t *expected,
                              const uint8_t *actual,
-                             const uint32_t length) {
-    for (uint32_t i = 0UL; i < length; ++i) {
+                             const size_t length) {
+    for (size_t i = 0UL; i < length; ++i) {
         if (expected[i] != actual[i]) {
-            printf("\n\nMismatch at element: %d", i);
+            printf("\n\nMismatch at element: %zd", i);
             printf("\nExpected value: %d", (int)expected[i]);
             printf("\nActual value: %d\n\n", (int)actual[i]);
             return false;

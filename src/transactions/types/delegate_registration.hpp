@@ -30,12 +30,12 @@ struct DelegateRegistration {
     std::array<uint8_t, USERNAME_MAX>       username;       // 3 <=> 20 bytes
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(DelegateRegistration *registration,
-                                const uint8_t *buffer);
+    static size_t Deserialize(DelegateRegistration *registration,
+                              const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const DelegateRegistration &registration,
-                              uint8_t *buffer);
+    static size_t Serialize(const DelegateRegistration &registration,
+                            uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(

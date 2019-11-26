@@ -54,10 +54,10 @@ struct MultiPayment {
     std::vector<AddressHash> addresses;
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(MultiPayment *payments, const uint8_t *buffer);
+    static size_t Deserialize(MultiPayment *payments, const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const MultiPayment &payments,
+    static size_t Serialize(const MultiPayment &payments,
                               std::vector<uint8_t> &buffer,
                               const size_t offset);
 

@@ -33,10 +33,10 @@ struct Vote {
     std::array<uint8_t, VOTES_LEN>      votes;      // (VOTE_LIMIT * (1 + 33))
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(Vote *vote, const uint8_t *buffer);
+    static size_t Deserialize(Vote *vote, const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const Vote &vote, uint8_t *buffer);
+    static size_t Serialize(const Vote &vote, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(const Vote &Vote);

@@ -45,7 +45,7 @@ namespace transactions {
 //
 // ---
 auto Transfer::Deserialize(Transfer *transfer, const uint8_t *buffer)
-        -> uint32_t {
+        -> size_t {
     transfer->amount        = unpack8LE(buffer, 0U);                 // 8 Bytes
     transfer->expiration    = unpack4LE(buffer, sizeof(uint64_t));   // 4 Bytes
 
@@ -77,7 +77,7 @@ auto Transfer::Deserialize(Transfer *transfer, const uint8_t *buffer)
 // - std::move(transfer.recipientId.begin(), transfer.recipientId.end(), &buffer[12]);
 //
 // ---
-auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> uint32_t {
+auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> size_t {
     memmove(&buffer[0],                                             // 8 Bytes
             &transfer.amount,
             sizeof(uint64_t));

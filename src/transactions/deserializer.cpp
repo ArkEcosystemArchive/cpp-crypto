@@ -154,7 +154,7 @@ static void deserializeCommonV1(TransactionData *data,
 ////////////////////////////////////////////////////////////////////////////////
 static auto deserializeAsset(TransactionData *transaction,
                              const std::vector<uint8_t> &buffer,
-                             const uint8_t offset) -> uint32_t {
+                             const size_t offset) -> size_t {
   switch (transaction->type) {
     case TRANSFER_TYPE:
         return Transfer::Deserialize(
@@ -241,7 +241,7 @@ static void deserializeSignatures(TransactionData *transaction,
 // ---
 auto Deserializer::deserialize(TransactionData *data,
                                const std::vector<uint8_t> &buffer) -> bool {
-    uint32_t assetOffset = 0UL;
+    size_t assetOffset = 0UL;
 
     // Use v2 or v1, otherwise return with no changes to the Tx Data.
     if (buffer.at(VERSION_OFFSET) == 0x02) {
@@ -254,7 +254,7 @@ auto Deserializer::deserialize(TransactionData *data,
     }
     else { return false; }
 
-    uint32_t assetSize = deserializeAsset(data, buffer, assetOffset);
+    size_t assetSize = deserializeAsset(data, buffer, assetOffset);
 
     deserializeSignatures(data, &buffer[assetOffset + assetSize]);
 

@@ -27,11 +27,11 @@ struct SecondSignature {
     PublicKeyBytes publicKey;
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(SecondSignature *registration,
+    static size_t Deserialize(SecondSignature *registration,
                                 const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const SecondSignature &registration,
+    static size_t Serialize(const SecondSignature &registration,
                               uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////

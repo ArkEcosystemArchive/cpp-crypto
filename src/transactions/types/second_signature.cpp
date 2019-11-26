@@ -38,7 +38,7 @@ namespace transactions {
 //
 // ---
 auto SecondSignature::Deserialize(SecondSignature *registration,
-                                  const uint8_t *buffer) -> uint32_t {
+                                  const uint8_t *buffer) -> size_t {
     std::move(buffer,
               buffer + PUBLICKEY_COMPRESSED_LEN,
               registration->publicKey.begin());  
@@ -62,7 +62,7 @@ auto SecondSignature::Deserialize(SecondSignature *registration,
 //
 // ---
 auto SecondSignature::Serialize(const SecondSignature &registration,
-                                uint8_t *buffer) -> uint32_t {
+                                uint8_t *buffer) -> size_t {
     std::move(registration.publicKey.begin(),
               registration.publicKey.end(),
               buffer);

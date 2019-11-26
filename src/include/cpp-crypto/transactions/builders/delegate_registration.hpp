@@ -33,7 +33,10 @@ class DelegateRegistration : public Common<DelegateRegistration> {
     // Username - uint8_t[] 3 <=> 20 Bytes
     DelegateRegistration &username(const uint8_t *username,
                                    const size_t length) {
-        this->transaction.data.asset.delegateRegistration.length = length;
+        this->transaction.data.asset
+                .delegateRegistration.length =
+                        static_cast<uint8_t>(length);
+
         std::move(username,
                   username + length,
                   this->transaction.data.asset
@@ -47,7 +50,8 @@ class DelegateRegistration : public Common<DelegateRegistration> {
     // Username - std::string
     DelegateRegistration &username(const std::string &username) {
         this->transaction.data.asset
-                .delegateRegistration.length = username.length();
+                .delegateRegistration.length =
+                    static_cast<uint8_t>(username.length());
 
         std::move(username.begin(),
                   username.end(),

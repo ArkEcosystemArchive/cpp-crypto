@@ -35,10 +35,10 @@ struct Transfer {
     std::array<uint8_t, ADDRESS_HASH_LEN>   recipientId;
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Deserialize(Transfer *transfer, const uint8_t *buffer);
+    static size_t Deserialize(Transfer *transfer, const uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static uint32_t Serialize(const Transfer &transfer, uint8_t *buffer);
+    static size_t Serialize(const Transfer &transfer, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::map<std::string, std::string> getMap(const Transfer &transfer);

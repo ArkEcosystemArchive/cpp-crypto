@@ -77,8 +77,8 @@ auto Curve::Ecdsa::sign(const uint8_t *hash32,
 
     // Copy the big-endian bytes into and R/S element buffer.
     std::array<uint8_t, HASH_64_LEN> rsBuffer;
-    r.getBigEndianBytes(rsBuffer.begin());
-    s.getBigEndianBytes(rsBuffer.begin() + HASH_32_LEN);
+    r.getBigEndianBytes(&rsBuffer[0]);
+    s.getBigEndianBytes(&rsBuffer[HASH_32_LEN]);
 
     // Encode R & S Elements into a BIP66-encoded signature.
     // returns 'true' if DER encoding was successful.

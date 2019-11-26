@@ -60,7 +60,7 @@ TEST(transactions_ipfs, serialize_ecdsa) {
     data.type               = TYPE_5_TYPE;
     data.nonce              = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.data(),
+    std::move(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 

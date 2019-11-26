@@ -91,7 +91,8 @@ static void serializeCommon(const TransactionData &transaction,
             &transaction.fee,
             sizeof(uint64_t));
 
-    buffer.at(VF_LEN_OFFSET) = transaction.vendorField.size();      // 1 Byte
+    buffer.at(VF_LEN_OFFSET) =                                      // 1 Byte
+            static_cast<uint8_t>(transaction.vendorField.size());
 
     if (!transaction.vendorField.empty()) {
         buffer.insert(buffer.begin() + VF_OFFSET,           // 0 <=> 255 Bytes
@@ -142,7 +143,9 @@ static void serializeCommonV1(const TransactionData &transaction,
     buffer.at(v1::HEADER_OFFSET)        = transaction.header;       // 1 Byte
     buffer.at(v1::VERSION_OFFSET)       = transaction.version;      // 1 Byte
     buffer.at(v1::NETWORK_OFFSET)       = transaction.network;      // 1 Byte
-    buffer.at(v1::TYPE_OFFSET)          = transaction.type;         // 1 Byte
+
+    buffer.at(v1::TYPE_OFFSET) =                                    // 1 Byte
+            static_cast<uint8_t>(transaction.type);
 
     memmove(&buffer.at(v1::TIMESTAMP_OFFSET),                       // 4 Bytes
             &transaction.timestamp,
@@ -156,7 +159,8 @@ static void serializeCommonV1(const TransactionData &transaction,
             &transaction.fee,
             sizeof(uint64_t));
 
-    buffer.at(v1::VF_LEN_OFFSET) = transaction.vendorField.size();  // 1 Byte
+    buffer.at(v1::VF_LEN_OFFSET) =                                  // 1 Byte
+            static_cast<uint8_t>(transaction.vendorField.size());
 
     if (!transaction.vendorField.empty()) {
         buffer.insert(buffer.begin() + v1::VF_OFFSET,       // 0 <=> 255 Bytes
@@ -168,7 +172,7 @@ static void serializeCommonV1(const TransactionData &transaction,
 ////////////////////////////////////////////////////////////////////////////////
 static auto serializeAsset(const TransactionData &transaction,
                            std::vector<uint8_t> &buffer,
-                           const uint8_t offset) -> uint32_t {
+                           const size_t offset) -> size_t {
     switch (transaction.type) {
         case TRANSFER_TYPE:
             return Transfer::Serialize(
@@ -227,8 +231,8 @@ static auto serializeAsset(const TransactionData &transaction,
 ////////////////////////////////////////////////////////////////////////////////
 static auto serializeSignatures(const TransactionData &data,
                                 std::vector<uint8_t> &buffer,
-                                const uint32_t offset,
-                                const SerializerOptions &options) -> uint32_t {
+                                const size_t offset,
+                                const SerializerOptions &options) -> size_t {
     if (!options.excludeSignature &&
         data.signature.size() >= SIGNATURE_ECDSA_MIN &&
         data.signature.size() <= SIGNATURE_ECDSA_MAX) {
@@ -265,7 +269,7 @@ auto Serializer::serialize(const TransactionData &data,
     std::vector<uint8_t> buffer;
     buffer.resize(TX_DEFAULT_SIZE);
 
-    uint32_t assetOffset = 0UL;
+    size_t assetOffset = 0UL;
 
     // Use v2 or v1, otherwise return an empty object.
     if (data.version == TRANSACTION_VERSION_TYPE_2) {
@@ -278,12 +282,12 @@ auto Serializer::serialize(const TransactionData &data,
     }
     else { return {}; }
 
-    uint32_t assetSize = serializeAsset(data, buffer, assetOffset);
+    size_t assetSize = serializeAsset(data, buffer, assetOffset);
 
-    uint32_t signaturesSize = serializeSignatures(data,
-                                                  buffer,
-                                                  assetOffset + assetSize,
-                                                  options);
+    size_t signaturesSize = serializeSignatures(data,
+                                                buffer,
+                                                assetOffset + assetSize,
+                                                options);
 
     buffer.resize(assetOffset + assetSize + signaturesSize);
 

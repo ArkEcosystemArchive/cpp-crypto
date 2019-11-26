@@ -25,12 +25,12 @@ namespace managers {
 class FeeManager {
   public:
     ////////////////////////////////////////////////////////////////////////////
-    auto getFee(const uint8_t type) const -> uint64_t {
+    auto getFee(const uint16_t type) const -> uint64_t {
         return type < this->feePolicy_.size() ? this->feePolicy_.at(type) : 0ULL;
     }
   
     ////////////////////////////////////////////////////////////////////////////
-    void setFee(const uint8_t type, const uint64_t amount) {
+    void setFee(const uint16_t type, const uint64_t amount) {
         this->feePolicy_.insert(this->feePolicy_.begin() + type, amount);
     }
 
