@@ -57,7 +57,8 @@ auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
         -> size_t {
     payments->n_payments = unpack2LE(buffer, 0U);               // 2 Bytes
 
-    if (payments->n_payments > MULTI_PAYMENT_NETWORK_LIMIT) {
+    if (buffer[0] == 0U || payments->n_payments > MULTI_PAYMENT_NETWORK_LIMIT) {
+        payments->n_payments = 0UL;
         return 0UL;
     }
 

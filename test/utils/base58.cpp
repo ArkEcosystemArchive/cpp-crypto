@@ -26,10 +26,18 @@ TEST(utils_base58, check_encode) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(utils_base58, check_encode_invalid) {
+TEST(utils_base58, check_encode_invalid_len) {
     const auto base58Threshold = 164;
     const auto invalidHash = Base58::checkEncode(nullptr, base58Threshold + 1);
     ASSERT_TRUE(invalidHash.empty());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(utils_base58, check_encode_zeros) {
+    const uint8_t zero[] = { 0 };
+    const auto zeroHash = Base58::checkEncode(zero, sizeof(zero));
+
+    ASSERT_FALSE(zeroHash.empty());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

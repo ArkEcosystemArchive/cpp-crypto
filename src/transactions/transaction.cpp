@@ -149,128 +149,113 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
     size_t jsonSize     = 0UL;
 
     // Start with the Transaction's Asset.
-    switch (this->data.type) {
-        // Tranfer
-        case TRANSFER_TYPE: {
-            map = Transfer::getMap(this->data.asset.transfer);
-            txSize = TRANSACTION_TYPE_TRANSFER_SIZE;
-            const auto extraBytes = 413;
-            jsonSize = JSON_OBJECT_SIZE(11) + extraBytes;
-            break;
-        }
+    // Tranfer
+    if (this->data.type == TRANSFER_TYPE) {
+        map = Transfer::getMap(this->data.asset.transfer);
+        txSize = TRANSACTION_TYPE_TRANSFER_SIZE;
+        const auto extraBytes = 413;
+        jsonSize = JSON_OBJECT_SIZE(11) + extraBytes;
+    }
 
-        // Second Signature Registration
-        case SECOND_SIGNATURE_TYPE: {
-            map = SecondSignature::getMap(this->data.asset.secondSignature);
-            txSize = PUBLICKEY_COMPRESSED_LEN;
-            const auto extraBytes = 438;
-            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
+    // Second Signature Registration
+    if (this->data.type == SECOND_SIGNATURE_TYPE) {
+        map = SecondSignature::getMap(this->data.asset.secondSignature);
+        txSize = PUBLICKEY_COMPRESSED_LEN;
+        const auto extraBytes = 438;
+        jsonSize = 2 * JSON_OBJECT_SIZE(1) +
                        JSON_OBJECT_SIZE(9) +
                        extraBytes;
-            break;
-        }
+    }
 
-        // Delegate Registration
-        case DELEGATE_REGISTRATION_TYPE: {
-            map = DelegateRegistration::getMap(
-                    this->data.asset.delegateRegistration);
-            txSize = strtol(map["usernameLen"].c_str(), nullptr, BASE_10);
-            const auto extraBytes = 382;
-            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
+    // Delegate Registration
+    if (this->data.type == DELEGATE_REGISTRATION_TYPE) {
+        map = DelegateRegistration::getMap(
+                this->data.asset.delegateRegistration);
+        txSize = strtol(map["usernameLen"].c_str(), nullptr, BASE_10);
+        const auto extraBytes = 382;
+        jsonSize = 2 * JSON_OBJECT_SIZE(1) +
                        JSON_OBJECT_SIZE(9) +
                        extraBytes;
-            break;
-        }
+    }
 
-        // Vote
-        case VOTE_TYPE: {
-            map = Vote::getMap(this->data.asset.vote);
-            txSize = VOTES_LEN;
-            const auto extraBytes = 427;
-            jsonSize = JSON_ARRAY_SIZE(1) +
-                       JSON_OBJECT_SIZE(1) +
+    // Vote
+    if (this->data.type == VOTE_TYPE) {
+        map = Vote::getMap(this->data.asset.vote);
+        txSize = VOTES_LEN;
+        const auto extraBytes = 427;
+        jsonSize = JSON_ARRAY_SIZE(1) +
+                   JSON_OBJECT_SIZE(1) +
+                   JSON_OBJECT_SIZE(9) +
+                   extraBytes;
+    }
+
+    // MultiSignature Registration
+    // if (this->data.type == MULTI_SIGNATURE_TYPE) {}  // TODO
+
+    // Ipfs
+    if (this->data.type == IPFS_TYPE) {
+        map = Ipfs::getMap(this->data.asset.ipfs);
+        txSize = strtol(map["ipfsLen"].c_str(), nullptr, BASE_10);
+        const auto extraBytes = 403;
+        jsonSize = 2 * JSON_OBJECT_SIZE(1) +
                        JSON_OBJECT_SIZE(9) +
                        extraBytes;
-            break;
-        }
+    }
 
-        // MultiSignature Registration
-        // case MULTI_SIGNATURE_TYPE:  // TODO
+    // MultiPayment
+    if (this->data.type ==  MULTI_PAYMENT_TYPE) {
+        map = MultiPayment::getMap(this->data.asset.multiPayment);
+        const auto n_payments = strtol(map["n_payments"].c_str(),
+                                       nullptr,
+                                       BASE_10);
+        txSize = n_payments * (sizeof(uint64_t) + ADDRESS_STR_LEN);
+        const auto extraBytes = (40 * n_payments);
+        jsonSize = JSON_ARRAY_SIZE(n_payments) +
+                   JSON_OBJECT_SIZE(1) +
+                   (n_payments * JSON_OBJECT_SIZE(2)) +
+                   JSON_OBJECT_SIZE(9) +
+                   extraBytes;
+    }
 
-        // Ipfs
-        case IPFS_TYPE: {
-            map = Ipfs::getMap(this->data.asset.ipfs);
-            txSize = strtol(map["ipfsLen"].c_str(), nullptr, BASE_10);
-            const auto extraBytes = 403;
-            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
+    // Delegate Resignation
+    if (this->data.type == DELEGATE_RESIGNATION_TYPE) {
+        const auto extraBytes = 348;
+        jsonSize = JSON_OBJECT_SIZE(8) + extraBytes;
+    }
+
+    // Htlc Lock
+    if (this->data.type == HTLC_LOCK_TYPE) {
+        map = HtlcLock::getMap(this->data.asset.htlcLock);
+        txSize = HTLC_LOCK_SIZE;
+        const auto extraBytes = 509;
+        jsonSize = JSON_OBJECT_SIZE(1) +
+                   (2 * JSON_OBJECT_SIZE(2)) +
+                   JSON_OBJECT_SIZE(11) +
+                   extraBytes;
+    }
+
+    // Htlc Claim
+    if (this->data.type == HTLC_CLAIM_TYPE) {
+        map = HtlcClaim::getMap(this->data.asset.htlcClaim);
+        txSize = HASH_64_LEN;
+        const auto extraBytes = 480;
+        jsonSize = JSON_OBJECT_SIZE(1) +
+                   JSON_OBJECT_SIZE(2) +
+                   JSON_OBJECT_SIZE(9) +
+                   extraBytes;
+    }
+
+    // Htlc Refund
+    if (this->data.type == HTLC_REFUND_TYPE) {
+        map = HtlcRefund::getMap(this->data.asset.htlcRefund);
+        txSize = HASH_32_LEN;
+        const auto extraBytes = 435;
+        jsonSize = 2 * JSON_OBJECT_SIZE(1) +
                        JSON_OBJECT_SIZE(9) +
                        extraBytes;
-            break;
-        }
-
-        // MultiPayment
-        case MULTI_PAYMENT_TYPE: {
-            map = MultiPayment::getMap(this->data.asset.multiPayment);
-            const auto n_payments = strtol(map["n_payments"].c_str(),
-                                           nullptr,
-                                           BASE_10);
-            txSize = n_payments * (sizeof(uint64_t) + ADDRESS_STR_LEN);
-            const auto extraBytes = (40 * n_payments);
-            jsonSize = JSON_ARRAY_SIZE(n_payments) +
-                       JSON_OBJECT_SIZE(1) +
-                       (n_payments * JSON_OBJECT_SIZE(2)) +
-                       JSON_OBJECT_SIZE(9) +
-                       extraBytes;
-            break;
-        }
-
-        // Delegate Resignation
-        case DELEGATE_RESIGNATION_TYPE: {
-            const auto extraBytes = 348;
-            jsonSize = JSON_OBJECT_SIZE(8) + extraBytes;
-            break;
-        }
-
-        // Htlc Lock
-        case HTLC_LOCK_TYPE: {
-            map = HtlcLock::getMap(this->data.asset.htlcLock);
-            txSize = HTLC_LOCK_SIZE;
-            const auto extraBytes = 509;
-            jsonSize = JSON_OBJECT_SIZE(1) +
-                       (2 * JSON_OBJECT_SIZE(2)) +
-                       JSON_OBJECT_SIZE(11) +
-                       extraBytes;
-            break;
-        }
-
-        // Htlc Claim
-        case HTLC_CLAIM_TYPE: {
-            map = HtlcClaim::getMap(this->data.asset.htlcClaim);
-            txSize = HASH_64_LEN;
-            const auto extraBytes = 480;
-            jsonSize = JSON_OBJECT_SIZE(1) +
-                       JSON_OBJECT_SIZE(2) +
-                       JSON_OBJECT_SIZE(9) +
-                       extraBytes;
-            break;
-        }
-
-        // Htlc Refund
-        case HTLC_REFUND_TYPE: {
-            map = HtlcRefund::getMap(this->data.asset.htlcRefund);
-            txSize = HASH_32_LEN;
-            const auto extraBytes = 435;
-            jsonSize = 2 * JSON_OBJECT_SIZE(1) +
-                       JSON_OBJECT_SIZE(9) +
-                       extraBytes;
-            break;
-        }
-
-        default: return {};
     }
 
     // Continue with the Common variables
-    
     //  Version
     map.emplace("version", UintToString(this->data.version));
 
@@ -297,7 +282,11 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
 
     // VendorField
     if (!this->data.vendorField.empty()) {
-        map.emplace("vendorField", BytesToHex(this->data.vendorField));
+        const auto vf = reinterpret_cast<const char *>(
+                this->data.vendorField.data());
+
+        map.emplace("vendorField",
+                    std::string(vf, vf + this->data.vendorField.size()));
         txSize += this->data.vendorField.size();
     }
 
@@ -366,126 +355,129 @@ auto Transaction::toJson() const -> std::string {
     }
 
     // Assets
-    switch (this->data.type) {
-        // Tranfer
-        case TRANSFER_TYPE: {
-            // Amount
-            doc["amount"] = txArray["amount"];
-            // Expiration
-            doc["expiration"] = strtol(txArray["expiration"].c_str(),
+    // Transfer
+    if (this->data.type == TRANSFER_TYPE) {
+        // Amount
+        doc["amount"] = txArray["amount"];
+
+        // Expiration
+        doc["expiration"] = strtol(txArray["expiration"].c_str(),
+                                   nullptr,
+                                   BASE_10);
+        // RecipientId
+        doc["recipientId"] = txArray["recipientId"];
+    }
+
+    // Second Signature Registration
+    if (this->data.type == SECOND_SIGNATURE_TYPE) {
+        JsonObject asset = doc.createNestedObject("asset");
+        JsonObject secondSignature = asset.createNestedObject("signature");
+
+        // Second PublicKey
+        secondSignature["publicKey"] = txArray["publicKey"];
+    }
+
+    // Delegate Registration
+    if (this->data.type == DELEGATE_REGISTRATION_TYPE) {
+        JsonObject asset = doc.createNestedObject("asset");
+        JsonObject registration = asset.createNestedObject("delegate");
+
+        // Username
+        registration["username"] = txArray["username"];
+    }
+
+    // Vote
+    if (this->data.type == VOTE_TYPE) {
+        JsonObject asset = doc.createNestedObject("asset");
+        JsonArray votes = asset.createNestedArray("votes");
+
+        // Votes
+        votes.add(txArray["votes"]);
+    }
+
+    // MultiSignature Registration
+    // if (this->data.type == MULTI_SIGNATURE_TYPE) {}  // TODO
+
+    // Ipfs
+    if (this->data.type == IPFS_TYPE) {
+        JsonObject asset = doc.createNestedObject("asset");
+
+        // Ipfs DAG
+        asset["ipfs"] = txArray["ipfs"];
+    }
+
+    // MultiPayment
+    if (this->data.type == MULTI_PAYMENT_TYPE) {
+        JsonObject asset = doc.createNestedObject("asset");
+        JsonArray payments = asset.createNestedArray("payments");
+
+        const auto paymentsStr = txArray["amounts"];
+        const auto addressesStr = txArray["addresses"];
+        const auto n_payments = strtol(txArray["n_payments"].c_str(),
                                        nullptr,
                                        BASE_10);
-            // RecipientId
-            doc["recipientId"] = txArray["recipientId"];
-            break;
+
+        for (uint8_t i = 0U; i < n_payments; ++i) {
+            JsonObject payment_n = payments.createNestedObject();
+
+            // Ammount(N)
+            payment_n["amount"] = paymentsStr
+                    .substr(0, paymentsStr.find(',', 0));
+
+            // RecipientId(N)
+            payment_n["recipientId"] = addressesStr
+                .substr(i + (i * ADDRESS_STR_LEN), ADDRESS_STR_LEN);
         }
+    }
 
-        // Second Signature Registration
-        case SECOND_SIGNATURE_TYPE: {
-            JsonObject asset = doc.createNestedObject("asset");
-            JsonObject secondSignature = asset.createNestedObject("signature");
-            secondSignature["publicKey"] = txArray["publicKey"];
-            break;
-        }
+    // Delegate Resignation
+    // No Asset Needed.
 
-        // Delegate Registration
-        case DELEGATE_REGISTRATION_TYPE: {
-            JsonObject asset = doc.createNestedObject("asset");
-            JsonObject registration = asset.createNestedObject("delegate");
-            registration["username"] = txArray["username"];
-            break;
-        }
+    // HTLC Lock
+    if (this->data.type == HTLC_LOCK_TYPE) {
+        // Amount
+        doc["amount"] = txArray["amount"];
 
-        // Vote
-        case VOTE_TYPE: {
-            JsonObject asset = doc.createNestedObject("asset");
-            JsonArray votes = asset.createNestedArray("votes");
-            votes.add(txArray["votes"]);
-            break;
-        }
+        // RecipientId
+        doc["recipientId"] = txArray["recipientId"];
 
-        // MultiSignature Registration
-        // case MULTI_SIGNATURE_TYPE:  // TODO
+        JsonObject asset = doc.createNestedObject("asset");
+        JsonObject lock = asset.createNestedObject("lock");
 
-        // Ipfs
-        case IPFS_TYPE: {
-            JsonObject asset = doc.createNestedObject("asset");
-            asset["ipfs"] = txArray["ipfs"];
-            break;
-        }
+        // Secret Hash
+        lock["secretHash"] = txArray["secretHash"];
 
-        // MultiPayment
-        case MULTI_PAYMENT_TYPE: {
-            JsonObject asset = doc.createNestedObject("asset");
-            JsonArray payments = asset.createNestedArray("payments");
+        JsonObject expiration = lock.createNestedObject("expiration");
 
-            const auto paymentsStr = txArray["amounts"];
-            const auto addressesStr = txArray["addresses"];
-            const auto n_payments = strtol(txArray["n_payments"].c_str(),
-                                           nullptr,
-                                           BASE_10);
+        // Expiration Type
+        expiration["type"] = strtol(txArray["expirationType"].c_str(),
+                                    nullptr,
+                                    BASE_10);
+        // Expiration Value
+        expiration["value"] = strtol(txArray["expiration"].c_str(),
+                                     nullptr,
+                                     BASE_10);
+    }
 
-            for (uint8_t i = 0U; i < n_payments; ++i) {
-                JsonObject payment_n = payments.createNestedObject();
+    // HTLC Claim
+    if (this->data.type == HTLC_CLAIM_TYPE) {
+        JsonObject asset = doc.createNestedObject("asset");
+        JsonObject claim = asset.createNestedObject("claim");
 
-                payment_n["amount"] = paymentsStr
-                        .substr(0, paymentsStr.find(',', 0));
+        // Lock Transaction Id
+        claim["lockTransactionId"] = txArray["lockTransactionId"];
 
-                payment_n["recipientId"] = addressesStr
-                    .substr(i + (i * ADDRESS_STR_LEN), ADDRESS_STR_LEN);
-            }
+        // Unlock Secret
+        claim["unlockSecret"] = txArray["unlockSecret"];
+    }
 
-            break;
-        }
+    // HTLC Refund
+    if (this->data.type == HTLC_REFUND_TYPE) {
+        JsonObject asset = doc.createNestedObject("asset");
+        JsonObject refund = asset.createNestedObject("refund");
 
-        // Delegate Resignation
-        case DELEGATE_RESIGNATION_TYPE: { break; }
-
-        // HTLC Lock
-        case HTLC_LOCK_TYPE: {
-            // Amount
-            doc["amount"] = txArray["amount"];
-            // RecipientId
-            doc["recipientId"] = txArray["recipientId"];
-
-            JsonObject asset = doc.createNestedObject("asset");
-            JsonObject lock = asset.createNestedObject("lock");
-            // Secret Hash
-            lock["secretHash"] = txArray["secretHash"];
-
-            JsonObject expiration = lock.createNestedObject("expiration");
-            // Expiration Type
-            expiration["type"] = strtol(txArray["expirationType"].c_str(),
-                                        nullptr,
-                                        BASE_10);
-            // Expiration Value
-            expiration["value"] = strtol(txArray["expiration"].c_str(),
-                                         nullptr,
-                                         BASE_10);
-            break;
-        }
-
-        // HTLC Claim
-        case HTLC_CLAIM_TYPE: {
-            JsonObject asset = doc.createNestedObject("asset");
-            JsonObject claim = asset.createNestedObject("claim");
-            // Lock Transaction Id
-            claim["lockTransactionId"] = txArray["lockTransactionId"];
-            // Unlock Secret
-            claim["unlockSecret"] = txArray["unlockSecret"];
-            break;
-        }
-
-        // HTLC Refund
-        case HTLC_REFUND_TYPE: {
-            JsonObject asset = doc.createNestedObject("asset");
-            JsonObject refund = asset.createNestedObject("refund");
-            // Lock Transaction Id
-            refund["lockTransactionId"] = txArray["lockTransactionId"];
-            break;
-        }
-
-        default: return {};
+        // Lock Transaction Id
+        refund["lockTransactionId"] = txArray["lockTransactionId"];
     }
 
     // Signature

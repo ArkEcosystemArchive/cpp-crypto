@@ -115,6 +115,25 @@ TEST(transactions_multi_payment, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+TEST(transactions_multi_payment, invalid_len) {
+    MultiPayment payments;
+
+    // Invalid MultiPayment on Deserialization.
+    MultiPayment::Deserialize(
+            &payments,
+            reinterpret_cast<const uint8_t *>(""));
+
+    ASSERT_EQ(0UL, payments.n_payments);
+
+    // Invalid MultiPayment on Serialization.
+    payments.n_payments = MULTI_PAYMENT_NETWORK_LIMIT + 1;
+    std::vector<uint8_t> buffer {};
+    MultiPayment::Serialize(payments, buffer, 0UL);
+
+    ASSERT_TRUE(buffer.empty());
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // MultiPayment Map setup can be quite a bit of overhead.
 // Let's save some trade a little space for Deserialization overhead.
 TEST(transactions_multi_payment, getMap) {

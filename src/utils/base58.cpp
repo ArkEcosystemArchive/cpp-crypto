@@ -74,10 +74,6 @@ auto Base58::checkEncode(const uint8_t *data, const size_t length)
         buffer.at(--j) = (uint8_t)BASE58ALPHABET.at(remainder);
     }
 
-    while ((j < (2U * length)) && (buffer.at(j) == BASE58ALPHABET.at(0))) {
-        ++j;
-    }
-
     while (zeroCount-- > 0U) {
         buffer.at(--j) = BASE58ALPHABET.at(0);
     }

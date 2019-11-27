@@ -23,7 +23,13 @@ TEST(crypto_curve, verify_invalid) {
         fixtures::MessageSignatureBytes.end()
     };
 
+    // Invalid PublicKey
     ASSERT_FALSE(Curve::Ecdsa::verify(fixtures::MessageSha256Bytes.data(),
+                                      fixtures::invalid::PublicKeyBytes.data(),
+                                      temp));
+
+    // Null Hash
+    ASSERT_FALSE(Curve::Ecdsa::verify(nullptr,
                                       fixtures::invalid::PublicKeyBytes.data(),
                                       temp));
 }

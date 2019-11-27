@@ -13,7 +13,10 @@
 
 #include "interfaces/constants.h"
 
+#include "common/configuration.hpp"
+
 #include "fixtures/identity.hpp"
+#include "fixtures/message.hpp"
 #include "transactions/types/fixtures/common.hpp"
 #include "transactions/types/fixtures/transfer.hpp"
 
@@ -96,7 +99,55 @@ TEST(transactions_builder, transfer_sign) {
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)
         .recipientId(TYPE_0_RECIPIENT)
-        .sign("this is a top secret passphrase")
+        .sign(fixtures::Passphrase)
+        .build();
+
+    ASSERT_TRUE(transaction.verify());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(transactions_builder, transfer_sign_configuration) {
+    const Network Radians = {
+        "f39a61f04d6136a690a0b675ef6eedbd053665bd343b4e4f03311f12065fb875",
+        1, 0xCE, 0x41,
+        "2019-10-25T09:05:40.856Z"
+    };
+
+    const Configuration radiansCfg(Radians);
+
+    const uint8_t radiansRecipient[] = {
+        65, 29,  252, 105, 181, 76,  127, 233, 1,  233, 29,
+        90, 154, 183, 131, 136, 100, 94,  36,  39, 234 };
+
+    auto transaction = builder::Transfer()
+        .type(TYPE_0_TYPE)
+        .nonce(COMMON_NONCE)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
+        .fee(TYPE_0_FEE)
+        .amount(TYPE_0_AMOUNT)
+        .expiration(TYPE_0_EXPIRATION)
+        .recipientId(radiansRecipient)
+        .build(radiansCfg);
+
+    transaction.sign(fixtures::Passphrase);
+
+    ASSERT_TRUE(transaction.verify());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(transactions_builder, transfer_sign_vendorfield_second_signature) {
+    const auto transaction = builder::Transfer()
+        .network(COMMON_MAINNET)
+        .type(TYPE_0_TYPE)
+        .nonce(COMMON_NONCE)
+        .senderPublicKey(fixtures::PublicKeyBytes.data())
+        .fee(TYPE_0_FEE)
+        .vendorField(fixtures::MessageString)
+        .amount(TYPE_0_AMOUNT)
+        .expiration(TYPE_0_EXPIRATION)
+        .recipientId(TYPE_0_RECIPIENT)
+        .sign(fixtures::Passphrase)
+        .secondSign(fixtures::SecondPassphrase)
         .build();
 
     ASSERT_TRUE(transaction.verify());

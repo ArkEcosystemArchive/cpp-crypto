@@ -9,10 +9,12 @@
 
 #include "gtest/gtest.h"
 
-#include "types/fixtures/transfer.hpp"
-
 #include "transactions/deserializer.hpp"
 #include "transactions/transaction_data.hpp"
+
+#include "transactions/defaults/offsets.hpp"
+
+#include "types/fixtures/transfer.hpp"
 
 #include "test_helpers.h"
 
@@ -31,4 +33,18 @@ TEST(transactions_deserializer, deserialize_invalid_version) {
 
     ASSERT_FALSE(Deserializer::deserialize(&data, invalidBytes));
 
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Deserialize with an unknown type.
+// For compatiblity with future Tx types, this should not fail.
+// All other cases are tested via transaction types.
+TEST(transactions_deserializer, deserialize_unknown_type_no_fail) {
+    TransactionData data;
+
+    auto unknownTypeBytes = TYPE_0_BYTES;
+    const auto unknowntype = 100U;
+    unknownTypeBytes.at(TYPE_OFFSET) = unknowntype;
+
+    ASSERT_TRUE(Deserializer::deserialize(&data, unknownTypeBytes));
 }

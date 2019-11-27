@@ -42,8 +42,9 @@ constexpr uint64_t TYPE_2_VF_LENGTH         = 0U;
 constexpr uint64_t TYPE_2_USERNAME_LENGTH   = 11U;
 
 ////////////////////////////////////////////////////////////////////////////////
-constexpr auto TYPE_2_USERNAME_LEN_STRING   = "11";
-constexpr auto TYPE_2_USERNAME_STRING       = "arkdelegate";
+constexpr auto TYPE_2_USERNAME_LEN_STRING       = "11";
+constexpr auto TYPE_2_USERNAME_STRING           = "arkdelegate";
+constexpr auto TYPE_2_INVALID_USERNAME_STRING   = "arkdelegatearkdelegate";
 
 ////////////////////////////////////////////////////////////////////////////////
 // ff02170100000002000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19200f9029500000000000b61726b64656c656761746530440220281812ca558b3b032aaf724aeaba5e20733e87f20fefe1c78536cc523de7e475022038a2454ca2665f6c3d910b04ecdd5995a7d82904f9f4bf878402a31262d2db61

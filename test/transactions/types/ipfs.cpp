@@ -80,6 +80,24 @@ TEST(transactions_ipfs, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+TEST(transactions_ipfs, invalid_len) {
+    Ipfs ipfs;
+
+    // Invalid Ipfs on Deserialization.
+    Ipfs::Deserialize(
+            &ipfs,
+            reinterpret_cast<const uint8_t *>("\0"));
+
+    ASSERT_EQ(0UL, ipfs.dag.size());
+
+    // Invalid Ipfs on Serialization.
+    std::array<uint8_t, HASH_64_LEN> buffer {};
+    Ipfs::Serialize(ipfs, buffer.data());
+
+    ASSERT_EQ(0U, buffer.at(0));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_ipfs, getMap) {
     Ipfs ipfs;
 

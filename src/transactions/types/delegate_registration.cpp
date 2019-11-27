@@ -40,12 +40,11 @@ namespace transactions {
 // ---
 auto DelegateRegistration::Deserialize(DelegateRegistration *registration,
                                        const uint8_t *buffer) -> size_t {
-    registration->length = buffer[0];                               // 1 Byte
-
-    if (registration->length < USERNAME_MIN ||
-        registration->length > USERNAME_MAX) {
+    if (buffer[0] < USERNAME_MIN || buffer[0] > USERNAME_MAX) {
         return 0UL;
     }
+
+    registration->length = buffer[0];                               // 1 Byte
 
     std::move(&buffer[sizeof(uint8_t)],                             // 3 <=> 20
               &buffer[sizeof(uint8_t) + registration->length],
@@ -74,12 +73,12 @@ auto DelegateRegistration::Deserialize(DelegateRegistration *registration,
 // ---
 auto DelegateRegistration::Serialize(const DelegateRegistration &registration,
                                      uint8_t *buffer) -> size_t {
-    buffer[0] = registration.length;                                // 1 Byte
-
     if (registration.length < USERNAME_MIN ||
         registration.length > USERNAME_MAX) {
         return 0UL;
     }
+
+    buffer[0] = registration.length;                                // 1 Byte
 
     std::move(registration.username.begin(),                       // 3 <=> 20
               registration.username.end(),

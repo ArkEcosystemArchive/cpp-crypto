@@ -14,6 +14,8 @@
 #include "transactions/serializer.hpp"
 #include "transactions/transaction_data.hpp"
 
+#include "transactions/defaults/offsets.hpp"
+
 #include "fixtures/identity.hpp"
 #include "types/fixtures/transfer.hpp"
 #include "types/fixtures/common.hpp"
@@ -58,4 +60,21 @@ TEST(transactions_serializer, serialize_invalid_version) {
     const auto serialized = Serializer::serialize(data);
 
     ASSERT_TRUE(serialized.empty());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Serialize with an unknown type.
+// For compatiblity with future Tx types, this should not fail.
+// All other cases are tested via transaction types.
+TEST(transactions_serializer, serialize_unknown_type_no_fail) {
+    TransactionData data;
+
+    const auto unknownType = 100U;
+    data.type = unknownType;
+    // auto unknownTypeBytes = TYPE_0_BYTES;
+    // unknownTypeBytes.at(TYPE_OFFSET) = unknowntype;
+
+    const auto serialized = Serializer::serialize(data);
+
+    ASSERT_FALSE(serialized.empty());
 }

@@ -158,8 +158,8 @@ set(TRANSACTIONS_TEST_SOURCE
     ${TRANSACTIONS_TYPES_V1_TEST_SOURCE}
     ${TRANSACTIONS_TYPES_TEST_SOURCE}
     ${TRANSACTIONS_TRANSACTION_TEST_SOURCE}
-
     ${PROJECT_SOURCE_DIR}/transactions/transaction.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/transaction_v1.cpp
 )
 
 # ------------------------------------------------------------------------------

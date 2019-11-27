@@ -167,9 +167,9 @@ template<class T> class Common {
             this->transaction.data.fee = config.getFee(this->transaction.data.type);
         }
 
-        // If either network is not the default, use the config version.
-        if (this->transaction.data.network != Devnet.version &&
-            config.getNetwork().version != Devnet.version) {
+        // Use the configuration network version if it's different.
+        if (this->transaction.data.network == Devnet.version &&
+            config.getNetwork().version != Devnet.version) {        
             this->transaction.data.network = config.getNetwork().version;
         }
 

@@ -9,6 +9,7 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
 #include <utility>
 
 #include "fixtures/identity.hpp"
@@ -100,6 +101,10 @@ TEST(transactions_transaction, sign) {
               TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               transaction.data.asset.transfer.recipientId.begin());
 
+    // Test with an Empty Passphrase.
+    transaction.sign("");
+
+    // Sign with a Valid Passphrase.
     transaction.sign(fixtures::Passphrase);
 
     ASSERT_TRUE(array_cmp(TYPE_0_TX_ID,
@@ -134,15 +139,25 @@ TEST(transactions_transaction, sign_second) {
               TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               transaction.data.asset.transfer.recipientId.begin());
 
-    transaction.sign(fixtures::Passphrase);
+    ASSERT_TRUE(transaction.sign(fixtures::Passphrase));
 
-    transaction.secondSign(fixtures::SecondPassphrase);
+    // Test with an Empty Second Passphrase.
+    ASSERT_FALSE(transaction.secondSign(""));
+
+    // Sign with a Valid SecondPassphrase.
+    ASSERT_TRUE(transaction.secondSign(fixtures::SecondPassphrase));
 
     const auto keys = identities::Keys::fromPassphrase(fixtures::SecondPassphrase);
 
     ASSERT_TRUE(transaction.verify());
 
     ASSERT_TRUE(transaction.secondVerify(keys.publicKey.data()));
+
+    // Make sure the secondSignature works for 'toJson()',
+    // and 'toMap()' internally.
+    auto txJson = transaction.toJson();
+    const auto secondSigJsonPos = 388;
+    ASSERT_EQ(secondSigJsonPos, txJson.find("secondSignature"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

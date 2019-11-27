@@ -84,6 +84,24 @@ TEST(transactions_delegate_registration, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+TEST(transactions_delegate_registration, invalid_len) {
+    DelegateRegistration registration;
+
+    // Invalid Username Length on Deserialization.
+    DelegateRegistration::Deserialize(
+            &registration,
+            reinterpret_cast<const uint8_t *>(TYPE_2_INVALID_USERNAME_STRING));
+
+    ASSERT_EQ(0U, registration.length);
+
+    // Invalid Username Length on Serialization.
+    std::array<uint8_t, USERNAME_MAX> buffer {};
+    DelegateRegistration::Serialize(registration, buffer.data());
+
+    ASSERT_EQ(0U, buffer.at(0));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_delegate_registration, getMap) {
     DelegateRegistration delegateRegistration;
 

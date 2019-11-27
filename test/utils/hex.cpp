@@ -41,6 +41,15 @@ TEST(utils_hex, hex_to_bytes_spaces) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+TEST(utils_hex, hex_to_bytes_invalid) {
+    const auto result = HexToBytes(fixtures::MessageSignatureStringSpaces + 1);
+    ASSERT_TRUE(array_cmp(fixtures::MessageSignatureBytes.data(),
+                          result.data(),
+                          result.size()));
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
 TEST(utils_hex, hex_to_bytes_array) {
     const auto result = HexToBytesArray<>(fixtures::MessageSignatureString);
     ASSERT_TRUE(array_cmp(fixtures::MessageSignatureBytes.data(),

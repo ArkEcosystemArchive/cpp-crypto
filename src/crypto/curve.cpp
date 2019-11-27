@@ -68,12 +68,10 @@ auto Curve::Ecdsa::sign(const uint8_t *hash32,
     // Outputs Signature values to the R and S elements.
     bcl::Uint256 r;
     bcl::Uint256 s;
-    if (!bcl::Ecdsa::sign(bcl::Uint256(privateKeyBytes),
+    bcl::Ecdsa::sign(bcl::Uint256(privateKeyBytes),
                           bcl::Sha256Hash(hash32, HASH_32_LEN),
                           bcl::Uint256(nonce32.data()),
-                          r, s)) {
-        return false;
-    }
+                          r, s);
 
     // Copy the big-endian bytes into and R/S element buffer.
     std::array<uint8_t, HASH_64_LEN> rsBuffer;

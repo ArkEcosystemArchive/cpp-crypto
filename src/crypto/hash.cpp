@@ -9,6 +9,8 @@
 
 #include "crypto/hash.hpp"
 
+#include <algorithm>
+
 #include "interfaces/identities.hpp"
 
 #include "bcl/Ripemd160.hpp"
@@ -35,10 +37,7 @@ auto Hash::sha256(const uint8_t *inputBytes, const size_t size) -> Hash32 {
     auto result = bcl::Sha256::getHash(inputBytes, size);
 
     Hash32 hash32 {};
-    uint8_t *ptr = result.value;
-    for (auto &e : hash32) {
-        e = *ptr++;
-    };
+    std::move(result.value, result.value + HASH_32_LEN, hash32.begin());
 
     return hash32;
 }

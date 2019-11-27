@@ -45,9 +45,7 @@ Message::Message() : publicKey() {
 // Create a Signed Message object for verification.
 Message::Message(const std::string &message,
                  const uint8_t *publicKeyBytes,
-                 const uint8_t *signature) {
-    this->message = message;
-
+                 const uint8_t *signature) : message(message) {
     std::move(publicKeyBytes,
               publicKeyBytes + PUBLICKEY_COMPRESSED_LEN,
               this->publicKey.begin());
