@@ -145,48 +145,58 @@ auto Transaction::toBytes(bool excludeSignature,
 auto Transaction::toMap() const -> std::map<std::string, std::string> {
     std::map<std::string, std::string> map;
 
-    size_t txSize       = 0UL;
     size_t jsonSize     = 0UL;
+
+    size_t extraBytes =
+        static_cast<size_t>(this->data.vendorField.empty()) +
+            this->data.vendorField.size() + sizeof("vendorField") - 1 +
+        static_cast<size_t>(this->data.signature.empty()) +
+            this->data.signature.size() + sizeof("signature") - 1 +
+        static_cast<size_t>(this->data.secondSignature.empty()) +
+            this->data.secondSignature.size() + sizeof("secondSignature") - 1;
 
     // Start with the Transaction's Asset.
     // Tranfer
     if (this->data.type == TRANSFER_TYPE) {
         map = Transfer::getMap(this->data.asset.transfer);
-        txSize = TRANSACTION_TYPE_TRANSFER_SIZE;
-        const auto extraBytes = 413;
-        jsonSize = JSON_OBJECT_SIZE(11) + extraBytes;
+        jsonSize = JSON_OBJECT_SIZE(11) +
+                   TRANSACTION_TYPE_TRANSFER_SIZE +
+                   extraBytes +
+                   289;
     }
 
     // Second Signature Registration
     if (this->data.type == SECOND_SIGNATURE_TYPE) {
         map = SecondSignature::getMap(this->data.asset.secondSignature);
-        txSize = PUBLICKEY_COMPRESSED_LEN;
-        const auto extraBytes = 438;
         jsonSize = 2 * JSON_OBJECT_SIZE(1) +
                        JSON_OBJECT_SIZE(9) +
-                       extraBytes;
+                       PUBLICKEY_COMPRESSED_LEN +
+                       extraBytes +
+                       297;
     }
 
     // Delegate Registration
     if (this->data.type == DELEGATE_REGISTRATION_TYPE) {
         map = DelegateRegistration::getMap(
                 this->data.asset.delegateRegistration);
-        txSize = strtol(map["usernameLen"].c_str(), nullptr, BASE_10);
-        const auto extraBytes = 382;
-        jsonSize = 2 * JSON_OBJECT_SIZE(1) +
-                       JSON_OBJECT_SIZE(9) +
-                       extraBytes;
+        jsonSize =
+                2 * JSON_OBJECT_SIZE(1) +
+                JSON_OBJECT_SIZE(9) +
+                sizeof("username") - 1 +
+                    strtol(map["usernameLen"].c_str(), nullptr, BASE_10) +
+                extraBytes +
+                251;
     }
 
     // Vote
     if (this->data.type == VOTE_TYPE) {
         map = Vote::getMap(this->data.asset.vote);
-        txSize = VOTES_LEN;
-        const auto extraBytes = 427;
         jsonSize = JSON_ARRAY_SIZE(1) +
                    JSON_OBJECT_SIZE(1) +
                    JSON_OBJECT_SIZE(9) +
-                   extraBytes;
+                   VOTES_LEN +
+                   extraBytes +
+                   284;
     }
 
     // MultiSignature Registration
@@ -195,64 +205,67 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
     // Ipfs
     if (this->data.type == IPFS_TYPE) {
         map = Ipfs::getMap(this->data.asset.ipfs);
-        txSize = strtol(map["ipfsLen"].c_str(), nullptr, BASE_10);
-        const auto extraBytes = 403;
         jsonSize = 2 * JSON_OBJECT_SIZE(1) +
-                       JSON_OBJECT_SIZE(9) +
-                       extraBytes;
+                   JSON_OBJECT_SIZE(11) +
+                   strtol(map["ipfsLen"].c_str(), nullptr, BASE_10) +
+                   sizeof("ipfs") - 1U +
+                   extraBytes +
+                   218;
     }
 
     // MultiPayment
     if (this->data.type ==  MULTI_PAYMENT_TYPE) {
         map = MultiPayment::getMap(this->data.asset.multiPayment);
+        // Get the number of payments.
         const auto n_payments = strtol(map["n_payments"].c_str(),
                                        nullptr,
                                        BASE_10);
-        txSize = n_payments * (sizeof(uint64_t) + ADDRESS_STR_LEN);
-        const auto extraBytes = (40 * n_payments);
-        jsonSize = JSON_ARRAY_SIZE(n_payments) +
-                   JSON_OBJECT_SIZE(1) +
-                   (n_payments * JSON_OBJECT_SIZE(2)) +
-                   JSON_OBJECT_SIZE(9) +
-                   extraBytes;
+        const auto uint64StrSize = 20;        
+        jsonSize =
+                JSON_ARRAY_SIZE(n_payments) +
+                JSON_OBJECT_SIZE(1) +
+                (n_payments * JSON_OBJECT_SIZE(2)) +
+                JSON_OBJECT_SIZE(10) +
+                (n_payments * (sizeof("amount") - 1 + uint64StrSize +
+                    sizeof("recipientId") - 1 + ADDRESS_STR_LEN)) +
+                483;
     }
 
     // Delegate Resignation
     if (this->data.type == DELEGATE_RESIGNATION_TYPE) {
-        const auto extraBytes = 348;
-        jsonSize = JSON_OBJECT_SIZE(8) + extraBytes;
+        jsonSize = JSON_OBJECT_SIZE(10) + extraBytes * 205;
     }
 
     // Htlc Lock
     if (this->data.type == HTLC_LOCK_TYPE) {
         map = HtlcLock::getMap(this->data.asset.htlcLock);
-        txSize = HTLC_LOCK_SIZE;
-        const auto extraBytes = 509;
         jsonSize = JSON_OBJECT_SIZE(1) +
                    (2 * JSON_OBJECT_SIZE(2)) +
                    JSON_OBJECT_SIZE(11) +
-                   extraBytes;
+                   HTLC_LOCK_SIZE +
+                   extraBytes +
+                   368;
     }
 
     // Htlc Claim
     if (this->data.type == HTLC_CLAIM_TYPE) {
         map = HtlcClaim::getMap(this->data.asset.htlcClaim);
-        txSize = HASH_64_LEN;
-        const auto extraBytes = 480;
         jsonSize = JSON_OBJECT_SIZE(1) +
                    JSON_OBJECT_SIZE(2) +
                    JSON_OBJECT_SIZE(9) +
-                   extraBytes;
+                   HASH_32_LEN + HASH_32_LEN +
+                   extraBytes +
+                   337;
     }
 
     // Htlc Refund
     if (this->data.type == HTLC_REFUND_TYPE) {
         map = HtlcRefund::getMap(this->data.asset.htlcRefund);
-        txSize = HASH_32_LEN;
-        const auto extraBytes = 435;
         jsonSize = 2 * JSON_OBJECT_SIZE(1) +
-                       JSON_OBJECT_SIZE(9) +
-                       extraBytes;
+                       JSON_OBJECT_SIZE(11) +
+                       HASH_32_LEN +
+                       extraBytes +
+                       445;
     }
 
     // Continue with the Common variables
@@ -295,7 +308,6 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
 
         map.emplace("vendorField",
                     std::string(vf, vf + this->data.vendorField.size()));
-        txSize += this->data.vendorField.size();
     }
 
     // Signature
@@ -313,14 +325,13 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
 
     // v2
     if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
-        txSize += VF_OFFSET;
+        jsonSize += VF_OFFSET;
     }
     // v1
     else if (this->data.version == TRANSACTION_VERSION_TYPE_1) {
-        txSize += v1::VF_OFFSET;
+        jsonSize += v1::VF_OFFSET;
     }
 
-    map.emplace("txSize", UintToString(txSize));
     map.emplace("jsonSize", UintToString(jsonSize));
 
     return map;
@@ -523,4 +534,3 @@ auto Transaction::toJson() const -> std::string {
 }  // namespace transactions
 }  // namespace Crypto
 }  // namespace Ark
-
