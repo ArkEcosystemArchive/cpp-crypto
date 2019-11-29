@@ -21,7 +21,8 @@ namespace Ark {
 namespace Crypto {
 namespace transactions {
 
-const uint8_t IPFS_LIMIT  = 255U;
+const uint8_t IPFS_MIN  = 2U;
+const uint8_t IPFS_MAX  = 90U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 5 - Ipfs

@@ -42,7 +42,7 @@ namespace transactions {
 auto Ipfs::Deserialize(Ipfs *ipfs, const uint8_t *buffer) -> size_t {
     const size_t ipfsLen = buffer[1] + 2U;
 
-    if (buffer[1] == 0U || ipfsLen > IPFS_LIMIT) {
+    if (buffer[1] == 0U || ipfsLen <= IPFS_MIN || ipfsLen > IPFS_MAX) {
         ipfs->dag.resize(0);
         return 0UL;
     }
@@ -68,7 +68,9 @@ auto Ipfs::Deserialize(Ipfs *ipfs, const uint8_t *buffer) -> size_t {
 //
 // ---
 auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> size_t {
-    if (ipfs.dag.empty() || ipfs.dag.size() > IPFS_LIMIT) {
+    if (ipfs.dag.empty() ||
+        ipfs.dag.size() <= IPFS_MIN ||
+        ipfs.dag.size() > IPFS_MAX) {
         return 0UL;
     }
 
