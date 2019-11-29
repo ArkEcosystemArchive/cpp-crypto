@@ -35,7 +35,7 @@ class Transfer : public Common<Transfer> {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Amount
-    Transfer &amount(uint8_t amount) {
+    Transfer &amount(uint64_t amount) {
         this->transaction.data.asset.transfer.amount = amount;
         return *this;
     }
