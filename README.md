@@ -8,6 +8,7 @@
 
 [![Test Actions](https://github.com/ArkEcosystem/cpp-crypto/workflows/Test/badge.svg)](https://github.com/ArkEcosystem/cpp-crypto/actions)
 [![Coverage Actions](https://github.com/ArkEcosystem/cpp-crypto/workflows/Coverage/badge.svg)](https://github.com/ArkEcosystem/cpp-crypto/actions)
+[![C++11](https://badgen.net/badge/c++/11/blue?labelColor=black)](https://isocpp.org/wiki/faq/cpp11)
 [![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/cpp-crypto?labelColor=black)](https://github.com/ArkEcosystem/cpp-crypto/releases)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green?labelColor=black)](https://opensource.org/licenses/MIT)
 
