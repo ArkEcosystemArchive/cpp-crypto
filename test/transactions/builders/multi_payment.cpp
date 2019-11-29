@@ -18,6 +18,10 @@
 
 #include "test_helpers.h"
 
+#include "utils/platform.h"
+
+#ifndef USE_IOT
+
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
@@ -36,3 +40,5 @@ TEST(transactions_builders, multi_payment) {
 
     ASSERT_TRUE(transaction.verify());
 }
+
+#endif  // #ifndef USE_IOT
