@@ -12,6 +12,7 @@ include(ExternalProject)
 ExternalProject_Add(BIP66
   GIT_REPOSITORY    https://github.com/sleepdefic1t/BIP66
   GIT_TAG           0.2.1
+  GIT_CONFIG        advice.detachedHead=false
   SOURCE_DIR        "${EXTERNAL_LIBRARY_DIR}/bip66/src"
   BINARY_DIR        "${EXTERNAL_LIBRARY_DIR}/bip66/build"
   CONFIGURE_COMMAND ""
