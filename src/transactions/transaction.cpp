@@ -262,13 +262,21 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
     //  Network
     map.emplace("network", UintToString(this->data.network));
 
+    // v2
+    if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
+        // TypeGroup
+        map.emplace("typeGroup", UintToString(this->data.typeGroup));
+    }
+
     //  Type
     map.emplace("type", UintToString(this->data.type));
 
+    // v2
     if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
         // Nonce
         map.emplace("nonce", UintToString(this->data.nonce));
     }
+    // v1
     else if (this->data.version == TRANSACTION_VERSION_TYPE_1) {
         // Timestamp
         map.emplace("timestamp", UintToString(this->data.timestamp));
@@ -303,9 +311,11 @@ auto Transaction::toMap() const -> std::map<std::string, std::string> {
     // Transaction Id
     map.emplace("id", BytesToHex(this->getId()));
 
+    // v2
     if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
         txSize += VF_OFFSET;
     }
+    // v1
     else if (this->data.version == TRANSACTION_VERSION_TYPE_1) {
         txSize += v1::VF_OFFSET;
     }
@@ -331,13 +341,23 @@ auto Transaction::toJson() const -> std::string {
     // Network
     doc["network"] = strtol(txArray["network"].c_str(), nullptr, BASE_10);
 
+    // v2
+    if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
+        // TypeGroup
+        doc["typeGroup"] = strtol(txArray["typeGroup"].c_str(),
+                                  nullptr,
+                                  BASE_10);
+    }
+
     // Type
     doc["type"] = strtol(txArray["type"].c_str(), nullptr, BASE_10);
 
+    // v2
     if (this->data.version == TRANSACTION_VERSION_TYPE_2) {
         // Nonce
         doc["nonce"] = txArray["nonce"];
     }
+    // v1
     else if (this->data.version == TRANSACTION_VERSION_TYPE_1) {
         // Timestamp
         doc["timestamp"] = txArray["timestamp"];
@@ -503,3 +523,4 @@ auto Transaction::toJson() const -> std::string {
 }  // namespace transactions
 }  // namespace Crypto
 }  // namespace Ark
+
