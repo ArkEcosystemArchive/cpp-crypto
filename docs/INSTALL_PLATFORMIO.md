@@ -1,39 +1,28 @@
 
+# PlatformIO IDE
 
-# PlatformIO
+## Python
 
-### dependencies
+Use an installer package from the following link or use your preferred method to install Python:
 
-**Python:**  
-Use an installer package from the following link:  
-> ```https://www.python.org/downloads/```
+* `https://www.python.org/downloads/`
 
-#
+Install PlatformIO:
 
-**PlatformIO:**  
-install PlatformIO if not already installed  
-> ```pip install -U platformio```  
-or  
-> ```python -c "$(curl -fsSL > https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"```
+* `pip install -U platformio`
 
+or
 
-also install platformio dependencies:  
-> install AUnit (2778), micro-ecc (1665) ArduinoJson@6.10.0 libraries  
->```platformio lib -g install 2778 1665 ArduinoJson@6.10.0```
+* `python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"`
 
-#  
+## Dependencies
 
-### running the tests on an Arduino board using PlatformIO
+Install `ArduinoJson@6.12.0`, `BIP66@0.2.1`, and `micro-ecc@1.0.0`.
 
-**`cd` into this directory "*.../Cpp-Crypto/test*"**  
-> ```cd test```
+* `platformio lib -g ArduinoJson@6.12.0 BIP66@0.2.1 micro-ecc@1.0.0`
 
-**execute the following command to upload test to your board**  
+## Build and Run Live Tests on the ESP32
 
->| board | command |
->|:-- |:-- |
->| ESP8266 | ```pio run -e esp8266 -t upload``` |
->| ESP32 | ```pio run -e esp32 -t upload``` |
-
-> ^ the above runs the tests rooted in the following file:
-> "*.../cpp-crypto/test/IoT/test_main.cpp*"  
+>| board | command                                      |
+>| :---- | :------                                      |
+>| ESP32 | `pio run -e esp32_tests -d test/ -t upload`  |
