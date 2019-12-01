@@ -10,6 +10,7 @@
 #include "transactions/types/htlc_refund.hpp"
 
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <string>
 #include <utility>
@@ -17,6 +18,7 @@
 #include "interfaces/constants.h"
 
 #include "utils/hex.hpp"
+#include "utils/json.h"
 
 namespace Ark {
 namespace Crypto {
@@ -65,15 +67,45 @@ auto HtlcRefund::Serialize(const HtlcRefund &refund, uint8_t *buffer) -> size_t 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the the Htlc Refund Id.
-auto HtlcRefund::getMap(const HtlcRefund &refund)
-        -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto OBJECT_HTLC_REFUND_LABEL = "refund";
+const auto OBJECT_HTLC_REFUND_SIZE  = strlen(OBJECT_HTLC_REFUND_LABEL);
 
+const auto KEY_REFUND_TX_ID_LABEL   = "lockTransactionId";
+const auto KEY_REFUND_TX_ID_SIZE    = strlen(KEY_REFUND_TX_ID_LABEL);
+
+const auto HTLC_JSON_OBJECT_SIZE = 1U;
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Htlc Refund Asset data to a Transaction Map.
+void HtlcRefund::addToMap(const HtlcRefund &refund,
+                          std::map<std::string, std::string> &map) {
     // Id
-    map.emplace("lockTransactionId", BytesToHex(refund.id));
+    map.emplace(KEY_REFUND_TX_ID_LABEL, BytesToHex(refund.id));
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a Htlc Refund-type Transaction.
+auto HtlcRefund::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1)  + KEY_ASSET_SIZE +
+           JSON_OBJECT_SIZE(1)  + OBJECT_HTLC_REFUND_SIZE +
+           JSON_OBJECT_SIZE(1)  + KEY_REFUND_TX_ID_SIZE + HASH_32_MAX_CHARS;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Htlc Refund data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain Htlc Refund data.
+//
+// ---
+void HtlcRefund::addToJson(DynamicJsonDocument &jsonDoc,
+                           const std::map<std::string, std::string> &map) {
+    const auto asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+    const auto refund = asset.createNestedObject(OBJECT_HTLC_REFUND_LABEL);
+
+    // Lock Transaction Id
+    refund[KEY_REFUND_TX_ID_LABEL] = map.at(KEY_REFUND_TX_ID_LABEL);
 }
 
 }  // namespace transactions

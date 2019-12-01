@@ -15,10 +15,13 @@
 #include <map>
 #include <string>
 
+#include "utils/json.h"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
 
+////////////////////////////////////////////////////////////////////////////////
 const uint8_t USERNAME_MIN      = 3U;
 const uint8_t USERNAME_MAX      = 20U;
 
@@ -38,8 +41,15 @@ struct DelegateRegistration {
                             uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static std::map<std::string, std::string> getMap(
-            const DelegateRegistration &registration);
+    static void addToMap(const DelegateRegistration &registration,
+                         std::map<std::string, std::string> &map);
+
+    ////////////////////////////////////////////////////////////////////////////
+    static size_t getJsonCapacity();
+
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToJson(DynamicJsonDocument &jsonDoc,
+                          const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
     DelegateRegistration() : length(0U), username() {}

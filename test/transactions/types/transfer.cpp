@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -158,7 +160,7 @@ TEST(transactions_transfer, serialize_vendorfield_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_transfer, getMap) {
+TEST(transactions_transfer, add_to_map) {
     Transfer transfer;
 
     transfer.amount         = TYPE_0_AMOUNT;
@@ -168,7 +170,9 @@ TEST(transactions_transfer, getMap) {
               TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               transfer.recipientId.begin());
 
-    const auto transferMap = Transfer::getMap(transfer);
+    std::map<std::string, std::string> transferMap;
+
+    Transfer::addToMap(transfer, transferMap);
 
     ASSERT_STREQ(TYPE_0_AMOUNT_STRING,
                  transferMap.find("amount")->second.c_str());

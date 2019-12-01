@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -81,14 +83,16 @@ TEST(transactions_second_signature, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_second_signature, getMap) {
+TEST(transactions_second_signature, add_to_map) {
     SecondSignature secondSignature;
 
     std::move(TYPE_1_SECOND_PUBLICKEY,
               TYPE_1_SECOND_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
               secondSignature.publicKey.begin());
 
-    const auto secondSignatureMap = SecondSignature::getMap(secondSignature);
+    std::map<std::string, std::string> secondSignatureMap;
+
+    SecondSignature::addToMap(secondSignature, secondSignatureMap);
 
     ASSERT_STREQ(TYPE_1_PUBLICKEY_STRING,
                  secondSignatureMap.find("publicKey")->second.c_str());

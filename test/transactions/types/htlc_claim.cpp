@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -89,7 +91,7 @@ TEST(transactions_htlc_claim, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_htlc_claim, getMap) {
+TEST(transactions_htlc_claim, add_to_map) {
     HtlcClaim claim;
 
     std::move(TYPE_9_LOCK_TX_ID,
@@ -100,7 +102,9 @@ TEST(transactions_htlc_claim, getMap) {
               TYPE_9_UNLOCK_SECRET + HASH_32_LEN,
               claim.secret.begin());
 
-    const auto claimMap = HtlcClaim::getMap(claim);
+    std::map<std::string, std::string> claimMap;
+
+    HtlcClaim::addToMap(claim, claimMap);
 
     ASSERT_STREQ(TYPE_9_LOCK_ID_STRING,
                  claimMap.find("lockTransactionId")->second.c_str());

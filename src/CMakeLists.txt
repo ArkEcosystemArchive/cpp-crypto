@@ -102,6 +102,7 @@ set(TRANSACTIONS_SERDE_SOURCE
 set(TRANSACTIONS_SOURCE
     ${TRANSACTIONS_TYPES_SOURCE}
     ${TRANSACTIONS_SERDE_SOURCE}
+    transactions/mapping.cpp
     transactions/transaction.cpp
 )
 

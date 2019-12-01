@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -84,14 +86,16 @@ TEST(transactions_vote, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_vote, getMap) {
+TEST(transactions_vote, add_to_map) {
     Vote vote;
 
     vote.count = TYPE_3_VOTE_COUNT;
 
     std::move(TYPE_3_VOTE, TYPE_3_VOTE + VOTE_LEN, vote.votes.begin());
 
-    const auto voteMap = Vote::getMap(vote);
+    std::map<std::string, std::string> voteMap;
+
+    Vote::addToMap(vote, voteMap);
 
     ASSERT_STREQ(TYPE_3_VOTES_STRING,
                  voteMap.find("votes")->second.c_str());

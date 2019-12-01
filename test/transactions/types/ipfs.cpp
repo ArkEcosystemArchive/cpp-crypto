@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -98,17 +100,16 @@ TEST(transactions_ipfs, invalid_len) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_ipfs, getMap) {
+TEST(transactions_ipfs, add_to_map) {
     Ipfs ipfs;
 
     ipfs.dag.insert(ipfs.dag.begin(),
                     TYPE_5_DAG,
                     TYPE_5_DAG + sizeof(TYPE_5_DAG));
 
-    const auto ipfsMap = Ipfs::getMap(ipfs);
+    std::map<std::string, std::string> ipfsMap;
 
-    ASSERT_STREQ(TYPE_5_IPFS_LEN_STRING,
-                 ipfsMap.find("ipfsLen")->second.c_str());
+    Ipfs::addToMap(ipfs, ipfsMap);
 
     ASSERT_STREQ(TYPE_5_IPFS_STRING,
                  ipfsMap.find("ipfs")->second.c_str());

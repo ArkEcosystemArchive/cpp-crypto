@@ -16,6 +16,8 @@
 
 #include "interfaces/identities.hpp"
 
+#include "utils/json.h"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
@@ -35,8 +37,16 @@ struct SecondSignature {
                               uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static std::map<std::string, std::string> getMap(
-            const SecondSignature &registration);
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToMap(const SecondSignature &registration,
+                         std::map<std::string, std::string> &map);
+
+    ////////////////////////////////////////////////////////////////////////////
+    static size_t getJsonCapacity();
+
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToJson(DynamicJsonDocument &jsonDoc,
+                          const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
     SecondSignature() : publicKey() {}

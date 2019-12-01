@@ -11,6 +11,7 @@
 #define ARK_INTERFACES_CONSTANTS_H
 
 #include <cstddef>
+#include <cstring>
 
 #include "utils/platform.h"
 
@@ -40,20 +41,22 @@ const size_t PUBLICKEY_UNCOMPRESSED_LEN     = 65U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Signatures
-const size_t SIGNATURE_ECDSA_MIN        = 70U;
-const size_t SIGNATURE_ECDSA_MAX        = 72U;
+const size_t SIGNATURE_ECDSA_MIN    = 70U;
+const size_t SIGNATURE_ECDSA_MAX    = 72U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Transactions
 const uint8_t TRANSACTION_VERSION_TYPE_1    = 0x01;
 const uint8_t TRANSACTION_VERSION_TYPE_2    = 0x02;
 
-const size_t TX_DEFAULT_SIZE     = 512UL;
+// The Default and Max Tx Sizes aid in limiting the impact of dynamic allocation.
+// Particularly in embedded environments, this also helps avoid overflow errors.
+const size_t TX_DEFAULT_SIZE    = 512UL;
 
 #if defined(USE_IOT)
-    const size_t TX_MAX_SIZE         = 768UL;
+    const size_t TX_MAX_SIZE    = 768UL;
 #else
-    const size_t TX_MAX_SIZE         = 20480UL;
+    const size_t TX_MAX_SIZE    = 20480UL;
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +65,21 @@ const uint8_t WIF_DEFAULT_VERSION   = 0xAA;  // (170) Base58 'S'
 const size_t WIF_STRING_LEN         = 52U;
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto KEY_ASSET_LABEL      = "asset";
+const auto KEY_ASSET_SIZE       = strlen(KEY_ASSET_LABEL);
+
+////////////////////////////////////////////////////////////////////////////////
 // Misc
 const uint8_t BASE_10 = 10U;
+
+const size_t UINT64_MAX_CHARS   = 20U;
+const size_t UINT32_MAX_CHARS   = 10U;
+const size_t UINT16_MAX_CHARS   = 5U;
+const size_t UINT8_MAX_CHARS    = 3U;
+
+const size_t HASH_32_MAX_CHARS          = 2U * HASH_32_LEN;
+const size_t SIGNATURE_ECDSA_MAX_CHARS  = 2U * SIGNATURE_ECDSA_MAX;
 
 #endif

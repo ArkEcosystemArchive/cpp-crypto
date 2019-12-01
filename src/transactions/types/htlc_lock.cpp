@@ -22,6 +22,7 @@
 
 #include "utils/base58.hpp"
 #include "utils/hex.hpp"
+#include "utils/json.h"
 #include "utils/str.hpp"
 #include "utils/unpack.h"
 
@@ -144,27 +145,95 @@ auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the Htlc Lock asset.
-auto HtlcLock::getMap(const HtlcLock &lock)
-        -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto OBJECT_HTLC_LOCK_LABEL       = "lock";
+const auto OBJECT_HTLC_LOCK_SIZE        = strlen(OBJECT_HTLC_LOCK_LABEL) - 1U;
 
+const auto OBJECT_HTLC_LOCK_TYPE_LABEL      = "type";
+const auto OBJECT_HTLC_LOCK_VALUE_LABEL     = "value";
+
+const auto KEY_AMOUNT_LABEL             = "amount";
+const auto KEY_AMOUNT_SIZE              = strlen(KEY_AMOUNT_LABEL);
+
+const auto KEY_SECRET_HASH_LABEL        = "secretHash";
+const auto KEY_SECRET_HASH_SIZE         = strlen(KEY_SECRET_HASH_LABEL);
+
+const auto KEY_EXPIRATION_TYPE_LABEL    = "expirationType";
+const auto KEY_EXPIRATION_TYPE_SIZE     = strlen(KEY_EXPIRATION_TYPE_LABEL);
+
+const auto KEY_EXPIRATION_LABEL         = "expiration";
+const auto KEY_EXPIRATION_SIZE          = strlen(KEY_EXPIRATION_LABEL);
+
+const auto KEY_RECIPIENT_ID_LABEL       = "recipientId";
+const auto KEY_RECIPIENT_ID_SIZE        = strlen(KEY_RECIPIENT_ID_LABEL);
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Htlc Lock Asset data to a Transaction Map.
+void HtlcLock::addToMap(const HtlcLock &lock,
+                        std::map<std::string, std::string> &map) {
     // Amount
-    map.emplace("amount", UintToString(lock.amount));
+    map.emplace(KEY_AMOUNT_LABEL, UintToString(lock.amount));
 
     // Secret Hash
-    map.emplace("secretHash", BytesToHex(lock.secretHash));
+    map.emplace(KEY_SECRET_HASH_LABEL, BytesToHex(lock.secretHash));
 
     // Expiration Type
-    map.emplace("expirationType", UintToString(lock.expirationType));
+    map.emplace(KEY_EXPIRATION_TYPE_LABEL, UintToString(lock.expirationType));
 
     // Expiration
-    map.emplace("expiration", UintToString(lock.expiration));
+    map.emplace(KEY_EXPIRATION_LABEL, UintToString(lock.expiration));
 
     // RecipientId
-    map.emplace("recipientId", Base58::parseAddressHash(lock.recipientId));
+    map.emplace(KEY_RECIPIENT_ID_LABEL, Base58::parseAddressHash(lock.recipientId));
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a Htlc Lock-type Transaction.
+auto HtlcLock::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1)  + KEY_AMOUNT_SIZE + UINT64_MAX_CHARS +
+           JSON_OBJECT_SIZE(1)  + KEY_RECIPIENT_ID_SIZE + ADDRESS_STR_LEN +
+           JSON_OBJECT_SIZE(1)  + KEY_ASSET_SIZE +
+           JSON_OBJECT_SIZE(1)  + OBJECT_HTLC_LOCK_SIZE +
+           JSON_OBJECT_SIZE(1)  + KEY_SECRET_HASH_SIZE + HASH_32_MAX_CHARS +
+           JSON_OBJECT_SIZE(1)  + KEY_EXPIRATION_SIZE +
+           JSON_OBJECT_SIZE(1)  + KEY_EXPIRATION_TYPE_SIZE + UINT8_MAX_CHARS +
+           JSON_OBJECT_SIZE(1)  + KEY_EXPIRATION_SIZE + UINT32_MAX_CHARS;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Htlc Lock data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain Htlc Lock data.
+//
+// ---
+void HtlcLock::addToJson(DynamicJsonDocument &jsonDoc,
+                         const std::map<std::string, std::string> &map) {
+    // Amount
+    jsonDoc[KEY_AMOUNT_LABEL] = map.at(KEY_AMOUNT_LABEL);
+
+    // RecipientId
+    jsonDoc[KEY_RECIPIENT_ID_LABEL] = map.at(KEY_RECIPIENT_ID_LABEL);
+
+    const auto asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+    const auto lock = asset.createNestedObject(OBJECT_HTLC_LOCK_LABEL);
+
+    // Secret Hash
+    lock[KEY_SECRET_HASH_LABEL] = map.at(KEY_SECRET_HASH_LABEL);
+
+    const auto expiration = lock.createNestedObject(KEY_EXPIRATION_LABEL);
+
+    // Expiration Type
+    expiration[OBJECT_HTLC_LOCK_TYPE_LABEL] =
+            strtol(map.at(KEY_EXPIRATION_TYPE_LABEL).c_str(),
+                   nullptr,
+                   BASE_10);
+
+    // Expiration Value
+    expiration[OBJECT_HTLC_LOCK_VALUE_LABEL] =
+        strtol(map.at(KEY_EXPIRATION_LABEL).c_str(),
+               nullptr,
+               BASE_10);
 }
 
 }  // namespace transactions

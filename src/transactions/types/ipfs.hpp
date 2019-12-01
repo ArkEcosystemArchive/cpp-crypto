@@ -17,10 +17,13 @@
 
 #include "interfaces/constants.h"
 
+#include "utils/json.h"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
 
+////////////////////////////////////////////////////////////////////////////////
 const uint8_t IPFS_MIN  = 2U;
 const uint8_t IPFS_MAX  = 90U;
 
@@ -37,7 +40,15 @@ struct Ipfs {
     static size_t Serialize(const Ipfs &ipfs, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static std::map<std::string, std::string> getMap(const Ipfs &ipfs);
+    static void addToMap(const Ipfs &ipfs,
+                         std::map<std::string, std::string> &map);
+
+    ////////////////////////////////////////////////////////////////////////////
+    static size_t getJsonCapacity();
+
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToJson(DynamicJsonDocument &jsonDoc,
+                          const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
     Ipfs() : dag() {}

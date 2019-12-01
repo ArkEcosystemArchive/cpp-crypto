@@ -10,6 +10,7 @@
 #include "transactions/types/vote.hpp"
 
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <string>
 #include <utility>
@@ -17,6 +18,7 @@
 #include "interfaces/constants.h"
 
 #include "utils/hex.hpp"
+#include "utils/json.h"
 
 namespace Ark {
 namespace Crypto {
@@ -76,10 +78,17 @@ auto Vote::Serialize(const Vote &vote, uint8_t *buffer) -> size_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the Vote asset.
-auto Vote::getMap(const Vote &vote) -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto KEY_VOTE_LABEL   = "vote";
+const auto KEY_VOTE_SIZE    = strlen(KEY_VOTE_LABEL);
 
+const auto KEY_VOTES_LABEL  = "votes";
+const auto KEY_VOTES_SIZE    = strlen(KEY_VOTES_LABEL);
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Vote Asset data to a Transaction Map.
+void Vote::addToMap(const Vote &vote, std::map<std::string, std::string> &map) {
     // Vote
     std::string votes;
     votes.reserve(VOTES_LEN);
@@ -89,9 +98,30 @@ auto Vote::getMap(const Vote &vote) -> std::map<std::string, std::string> {
     votes.append(BytesToHex(vote.votes.begin() + sizeof(uint8_t),
                             vote.votes.end()));
 
-    map.emplace("votes", votes);
+    map.emplace(KEY_VOTES_LABEL, votes);
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a Vote-type Transaction.
+auto Vote::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1)  + KEY_ASSET_SIZE + 
+           JSON_ARRAY_SIZE(1)   + KEY_VOTES_SIZE +
+           JSON_OBJECT_SIZE(1)  + 1U + PUBLICKEY_COMPRESSED_STR_LEN;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Vote data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain Vote data.
+//
+// ---
+void Vote::addToJson(DynamicJsonDocument &jsonDoc,
+                     const std::map<std::string, std::string> &map) {
+    JsonObject asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+    JsonArray votes = asset.createNestedArray(KEY_VOTES_LABEL);
+
+    // Votes
+    votes.add(map.at(KEY_VOTES_LABEL));
 }
 
 }  // namespace transactions

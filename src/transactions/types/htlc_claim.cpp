@@ -10,6 +10,7 @@
 #include "transactions/types/htlc_claim.hpp"
 
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <string>
 #include <utility>
@@ -17,6 +18,7 @@
 #include "interfaces/constants.h"
 
 #include "utils/hex.hpp"
+#include "utils/json.h"
 
 namespace Ark {
 namespace Crypto {
@@ -79,20 +81,55 @@ auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> size_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the Htlc Claim asset.
-auto HtlcClaim::getMap(const HtlcClaim &claim)
-        -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto OBJECT_HTLC_CLAIM_LABEL  = "claim";
+const auto OBJECT_HTLC_CLAIM_SIZE   = strlen(OBJECT_HTLC_CLAIM_LABEL);
 
+const auto KEY_CLAIM_TX_ID_LABEL    = "lockTransactionId";
+const auto KEY_CLAIM_TX_ID_SIZE     = strlen(KEY_CLAIM_TX_ID_LABEL);
+
+const auto KEY_CLAIM_SECRET_LABEL   = "unlockSecret";
+const auto KEY_CLAIM_SECRET_SIZE    = strlen(KEY_CLAIM_SECRET_LABEL);
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Htlc Claim Asset data to a Transaction Map.
+void HtlcClaim::addToMap(const HtlcClaim &claim,
+                         std::map<std::string, std::string> &map) {
     // Id
-    map.emplace("lockTransactionId", BytesToHex(claim.id));
+    map.emplace(KEY_CLAIM_TX_ID_LABEL, BytesToHex(claim.id));
 
     // Secret
     std::string secret(claim.secret.size(), '\0');
     secret.insert(secret.begin(), claim.secret.begin(), claim.secret.end());    
-    map.emplace("unlockSecret", secret);
+    map.emplace(KEY_CLAIM_SECRET_LABEL, secret);
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a Htlc Claim-type Transaction.
+auto HtlcClaim::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1)  + KEY_ASSET_SIZE +
+           JSON_OBJECT_SIZE(1)  + OBJECT_HTLC_CLAIM_SIZE +
+           JSON_OBJECT_SIZE(1)  + KEY_CLAIM_TX_ID_SIZE  + HASH_32_MAX_CHARS +
+           JSON_OBJECT_SIZE(1)  + KEY_CLAIM_SECRET_SIZE + HASH_32_MAX_CHARS;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Htlc Claim data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain Htlc Claim data.
+//
+// ---
+void HtlcClaim::addToJson(DynamicJsonDocument &jsonDoc,
+                          const std::map<std::string, std::string> &map) {
+    const auto asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+    const auto claim = asset.createNestedObject(OBJECT_HTLC_CLAIM_LABEL);
+
+    // Lock Transaction Id
+    claim[KEY_CLAIM_TX_ID_LABEL] = map.at(KEY_CLAIM_TX_ID_LABEL);
+
+    // Unlock Secret
+    claim[KEY_CLAIM_SECRET_LABEL] = map.at(KEY_CLAIM_SECRET_LABEL);
 }
 
 }  // namespace transactions

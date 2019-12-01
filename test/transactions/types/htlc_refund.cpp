@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -80,14 +82,16 @@ TEST(transactions_htlc_refund, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_htlc_refund, getMap) {
+TEST(transactions_htlc_refund, add_to_map) {
     HtlcRefund refund;
 
     std::move(TYPE_10_LOCK_TX_ID,
               TYPE_10_LOCK_TX_ID + HASH_32_LEN,
               refund.id.begin());
 
-    const auto refundMap = HtlcRefund::getMap(refund);
+    std::map<std::string, std::string> refundMap;
+
+    HtlcRefund::addToMap(refund, refundMap);
 
     ASSERT_STREQ(TYPE_10_LOCK_ID_STRING,
                  refundMap.find("lockTransactionId")->second.c_str());

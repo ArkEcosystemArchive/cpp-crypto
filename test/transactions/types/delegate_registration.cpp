@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -102,7 +104,7 @@ TEST(transactions_delegate_registration, invalid_len) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_delegate_registration, getMap) {
+TEST(transactions_delegate_registration, add_to_map) {
     DelegateRegistration delegateRegistration;
 
     delegateRegistration.length = TYPE_2_USERNAME_LENGTH;
@@ -111,11 +113,9 @@ TEST(transactions_delegate_registration, getMap) {
               TYPE_2_USERNAME + TYPE_2_USERNAME_LENGTH,
               delegateRegistration.username.begin());
 
-    const auto delegateRegistrationMap =
-        DelegateRegistration::getMap(delegateRegistration);
+    std::map<std::string, std::string> delegateRegistrationMap;
 
-    ASSERT_STREQ(TYPE_2_USERNAME_LEN_STRING,
-                 delegateRegistrationMap.find("usernameLen")->second.c_str());
+    DelegateRegistration::addToMap(delegateRegistration, delegateRegistrationMap);
 
     ASSERT_STREQ(TYPE_2_USERNAME_STRING,
                  delegateRegistrationMap.find("username")->second.c_str());

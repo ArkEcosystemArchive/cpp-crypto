@@ -19,11 +19,16 @@
 #include "interfaces/constants.h"
 #include "interfaces/identities.hpp"
 
+#include "utils/json.h"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
 
+////////////////////////////////////////////////////////////////////////////////
 const uint16_t MULTI_PAYMENT_NETWORK_LIMIT = 100UL;
+
+const auto KEY_N_PAYMENTS_LABEL = "n_payments";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 6 - MultiPayment
@@ -62,8 +67,16 @@ struct MultiPayment {
                               const size_t offset);
 
     ////////////////////////////////////////////////////////////////////////////
-    static std::map<std::string, std::string> getMap(
-            const MultiPayment &payments);
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToMap(const MultiPayment &payments,
+                         std::map<std::string, std::string> &map);
+
+    ////////////////////////////////////////////////////////////////////////////
+    static size_t getJsonCapacity(const size_t n_payments);
+
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToJson(DynamicJsonDocument &jsonDoc,
+                          const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
     MultiPayment() : n_payments(0U), amounts({ 0ULL }), addresses() {}

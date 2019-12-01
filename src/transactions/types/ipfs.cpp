@@ -10,6 +10,7 @@
 #include "transactions/types/ipfs.hpp"
 
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <string>
 #include <utility>
@@ -18,6 +19,7 @@
 
 #include "utils/base58.hpp"
 #include "utils/hex.hpp"
+#include "utils/json.h"
 #include "utils/str.hpp"
 
 namespace Ark {
@@ -80,15 +82,40 @@ auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> size_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the Ipfs Hash, Base58-encoded.
-auto Ipfs::getMap(const Ipfs &ipfs) -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto KEY_IPFS_LABEL   = "ipfs";
+const auto KEY_IPFS_SIZE    = strlen(KEY_IPFS_LABEL);
 
-    map.emplace("ipfsLen", UintToString(ipfs.dag.size()));
+////////////////////////////////////////////////////////////////////////////////
+// Add Ipfs Asset data to a Transaction Map.
+void Ipfs::addToMap(const Ipfs &ipfs,
+                    std::map<std::string, std::string> &map) {
+    map.emplace(KEY_IPFS_LABEL,
+                Base58::checkEncode(ipfs.dag.data(),
+                ipfs.dag.size()));
+}
 
-    map.emplace("ipfs", Base58::checkEncode(ipfs.dag.data(), ipfs.dag.size()));
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a Ipfs-type Transaction.
+auto Ipfs::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1)  + KEY_ASSET_SIZE +
+           JSON_OBJECT_SIZE(1)  + KEY_IPFS_SIZE +
+           IPFS_MAX;
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Add Ipfs data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain Ipfs data.
+//
+// ---
+void Ipfs::addToJson(DynamicJsonDocument &jsonDoc,
+                     const std::map<std::string, std::string> &map) {
+    JsonObject asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+
+    // Ipfs Dag
+    asset[KEY_IPFS_LABEL] = map.at(KEY_IPFS_LABEL);
 }
 
 }  // namespace transactions

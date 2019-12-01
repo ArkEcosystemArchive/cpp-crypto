@@ -17,10 +17,13 @@
 
 #include "interfaces/constants.h"
 
+#include "utils/json.h"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
 
+////////////////////////////////////////////////////////////////////////////////
 const uint8_t VOTE_LIMIT    = 1U;
 const uint8_t VOTE_LEN      = 1U + PUBLICKEY_COMPRESSED_LEN;
 const uint8_t VOTES_LEN     = VOTE_LIMIT * VOTE_LEN;
@@ -39,7 +42,16 @@ struct Vote {
     static size_t Serialize(const Vote &vote, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static std::map<std::string, std::string> getMap(const Vote &vote);
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToMap(const Vote &vote,
+                         std::map<std::string, std::string> &map);
+
+    ////////////////////////////////////////////////////////////////////////////
+    static size_t getJsonCapacity();
+
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToJson(DynamicJsonDocument &jsonDoc,
+                          const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
     Vote() : count(0U), votes() {}

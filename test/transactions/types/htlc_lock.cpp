@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -98,7 +100,7 @@ TEST(transactions_htlc_lock, serialize_ecdsa) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_htlc_lock, getMap) {
+TEST(transactions_htlc_lock, add_to_map) {
     HtlcLock lock;
 
     lock.amount             = TYPE_8_AMOUNT;
@@ -114,7 +116,9 @@ TEST(transactions_htlc_lock, getMap) {
               TYPE_8_RECIPIENT + ADDRESS_HASH_LEN,
               lock.recipientId.begin());
 
-    const auto lockMap = HtlcLock::getMap(lock);
+    std::map<std::string, std::string> lockMap;
+
+    HtlcLock::addToMap(lock, lockMap);
 
     ASSERT_STREQ(TYPE_8_AMOUNT_STRING,
                  lockMap.find("amount")->second.c_str());

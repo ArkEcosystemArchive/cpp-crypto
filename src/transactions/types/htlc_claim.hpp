@@ -17,6 +17,8 @@
 
 #include "interfaces/constants.h"
 
+#include "utils/json.h"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
@@ -35,7 +37,16 @@ struct HtlcClaim {
     static size_t Serialize(const HtlcClaim &claim, uint8_t *buffer);
 
     ////////////////////////////////////////////////////////////////////////////
-    static std::map<std::string, std::string> getMap(const HtlcClaim &claim);
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToMap(const HtlcClaim &claim,
+                         std::map<std::string, std::string> &map);
+
+    ////////////////////////////////////////////////////////////////////////////
+    static size_t getJsonCapacity();
+
+    ////////////////////////////////////////////////////////////////////////////
+    static void addToJson(DynamicJsonDocument &jsonDoc,
+                          const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
     HtlcClaim() : id(), secret() {}

@@ -10,10 +10,12 @@
 #include "transactions/types/delegate_registration.hpp"
 
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <string>
 #include <utility>
 
+#include "utils/json.h"
 #include "utils/str.hpp"
 
 namespace Ark {
@@ -88,19 +90,45 @@ auto DelegateRegistration::Serialize(const DelegateRegistration &registration,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the Delegate Registration Username.
-auto DelegateRegistration::getMap(const DelegateRegistration &registration) 
-        -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto OBJECT_DELEGATE_LABEL    = "delegate";
+const auto KEY_DELEGATE_SIZE        = strlen(OBJECT_DELEGATE_LABEL);
 
-    map.emplace("usernameLen", UintToString(registration.length));
+const auto KEY_USERNAME_LABEL       = "username";
+const auto KEY_USERNAME_SIZE        = strlen(KEY_USERNAME_LABEL);
 
-    map.emplace(
-        "username",
-        std::string(registration.username.begin(),
-                    registration.username.begin() + registration.length));
+////////////////////////////////////////////////////////////////////////////////
+// Add Delegate Registration Asset data to a Transaction Map.
+void DelegateRegistration::addToMap(const DelegateRegistration &registration,
+                                    std::map<std::string, std::string> &map) {
+    map.emplace(KEY_USERNAME_LABEL,
+                std::string(registration.username.begin(),
+                registration.username.begin() + registration.length));
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a Delegate Registration-type Transaction.
+auto DelegateRegistration::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1) + KEY_ASSET_SIZE +
+           JSON_OBJECT_SIZE(1) + KEY_DELEGATE_SIZE +
+           JSON_OBJECT_SIZE(1) + KEY_USERNAME_SIZE + USERNAME_MAX;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Delegate Registration data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain Delegate Registration data.
+//
+// ---
+void DelegateRegistration::addToJson(
+        DynamicJsonDocument &jsonDoc,
+        const std::map<std::string, std::string> &map) {
+    const auto asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+    const auto registration = asset.createNestedObject(OBJECT_DELEGATE_LABEL);
+
+    // Username
+    registration[KEY_USERNAME_LABEL] = map.at(KEY_USERNAME_LABEL);
 }
 
 }  // namespace transactions

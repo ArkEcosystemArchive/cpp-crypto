@@ -10,12 +10,16 @@
 #include "transactions/types/transfer.hpp"
 
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <string>
 #include <utility>
 
+#include "interfaces/constants.h"
+
 #include "utils/base58.hpp"
 #include "utils/hex.hpp"
+#include "utils/json.h"
 #include "utils/str.hpp"
 #include "utils/unpack.h"
 
@@ -94,21 +98,57 @@ auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> size_t {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the Transfer asset.
-auto Transfer::getMap(const Transfer &transfer)
-        -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constantsconst auto KEY_AMOUNT_LABEL         = "amount";
+const auto KEY_AMOUNT_LABEL         = "amount";
+const auto KEY_AMOUNT_SIZE          = strlen(KEY_AMOUNT_LABEL);
 
+const auto KEY_EXPIRATION_LABEL     = "expiration";
+const auto KEY_EXPIRATION_SIZE      = strlen(KEY_EXPIRATION_LABEL);
+
+const auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
+const auto KEY_RECIPIENT_ID_SIZE    = strlen(KEY_RECIPIENT_ID_LABEL);
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Transfer Asset data to a Transaction Map.
+void Transfer::addToMap(const Transfer &transfer,
+                        std::map<std::string, std::string> &map) {
     // Amount
-    map.emplace("amount", UintToString(transfer.amount));
+    map.emplace(KEY_AMOUNT_LABEL, UintToString(transfer.amount));
 
     // Expiration
-    map.emplace("expiration", UintToString(transfer.expiration));
+    map.emplace(KEY_EXPIRATION_LABEL, UintToString(transfer.expiration));
 
     // RecipientId
-    map.emplace("recipientId", Base58::parseAddressHash(transfer.recipientId));
+    map.emplace(KEY_RECIPIENT_ID_LABEL, Base58::parseAddressHash(transfer.recipientId));
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a Transfer-type Transaction.
+auto Transfer::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1) + KEY_AMOUNT_SIZE + UINT64_MAX_CHARS +
+           JSON_OBJECT_SIZE(1) + KEY_EXPIRATION_SIZE + UINT32_MAX_CHARS +
+           JSON_OBJECT_SIZE(1) + KEY_RECIPIENT_ID_SIZE + ADDRESS_STR_LEN;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Transfer data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain Transfer data.
+//
+// ---
+void Transfer::addToJson(DynamicJsonDocument &jsonDoc,
+                         const std::map<std::string, std::string> &map) {
+    // Amount
+    jsonDoc[KEY_AMOUNT_LABEL] = map.at(KEY_AMOUNT_LABEL);
+
+    // Expiration
+    jsonDoc[KEY_EXPIRATION_LABEL] = strtol(map.at(KEY_EXPIRATION_LABEL).c_str(),
+                                       nullptr,
+                                       BASE_10);
+
+    // RecipientId
+    jsonDoc[KEY_RECIPIENT_ID_LABEL] = map.at(KEY_RECIPIENT_ID_LABEL);
 }
 
 }  // namespace transactions

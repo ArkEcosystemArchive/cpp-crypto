@@ -10,6 +10,7 @@
 #include "transactions/types/second_signature.hpp"
 
 #include <cstdint>
+#include <cstring>
 #include <map>
 #include <string>
 #include <utility>
@@ -17,6 +18,7 @@
 #include "interfaces/constants.h"
 
 #include "utils/hex.hpp"
+#include "utils/json.h"
 
 namespace Ark {
 namespace Crypto {
@@ -71,15 +73,44 @@ auto SecondSignature::Serialize(const SecondSignature &registration,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the Second Signature's PublicKey.
-auto SecondSignature::getMap(const SecondSignature &registration)
-        -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto KEY_SIGNATURE_LABEL      = "signature";
+const auto KEY_SIGNATURE_SIZE       = strlen(KEY_SIGNATURE_LABEL);
 
+const auto KEY_PUBLICKEY_LABEL      = "publicKey";
+const auto KEY_PUBLICKEY_SIZE       = strlen(KEY_PUBLICKEY_LABEL);
+
+////////////////////////////////////////////////////////////////////////////////
+// Add SecondSignature Asset data to a Transaction Map.
+void SecondSignature::addToMap(const SecondSignature &registration,
+                               std::map<std::string, std::string> &map) {
     // Second Signature PublicKey
-    map.emplace("publicKey", BytesToHex(registration.publicKey));
+    map.emplace(KEY_PUBLICKEY_LABEL, BytesToHex(registration.publicKey));
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a SecondSignature-type Transaction.
+auto SecondSignature::getJsonCapacity() -> size_t {
+    return JSON_OBJECT_SIZE(1) + KEY_ASSET_SIZE +
+           JSON_OBJECT_SIZE(1) + KEY_SIGNATURE_SIZE +
+           JSON_OBJECT_SIZE(1) +
+                KEY_PUBLICKEY_SIZE + PUBLICKEY_COMPRESSED_STR_LEN;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add SecondSignature data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain SecondSignature data.
+//
+// ---
+void SecondSignature::addToJson(DynamicJsonDocument &jsonDoc,
+                                const std::map<std::string, std::string> &map) {
+    const auto asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+    const auto secondSig = asset.createNestedObject(KEY_SIGNATURE_LABEL);
+
+    // PublicKey
+    secondSig[KEY_PUBLICKEY_LABEL] = map.at(KEY_PUBLICKEY_LABEL);
 }
 
 }  // namespace transactions

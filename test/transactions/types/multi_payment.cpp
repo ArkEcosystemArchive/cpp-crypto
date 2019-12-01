@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <map>
+#include <string>
 #include <utility>
 
 #include "transactions/deserializer.hpp"
@@ -136,11 +138,13 @@ TEST(transactions_multi_payment, invalid_len) {
 ////////////////////////////////////////////////////////////////////////////////
 // MultiPayment Map setup can be quite a bit of overhead.
 // Let's save some trade a little space for Deserialization overhead.
-TEST(transactions_multi_payment, getMap) {
+TEST(transactions_multi_payment, add_to_map) {
     TransactionData data;
     Deserializer::deserialize(&data, TYPE_6_BYTES);
 
-    const auto multiPaymentMap = MultiPayment::getMap(data.asset.multiPayment);
+    std::map<std::string, std::string> multiPaymentMap;
+
+    MultiPayment::addToMap(data.asset.multiPayment, multiPaymentMap);
 
     ASSERT_STREQ(TYPE_6_N_PAYMENTS_STRING,
                  multiPaymentMap.find("n_payments")->second.c_str());

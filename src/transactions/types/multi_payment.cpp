@@ -25,6 +25,7 @@
 
 #include "utils/base58.hpp"
 #include "utils/hex.hpp"
+#include "utils/json.h"
 #include "utils/str.hpp"
 #include "utils/unpack.h"
 
@@ -166,6 +167,28 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Map/Json Constants
+const auto KEY_PAYMENTS_LABEL   = "payments";
+const auto KEY_PAYMENTS_SIZE    = strlen(KEY_PAYMENTS_LABEL);
+
+const auto KEY_N_PAYMENTS_SIZE    = strlen(KEY_N_PAYMENTS_LABEL);
+
+const auto KEY_AMOUNTS_LABEL   = "amounts";
+const auto KEY_AMOUNTS_SIZE    = strlen(KEY_AMOUNTS_LABEL);
+
+const auto KEY_ADDRESSES_LABEL   = "addresses";
+const auto KEY_ADDRESSES_SIZE    = strlen(KEY_ADDRESSES_LABEL);
+
+const auto KEY_AMOUNT_LABEL   = "amount";
+const auto KEY_AMOUNT_SIZE    = strlen(KEY_AMOUNT_LABEL);
+
+const auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
+const auto KEY_RECIPIENT_ID_SIZE    = strlen(KEY_RECIPIENT_ID_LABEL);
+
+const auto MULTIPAYMENT_JSON_OBJECT_SIZE = 2U;
+
+////////////////////////////////////////////////////////////////////////////////
 // Join Array and Vectors of a given 'T' to a comma separated string.
 //
 // ex:
@@ -182,22 +205,62 @@ static inline auto JoinWithOp(const InputType &a, Operation op) -> std::string {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return a Map of the MultiPayment asset.
+// Add MultiPayment Asset data to a Transaction Map.
 // Key strings are comma-separated.
-auto MultiPayment::getMap(const MultiPayment &payments)
-        -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map;
+void MultiPayment::addToMap(const MultiPayment &payments,
+                            std::map<std::string, std::string> &map) {
+    // Number of Payments
+    map.emplace(KEY_N_PAYMENTS_LABEL, UintToString(payments.n_payments));
 
-    map.emplace("n_payments", UintToString(payments.n_payments));
-
-    map.emplace("amounts",
+    // Amounts
+    map.emplace(KEY_AMOUNTS_LABEL,
                 JoinWithOp<uint64_t>(payments.amounts, UintToString));
 
-    map.emplace("addresses",
+    // Addresses
+    map.emplace(KEY_ADDRESSES_LABEL,
                 JoinWithOp<AddressHash>(payments.addresses,
                                         Base58::parseAddressHash));
+}
 
-    return map;
+////////////////////////////////////////////////////////////////////////////////
+// Return the Json Capacity of a MultiPayment-type Transaction.
+auto MultiPayment::getJsonCapacity(const size_t n_payments) -> size_t {
+    return JSON_OBJECT_SIZE(1) + KEY_ASSET_SIZE +
+           JSON_OBJECT_SIZE(1) + KEY_PAYMENTS_SIZE +
+           JSON_ARRAY_SIZE(n_payments) +
+                (n_payments * JSON_OBJECT_SIZE(MULTIPAYMENT_JSON_OBJECT_SIZE)) +
+                (n_payments * (KEY_AMOUNTS_SIZE      + UINT64_MAX_CHARS +
+                               KEY_RECIPIENT_ID_SIZE + ADDRESS_STR_LEN));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add MultiPayment data to a `DynamicJsonDocument` using a std::map.
+//
+// The std::map must already contain MultiPayment data.
+//
+// ---
+void MultiPayment::addToJson(DynamicJsonDocument &jsonDoc,
+                             const std::map<std::string, std::string> &map) {
+    JsonObject asset = jsonDoc.createNestedObject(KEY_ASSET_LABEL);
+    JsonArray payments = asset.createNestedArray(KEY_PAYMENTS_LABEL);
+
+    const auto paymentsStr = map.at(KEY_AMOUNTS_LABEL);
+    const auto addressesStr = map.at(KEY_ADDRESSES_LABEL);
+    const auto n_payments = strtol(map.at(KEY_N_PAYMENTS_LABEL).c_str(),
+                                    nullptr,
+                                    BASE_10);
+
+    for (uint8_t i = 0U; i < n_payments; ++i) {
+        JsonObject payment_n = payments.createNestedObject();
+
+        // Amount(N)
+        payment_n[KEY_AMOUNT_LABEL] = paymentsStr
+                .substr(0, paymentsStr.find(',', 0));
+
+        // RecipientId(N)
+        payment_n[KEY_RECIPIENT_ID_LABEL] = addressesStr
+            .substr(i + (i * ADDRESS_STR_LEN), ADDRESS_STR_LEN);
+    }
 }
 
 }  // namespace transactions
