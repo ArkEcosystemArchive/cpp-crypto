@@ -169,8 +169,8 @@ set(UTILS_TEST_SOURCE
     ${PROJECT_SOURCE_DIR}/utils/base58.cpp
     ${PROJECT_SOURCE_DIR}/utils/crypto_helpers.cpp
     ${PROJECT_SOURCE_DIR}/utils/hex.cpp
+    ${PROJECT_SOURCE_DIR}/utils/packing.cpp
     ${PROJECT_SOURCE_DIR}/utils/str.cpp
-    ${PROJECT_SOURCE_DIR}/utils/unpack.cpp
 )
 
 # ------------------------------------------------------------------------------
