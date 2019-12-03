@@ -72,23 +72,19 @@ auto Transfer::Deserialize(Transfer *transfer, const uint8_t *buffer)
 // Internals:
 //
 // Amount - 8 Bytes:
-// - memmove(&buffer[0], &transfer.amount, sizeof(uint64_t));
+// - pack8LE(buffer, &transfer.amount);
 //
 // Expiration - 4 Bytes:
-// - memmove(&buffer[sizeof(uint64_t)], &transfer.expiration, sizeof(uint32_t));
+// - pack4LE(&buffer[sizeof(uint64_t)], &transfer.expiration);
 //
 // Recipient - 21 Bytes:
 // - std::move(transfer.recipientId.begin(), transfer.recipientId.end(), &buffer[12]);
 //
 // ---
 auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> size_t {
-    memmove(&buffer[0],                                             // 8 Bytes
-            &transfer.amount,
-            sizeof(uint64_t));
+    pack8LE(buffer, &transfer.amount);                              // 8 Bytes
 
-    memmove(&buffer[sizeof(uint64_t)],                              // 4 Bytes
-            &transfer.expiration,
-            sizeof(uint32_t));
+    pack4LE(&buffer[sizeof(uint64_t)], &transfer.expiration);       // 4 Bytes
 
     std::move(transfer.recipientId.begin(),                         // 21 Bytes
               transfer.recipientId.end(),

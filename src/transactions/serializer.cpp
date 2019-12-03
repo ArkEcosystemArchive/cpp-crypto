@@ -21,6 +21,8 @@
 
 #include "transactions/transaction_data.hpp"
 
+#include "utils/packing.h"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
@@ -44,19 +46,19 @@ namespace transactions {
 // - buffer.at(2) = transaction.network;
 //
 // TypeGroup - 4 Bytes:
-// - memmove(&buffer.at(3), &transaction.typeGroup, sizeof(uint32_t));
+// - pack4LE(&buffer.at(TYPEGROUP_OFFSET), &transaction.typeGroup);
 //
 // Transaction Type - 2 Bytes:
-// - memmove(&buffer.at(7), &transaction.type, sizeof(uint16_t));
+// - pack2LE(&buffer.at(TYPE_OFFSET), &transaction.type);
 //
 // Nonce - 8 Bytes:
-// - memmove(&buffer.at(9), &transaction.nonce, sizeof(uint64_t));
+// - pack8LE(&buffer[NONCE_OFFSET], &transaction.nonce);
 //
 // SenderPublicKey - 33 Bytes:
 // - buffer.insert(buffer.begin() + 17, transaction.senderPublicKey.begin(), transaction.senderPublicKey.end());
 //
 // Fee - 8 bytes
-// - memmove(&buffer.at(50), &transaction.fee, sizeof(uint64_t));
+// - pack8LE(&buffer[FEE_OFFSET], &transaction.fee);
 //
 // VendorField Length - 1 Byte:
 // - buffer.at(58) = transaction.vendorField.size();
@@ -71,25 +73,15 @@ static void serializeCommon(const TransactionData &transaction,
     buffer.at(VERSION_OFFSET)       = transaction.version;          // 1 Byte
     buffer.at(NETWORK_OFFSET)       = transaction.network;          // 1 Byte
 
-    memmove(&buffer.at(TYPEGROUP_OFFSET),                           // 4 Bytes
-            &transaction.typeGroup,
-            sizeof(uint32_t));
-
-    memmove(&buffer.at(TYPE_OFFSET),                                // 2 Bytes
-            &transaction.type,
-            sizeof(uint16_t));
-
-    memmove(&buffer.at(NONCE_OFFSET),                               // 4 Bytes
-            &transaction.nonce,
-            sizeof(uint64_t));
+    pack4LE(&buffer.at(TYPEGROUP_OFFSET), &transaction.typeGroup);  // 4 Bytes
+    pack2LE(&buffer.at(TYPE_OFFSET), &transaction.type);            // 2 Bytes
+    pack8LE(&buffer[NONCE_OFFSET], &transaction.nonce);             // 8 Bytes
 
     buffer.insert(buffer.begin() + SENDER_PUBLICKEY_OFFSET,         // 21 Bytes
                   transaction.senderPublicKey.begin(),
                   transaction.senderPublicKey.end());
 
-    memmove(&buffer.at(FEE_OFFSET),                                 // 8 Bytes
-            &transaction.fee,
-            sizeof(uint64_t));
+    pack8LE(&buffer[FEE_OFFSET], &transaction.fee);                 // 8 Bytes
 
     buffer.at(VF_LEN_OFFSET) =                                      // 1 Byte
             static_cast<uint8_t>(transaction.vendorField.size());
@@ -123,13 +115,13 @@ static void serializeCommon(const TransactionData &transaction,
 // - buffer.at(3) = transaction.type;
 //
 // Timestamp - 4 Bytes
-// - memmove(&buffer.at(4), &transaction.timestamp,sizeof(uint32_t));
+// - pack4LE(&buffer.at(v1::TIMESTAMP_OFFSET), &transaction.timestamp);
 //
 // SenderPublicKey - 33 Bytes:
 // - buffer.insert(buffer.begin() + 8, transaction.senderPublicKey.begin(), transaction.senderPublicKey.end());
 //
 // Fee - 8 bytes
-// - memmove(&buffer.at(41), &transaction.fee, sizeof(uint64_t));
+// - pack8LE(&buffer.at(v1::FEE_OFFSET), &transaction.fee);
 //
 // VendorField Length - 1 Byte:
 // - buffer.at(49) = transaction.vendorField.size();
@@ -147,17 +139,14 @@ static void serializeCommonV1(const TransactionData &transaction,
     buffer.at(v1::TYPE_OFFSET) =                                    // 1 Byte
             static_cast<uint8_t>(transaction.type);
 
-    memmove(&buffer.at(v1::TIMESTAMP_OFFSET),                       // 4 Bytes
-            &transaction.timestamp,
-            sizeof(uint32_t));
+    pack4LE(&buffer.at(v1::TIMESTAMP_OFFSET),                       // 4 Bytes
+            &transaction.timestamp);
 
     buffer.insert(buffer.begin() + v1::SENDER_PUBLICKEY_OFFSET,     // 21 Bytes
                   transaction.senderPublicKey.begin(),
                   transaction.senderPublicKey.end());
 
-    memmove(&buffer.at(v1::FEE_OFFSET),                             // 8 Bytes
-            &transaction.fee,
-            sizeof(uint64_t));
+    pack8LE(&buffer.at(v1::FEE_OFFSET), &transaction.fee);          // 8 Bytes
 
     buffer.at(v1::VF_LEN_OFFSET) =                                  // 1 Byte
             static_cast<uint8_t>(transaction.vendorField.size());

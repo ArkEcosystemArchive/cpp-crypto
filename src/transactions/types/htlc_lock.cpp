@@ -99,7 +99,7 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
 // Internals:
 //
 // Amount - 8 Bytes:
-// - memmove(buffer, &lock.amount, 8);
+// - pack8LE(buffer, &lock.amount);
 //
 // Secret Hash - 32 Bytes
 // - std::move(lock.secretHash.begin(), lock.secretHash.end(), &buffer[8]);;
@@ -108,7 +108,7 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
 // - buffer[40] = lock.expirationType;
 //
 // Expiration Value - 4 Bytes
-// - memmove(&buffer[offset], &lock.expiration, 8);
+// - pack4LE(&buffer[offset], &lock.expiration);
 //
 // Recipient - 21 Bytes
 // - std::move(lock.recipientId.begin(), lock.recipientId.end(), &buffer[45]);
@@ -117,7 +117,7 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
 auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
     size_t offset = 0;
 
-    memmove(buffer, &lock.amount, sizeof(uint64_t));                // 8 Bytes
+    pack8LE(buffer, &lock.amount);                                  // 8 Bytes
 
     offset += sizeof(uint64_t);
 
@@ -131,7 +131,7 @@ auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
 
     offset += sizeof(uint8_t);
 
-    memmove(&buffer[offset], &lock.expiration, sizeof(uint32_t));   // 4 Bytes
+    pack4LE(&buffer[offset], &lock.expiration);                     // 4 Bytes
 
     offset += sizeof(uint32_t);
 

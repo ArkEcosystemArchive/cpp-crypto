@@ -127,10 +127,10 @@ static inline auto checkBuffer(const MultiPayment &payments,
 // Internals:
 //
 // Number of Payments - 2 Bytes:
-// - memmove(buffer, &payments.n_payments, sizeof(uint16_t));
+// - pack2LE(&buffer.at(offset), &payments.n_payments);
 //
 // Amounts[] - 8 Bytes * n_payments
-// - memmove(&buffer[offset], &payments.amounts.at(i), sizeof(uint64_t))
+// - pack8LE(&buffer.at(pos), &payments.amounts.at(i));
 //
 // Addresses - n_payments * vector<array[21]> Bytes
 // - std::move(payments.addresses.at(i).begin(), payments.addresses.at(i).end(), &buffer[pos]);
@@ -143,16 +143,12 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
         return 0UL;
     }
 
-    memmove(&buffer.at(offset),                                 // 2 Bytes
-            &payments.n_payments,
-            sizeof(uint16_t));
+    pack2LE(&buffer.at(offset), &payments.n_payments);          // 2 Bytes
 
     size_t pos = offset + sizeof(uint16_t);
 
     for (size_t i = 0U; i < payments.n_payments; ++i) {
-        memmove(&buffer[pos],                                   // 8 Bytes
-                &payments.amounts.at(i),
-                sizeof(uint64_t));
+        pack8LE(&buffer.at(pos), &payments.amounts.at(i));      // 8 Bytes
 
         pos += sizeof(uint64_t);
 
