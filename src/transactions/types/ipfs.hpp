@@ -51,7 +51,7 @@ struct Ipfs {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    Ipfs() : dag() {}
+    Ipfs() = default;
 };
 
 }  // namespace transactions

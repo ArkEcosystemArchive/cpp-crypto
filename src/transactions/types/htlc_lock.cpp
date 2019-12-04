@@ -9,11 +9,10 @@
 
 #include "transactions/types/htlc_lock.hpp"
 
+#include <algorithm>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
-#include <utility>
 
 #include "interfaces/constants.h"
 #include "interfaces/identities.hpp"
@@ -45,7 +44,7 @@ namespace transactions {
 // - lock.amount = unpack8LE(buffer, 0);
 //
 // Secret Hash - 32 Bytes
-// - std::move(&buffer[8], &buffer[40], lock->secretHash.begin());
+// - std::copy_n(&buffer[offset], 32, lock->secretHash.begin());
 //
 // Expiration Type- 1 Byte
 // - lock.expirationType = buffer[40];
@@ -54,7 +53,7 @@ namespace transactions {
 // - lock.expirationValue = unpack4LE(buffer, 41);
 //
 // Recipient - 21 Bytes
-// - std::move(&buffer[45], &buffer[66], lock->recipientId.begin());
+// - std::copy_n(&buffer[offset], 21, lock->recipientId.begin());
 //
 // ---
 auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
@@ -64,9 +63,9 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
 
     offset += sizeof(uint64_t);
 
-    std::move(&buffer[offset],                                      // 32 Bytes
-              &buffer[offset + HASH_32_LEN],
-              lock->secretHash.begin());
+    std::copy_n(&buffer[offset],                                    // 32 Bytes
+                HASH_32_LEN,
+                lock->secretHash.begin());
 
     offset += HASH_32_LEN;
 
@@ -78,9 +77,9 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
 
     offset += sizeof(uint32_t);
 
-    std::move(&buffer[offset],                                      // 21 Bytes
-              &buffer[offset + ADDRESS_HASH_LEN],
-              lock->recipientId.begin());
+    std::copy_n(&buffer[offset],                                    // 21 Bytes
+                ADDRESS_HASH_LEN,
+                lock->recipientId.begin());
 
     offset += ADDRESS_HASH_LEN;
 
@@ -102,7 +101,7 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
 // - pack8LE(buffer, &lock.amount);
 //
 // Secret Hash - 32 Bytes
-// - std::move(lock.secretHash.begin(), lock.secretHash.end(), &buffer[8]);;
+// - std::copy(lock.secretHash.begin(), lock.secretHash.end(), &buffer[8]);;
 //
 // Expiration Type- 1 Byte
 // - buffer[40] = lock.expirationType;
@@ -111,7 +110,7 @@ auto HtlcLock::Deserialize(HtlcLock *lock, const uint8_t *buffer) -> size_t {
 // - pack4LE(&buffer[offset], &lock.expiration);
 //
 // Recipient - 21 Bytes
-// - std::move(lock.recipientId.begin(), lock.recipientId.end(), &buffer[45]);
+// - std::copy(lock.recipientId.begin(), lock.recipientId.end(), &buffer[45]);
 //
 // ---
 auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
@@ -121,7 +120,7 @@ auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
 
     offset += sizeof(uint64_t);
 
-    std::move(lock.secretHash.begin(),                              // 32 Bytes
+    std::copy(lock.secretHash.begin(),                              // 32 Bytes
               lock.secretHash.end(),
               &buffer[offset]);
 
@@ -135,7 +134,7 @@ auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
 
     offset += sizeof(uint32_t);
 
-    std::move(lock.recipientId.begin(),                             // 21 Bytes
+    std::copy(lock.recipientId.begin(),                             // 21 Bytes
               lock.recipientId.end(),
               &buffer[offset]);
 
@@ -225,15 +224,15 @@ void HtlcLock::addToJson(DynamicJsonDocument &jsonDoc,
 
     // Expiration Type
     expiration[OBJECT_HTLC_LOCK_TYPE_LABEL] =
-            strtol(map.at(KEY_EXPIRATION_TYPE_LABEL).c_str(),
-                   nullptr,
-                   BASE_10);
+            strtoul(map.at(KEY_EXPIRATION_TYPE_LABEL).c_str(),
+                    nullptr,
+                    BASE_10);
 
     // Expiration Value
     expiration[OBJECT_HTLC_LOCK_VALUE_LABEL] =
-        strtol(map.at(KEY_EXPIRATION_LABEL).c_str(),
-               nullptr,
-               BASE_10);
+        strtoul(map.at(KEY_EXPIRATION_LABEL).c_str(),
+                nullptr,
+                BASE_10);
 }
 
 }  // namespace transactions

@@ -10,8 +10,8 @@
 #ifndef ARK_TRANSACTIONS_BUILDERS_VOTE_HPP
 #define ARK_TRANSACTIONS_BUILDERS_VOTE_HPP
 
+#include <algorithm>
 #include <cstdint>
-#include <utility>
 
 #include "transactions/builders/common.hpp"
 
@@ -34,11 +34,16 @@ class Vote : public Common<Vote> {
     // - { 1(n_votes), 00/01('-'/'+'), publicKeyBytes }
     Vote &votes(const uint8_t *votes) {
         this->transaction.data.asset.vote.count = 1U;
-        std::move(votes,
-                  votes + VOTES_LEN,
-                  this->transaction.data.asset.vote.votes.begin());
+        std::copy_n(votes, VOTES_LEN, this->transaction.data.asset
+                                                .vote
+                                                .votes.begin());
 
         return *this;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    Vote() {
+        this->transaction.data.type = VOTE_TYPE;
     }
 };
 

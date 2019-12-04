@@ -27,10 +27,15 @@ const uint8_t USERNAME_MAX      = 20U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 2 - Delegate Registration
+//
+// Min Length: 3
+// Max Length: 20
+//
+// ---
 struct DelegateRegistration {
     ////////////////////////////////////////////////////////////////////////////
-    uint8_t                                 length;         // min: 3, max: 20
-    std::array<uint8_t, USERNAME_MAX>       username;       // 3 <=> 20 bytes
+    uint8_t                                 length      { 0U };
+    std::array<uint8_t, USERNAME_MAX>       username    { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(DelegateRegistration *registration,
@@ -52,7 +57,7 @@ struct DelegateRegistration {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    DelegateRegistration() : length(0U), username() {}
+    DelegateRegistration() = default;
 };
 
 }  // namespace transactions

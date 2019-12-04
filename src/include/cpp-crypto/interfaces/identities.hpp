@@ -21,14 +21,14 @@ namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Hash
-typedef std::array<uint8_t, HASH_32_LEN> Hash32;
+using Hash32 = std::array<uint8_t, HASH_32_LEN>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // PubkeyHash
 // A 20 Byte Array.
 // Used by Ripemd160 as a hash of the PublicKey.
 // An Address is derived using a Network Version-byte and a PubkeyHash.
-typedef std::array<uint8_t, HASH_20_LEN> PubkeyHash;
+using PubkeyHash = std::array<uint8_t, HASH_20_LEN>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // PubkeyHashPair
@@ -36,11 +36,11 @@ typedef std::array<uint8_t, HASH_20_LEN> PubkeyHash;
 // Base58 version byte.
 // Ripemd160 PubkeyHash.
 struct PubkeyHashPair {
-    uint8_t version;
-    PubkeyHash pubkeyHash;
+    uint8_t         version     { };
+    PubkeyHash      pubkeyHash  { };
 
-    PubkeyHashPair() : version(), pubkeyHash() {}
-    PubkeyHashPair(const uint8_t version, const PubkeyHash &pubkeyHash)
+    PubkeyHashPair() = default;
+    PubkeyHashPair(const uint8_t &version, const PubkeyHash &pubkeyHash)
         : version(version) {
         std::move(pubkeyHash.begin(),
                   pubkeyHash.end(),
@@ -53,26 +53,26 @@ struct PubkeyHashPair {
 // NetworkVersion + PubkeyHash
 //
 // ex: 171dfc69b54c7fe901e91d5a9ab78388645e2427ea
-typedef std::array<uint8_t, ADDRESS_HASH_LEN> AddressHash;
+using AddressHash = std::array<uint8_t, ADDRESS_HASH_LEN>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Privatekey
-typedef std::array<uint8_t, PRIVATEKEY_BYTE_LEN> PrivateKeyBytes;
+using PrivateKeyBytes = std::array<uint8_t, PRIVATEKEY_BYTE_LEN>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // PublicKey
-typedef std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN>   PublicKeyBytes;
-typedef std::array<uint8_t, PUBLICKEY_UNCOMPRESSED_LEN> PublicKeyPoint;
+using PublicKeyBytes = std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN>;
+using PublicKeyPoint = std::array<uint8_t, PUBLICKEY_UNCOMPRESSED_LEN>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // KeyPair
 struct KeyPair {
     ////////////////////////////////////////////////////////////////////////////
-    PrivateKeyBytes privateKey;
-    PublicKeyBytes publicKey;
+    PrivateKeyBytes     privateKey  { };
+    PublicKeyBytes      publicKey   { };
 
     ////////////////////////////////////////////////////////////////////////////
-    KeyPair() : privateKey(), publicKey() {}
+    KeyPair() = default;
     KeyPair(const PrivateKeyBytes &privateKey, const PublicKeyBytes &publicKey) {
         std::move(privateKey.begin(),
                   privateKey.end(),

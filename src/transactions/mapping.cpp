@@ -9,8 +9,8 @@
 
 #include "transactions/mapping.hpp"
 
+#include <cstddef>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
 
@@ -149,55 +149,51 @@ static void AddCommonMap(std::map<std::string, std::string> &map,
 // ---
 static void AddAssetMap(std::map<std::string, std::string> &map,
                         const TransactionData &data) {
-    // Tranfer
-    if (data.type == TRANSFER_TYPE) {
-        Transfer::addToMap(data.asset.transfer, map);
-    }
+    switch (data.type) {
+        // Tranfer
+        case TRANSFER_TYPE:
+            Transfer::addToMap(data.asset.transfer, map);
 
-    // Second Signature Registration
-    else if (data.type == SECOND_SIGNATURE_TYPE) {
-        SecondSignature::addToMap(data.asset.secondSignature, map);
-    }
+        // Second Signature Registration
+        case SECOND_SIGNATURE_TYPE:
+            SecondSignature::addToMap(data.asset.secondSignature, map);
 
-    // Delegate Registration
-    else if (data.type == DELEGATE_REGISTRATION_TYPE) {
-        DelegateRegistration::addToMap(data.asset.delegateRegistration, map);
-    }
+        // Delegate Registration
+        case DELEGATE_REGISTRATION_TYPE:
+            DelegateRegistration::addToMap(data.asset.delegateRegistration, map);
 
-    // Vote
-    else if (data.type == VOTE_TYPE) {
-        Vote::addToMap(data.asset.vote, map);
-    }
+        // Vote
+        case VOTE_TYPE:
+            Vote::addToMap(data.asset.vote, map);
 
-    // MultiSignature Registration
-    // if (this->data.type == MULTI_SIGNATURE_TYPE) {}  // TODO
+        // MultiSignature Registration
+        // case MULTI_SIGNATURE_TYPE:  // TODO
 
-    // Ipfs
-    else if (data.type == IPFS_TYPE) {
-        Ipfs::addToMap(data.asset.ipfs, map);
-    }
+        // Ipfs
+        case IPFS_TYPE:
+            Ipfs::addToMap(data.asset.ipfs, map);
 
-    // MultiPayment
-    else if (data.type ==  MULTI_PAYMENT_TYPE) {
-        MultiPayment::addToMap(data.asset.multiPayment, map);
-    }
+        // MultiPayment
+        case MULTI_PAYMENT_TYPE:
+            MultiPayment::addToMap(data.asset.multiPayment, map);
 
-    // Delegate Resignation
-    // data.type == DELEGATE_RESIGNATION_TYPE  // No Asset Needed
+        // Delegate Resignation
+        // No Asset Needed
+        // case DELEGATE_RESIGNATION_TYPE:
 
-    // Htlc Lock
-    else if (data.type == HTLC_LOCK_TYPE) {
-        HtlcLock::addToMap(data.asset.htlcLock, map);
-    }
+        // Htlc Lock
+        case HTLC_LOCK_TYPE:
+            HtlcLock::addToMap(data.asset.htlcLock, map);
 
-    // Htlc Claim
-    else if (data.type == HTLC_CLAIM_TYPE) {
-        HtlcClaim::addToMap(data.asset.htlcClaim, map);
-    }
+        // Htlc Claim
+        case HTLC_CLAIM_TYPE:
+            HtlcClaim::addToMap(data.asset.htlcClaim, map);
 
-    // Htlc Refund
-    else if (data.type == HTLC_REFUND_TYPE) {
-        HtlcRefund::addToMap(data.asset.htlcRefund, map);
+        // Htlc Refund
+        case HTLC_REFUND_TYPE:
+            HtlcRefund::addToMap(data.asset.htlcRefund, map);
+
+        default: break;
     }
 }
 
@@ -275,9 +271,10 @@ static auto GetCommonJsonCapacity(
             JSON_OBJECT_SIZE(1) +
                 KEY_FEE_SIZE + UINT64_MAX_CHARS;
 
-    const auto transactionVersion = strtol(map.at(KEY_VERSION_LABEL).c_str(),
-                                           nullptr,
-                                           BASE_10);
+    const uint16_t transactionVersion =
+            static_cast<uint16_t>(strtoul(map.at(KEY_VERSION_LABEL).c_str(),
+                                          nullptr,
+                                          BASE_10));
 
     // v2
     if (transactionVersion == TRANSACTION_VERSION_TYPE_2) {
@@ -325,60 +322,54 @@ static auto GetCommonJsonCapacity(
 // - Htlc Refund
 //
 // ---
-static auto GetAssetJsonCapacity(const uint8_t type,
-                                 const size_t n_payments = 0UL) -> size_t {
-    // Transfer
-    if (type == TRANSFER_TYPE) {
-        return Transfer::getJsonCapacity();
+static auto GetAssetJsonCapacity(const uint16_t &type,
+                                 const size_t &n_payments = 0UL) -> size_t {
+    switch(type) {
+        // Transfer
+        case TRANSFER_TYPE:
+            return Transfer::getJsonCapacity();
+
+        // Second Signature Registration
+        case SECOND_SIGNATURE_TYPE:
+            return SecondSignature::getJsonCapacity();
+
+        // Delegate Registration
+        case DELEGATE_REGISTRATION_TYPE:
+            return DelegateRegistration::getJsonCapacity();
+
+        // Vote
+        case VOTE_TYPE:
+            return Vote::getJsonCapacity();
+
+        // // MultiSignature Registration
+        // case MULTI_SIGNATURE_TYPE:  // TODO
+
+        // Ipfs
+        case IPFS_TYPE:
+            return Ipfs::getJsonCapacity();
+
+        // MultiPayment
+        case MULTI_PAYMENT_TYPE:
+            return MultiPayment::getJsonCapacity(n_payments);
+
+        // Delegate Resignation
+        // No Asset Needed. Return Default of '0'.
+        // case DELEGATE_RESIGNATION_TYPE:
+
+        // Htlc Lock
+        case HTLC_LOCK_TYPE:
+            return HtlcLock::getJsonCapacity();
+
+        // Htlc Claim
+        case HTLC_CLAIM_TYPE:
+            return HtlcClaim::getJsonCapacity();
+
+        // Htlc Refund
+        case HTLC_REFUND_TYPE:
+            return HtlcRefund::getJsonCapacity();
+    
+        default: return 0UL;
     }
-
-    // Second Signature Registration
-    else if (type == SECOND_SIGNATURE_TYPE) {
-        return SecondSignature::getJsonCapacity();
-    }
-
-    // Delegate Registration
-    else if (type == DELEGATE_REGISTRATION_TYPE) {
-        return DelegateRegistration::getJsonCapacity();
-    }
-
-    // Vote
-    else if (type == VOTE_TYPE) {
-        return Vote::getJsonCapacity();
-    }
-
-    // // MultiSignature Registration
-    // else if (type == MULTI_SIGNATURE_TYPE) {}  // TODO
-
-    // Ipfs
-    else if (type == IPFS_TYPE) {
-        return Ipfs::getJsonCapacity();
-    }
-
-    // MultiPayment
-    else if (type == MULTI_PAYMENT_TYPE) {
-        return MultiPayment::getJsonCapacity(n_payments);
-    }
-
-    // Delegate Resignation
-    // type == DELEGATE_RESIGNATION_TYPE  // No Asset Needed
-
-    // Htlc Lock
-    else if (type == HTLC_LOCK_TYPE) {
-        return HtlcLock::getJsonCapacity();
-    }
-
-    // Htlc Claim
-    else if (type == HTLC_CLAIM_TYPE) {
-        return HtlcClaim::getJsonCapacity();
-    }
-
-    // Htlc Refund
-    else if (type == HTLC_REFUND_TYPE) {
-        return HtlcRefund::getJsonCapacity();
-    }
-
-    return 0UL;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -430,31 +421,32 @@ static auto GetCommonExtrasJsonCapacity(
 // ---
 static void AddCommonJson(DynamicJsonDocument &jsonDoc,
                           const std::map<std::string, std::string> &map){
-    const auto transactionVersion = strtol(map.at(KEY_VERSION_LABEL).c_str(),
-                                           nullptr,
-                                           BASE_10);
+    const uint16_t transactionVersion =
+            static_cast<uint16_t>(strtoul(map.at(KEY_VERSION_LABEL).c_str(),
+                                          nullptr,
+                                          BASE_10));
 
     // Version
     jsonDoc[KEY_VERSION_LABEL] = transactionVersion;
 
     // Network
-    jsonDoc[KEY_NETWORK_LABEL] = strtol(map.at(KEY_NETWORK_LABEL).c_str(),
-                                    nullptr,
-                                    BASE_10);
+    jsonDoc[KEY_NETWORK_LABEL] = strtoul(map.at(KEY_NETWORK_LABEL).c_str(),
+                                         nullptr,
+                                         BASE_10);
 
     // v2
     if (transactionVersion == TRANSACTION_VERSION_TYPE_2) {
         // TypeGroup
-        jsonDoc[KEY_TYPEGROUP_LABEL] = strtol(
-                map.at(KEY_TYPEGROUP_LABEL).c_str(),
-                nullptr,
-                BASE_10);
+        jsonDoc[KEY_TYPEGROUP_LABEL] =
+            strtoul(map.at(KEY_TYPEGROUP_LABEL).c_str(),
+                    nullptr,
+                    BASE_10);
     }
 
     // Type
-    jsonDoc[KEY_TYPE_LABEL] = strtol(map.at(KEY_TYPE_LABEL).c_str(),
-                                     nullptr,
-                                     BASE_10);
+    jsonDoc[KEY_TYPE_LABEL] = strtoul(map.at(KEY_TYPE_LABEL).c_str(),
+                                      nullptr,
+                                      BASE_10);
 
     // v2
     if (transactionVersion == TRANSACTION_VERSION_TYPE_2) {
@@ -495,59 +487,63 @@ static void AddCommonJson(DynamicJsonDocument &jsonDoc,
 // - Htlc Refund
 //
 // ---
-static void AddAssetToJson(const uint8_t type,
+static void AddAssetToJson(const uint16_t &type,
                            DynamicJsonDocument &jsonDoc,
                            const std::map<std::string, std::string> &map) {
-    // Transfer
-    if (type == TRANSFER_TYPE) {
-        Transfer::addToJson(jsonDoc, map);
-    }
+    switch (type) {
+        // Transfer
+        case TRANSFER_TYPE:
+            Transfer::addToJson(jsonDoc, map);
+            break;
 
-    // SecondSignature
-    else if (type == SECOND_SIGNATURE_TYPE) {
-        SecondSignature::addToJson(jsonDoc, map);
-    }
+        // SecondSignature
+        case SECOND_SIGNATURE_TYPE:
+            SecondSignature::addToJson(jsonDoc, map);
+            break;
 
-    // Delegate Registration
-    else if (type == DELEGATE_REGISTRATION_TYPE) {
-        DelegateRegistration::addToJson(jsonDoc, map);
-    }
+        // Delegate Registration
+        case DELEGATE_REGISTRATION_TYPE:
+            DelegateRegistration::addToJson(jsonDoc, map);
+            break;
 
-    // Vote
-    else if (type == VOTE_TYPE) {
-        Vote::addToJson(jsonDoc, map);
-    }
+        // Vote
+        case VOTE_TYPE:
+            Vote::addToJson(jsonDoc, map);
+            break;
 
-    // // MultiSignature Registration
-    // if (this->data.type == MULTI_SIGNATURE_TYPE) {}  // TODO
+        // // MultiSignature Registration
+        // case MULTI_SIGNATURE_TYPE:  // TODO
 
-    // Ipfs
-    else if (type == IPFS_TYPE) {
-        Ipfs::addToJson(jsonDoc, map);
-    }
+        // Ipfs
+        case IPFS_TYPE:
+            Ipfs::addToJson(jsonDoc, map);
+            break;
 
-    // MultiPayment
-    else if (type == MULTI_PAYMENT_TYPE) {
-    // Get the Type from the Mapped Transaction.
-        MultiPayment::addToJson(jsonDoc, map);
-    }
+        // MultiPayment
+        case MULTI_PAYMENT_TYPE:
+            MultiPayment::addToJson(jsonDoc, map);
+            break;
 
-    // Delegate Resignation
-    // No Asset Needed
+        // Delegate Resignation
+        // No Asset Needed
+        // case DELEGATE_RESIGNATION_TYPE
 
-    // Htlc Lock
-    else if (type == HTLC_LOCK_TYPE) {
-        HtlcLock::addToJson(jsonDoc, map);
-    }
+        // Htlc Lock
+        case HTLC_LOCK_TYPE: 
+            HtlcLock::addToJson(jsonDoc, map);
+            break;
 
-    // Htlc Claim
-    else if (type == HTLC_CLAIM_TYPE) {
-        HtlcClaim::addToJson(jsonDoc, map);
-    }
+        // Htlc Claim
+        case HTLC_CLAIM_TYPE:
+            HtlcClaim::addToJson(jsonDoc, map);
+            break;
 
-    // Htlc Refund
-    else if (type == HTLC_REFUND_TYPE) {
-        HtlcRefund::addToJson(jsonDoc, map);
+        // Htlc Refund
+        case HTLC_REFUND_TYPE:
+            HtlcRefund::addToJson(jsonDoc, map);
+            break;
+        
+        default: break;
     }
 }
 
@@ -587,9 +583,10 @@ static void AddCommonExtrasJson(DynamicJsonDocument &jsonDoc,
 auto Mapping::toJson(const std::map<std::string, std::string> &map)
         -> std::string {  // NOLINT
     // Get the Type from the Mapped Transaction.
-    const uint8_t transactionType = strtol(map.at(KEY_TYPE_LABEL).c_str(),
-                                                  nullptr,
-                                                  BASE_10);
+    const uint16_t transactionType =
+            static_cast<uint16_t>(strtoul(map.at(KEY_TYPE_LABEL).c_str(),
+                                          nullptr,
+                                          BASE_10));
 
     // Non-Zero only if Map contains MultiPayment data
     const auto multiPaymentCount = map.find(KEY_N_PAYMENTS_LABEL) != map.end()

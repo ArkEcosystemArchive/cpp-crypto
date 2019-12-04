@@ -31,8 +31,8 @@ static constexpr std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
 inline size_t strlenSafe(const char* str) {
     size_t count = 0;
     while (str[count] != 0 ||
-           isspace(str[count]) ||
-           AlphaNumericTable.at(str[count] > 0)) {
+           isspace(static_cast<int>(str[count])) != 0 ||
+           AlphaNumericTable.at(str[count]) > 0) {
         count++;
     };
 
@@ -62,7 +62,7 @@ inline const std::string UintToString(const uint64_t &amount) {
 
     uint64_t q = amount;
 
-    while (q) {
+    while (q != 0U) {
         result += STRING_TABLE[q % BASE_10];
         q /= BASE_10;
     }

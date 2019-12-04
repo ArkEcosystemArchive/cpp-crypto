@@ -25,7 +25,6 @@ using namespace Ark::Crypto::transactions;
 TEST(transactions_builders, htlc_claim) {
     const auto transaction = builder::HtlcClaim()
         .network(COMMON_MAINNET)
-        .type(TYPE_9_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_9_FEE)

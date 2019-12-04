@@ -32,8 +32,8 @@ const uint8_t VOTES_LEN     = VOTE_LIMIT * VOTE_LEN;
 // Type 3 - Vote
 struct Vote {
     ////////////////////////////////////////////////////////////////////////////
-    uint8_t                             count;
-    std::array<uint8_t, VOTES_LEN>      votes;      // (VOTE_LIMIT * (1 + 33))
+    uint8_t                             count   { 0U };
+    std::array<uint8_t, VOTES_LEN>      votes   { };            // (1 + 33)N
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(Vote *vote, const uint8_t *buffer);
@@ -54,7 +54,7 @@ struct Vote {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    Vote() : count(0U), votes() {}
+    Vote() = default;
 };
 
 }  // namespace transactions

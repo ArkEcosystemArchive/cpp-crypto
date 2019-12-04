@@ -25,7 +25,6 @@ using namespace Ark::Crypto::transactions;
 TEST(transactions_builders, second_signature) {
     const auto transaction = builder::SecondSignature()
         .network(COMMON_MAINNET)
-        .type(TYPE_1_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_1_FEE)

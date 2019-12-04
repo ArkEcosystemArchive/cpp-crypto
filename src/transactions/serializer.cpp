@@ -9,6 +9,7 @@
 
 #include "transactions/serializer.hpp"
 
+#include <cstdbool>
 #include <cstdint>
 #include <cstring>
 #include <vector>
@@ -161,7 +162,7 @@ static void serializeCommonV1(const TransactionData &transaction,
 ////////////////////////////////////////////////////////////////////////////////
 static auto serializeAsset(const TransactionData &transaction,
                            std::vector<uint8_t> &buffer,
-                           const size_t offset) -> size_t {
+                           const size_t &offset) -> size_t {
     switch (transaction.type) {
         case TRANSFER_TYPE:
             return Transfer::Serialize(
@@ -196,7 +197,9 @@ static auto serializeAsset(const TransactionData &transaction,
                     buffer,
                     offset);
 
-        case DELEGATE_RESIGNATION_TYPE: return 0UL;
+        // Delegate Resignation
+        // No Asset Needed. Return Default of '0'.
+        // case DELEGATE_RESIGNATION_TYPE:
 
         case HTLC_LOCK_TYPE:
             return HtlcLock::Serialize(

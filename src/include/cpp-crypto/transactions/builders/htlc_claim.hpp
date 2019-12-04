@@ -10,8 +10,8 @@
 #ifndef ARK_TRANSACTIONS_BUILDERS_HTLC_CLAIM_HPP
 #define ARK_TRANSACTIONS_BUILDERS_HTLC_CLAIM_HPP
 
+#include <algorithm>
 #include <cstdint>
-#include <utility>
 
 #include "transactions/builders/common.hpp"
 
@@ -32,9 +32,9 @@ class HtlcClaim : public Common<HtlcClaim> {
     ////////////////////////////////////////////////////////////////////////////
     // Lock Transaction Id
     HtlcClaim &lockTransactionId(const uint8_t *lockTransactionId) {
-        std::move(lockTransactionId,
-                  lockTransactionId + HASH_32_LEN,
-                  this->transaction.data.asset.htlcClaim.id.begin());
+        std::copy_n(lockTransactionId,
+                    HASH_32_LEN,
+                    this->transaction.data.asset.htlcClaim.id.begin());
 
         return *this;
     }
@@ -42,11 +42,16 @@ class HtlcClaim : public Common<HtlcClaim> {
     ////////////////////////////////////////////////////////////////////////////
     // Unlock Secret
     HtlcClaim &unlockSecret(const uint8_t *unlockSecret) {
-        std::move(unlockSecret, 
-                  unlockSecret + HASH_32_LEN,
-                  this->transaction.data.asset.htlcClaim.secret.begin());
+        std::copy_n(unlockSecret, 
+                    HASH_32_LEN,
+                    this->transaction.data.asset.htlcClaim.secret.begin());
 
         return *this;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    HtlcClaim() {
+        this->transaction.data.type = HTLC_CLAIM_TYPE;
     }
 };
 

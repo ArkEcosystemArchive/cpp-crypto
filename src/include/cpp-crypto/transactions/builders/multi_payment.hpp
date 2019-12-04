@@ -11,7 +11,7 @@
 #define ARK_TRANSACTIONS_BUILDERS_MULTI_PAYMENT_HPP
 
 #include <cstdint>
-#include <cstring>
+#include <vector>
 
 #include "transactions/builders/common.hpp"
 
@@ -35,7 +35,7 @@ class MultiPayment : public Common<MultiPayment> {
     // - Should correspond to the 'Amounts' and 'Addresses' builder inputs counts.
     //
     // ---
-    MultiPayment &n_payments(const uint16_t n_payments) {
+    MultiPayment &n_payments(const uint16_t &n_payments) {
         this->transaction.data.asset.multiPayment.n_payments = n_payments;
         return *this;
     }
@@ -64,6 +64,11 @@ class MultiPayment : public Common<MultiPayment> {
     MultiPayment &addresses(const std::vector<AddressHash> &addresses) {
         this->transaction.data.asset.multiPayment.addresses = addresses;
         return *this;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    MultiPayment() {
+        this->transaction.data.type = MULTI_PAYMENT_TYPE;
     }
 };
 

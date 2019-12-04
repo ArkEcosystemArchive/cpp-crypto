@@ -31,11 +31,11 @@ const size_t HTLC_LOCK_SIZE = 66U;
 // Type 8 - Htlc Lock
 struct HtlcLock {
     ////////////////////////////////////////////////////////////////////////////
-    uint64_t                                amount;
-    std::array<uint8_t, HASH_32_LEN>        secretHash;
-    uint8_t                                 expirationType;
-    uint32_t                                expiration;
-    AddressHash                             recipientId;
+    uint64_t                                amount              { 0ULL };
+    std::array<uint8_t, HASH_32_LEN>        secretHash          { };
+    uint8_t                                 expirationType      { 0U };
+    uint32_t                                expiration          { 0UL };
+    AddressHash                             recipientId         { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(HtlcLock *lock, const uint8_t *buffer);
@@ -56,11 +56,7 @@ struct HtlcLock {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    HtlcLock() : amount(0ULL),
-                 secretHash(),
-                 expirationType(0U),
-                 expiration(0UL),
-                 recipientId() {}
+    HtlcLock() = default;
 };
 
 }  // namespace transactions

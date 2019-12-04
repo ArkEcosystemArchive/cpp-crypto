@@ -40,10 +40,10 @@ namespace Crypto {
 // Signing result is copied to the outgoing signature.
 // Returns true if signing and encoding were both successful.
 //
-// const uint8_t* hash32
+// const uint8_t *hash32
 // - 32-byte array of the message hash to sign.
 //
-// const uint8_t* privateKeyBytes
+// const uint8_t *privateKeyBytes
 // - 32-byte array of the privateKey.
 //
 // std::vector<uint8_t>& outSignature
@@ -91,10 +91,10 @@ auto Curve::Ecdsa::sign(const uint8_t *hash32,
 // Signing result is copied to the outgoing signature.
 // Returns true if signing and encoding were both successful.
 //
-// const uint8_t* hash32
+// const uint8_t *hash32
 // - 32-byte array of the message hash to to verify.
 //
-// const uint8_t* publicKeyBytes
+// const uint8_t *publicKeyBytes
 // - 33-byte array of the compressed-type publicKey.
 //
 // std::vector<uint8_t>& signature
@@ -140,7 +140,7 @@ auto Curve::Ecdsa::verify(const uint8_t *hash32,
 // Returns a 33-byte compressed-type publicKey array.
 // If computation was not successful, an empty byte-array is returned.
 //
-// const uint8_t* privateKeyBytes
+// const uint8_t *privateKeyBytes
 // - 32-byte privateKey byte array.
 //
 // ---
@@ -149,7 +149,7 @@ auto Curve::PublicKey::compute(const uint8_t *privateKeyBytes) -> PublicKeyBytes
 
     PublicKeyPoint uncompressed {};
     if (uECC_compute_public_key(privateKeyBytes, &uncompressed[0], curve) == 0) {
-        return PublicKeyBytes();
+        return {};
     };
 
     return compress(uncompressed.data());
@@ -162,7 +162,7 @@ auto Curve::PublicKey::compute(const uint8_t *privateKeyBytes) -> PublicKeyBytes
 //
 // Returns a 33-byte compressed-type publicKey array.
 //
-// const uint8_t* uncompressed
+// const uint8_t *uncompressed
 // - 64-byte uncompressed-type publicKey byte array of (x,y) elements
 //
 // ---
@@ -182,7 +182,7 @@ auto Curve::PublicKey::compress(const uint8_t *uncompressed) -> PublicKeyBytes {
 //
 // Returns a 64-byte uncompressed-type publicKey array of (x,y) elements.
 //
-// const uint8_t* compressed
+// const uint8_t *compressed
 // - 33-byte compressed-type publicKey byte array.
 //
 // ---
@@ -201,7 +201,7 @@ auto Curve::PublicKey::decompress(const uint8_t *compressed) -> PublicKeyPoint {
 //
 // Returns true if the 33-byte publicKey array was successfully validated.
 //
-// const uint8_t* publicKeyBytes
+// const uint8_t *publicKeyBytes
 // - 33-byte compressed-type publicKey byte array.
 //
 // ---

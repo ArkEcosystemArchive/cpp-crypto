@@ -9,6 +9,8 @@
 
 #include "gtest/gtest.h"
 
+#include <array>
+
 #include "utils/base58.hpp"
 
 #include "fixtures/identity.hpp"
@@ -34,8 +36,8 @@ TEST(utils_base58, check_encode_invalid_len) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_base58, check_encode_zeros) {
-    const uint8_t zero[] = { 0 };
-    const auto zeroHash = Base58::checkEncode(zero, sizeof(zero));
+    const std::array<uint8_t, 1> zero = { 0 };
+    const auto zeroHash = Base58::checkEncode(zero.data(), zero.size());
 
     ASSERT_FALSE(zeroHash.empty());
 }

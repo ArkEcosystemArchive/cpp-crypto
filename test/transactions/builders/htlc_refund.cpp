@@ -25,7 +25,6 @@ using namespace Ark::Crypto::transactions;
 TEST(transactions_builders, htlc_refund) {
     const auto transaction = builder::HtlcRefund()
         .network(COMMON_MAINNET)
-        .type(TYPE_10_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_10_FEE)

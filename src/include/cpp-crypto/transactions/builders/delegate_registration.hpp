@@ -10,12 +10,15 @@
 #ifndef ARK_TRANSACTIONS_BUILDERS_DELEGATE_REGISTRATION_HPP
 #define ARK_TRANSACTIONS_BUILDERS_DELEGATE_REGISTRATION_HPP
 
+#include <algorithm>
 #include <cstdint>
-#include <utility>
+#include <string>
 
 #include "transactions/builders/common.hpp"
 
 #include "interfaces/constants.h"
+
+#include "utils/str.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -32,16 +35,13 @@ class DelegateRegistration : public Common<DelegateRegistration> {
     ////////////////////////////////////////////////////////////////////////////
     // Username - uint8_t[] 3 <=> 20 Bytes
     DelegateRegistration &username(const uint8_t *username,
-                                   const size_t length) {
+                                   const size_t &length) {
         this->transaction.data.asset
-                .delegateRegistration.length =
-                        static_cast<uint8_t>(length);
+                .delegateRegistration.length = static_cast<uint8_t>(length);
 
-        std::move(username,
-                  username + length,
-                  this->transaction.data.asset
-                        .delegateRegistration
-                        .username.begin());
+        std::copy_n(username, length, this->transaction.data.asset
+                                            .delegateRegistration
+                                            .username.begin());
 
         return *this;
     }
@@ -51,15 +51,20 @@ class DelegateRegistration : public Common<DelegateRegistration> {
     DelegateRegistration &username(const std::string &username) {
         this->transaction.data.asset
                 .delegateRegistration.length =
-                    static_cast<uint8_t>(username.length());
+                        static_cast<uint8_t>(username.length());
 
-        std::move(username.begin(),
-                  username.end(),
-                  this->transaction.data.asset
-                        .delegateRegistration
-                        .username.begin());
+        std::copy_n(StringToBytes(username).begin(),
+                    username.length(),
+                    this->transaction.data.asset
+                            .delegateRegistration
+                            .username.begin());
 
         return *this;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    DelegateRegistration() {
+        this->transaction.data.type = DELEGATE_REGISTRATION_TYPE;
     }
 };
 

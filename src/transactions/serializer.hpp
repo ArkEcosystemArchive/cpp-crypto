@@ -10,6 +10,7 @@
 #ifndef ARK_TRANSACTIONS_SERIALIZER_HPP
 #define ARK_TRANSACTIONS_SERIALIZER_HPP
 
+#include <cstdbool>
 #include <cstdint>
 #include <vector>
 
@@ -26,15 +27,6 @@ struct SerializerOptions {
     ////////////////////////////////////////////////////////////////////////////
     bool excludeSignature;
     bool excludeSecondSignature;
-
-    ////////////////////////////////////////////////////////////////////////////
-    SerializerOptions() : excludeSignature(false),
-                          excludeSecondSignature(false) {}
-
-    ////////////////////////////////////////////////////////////////////////////
-    SerializerOptions(bool excludeSignature, bool excludeSecondSignature)
-        :  excludeSignature(excludeSignature),
-           excludeSecondSignature(excludeSecondSignature) {}
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +36,7 @@ class Serializer {
     ////////////////////////////////////////////////////////////////////////////
     static std::vector<uint8_t> serialize(
             const TransactionData &data,
-            const SerializerOptions &options = {});
+            const SerializerOptions &options = { false, false });
 };
 
 }  // namespace transactions

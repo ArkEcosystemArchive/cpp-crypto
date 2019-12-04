@@ -10,8 +10,9 @@
 #ifndef ARK_TRANSACTIONS_BUILDERS_HTLC_LOCK_HPP
 #define ARK_TRANSACTIONS_BUILDERS_HTLC_LOCK_HPP
 
+#include <algorithm>
 #include <cstdint>
-#include <utility>
+#include <string>
 
 #include "transactions/builders/common.hpp"
 
@@ -33,7 +34,7 @@ class HtlcLock : public Common<HtlcLock> {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Amount
-    HtlcLock &amount(const uint64_t amount) {
+    HtlcLock &amount(const uint64_t &amount) {
         this->transaction.data.asset.htlcLock.amount = amount;
         return *this;
     }
@@ -41,23 +42,23 @@ class HtlcLock : public Common<HtlcLock> {
     ////////////////////////////////////////////////////////////////////////////
     // Secret Hash
     HtlcLock &secretHash(const uint8_t *secretHash) {
-        std::move(secretHash,
-                  secretHash + HASH_32_LEN,
-                  this->transaction.data.asset.htlcLock.secretHash.begin());
+        std::copy_n(secretHash,
+                    HASH_32_LEN,
+                    this->transaction.data.asset.htlcLock.secretHash.begin());
 
         return *this;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Expiration Type
-    HtlcLock &expirationType(const uint8_t expirationType) {
+    HtlcLock &expirationType(const uint8_t &expirationType) {
         this->transaction.data.asset.htlcLock.expirationType = expirationType;
         return *this;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Expiration
-    HtlcLock &expiration(const uint32_t expiration) {
+    HtlcLock &expiration(const uint32_t &expiration) {
         this->transaction.data.asset.htlcLock.expiration = expiration;
         return *this;
     }
@@ -65,23 +66,30 @@ class HtlcLock : public Common<HtlcLock> {
     ////////////////////////////////////////////////////////////////////////////
     // RecipientId - uint8_t[21] (network.version + pubkeyHash)
     HtlcLock &recipientId(const uint8_t *addressHash) {
-        std::move(addressHash,
-                  addressHash + ADDRESS_HASH_LEN,
-                  this->transaction.data.asset.htlcLock.recipientId.begin());
+        std::copy_n(addressHash,
+                    ADDRESS_HASH_LEN,
+                    this->transaction.data.asset.htlcLock.recipientId.begin());
 
         return *this;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // RecipientId - std::string
-    HtlcLock &recipientId(std::string recipientId) {
+    HtlcLock &recipientId(const std::string &recipientId) {
         const auto hashPair = Base58::getHashPair(recipientId.c_str());
-        this->transaction.data.asset.htlcLock.recipientId.at(0) = hashPair.version;
-        std::move(hashPair.pubkeyHash.begin(),
+        this->transaction.data.asset
+                .htlcLock.recipientId.at(0) = hashPair.version;
+
+        std::copy(hashPair.pubkeyHash.begin(),
                   hashPair.pubkeyHash.end(),
                   &this->transaction.data.asset.htlcLock.recipientId.at(1));
 
         return *this;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    HtlcLock() {
+        this->transaction.data.type = HTLC_LOCK_TYPE;
     }
 };
 

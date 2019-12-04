@@ -49,8 +49,14 @@ const size_t SIGNATURE_ECDSA_MAX    = 72U;
 const uint8_t TRANSACTION_VERSION_TYPE_1    = 0x01;
 const uint8_t TRANSACTION_VERSION_TYPE_2    = 0x02;
 
+const uint32_t TRANSACTION_DEFAULT_HEADER       = 0xFF;
+const uint32_t TRANSACTION_DEFAULT_TYPEGROUP    = 1UL;
+
 // The Default and Max Tx Sizes aid in limiting the impact of dynamic allocation.
 // Particularly in embedded environments, this also helps avoid overflow errors.
+//
+// These are currently used by Serializer and the MultiPayment Tx-type.
+// They can be tweaked to suit whichever environment were developing for.
 const size_t TX_DEFAULT_SIZE    = 512UL;
 
 #if defined(USE_IOT)

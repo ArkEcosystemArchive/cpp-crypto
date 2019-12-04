@@ -47,11 +47,11 @@ const auto KEY_N_PAYMENTS_LABEL = "n_payments";
 struct MultiPayment {
     ////////////////////////////////////////////////////////////////////////////
     // Network Limit: 100
-    uint16_t n_payments;
+    uint16_t n_payments { 0U };
 
     ////////////////////////////////////////////////////////////////////////////
     // n_payments * vector<uint64_t>
-    std::vector<uint64_t> amounts;
+    std::vector<uint64_t> amounts { 0ULL };
 
     ////////////////////////////////////////////////////////////////////////////
     // n_payments * vector<array[21]> Bytes
@@ -64,7 +64,7 @@ struct MultiPayment {
     ////////////////////////////////////////////////////////////////////////////
     static size_t Serialize(const MultiPayment &payments,
                               std::vector<uint8_t> &buffer,
-                              const size_t offset);
+                              const size_t &offset);
 
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
@@ -72,14 +72,14 @@ struct MultiPayment {
                          std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    static size_t getJsonCapacity(const size_t n_payments);
+    static size_t getJsonCapacity(const size_t &n_payments);
 
     ////////////////////////////////////////////////////////////////////////////
     static void addToJson(DynamicJsonDocument &jsonDoc,
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    MultiPayment() : n_payments(0U), amounts({ 0ULL }), addresses() {}
+    MultiPayment() = default;
 };
 
 }  // namespace transactions

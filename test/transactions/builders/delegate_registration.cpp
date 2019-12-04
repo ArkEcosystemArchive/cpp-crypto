@@ -25,7 +25,6 @@ using namespace Ark::Crypto::transactions;
 TEST(transactions_builders, delegate_registration) {
     const auto transaction = builder::DelegateRegistration()
         .network(COMMON_MAINNET)
-        .type(TYPE_2_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME, sizeof(TYPE_2_USERNAME))
@@ -40,7 +39,6 @@ TEST(transactions_builders, delegate_registration) {
 TEST(transactions_builders, delegate_registration_string) {
     const auto transaction = builder::DelegateRegistration()
         .network(COMMON_MAINNET)
-        .type(TYPE_2_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME_STRING)

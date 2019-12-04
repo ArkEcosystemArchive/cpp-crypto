@@ -10,6 +10,7 @@
 #ifndef ARK_TRANSACTION_HPP
 #define ARK_TRANSACTION_HPP
 
+#include <cstdbool>
 #include <cstdint>
 #include <map>
 #include <string>
@@ -19,6 +20,8 @@
 
 #include "transactions/transaction_data.hpp"
 
+#include "transactions/serializer.hpp"
+
 namespace Ark {
 namespace Crypto {
 namespace transactions {
@@ -27,7 +30,7 @@ namespace transactions {
 class Transaction {
   public:
     ////////////////////////////////////////////////////////////////////////////
-    Transaction() : data() {};
+    Transaction() = default;
 
     ////////////////////////////////////////////////////////////////////////////
     Hash32 getId() const;
@@ -51,8 +54,8 @@ class Transaction {
     std::vector<uint8_t> serialize();
 
     ////////////////////////////////////////////////////////////////////////////
-    std::vector<uint8_t> toBytes(bool excludeSignature = false,
-                                 bool excludeSecondSignature = false) const;
+    std::vector<uint8_t> toBytes(
+            const SerializerOptions &options = { false, false }) const;
 
     ////////////////////////////////////////////////////////////////////////////
     std::map<std::string, std::string> toMap() const;

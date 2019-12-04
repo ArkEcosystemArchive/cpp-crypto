@@ -9,9 +9,9 @@
 
 #include "transactions/deserializer.hpp"
 
+#include <algorithm>
 #include <cstdbool>
 #include <cstdint>
-#include <utility>
 #include <vector>
 
 #include "interfaces/constants.h"
@@ -54,7 +54,7 @@ namespace transactions {
 // - data->nonce = unpack8LE(&buffer, 9);
 //
 // SenderPublicKey - 33 Bytes:
-// - std::move(&buffer.at(17), &buffer.at(50), data->senderPublicKey.begin());
+// - std::copy_n(&buffer.at(Z) 33, data->senderPublicKey.begin());
 //
 // Fee - 8 bytes
 // - data->fee = unpack8LE(&buffer, 50);
@@ -73,12 +73,14 @@ static void deserializeCommon(TransactionData *data,
     data->network       = buffer.at(NETWORK_OFFSET);                // 1 Byte
 
     data->typeGroup     = unpack4LE(buffer, TYPEGROUP_OFFSET);      // 4 Bytes
+
     data->type          = unpack2LE(buffer, TYPE_OFFSET);           // 2 Bytes
+    
     data->nonce         = unpack8LE(buffer, NONCE_OFFSET);          // 8 Bytes
 
-    std::move(&buffer.at(SENDER_PUBLICKEY_OFFSET),                  // 21 Bytes
-              &buffer.at(SENDER_PUBLICKEY_OFFSET + PUBLICKEY_COMPRESSED_LEN),
-              data->senderPublicKey.begin());
+    std::copy_n(&buffer.at(SENDER_PUBLICKEY_OFFSET),                // 21 Bytes
+                PUBLICKEY_COMPRESSED_LEN,
+                data->senderPublicKey.begin());
 
     data->fee           = unpack8LE(buffer, FEE_OFFSET);           // 8 Bytes
 
@@ -115,7 +117,7 @@ static void deserializeCommon(TransactionData *data,
 // - data->timestamp = unpack4LE(buffer, 4);
 //
 // SenderPublicKey - 33 Bytes:
-// - std::move(&buffer.at(8), &buffer.at(41) data->senderPublicKey.begin());
+// - std::copy_n(&buffer.at(8), 33, data->senderPublicKey.begin());
 //
 // Fee - 8 bytes
 // - data->fee = unpack8LE(buffer, 41);
@@ -137,9 +139,9 @@ static void deserializeCommonV1(TransactionData *data,
 
     data->timestamp     = unpack4LE(buffer, v1::TIMESTAMP_OFFSET);  // 4 Bytes
 
-    std::move(&buffer.at(v1::SENDER_PUBLICKEY_OFFSET),              // 33 Bytes
-              &buffer.at(v1::SENDER_PUBLICKEY_OFFSET + PUBLICKEY_COMPRESSED_LEN),
-              data->senderPublicKey.begin());
+    std::copy_n(&buffer.at(v1::SENDER_PUBLICKEY_OFFSET),              // 33 Bytes
+                PUBLICKEY_COMPRESSED_LEN,
+                data->senderPublicKey.begin());
 
     data->fee        = unpack8LE(buffer, v1::FEE_OFFSET);           // 8 Bytes
 
@@ -154,59 +156,71 @@ static void deserializeCommonV1(TransactionData *data,
 ////////////////////////////////////////////////////////////////////////////////
 static auto deserializeAsset(TransactionData *transaction,
                              const std::vector<uint8_t> &buffer,
-                             const size_t offset) -> size_t {
-  switch (transaction->type) {
-    case TRANSFER_TYPE:
-        return Transfer::Deserialize(
-                &transaction->asset.transfer,
-                &buffer.at(offset));
+                             const size_t &offset) -> size_t {
+    switch (transaction->type) {
+        // Transfer
+        case TRANSFER_TYPE:
+            return Transfer::Deserialize(
+                    &transaction->asset.transfer,
+                    &buffer.at(offset));
 
-    case SECOND_SIGNATURE_TYPE:
-        return SecondSignature::Deserialize(
-                &transaction->asset.secondSignature,
-                &buffer.at(offset));
+        // Second Signature Registration
+        case SECOND_SIGNATURE_TYPE:
+            return SecondSignature::Deserialize(
+                    &transaction->asset.secondSignature,
+                    &buffer.at(offset));
 
-    case DELEGATE_REGISTRATION_TYPE:
-        return DelegateRegistration::Deserialize(
-                &transaction->asset.delegateRegistration,
-                &buffer.at(offset));
+        // Delegate Registration
+        case DELEGATE_REGISTRATION_TYPE:
+            return DelegateRegistration::Deserialize(
+                    &transaction->asset.delegateRegistration,
+                    &buffer.at(offset));
 
-    case VOTE_TYPE:
-        return Vote::Deserialize(
-                &transaction->asset.vote,
-                &buffer.at(offset));
+        // Vote
+        case VOTE_TYPE:
+            return Vote::Deserialize(
+                    &transaction->asset.vote,
+                    &buffer.at(offset));
 
-    // case MULTI_SIGNATURE_TYPE:  // TODO
+        // // MultiSignature Registration
+        // case MULTI_SIGNATURE_TYPE:  // TODO
 
-    case IPFS_TYPE:
-        return Ipfs::Deserialize(
-                &transaction->asset.ipfs,
-                &buffer.at(offset));
+        // Ipfs
+        case IPFS_TYPE:
+            return Ipfs::Deserialize(
+                    &transaction->asset.ipfs,
+                    &buffer.at(offset));
 
-    case MULTI_PAYMENT_TYPE:
-        return MultiPayment::Deserialize(
-                &transaction->asset.multiPayment,
-                &buffer.at(offset));
+        // MultiPayment
+        case MULTI_PAYMENT_TYPE:
+            return MultiPayment::Deserialize(
+                    &transaction->asset.multiPayment,
+                    &buffer.at(offset));
 
-    case DELEGATE_RESIGNATION_TYPE: return 0UL;
+        // Delegate Resignation
+        // No Asset Needed. Return Default of '0'.
+        // case DELEGATE_RESIGNATION_TYPE:
 
-    case HTLC_LOCK_TYPE:
-        return HtlcLock::Deserialize(
-                &transaction->asset.htlcLock,
-                &buffer.at(offset));
-    
-    case HTLC_CLAIM_TYPE:
-        return HtlcClaim::Deserialize(
-                &transaction->asset.htlcClaim,
-                &buffer.at(offset));
+        // Htlc Lock
+        case HTLC_LOCK_TYPE:
+            return HtlcLock::Deserialize(
+                    &transaction->asset.htlcLock,
+                    &buffer.at(offset));
 
-    case HTLC_REFUND_TYPE:
-        return HtlcRefund::Deserialize(
-                &transaction->asset.htlcRefund,
-                &buffer.at(offset));
+        // Htlc Claim
+        case HTLC_CLAIM_TYPE:
+            return HtlcClaim::Deserialize(
+                    &transaction->asset.htlcClaim,
+                    &buffer.at(offset));
 
-    default: return 0UL;
-  };
+        // Htlc Claim
+        case HTLC_REFUND_TYPE:
+            return HtlcRefund::Deserialize(
+                    &transaction->asset.htlcRefund,
+                    &buffer.at(offset));
+
+        default: return 0UL;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

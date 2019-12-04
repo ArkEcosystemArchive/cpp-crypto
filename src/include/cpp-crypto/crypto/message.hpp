@@ -30,7 +30,7 @@ class Message {
 
     ////////////////////////////////////////////////////////////////////////////
     Message();
-    Message(const std::string &message,
+    Message(std::string message,
             const uint8_t *publicKeyBytes,
             const uint8_t *signature);
 

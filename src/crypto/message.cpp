@@ -9,9 +9,9 @@
 
 #include "crypto/message.hpp"
 
+#include <algorithm>
 #include <map>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "interfaces/identities.hpp"
@@ -28,12 +28,12 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const char* MESSAGE_KEY        = "message";
-static constexpr const char* PUBLICKEY_KEY      = "publickey";
-static constexpr const char* SIGNATURE_KEY      = "signature";
+const auto MESSAGE_KEY      = "message";
+const auto PUBLICKEY_KEY    = "publickey";
+const auto SIGNATURE_KEY    = "signature";
 
-static constexpr const uint8_t MAGIC_JSON_SIZE          = 120U;
-static constexpr const uint8_t MAGIC_JSON_OBJ_SIZE      = 3U;
+constexpr uint8_t MAGIC_JSON_SIZE       = 120U;
+constexpr uint8_t MAGIC_JSON_OBJ_SIZE   = 3U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Create an empty Message object for building and signing.
@@ -43,12 +43,12 @@ Message::Message() : publicKey() {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Create a Signed Message object for verification.
-Message::Message(const std::string &message,
+Message::Message(std::string message,
                  const uint8_t *publicKeyBytes,
-                 const uint8_t *signature) : message(message) {
-    std::move(publicKeyBytes,
-              publicKeyBytes + PUBLICKEY_COMPRESSED_LEN,
-              this->publicKey.begin());
+                 const uint8_t *signature) : message(std::move(message)) {
+    std::copy_n(publicKeyBytes,
+                PUBLICKEY_COMPRESSED_LEN,
+                this->publicKey.begin());
 
     this->signature.insert(this->signature.begin(),
                            signature,

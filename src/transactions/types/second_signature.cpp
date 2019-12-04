@@ -9,11 +9,10 @@
 
 #include "transactions/types/second_signature.hpp"
 
+#include <algorithm>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
-#include <utility>
 
 #include "interfaces/constants.h"
 
@@ -36,14 +35,14 @@ namespace transactions {
 // Internals:
 //
 // Second PublicKey - 33 Bytes:
-// - std::move(buffer, buffer + 33, registration->publicKey);
+// - std::copy_n(buffer, 33, registration->publicKey.begin());
 //
 // ---
 auto SecondSignature::Deserialize(SecondSignature *registration,
                                   const uint8_t *buffer) -> size_t {
-    std::move(buffer,
-              buffer + PUBLICKEY_COMPRESSED_LEN,
-              registration->publicKey.begin());  
+    std::copy_n(buffer,
+                PUBLICKEY_COMPRESSED_LEN,
+                registration->publicKey.begin());
 
     return PUBLICKEY_COMPRESSED_LEN;                             // 33 Bytes
 }
@@ -60,12 +59,12 @@ auto SecondSignature::Deserialize(SecondSignature *registration,
 // Internals:
 //
 // Second PublicKey - 33 Bytes:
-// - std::move(registration.publicKey.begin(), registration.publicKey.end(), buffer);
+// - std::copy(registration.publicKey.begin(), registration.publicKey.end(), buffer);
 //
 // ---
 auto SecondSignature::Serialize(const SecondSignature &registration,
                                 uint8_t *buffer) -> size_t {
-    std::move(registration.publicKey.begin(),
+    std::copy(registration.publicKey.begin(),
               registration.publicKey.end(),
               buffer);
 

@@ -25,7 +25,6 @@ using namespace Ark::Crypto::transactions;
 TEST(transactions_builders, ipfs) {
     const auto transaction = builder::Ipfs()
         .network(COMMON_MAINNET)
-        .type(TYPE_5_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_5_FEE)

@@ -103,8 +103,8 @@ constexpr auto WifString        = "SGq4xLgZKCGxslbjmwnBrWcT4C1ADFEermj846KC97FSv
 
 ////////////////////////////////////////////////////////////////////////////////
 // Empty arrays
-static constexpr const std::array<uint8_t, PRIVATEKEY_BYTE_LEN>         PrivateKeyBytes = {{}};
-static constexpr const std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN>    PublicKeyBytes = {{}};
+const std::array<uint8_t, PRIVATEKEY_BYTE_LEN>          PrivateKeyBytes = {{}};
+const std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN>     PublicKeyBytes = {{}};
 
 }  // namespace invalid
 }  // fixtures

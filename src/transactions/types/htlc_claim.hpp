@@ -27,8 +27,8 @@ namespace transactions {
 // Type 9 - Htlc Claim
 struct HtlcClaim {
     ////////////////////////////////////////////////////////////////////////////
-    std::array<uint8_t, HASH_32_LEN>    id;
-    std::array<uint8_t, HASH_32_LEN>    secret;
+    std::array<uint8_t, HASH_32_LEN>    id      { };
+    std::array<uint8_t, HASH_32_LEN>    secret  { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(HtlcClaim *claim, const uint8_t *buffer);
@@ -49,7 +49,7 @@ struct HtlcClaim {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    HtlcClaim() : id(), secret() {}
+    HtlcClaim() = default;
 };
 
 }  // namespace transactions

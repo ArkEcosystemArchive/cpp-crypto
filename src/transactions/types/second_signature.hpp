@@ -26,7 +26,7 @@ namespace transactions {
 // Type 1 - Second Signature Registration
 struct SecondSignature {
     ////////////////////////////////////////////////////////////////////////////
-    PublicKeyBytes publicKey;
+    PublicKeyBytes publicKey { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(SecondSignature *registration,
@@ -49,7 +49,7 @@ struct SecondSignature {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    SecondSignature() : publicKey() {}
+    SecondSignature() = default;
 };
 
 }  // namespace transactions

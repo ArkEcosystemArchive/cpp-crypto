@@ -9,13 +9,12 @@
 
 #include "transactions/types/multi_payment.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <numeric>  // std::accumulate
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "interfaces/constants.h"
@@ -51,7 +50,7 @@ namespace transactions {
 // - payments.amounts.at(i)  = unpack8LE(buffer, offset);
 //
 // Addresses - n_payments * vector<array[21]> Bytes
-// - std::move(&buffer[pos], &buffer[pos + 21], payments->addresses.at(i).begin());
+// - std::copy_n(&buffer[pos], 21, payments->addresses.at(i).begin());
 //
 // ---
 auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
@@ -73,9 +72,9 @@ auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
 
         pos += sizeof(uint64_t);
 
-        std::move(&buffer[pos],                                 // 21 Bytes
-                  &buffer[pos + ADDRESS_HASH_LEN],
-                  payments->addresses.at(i).begin());
+        std::copy_n(&buffer[pos],                               // 21 Bytes
+                    ADDRESS_HASH_LEN,
+                    payments->addresses.at(i).begin());
 
         pos += ADDRESS_HASH_LEN;
     }
@@ -93,7 +92,7 @@ auto MultiPayment::Deserialize(MultiPayment *payments, const uint8_t *buffer)
 // ---
 static inline auto checkBuffer(const MultiPayment &payments,
                                std::vector<uint8_t> &buffer,
-                               const size_t offset) -> bool {
+                               const size_t &offset) -> bool {
     const size_t assetSize =
         sizeof(uint16_t) +
         ((sizeof(uint64_t) + ADDRESS_HASH_LEN) * payments.n_payments);
@@ -133,12 +132,12 @@ static inline auto checkBuffer(const MultiPayment &payments,
 // - pack8LE(&buffer.at(pos), &payments.amounts.at(i));
 //
 // Addresses - n_payments * vector<array[21]> Bytes
-// - std::move(payments.addresses.at(i).begin(), payments.addresses.at(i).end(), &buffer[pos]);
+// - std::copy(payments.addresses.at(i).begin(), payments.addresses.at(i).end(), &buffer[pos]);
 //
 // ---
 auto MultiPayment::Serialize(const MultiPayment &payments,
                              std::vector<uint8_t> &buffer,
-                             const size_t offset) -> size_t {
+                             const size_t &offset) -> size_t {
     if (!checkBuffer(payments, buffer, offset)) {
         return 0UL;
     }
@@ -152,7 +151,7 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
 
         pos += sizeof(uint64_t);
 
-        std::move(payments.addresses.at(i).begin(),             // 21 Bytes
+        std::copy(payments.addresses.at(i).begin(),             // 21 Bytes
                   payments.addresses.at(i).end(),
                   &buffer[pos]);
 
@@ -220,7 +219,7 @@ void MultiPayment::addToMap(const MultiPayment &payments,
 
 ////////////////////////////////////////////////////////////////////////////////
 // Return the Json Capacity of a MultiPayment-type Transaction.
-auto MultiPayment::getJsonCapacity(const size_t n_payments) -> size_t {
+auto MultiPayment::getJsonCapacity(const size_t &n_payments) -> size_t {
     return JSON_OBJECT_SIZE(1) + KEY_ASSET_SIZE +
            JSON_OBJECT_SIZE(1) + KEY_PAYMENTS_SIZE +
            JSON_ARRAY_SIZE(n_payments) +

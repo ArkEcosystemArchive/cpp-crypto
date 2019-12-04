@@ -18,7 +18,7 @@ namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Fee Policy Container
-typedef std::vector<uint64_t> FeePolicy;
+using FeePolicy = std::vector<uint64_t>;
 
 }  // namespace Crypto
 }  // namespace Ark

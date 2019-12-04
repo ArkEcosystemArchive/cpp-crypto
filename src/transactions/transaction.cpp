@@ -9,11 +9,12 @@
 
 #include "transactions/transaction.hpp"
 
+#include <algorithm>
+#include <cstdbool>
 #include <cstddef>
 #include <cstdint>
 #include <map>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "crypto/curve.hpp"
@@ -30,10 +31,7 @@
 
 #include "transactions/mapping.hpp"
 
-#include "utils/base58.hpp"
 #include "utils/hex.hpp"
-#include "utils/json.h"
-#include "utils/str.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -42,7 +40,7 @@ namespace transactions {
 ////////////////////////////////////////////////////////////////////////////////
 // Compute the unique transaction ID.
 auto Transaction::getId() const -> Hash32 {
-    const auto serialized = this->toBytes(false, false);
+    const auto serialized = this->toBytes();
     return Hash::sha256(serialized.data(), serialized.size());
 }
 
@@ -59,7 +57,7 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
               keys.publicKey.end(),
               this->data.senderPublicKey.begin());
 
-    const auto serialized = this->toBytes(true, true);
+    const auto serialized = this->toBytes({ true, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
     this->data.signature.reserve(SIGNATURE_ECDSA_MAX);
@@ -78,7 +76,7 @@ auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
 
     const auto keys = identities::Keys::fromPassphrase(secondPassphrase.c_str());
 
-    const auto serialized = this->toBytes(false, true);
+    const auto serialized = this->toBytes({ false, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
     this->data.secondSignature.reserve(SIGNATURE_ECDSA_MAX);
@@ -93,7 +91,7 @@ auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
 auto Transaction::verify() const -> bool {
     // skip both signatures,
     // neither should be present in the signing hash.
-    const auto serialized = this->toBytes(true, true);
+    const auto serialized = this->toBytes({ true, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
     return Curve::Ecdsa::verify(hash32.data(),
@@ -106,7 +104,7 @@ auto Transaction::verify() const -> bool {
 auto Transaction::secondVerify(const uint8_t *secondPublicKey) const -> bool {
     // include only the first signature,
     // that should be present signing hash for a second signing.
-    const auto serialized = this->toBytes(false, true);
+    const auto serialized = this->toBytes({ false, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
     return Curve::Ecdsa::verify(hash32.data(),
@@ -128,11 +126,9 @@ auto Transaction::serialize() -> std::vector<uint8_t> {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Turn the Transaction into its byte representation.
-auto Transaction::toBytes(bool excludeSignature,
-                          bool excludeSecondSignature) const
+auto Transaction::toBytes(const SerializerOptions &options) const
                                 -> std::vector<uint8_t> {
-    return Serializer::serialize(this->data,
-                                 { excludeSignature, excludeSecondSignature });
+    return Serializer::serialize(this->data, options);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

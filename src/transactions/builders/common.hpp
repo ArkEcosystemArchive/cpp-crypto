@@ -10,16 +10,20 @@
 #ifndef ARK_TRANSACTIONS_BUILDER_COMMON_HPP
 #define ARK_TRANSACTIONS_BUILDER_COMMON_HPP
 
+#include <algorithm>
 #include <cstdint>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "common/configuration.hpp"
 
+#include "identities/keys.hpp"
+
 #include "transactions/transaction.hpp"
 
 #include "interfaces/identities.hpp"
+
+#include "utils/str.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -32,7 +36,7 @@ template<class T> class Common {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Version
-    T &version(const uint8_t version) {
+    T &version(const uint8_t &version) {
         this->transaction.data.version = version;
         return reinterpret_cast<T&>(*this);
     }
@@ -44,7 +48,7 @@ template<class T> class Common {
     // - Mainnet: 23
     //
     // ---
-    T &network(const uint8_t network) {
+    T &network(const uint8_t &network) {
         this->transaction.data.network = network;
         return reinterpret_cast<T&>(*this);
     }
@@ -79,10 +83,17 @@ template<class T> class Common {
 
     ////////////////////////////////////////////////////////////////////////////
     // Sender PublicKey
+    //
+    // This builder item is unecessary when signing the builder inline.
+    // - e.g `.sign(passphrase)`
+    //
+    // `Transaction::sign(passphrase)` adds this automatically.
+    //
+    // ---
     T &senderPublicKey(const uint8_t *senderPublicKey) {
-        std::move(senderPublicKey,
-                  senderPublicKey + PUBLICKEY_COMPRESSED_LEN,
-                  this->transaction.data.senderPublicKey.begin());
+        std::copy_n(senderPublicKey,
+                    PUBLICKEY_COMPRESSED_LEN,
+                    this->transaction.data.senderPublicKey.begin());
 
         return reinterpret_cast<T&>(*this);
     }
@@ -96,7 +107,7 @@ template<class T> class Common {
 
     ////////////////////////////////////////////////////////////////////////////
     // VendorField - std::vector<uint8_t>
-    T &vendorFieldHex(const uint8_t *vendorField, const size_t length) {
+    T &vendorFieldHex(const uint8_t *vendorField, const size_t &length) {
         this->transaction.data.vendorField.insert(
             this->transaction.data.vendorField.begin(),
             vendorField,
@@ -108,19 +119,19 @@ template<class T> class Common {
     ////////////////////////////////////////////////////////////////////////////
     // VendorField - std::string
     T &vendorField(const std::string &vendorField) {
-        const auto vf = reinterpret_cast<const uint8_t *>(vendorField.c_str());
+        const auto vf = StringToBytes(vendorField);
 
         this->transaction.data.vendorField.insert(
             this->transaction.data.vendorField.begin(),
-            vf,
-            vf + vendorField.length());
+            vf.begin(),
+            vf.end());
 
         return reinterpret_cast<T&>(*this);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Signature
-    T &signature(const uint8_t *signature, const size_t length) {
+    T &signature(const uint8_t *signature, const size_t &length) {
         this->transaction.data.signature.insert(
             this->transaction.data.signature.begin(),
             signature,
@@ -131,7 +142,7 @@ template<class T> class Common {
 
     ////////////////////////////////////////////////////////////////////////////
     // Second Signature
-    T &secondSignature(const uint8_t *secondSignature, const size_t length) {
+    T &secondSignature(const uint8_t *secondSignature, const size_t &length) {
         this->transaction.data.secondSignature.insert(
             this->transaction.data.secondSignature.begin(),
             secondSignature,

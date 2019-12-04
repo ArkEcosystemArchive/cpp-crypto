@@ -25,7 +25,6 @@ using namespace Ark::Crypto::transactions;
 TEST(transactions_builders, htlc_lock) {
     const auto transaction = builder::HtlcLock()
         .network(COMMON_MAINNET)
-        .type(TYPE_8_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_8_FEE)
@@ -44,7 +43,6 @@ TEST(transactions_builders, htlc_lock) {
 TEST(transactions_builders, htlc_lock_string) {
     const auto transaction = builder::HtlcLock()
         .network(COMMON_MAINNET)
-        .type(TYPE_8_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_8_FEE)

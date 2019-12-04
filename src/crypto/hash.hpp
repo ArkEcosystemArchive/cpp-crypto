@@ -23,7 +23,7 @@ struct Hash {
     static PubkeyHash ripemd160(const uint8_t *publicKeyBytes);
 
     ////////////////////////////////////////////////////////////////////////////
-    static Hash32 sha256(const uint8_t *inputBytes, const size_t size);
+    static Hash32 sha256(const uint8_t *inputBytes, const size_t &size);
 };
 
 }  // namespace Crypto

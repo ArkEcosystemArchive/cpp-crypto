@@ -22,7 +22,7 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-auto Base58::checkEncode(const uint8_t *data, const size_t length)
+auto Base58::checkEncode(const uint8_t *data, const size_t &length)
         -> std::string {
     const std::array<uint8_t, BASE58_ALPHABET_LEN> BASE58ALPHABET = {
         '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -108,7 +108,7 @@ auto Base58::parseAddressHash(const AddressHash &addressHash) -> std::string {
 ////////////////////////////////////////////////////////////////////////////////
 // Returns a formatted Address string.
 // Expects a 20-byte Ripemd160 Address hash a Network version-byte.
-auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, const uint8_t version)
+auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, const uint8_t &version)
         -> std::string {
     std::string out(ADDRESS_STR_LEN, '\0');
     bcl::Base58Check::pubkeyHashToBase58Check(pubkeyHash, version, &out[0]);
@@ -117,7 +117,7 @@ auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, const uint8_t version)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Returns a Wif string from PrivateKey-bytes and a Wif version-byte.
-auto Base58::getWif(const uint8_t *privateKeyBytes, const uint8_t version)
+auto Base58::getWif(const uint8_t *privateKeyBytes, const uint8_t &version)
         -> std::string {
     std::string out(WIF_STRING_LEN, '\0');
     bcl::Base58Check::privateKeyToBase58Check(bcl::Uint256(privateKeyBytes),
@@ -131,7 +131,7 @@ auto Base58::getWif(const uint8_t *privateKeyBytes, const uint8_t version)
 // Returns PrivateKey bytes from a Wif string and a Wif version-byte.
 auto Base58::parseWif(const char *wif, uint8_t* outVersion) -> PrivateKeyBytes {
     if (!Base58::validate(wif, WIF_STRING_LEN)) {
-        return PrivateKeyBytes();
+        return {};
     }
 
     bcl::Uint256 num;
@@ -157,7 +157,7 @@ static const std::array<int8_t, BASE58_TABLE_LEN> Base58Table = {{
 // Validates that a given string is Base58 encoded.
 // An Address will be 34-chars.
 // A Wif will be 52-chars.
-auto Base58::validate(const char *str, const size_t size) -> bool {
+auto Base58::validate(const char *str, const size_t &size) -> bool {
     auto length = strlenSafe(str);
     if (size == 0 || length != size) {
         return false;

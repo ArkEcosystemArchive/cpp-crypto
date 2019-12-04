@@ -10,9 +10,9 @@
 #ifndef ARK_TRANSACTIONS_BUILDERS_TRANSFER_HPP
 #define ARK_TRANSACTIONS_BUILDERS_TRANSFER_HPP
 
+#include <algorithm>
 #include <cstdint>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "transactions/builders/common.hpp"
@@ -35,14 +35,14 @@ class Transfer : public Common<Transfer> {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Amount
-    Transfer &amount(uint64_t amount) {
+    Transfer &amount(const uint64_t &amount) {
         this->transaction.data.asset.transfer.amount = amount;
         return *this;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Expiration
-    Transfer &expiration(uint32_t expiration) {
+    Transfer &expiration(const uint32_t &expiration) {
         this->transaction.data.asset.transfer.expiration = expiration;
         return *this;
     }
@@ -50,25 +50,30 @@ class Transfer : public Common<Transfer> {
     ////////////////////////////////////////////////////////////////////////////
     // RecipientId - uint8_t[21] (network.version + pubkeyHash)
     Transfer &recipientId(const uint8_t *addressHash) {
-        std::move(addressHash,
-                  addressHash + ADDRESS_HASH_LEN,
-                  this->transaction.data.asset.transfer.recipientId.begin());
+        std::copy_n(addressHash,
+                    ADDRESS_HASH_LEN,
+                    this->transaction.data.asset.transfer.recipientId.begin());
 
         return *this;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // RecipientId - std::string
-    Transfer &recipientId(std::string recipientId) {
+    Transfer &recipientId(const std::string &recipientId) {
         const auto hashPair = Base58::getHashPair(recipientId.c_str());
         this->transaction.data.asset
                 .transfer.recipientId.at(0) = hashPair.version;
 
-        std::move(hashPair.pubkeyHash.begin(),
+        std::copy(hashPair.pubkeyHash.begin(),
                   hashPair.pubkeyHash.end(),
                   &this->transaction.data.asset.transfer.recipientId.at(1));
 
         return *this;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    Transfer() {
+        this->transaction.data.type = TRANSFER_TYPE;
     }
 };
 

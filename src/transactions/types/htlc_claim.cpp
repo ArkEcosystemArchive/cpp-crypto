@@ -9,11 +9,10 @@
 
 #include "transactions/types/htlc_claim.hpp"
 
+#include <algorithm>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
-#include <utility>
 
 #include "interfaces/constants.h"
 
@@ -36,18 +35,18 @@ namespace transactions {
 // Internals:
 //
 // Lock Transaction Id - 32 Bytes:
-// - std::move(buffer, buffer + 32, claim->id.begin()); 
+// - std::copy_n(buffer, 32, claim->id.begin());
 //
 // Unlock Secret - UTF-8 encoded - 32 Bytes
-// - std::move(&buffer[32], &buffer[64], claim->secret.begin());
+// - std::copy_n(&buffer[32], 32, claim->secret.begin());
 //
 // ---
 auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> size_t {
-    std::move(buffer, &buffer[HASH_32_LEN], claim->id.begin());     // 32 Bytes
+    std::copy_n(buffer, HASH_32_LEN, claim->id.begin());            // 32 Bytes
 
-    std::move(&buffer[HASH_32_LEN],                                 // 32 Bytes
-              &buffer[HASH_32_LEN + HASH_32_LEN],
-              claim->secret.begin());
+    std::copy_n(&buffer[HASH_32_LEN],                               // 32 Bytes
+                HASH_32_LEN,
+                claim->secret.begin());
 
     return HASH_64_LEN;                                             // 64 Bytes
 }
@@ -64,16 +63,16 @@ auto HtlcClaim::Deserialize(HtlcClaim *claim, const uint8_t *buffer) -> size_t {
 // Internals:
 //
 // Lock Transaction Id - 32 Bytes:
-// - std::move(claim.id.begin(), claim.id.end(), buffer);
+// - std::copy(claim.id.begin(), claim.id.end(), buffer);
 //
 // Unlock Secret - UTF-8 encoded - 32 Bytes
-// - std::move(claim.secret.begin(), \claim.secret.end(), &buffer[32]);
+// - std::copy(claim.secret.begin(), claim.secret.end(), &buffer[32]);
 //
 // ---
 auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> size_t {
-    std::move(claim.id.begin(), claim.id.end(), buffer);            // 32 Bytes
+    std::copy(claim.id.begin(), claim.id.end(), buffer);            // 32 Bytes
 
-    std::move(claim.secret.begin(),                                 // 32 Bytes
+    std::copy(claim.secret.begin(),                                 // 32 Bytes
               claim.secret.end(),
               &buffer[HASH_32_LEN]);
 

@@ -27,7 +27,7 @@ namespace transactions {
 // Type 10 - Htlc Refund
 struct HtlcRefund {
     ////////////////////////////////////////////////////////////////////////////
-    std::array<uint8_t, HASH_32_LEN> id;
+    std::array<uint8_t, HASH_32_LEN> id { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(HtlcRefund *refund, const uint8_t *buffer);
@@ -48,7 +48,7 @@ struct HtlcRefund {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    HtlcRefund() : id() {}
+    HtlcRefund() = default;
 };
 
 

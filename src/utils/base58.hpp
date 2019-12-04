@@ -21,7 +21,7 @@ namespace Crypto {
 ////////////////////////////////////////////////////////////////////////////////
 struct Base58 {
     ////////////////////////////////////////////////////////////////////////////
-    static std::string checkEncode(const uint8_t *data, const size_t length);
+    static std::string checkEncode(const uint8_t *data, const size_t &length);
 
     ////////////////////////////////////////////////////////////////////////////
     static PubkeyHashPair getHashPair(const char *address);
@@ -31,17 +31,17 @@ struct Base58 {
 
     ////////////////////////////////////////////////////////////////////////////
     static std::string parsePubkeyHash(const uint8_t *pubkeyHash,
-                                       const uint8_t version);
+                                       const uint8_t &version);
 
     ////////////////////////////////////////////////////////////////////////////
     static std::string getWif(const uint8_t *privateKeyBytes,
-                              const uint8_t version);
+                              const uint8_t &version);
 
     ////////////////////////////////////////////////////////////////////////////
     static PrivateKeyBytes parseWif(const char *wif, uint8_t *outVersion);
 
     ////////////////////////////////////////////////////////////////////////////
-    static bool validate(const char *str, const size_t size);
+    static bool validate(const char *str, const size_t &size);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

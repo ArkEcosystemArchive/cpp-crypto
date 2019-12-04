@@ -10,8 +10,8 @@
 #ifndef ARK_TRANSACTIONS_BUILDERS_IPFS_HPP
 #define ARK_TRANSACTIONS_BUILDERS_IPFS_HPP
 
+#include <algorithm>
 #include <cstdint>
-#include <cstring>
 
 #include "transactions/builders/common.hpp"
 
@@ -31,12 +31,17 @@ class Ipfs : public Common<Ipfs> {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Ipfs hash
-    Ipfs &ipfs(const uint8_t *ipfsHash, const size_t length) {
+    Ipfs &ipfs(const uint8_t *ipfsHash, const size_t &length) {
         this->transaction.data.asset.ipfs.dag.insert(
-            this->transaction.data.asset.ipfs.dag.begin(),
-            ipfsHash,
-            ipfsHash + length);
+                this->transaction.data.asset.ipfs.dag.begin(),
+                ipfsHash,
+                ipfsHash + length);
         return *this;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    Ipfs() {
+        this->transaction.data.type = IPFS_TYPE;
     }
 };
 

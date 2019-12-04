@@ -13,7 +13,10 @@
 #include <cstdint>
 #include <vector>
 
+#include "interfaces/constants.h"
 #include "interfaces/identities.hpp"
+
+#include "networks/devnet.hpp"
 
 #include "transactions/types/assets.hpp"
 
@@ -23,20 +26,20 @@ namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Transaction Data Model
-typedef struct transaction_data_t {
-    uint8_t                 header;
-    uint8_t                 version;
-    uint8_t                 network;
+struct TransactionData {
+    uint8_t                 header      { TRANSACTION_DEFAULT_HEADER };
+    uint8_t                 version     { TRANSACTION_VERSION_TYPE_2 };
+    uint8_t                 network     { Devnet.version };
 
-    uint32_t                typeGroup;  // v2 only
-    uint16_t                type;       // v1: 1 Byte | v2: 2 Bytes 
+    uint32_t                typeGroup   { TRANSACTION_DEFAULT_TYPEGROUP };  // v2
+    uint16_t                type        { 0U };  // v1: 1 Byte | v2: 2 Bytes 
 
-    uint64_t                nonce;      // v2 only
-    uint32_t                timestamp;  // v1 only
+    uint64_t                nonce       { 0ULL };   // v2 only
+    uint32_t                timestamp   { 0UL };    // v1 only
 
-    PublicKeyBytes          senderPublicKey;
+    PublicKeyBytes          senderPublicKey {};
 
-    uint64_t                fee;
+    uint64_t                fee         { 0ULL };
 
     std::vector<uint8_t>    vendorField;
 
@@ -45,17 +48,8 @@ typedef struct transaction_data_t {
     std::vector<uint8_t>    signature;
     std::vector<uint8_t>    secondSignature;
 
-    transaction_data_t() : header(0xFF),
-                           version(0x02),
-                           network(0x1E),
-                           typeGroup(1UL),
-                           type(0U),
-                           nonce(0ULL),
-                           timestamp(0UL),
-                           senderPublicKey(),
-                           fee(0ULL),
-                           vendorField() {}
-} TransactionData;
+    TransactionData() = default;
+};
 
 
 }  // namespace transactions

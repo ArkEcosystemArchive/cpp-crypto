@@ -10,6 +10,9 @@
 #ifndef ARK_TEST_HELPERS_H
 #define ARK_TEST_HELPERS_H
 
+#include <cstdint>
+#include <cstddef>
+
 ////////////////////////////////////////////////////////////////////////////////
 // Array comparison differs across architectures and environments.
 // This helper method avoids have to loop each array for comparison.
@@ -25,7 +28,7 @@
 // ---
 static inline bool array_cmp(const uint8_t *expected,
                              const uint8_t *actual,
-                             const size_t length) {
+                             const size_t &length) {
     for (size_t i = 0UL; i < length; ++i) {
         if (expected[i] != actual[i]) {
             printf("\n\nMismatch at element: %zd", i);

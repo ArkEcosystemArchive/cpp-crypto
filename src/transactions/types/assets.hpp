@@ -30,7 +30,7 @@ namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
 // AIP-11 Transaction Assets
-typedef struct tx_asset_t {
+struct Asset {
     Transfer                    transfer;               // Type 0
     SecondSignature             secondSignature;        // Type 1
     DelegateRegistration        delegateRegistration;   // Type 2
@@ -42,7 +42,7 @@ typedef struct tx_asset_t {
     HtlcLock                    htlcLock;               // Type 8
     HtlcClaim                   htlcClaim;              // Type 9
     HtlcRefund                  htlcRefund;             // Type 10
-} Asset;
+};
 
 }  // namespace transactions
 }  // namespace Crypto

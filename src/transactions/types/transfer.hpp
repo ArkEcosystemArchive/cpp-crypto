@@ -31,9 +31,9 @@ const size_t TRANSACTION_TYPE_TRANSFER_SIZE = 33UL;
 // Type 0 - Transfer
 struct Transfer {
     ////////////////////////////////////////////////////////////////////////////
-    uint64_t                                amount;
-    uint32_t                                expiration;
-    std::array<uint8_t, ADDRESS_HASH_LEN>   recipientId;
+    uint64_t                                amount          { 0ULL };
+    uint32_t                                expiration      { 0UL };
+    std::array<uint8_t, ADDRESS_HASH_LEN>   recipientId     { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(Transfer *transfer, const uint8_t *buffer);
@@ -54,7 +54,7 @@ struct Transfer {
                           const std::map<std::string, std::string> &map);
 
     ////////////////////////////////////////////////////////////////////////////
-    Transfer() : amount(0ULL), expiration(0UL), recipientId() {}
+    Transfer() = default;
 };
 
 }  // namespace transactions

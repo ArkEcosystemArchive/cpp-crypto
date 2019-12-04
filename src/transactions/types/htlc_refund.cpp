@@ -9,11 +9,10 @@
 
 #include "transactions/types/htlc_refund.hpp"
 
+#include <algorithm>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
-#include <utility>
 
 #include "interfaces/constants.h"
 
@@ -36,11 +35,11 @@ namespace transactions {
 // Internals:
 //
 // Lock Transaction Id - 32 Bytes:
-// - std::move(buffer, buffer + 32, refund->id.begin());
+// - std::copy_n(buffer, HASH_32_LEN, refund->id.begin());
 // ---
 auto HtlcRefund::Deserialize(HtlcRefund *refund, const uint8_t *buffer) -> size_t {
     refund->id = {};
-    std::move(buffer, buffer + HASH_32_LEN, refund->id.begin());    // 32 Bytes
+    std::copy_n(buffer, HASH_32_LEN, refund->id.begin());           // 32 Bytes
 
     return HASH_32_LEN;
 }
@@ -57,11 +56,11 @@ auto HtlcRefund::Deserialize(HtlcRefund *refund, const uint8_t *buffer) -> size_
 // Internals:
 //
 // Lock Transaction Id - 32 Bytes:
-// - std::move(refund.id.begin(), refund.id.end(), buffer);
+// - std::copy(refund.id.begin(), refund.id.end(), buffer);
 //
 // ---
 auto HtlcRefund::Serialize(const HtlcRefund &refund, uint8_t *buffer) -> size_t {
-    std::move(refund.id.begin(), refund.id.end(), buffer);          // 32 Bytes
+    std::copy(refund.id.begin(), refund.id.end(), buffer);          // 32 Bytes
 
     return HASH_32_LEN;
 }

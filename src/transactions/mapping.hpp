@@ -10,12 +10,8 @@
 #ifndef ARK_TRANSACTIONS_MAPPING_HPP
 #define ARK_TRANSACTIONS_MAPPING_HPP
 
-#include <cstddef>
-#include <cstdint>
 #include <map>
 #include <string>
-
-#include "interfaces/constants.h"
 
 #include "transactions/transaction_data.hpp"
 
@@ -26,8 +22,8 @@ namespace transactions {
 ////////////////////////////////////////////////////////////////////////////////
 // Transaction Mapping
 //
-// Derive a Map<string, string> of a given Transactions data.
-// Derive a Json-serialized string of a given Transactions data.
+// Derive a Map<string, string> of a given Transaction's data.
+// Derive a Json-serialized string of a given Transaction's data.
 //
 //--
 struct Mapping {

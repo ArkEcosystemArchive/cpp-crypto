@@ -9,11 +9,10 @@
 
 #include "transactions/types/ipfs.hpp"
 
+#include <algorithm>
 #include <cstdint>
-#include <cstring>
 #include <map>
 #include <string>
-#include <utility>
 
 #include "interfaces/constants.h"
 
@@ -66,7 +65,7 @@ auto Ipfs::Deserialize(Ipfs *ipfs, const uint8_t *buffer) -> size_t {
 // Internals:
 //
 // Dag - UTF-8 encoded - 0 <=> 255 Bytes
-// - std::move(ipfs.dag.begin(), ipfs.dag.end(), buffer);
+// - std::copy(ipfs.dag.begin(), ipfs.dag.end(), buffer);
 //
 // ---
 auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> size_t {
@@ -76,7 +75,7 @@ auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> size_t {
         return 0UL;
     }
 
-    std::move(ipfs.dag.begin(), ipfs.dag.end(), buffer);    // 0 <=> 255 Bytes
+    std::copy(ipfs.dag.begin(), ipfs.dag.end(), buffer);    // 0 <=> 255 Bytes
 
     return ipfs.dag.size();
 }
