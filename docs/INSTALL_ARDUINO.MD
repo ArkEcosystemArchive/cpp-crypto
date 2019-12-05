@@ -1,17 +1,23 @@
 
-# Arduino Builds
+# Arduino IDE
 
-Download and install the Arduino IDE (>=1.8.10) from the following link:
+Download and install the Arduino IDE (>=1.8.10) from the following link:  
 
 * `https://www.arduino.cc/en/Main/Software`
 
+## Dependencies
+
 Using the Arduino IDE's built in Library Manager, install the following Libraries:
 
-* `ArduinoJson@6.12.0`
-* `BIP66@0.2.0`
-* `micro-ecc@1.0.0`
+* [`ArduinoJson@6.12.0`](https://github.com/bblanchon/ArduinoJson)
+* [`BIP66@0.2.1`](https://github.com/sleepdefic1t/BIP66)
+* [`micro-ecc@1.0.0`](https://github.com/kmackay/micro-ecc)
 
-### Arduino Example using the Adafruit Feather ESP32
+## Arduino Example using the Adafruit ESP32 Feather
+
+---
+
+> `extras/ESP32/arkCrypto_esp32.h`
 
 ```cpp
 /**
@@ -42,7 +48,10 @@ Using the Arduino IDE's built in Library Manager, install the following Librarie
 #endif
 ```
 
-> `extras/ESP32/ardCrypto_esp32.h`
+---
+
+
+> `extras/ESP32/ESP32.ino`
 
 ```cpp
 /**
@@ -257,5 +266,3 @@ void setup() {
 void loop() {}
 
 ```
-
-> `extras/ESP32/ESP32.ino`

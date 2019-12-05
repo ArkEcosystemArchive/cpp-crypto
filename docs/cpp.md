@@ -12,10 +12,12 @@ This project is still under development. This page will get more content as the 
 
 ## Installation
 
-* [Arduino](#Arduino)
-* [Linux >= 16.04](#OS)
-* [macOS >= 10.10](#OS)
-* [Windows >= 7](#OS)
+* [Arduino IDE](#Arduino-IDE)
+* [PlatformIO IDE](#PlatformIO-IDE)
+* [Desktop/Server](#Desktop-Server)
+  * **Linux >= 16.04**
+  * **macOS >= 10.10**
+  * **Windows >= 7**
 
 ## ARK Transactions
 
@@ -297,19 +299,27 @@ const uint8_t wifByte = 0xaa;
 const auto wif = WIF::fromPassphrase(passphrase, wifByte);
 ```
 
-## Arduino
+---
+
+## Arduino IDE
 
 Download and install the Arduino IDE (>=1.8.10) from the following link:  
 
 * `https://www.arduino.cc/en/Main/Software`
 
+### Dependencies
+
 Using the Arduino IDE's built in Library Manager, install the following Libraries:
 
-* `ArduinoJson@6.12.0`
-* `BIP66@0.2.0`
-* `micro-ecc@1.0.0`
+* [`ArduinoJson@6.12.0`](https://github.com/bblanchon/ArduinoJson)
+* [`BIP66@0.2.1`](https://github.com/sleepdefic1t/BIP66)
+* [`micro-ecc@1.0.0`](https://github.com/kmackay/micro-ecc)
 
-### Arduino Example using the Adafruit Feather ESP32
+### Arduino Example using the Adafruit ESP32 Feather
+
+---
+
+> `extras/ESP32/arkCrypto_esp32.h`
 
 ```cpp
 /**
@@ -340,7 +350,10 @@ Using the Arduino IDE's built in Library Manager, install the following Librarie
 #endif
 ```
 
-> `extras/ESP32/ardCrypto_esp32.h`
+---
+
+
+> `extras/ESP32/ESP32.ino`
 
 ```cpp
 /**
@@ -556,29 +569,35 @@ void loop() {}
 
 ```
 
-> `extras/ESP32/ESP32.ino`
+---
 
 ## PlatformIO IDE
 
-### Python
+### Requirements
 
-Use an installer package from the following link or use your preferred method to install Python:
+#### Python
 
-* `https://www.python.org/downloads/`
+* Linux:
+  * `sudo apt-get install python`
+* macOS:
+  * `brew install python`
+* Windows Installer Pkg:
+  * `https://www.python.org/downloads/windows/`
 
-Install PlatformIO:
+#### PlatformIO
 
-* `pip install -U platformio`
-
-or
-
-* `python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"`
+* Linux/macOS/Windows using PIP:
+  * `pip install -U platformio`
+* Linux/macOS/Windows using cURL:
+  * `python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"`
 
 ### Dependencies
 
-Install `ArduinoJson@6.12.0`, `BIP66@0.2.1`, and `micro-ecc@1.0.0`.
+The following external libraries are fetched during the build process:
 
-* `platformio lib -g ArduinoJson@6.12.0 BIP66@0.2.1 micro-ecc@1.0.0`
+* [`ArduinoJson@6.12.0`](https://github.com/bblanchon/ArduinoJson)
+* [`BIP66@0.2.1`](https://github.com/sleepdefic1t/BIP66)
+* [`micro-ecc@1.0.0`](https://github.com/kmackay/micro-ecc)
 
 ### Build and Run Live Tests on the ESP32
 
@@ -586,21 +605,34 @@ Install `ArduinoJson@6.12.0`, `BIP66@0.2.1`, and `micro-ecc@1.0.0`.
 >| :---- | :------                                      |
 >| ESP32 | `pio run -e esp32_tests -d test/ -t upload`  |
 
-## OS
+---
 
-### Linux, macOS and Windows
+## Desktop/Server
+
+Linux, macOS and Windows.
+
+### Requirements
 
 **CMake:**
 
-Use an installer package from the following link, Homebrew, or use your preferred method:
+Installing Cmake:
 
-* `https://www.cmake.org/download/`
+* Linux:
+  * `sudo apt-get -y install cmake`
+* macOS:
+  * `brew install cmake`
+* Windows Installer Pkg:
+  * `https://www.cmake.org/download/`
 
-using **Homebrew:**
+### Dependencies
 
-* `brew install cmake`
+The following external libraries are cloned during the build process:
 
-> note: all other dependencies will be automatically installed via CMake.
+* [`ArduinoJson@6.12.0`](https://github.com/bblanchon/ArduinoJson)
+* [`BIP66@0.2.1`](https://github.com/sleepdefic1t/BIP66)
+* [`micro-ecc@1.0.0`](https://github.com/kmackay/micro-ecc)
+
+### Building
 
 #### make and build
 
@@ -611,7 +643,7 @@ using **Homebrew:**
 
 #### run tests (Linux, macOS)
 
-v `./test/ark_cpp_crypto_tests`
+* `./test/ark_cpp_crypto_tests`
 
 #### run tests (Windows)
 

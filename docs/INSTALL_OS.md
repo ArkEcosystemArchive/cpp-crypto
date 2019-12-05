@@ -1,19 +1,30 @@
 
-# OS Builds
+# Desktop/Server
 
-## Linux, macOS and Windows
+Linux, macOS and Windows.
+
+## Requirements
 
 **CMake:**
 
-Use an installer package from the following link, Homebrew, or use your preferred method:
+Installing Cmake:
 
-* `https://www.cmake.org/download/`
+* Linux:
+  * `sudo apt-get -y install cmake`
+* macOS:
+  * `brew install cmake`
+* Windows Installer Pkg:
+  * `https://www.cmake.org/download/`
 
-using **Homebrew:**
+## Dependencies
 
-* `brew install cmake`
+The following external libraries are cloned during the build process:
 
-> note: all other dependencies will be automatically installed via CMake.
+* [`ArduinoJson@6.12.0`](https://github.com/bblanchon/ArduinoJson)
+* [`BIP66@0.2.1`](https://github.com/sleepdefic1t/BIP66)
+* [`micro-ecc@1.0.0`](https://github.com/kmackay/micro-ecc)
+
+## Building
 
 ### make and build
 
