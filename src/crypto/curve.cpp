@@ -24,7 +24,7 @@
 #include "bcl/Sha256Hash.hpp"
 #include "bcl/Uint256.hpp"
 
-#include "bip66.h"              // ECDSA DER encoding
+#include "bip66.hpp"            // ECDSA DER encoding
 
 #include "uECC.h"               // publicKey operations
 
@@ -78,9 +78,22 @@ auto Curve::Ecdsa::sign(const uint8_t *hash32,
     r.getBigEndianBytes(&rsBuffer[0]);
     s.getBigEndianBytes(&rsBuffer[HASH_32_LEN]);
 
+    // Make enough room for a valid signature.
+    outSignature->resize(SIGNATURE_ECDSA_MAX);
+
     // Encode R & S Elements into a BIP66-encoded signature.
-    // returns 'true' if DER encoding was successful.
-    return BIP66::encode(rsBuffer.data(), *outSignature);
+    const auto success = bip66::encode(
+            rsBuffer.data(), HASH_32_LEN,
+            rsBuffer.data() + HASH_32_LEN, HASH_32_LEN,
+            outSignature->data());
+
+    // Calculate and set the outgoing signature's size.
+    const auto outSigSize = outSignature->at(1) == 0UL
+            ? 0UL
+            : 2U + outSignature->at(1);
+    outSignature->resize(outSigSize);
+
+    return success;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -121,14 +134,14 @@ auto Curve::Ecdsa::verify(const uint8_t *hash32,
     std::vector<uint8_t> r(HASH_32_LEN, 0);
     std::vector<uint8_t> s(HASH_32_LEN, 0);
 
-    BIP66::decode(signature, r, s);
+    bip66::decode(signature.data(), signature.size(), r.data(), s.data());
 
     // Verify
     return bcl::Ecdsa::verify(
         bcl::CurvePoint(x, y),
         bcl::Sha256Hash(hash32, HASH_32_LEN),
-        bcl::Uint256(&r.at(r.at(0) == 0U ? 1U : 0U)),
-        bcl::Uint256(&s.at(s.at(0) == 0U ? 1U : 0U)));
+        bcl::Uint256(&r.at(0)),
+        bcl::Uint256(&s.at(0)));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -58,11 +58,7 @@ execute_process(COMMAND ${CMAKE_COMMAND} --build .
 if(result)
     message(FATAL_ERROR "BIP66: Clone and Build Step Failed: ${result}")
 endif()
-
-add_subdirectory("${EXTERNAL_LIBRARY_DIR}/bip66/src/src"
-                 "${EXTERNAL_LIBRARY_DIR}/bip66/build"
-                 EXCLUDE_FROM_ALL)
-
+                 
 set(BIP66_SOURCE
     ${EXTERNAL_LIBRARY_DIR}/bip66/src/src/bip66.cpp
     CACHE INTERNAL "BIP66: Source Files")
