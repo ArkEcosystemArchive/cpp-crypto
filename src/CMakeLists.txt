@@ -16,29 +16,10 @@ include(${CMAKE_SOURCE_DIR}/cmake/External.cmake)
 # ------------------------------------------------------------------------------
 
 set(INTERNAL_LIBRARY_SOURCE_DIRS
-    ${PROJECT_SOURCE_DIR}/lib/bcl
     ${PROJECT_SOURCE_DIR}/lib/rfc6979
 )
 
 include_directories(${INTERNAL_LIBRARY_SOURCE_DIRS})
-
-# ------------------------------------------------------------------------------
-
-# Nayuki's Bitcoin Cryptography Library
-set(BCL_SOURCE
-    lib/bcl/Base58Check.cpp
-    lib/bcl/CurvePoint.cpp
-    lib/bcl/Ecdsa.cpp
-    lib/bcl/FieldInt.cpp
-    lib/bcl/Ripemd160.cpp
-    lib/bcl/Sha256Hash.cpp
-    lib/bcl/Sha256.cpp
-    lib/bcl/Sha512.cpp
-    lib/bcl/Uint256.cpp
-    lib/bcl/Utils.cpp
-)
-
-set(INTERNAL_LIBRARY_SOURCE ${BCL_SOURCE})
 
 # ------------------------------------------------------------------------------
 

@@ -34,6 +34,49 @@ include_directories(${ARDUINO_JSON_SOURCE_DIR})
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
+# BCL: https://github.com/sleepdefic1t/bcl
+# ------------------------------------------------------------------------------
+
+# Copy the configuration
+configure_file(${CMAKE_SOURCE_DIR}/cmake/extern/BCL.txt.in
+               ${EXTERNAL_LIBRARY_DIR}/bcl/CMakeLists.txt)
+
+# Configure the Cmake build
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+                RESULT_VARIABLE result
+                WORKING_DIRECTORY ${EXTERNAL_LIBRARY_DIR}/bcl)
+
+if(result)
+    message(FATAL_ERROR "BCL: CMake Configuration Failed: ${result}")
+endif()
+
+# Execute Git Clone and run Cmake
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+                RESULT_VARIABLE result
+                WORKING_DIRECTORY ${EXTERNAL_LIBRARY_DIR}/bcl)
+
+if(result)
+    message(FATAL_ERROR "BIP66: Clone and Build Step Failed: ${result}")
+endif()
+
+set(BCL_SOURCE
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/Base58Check.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/CurvePoint.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/Ecdsa.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/FieldInt.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/Ripemd160.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/Sha256.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/Sha256Hash.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/Uint256.cpp
+    ${EXTERNAL_LIBRARY_DIR}/bcl/src/src/Utils.cpp
+    CACHE INTERNAL "BCL: Source Files"
+)
+
+include_directories(${EXTERNAL_LIBRARY_DIR}/bcl/src/src)
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
 # BIP66: https://github.com/sleepdefic1t/BIP66
 # ------------------------------------------------------------------------------
 
@@ -110,6 +153,7 @@ include_directories(${UECC_SOURCE_DIR})
 # ------------------------------------------------------------------------------
 
 set(EXTERNAL_LIBRARY_SOURCE
+    ${BCL_SOURCE}
     ${BIP66_SOURCE}
     ${UECC_SOURCE}
     CACHE INTERNAL "External Lib Binary Files")

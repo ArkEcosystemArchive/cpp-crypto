@@ -6,6 +6,7 @@ mkdir -p ~/Arduino/libraries/cpp-crypto/
 mv ${GITHUB_WORKSPACE}/* ~/Arduino/libraries/cpp-crypto/
 
 arduino-cli lib install "ArduinoJson@6.12.0"
+arduino-cli lib install "bcl@0.0.5"
 arduino-cli lib install "BIP66@0.3.2"
 arduino-cli lib install "micro-ecc@1.0.0"
 

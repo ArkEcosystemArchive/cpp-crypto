@@ -19,10 +19,10 @@
 
 #include "rfc6979/rfc6979.h"    // Nonce function
 
-#include "bcl/Ecdsa.hpp"        // Signing operations
-#include "bcl/Sha256.hpp"
-#include "bcl/Sha256Hash.hpp"
-#include "bcl/Uint256.hpp"
+#include "Ecdsa.hpp"            // BCL Crypto Lib
+#include "Sha256.hpp"
+#include "Sha256Hash.hpp"
+#include "Uint256.hpp"
 
 #include "bip66.hpp"            // ECDSA DER encoding
 

@@ -9,14 +9,14 @@
 
 #include "utils/base58.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
-#include <utility>
 
 #include "interfaces/identities.hpp"
 #include "utils/str.hpp"
 
-#include "bcl/Base58Check.hpp"
+#include "Base58Check.hpp"  // BCL Crypto Lib
 
 namespace Ark {
 namespace Crypto {
@@ -25,10 +25,11 @@ namespace Crypto {
 auto Base58::checkEncode(const uint8_t *data, const size_t &length)
         -> std::string {
     const std::array<uint8_t, BASE58_ALPHABET_LEN> BASE58ALPHABET = {
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-        'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-        'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm',
-        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
+        'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q',
+        'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c',
+        'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p',
+        'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     };
 
     const size_t tmpSize    = 164UL;
@@ -49,7 +50,7 @@ auto Base58::checkEncode(const uint8_t *data, const size_t &length)
         return {};
     }
 
-    std::move(data, data + length, tmp.begin());
+    std::copy_n(data, length, tmp.begin());
     while ((zeroCount < length) && (tmp.at(zeroCount) == 0U)) {
         ++zeroCount;
     }

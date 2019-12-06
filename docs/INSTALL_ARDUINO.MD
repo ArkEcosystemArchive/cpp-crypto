@@ -10,6 +10,7 @@ Download and install the Arduino IDE (>=1.8.10) from the following link:
 Using the Arduino IDE's built in Library Manager, install the following Libraries:
 
 * [`ArduinoJson@6.12.0`](https://github.com/bblanchon/ArduinoJson)
+* [`bcl@0.0.5`](https://github.com/sleepdefic1t/bcl)
 * [`BIP66@0.3.2`](https://github.com/sleepdefic1t/BIP66)
 * [`micro-ecc@1.0.0`](https://github.com/kmackay/micro-ecc)
 
@@ -49,7 +50,6 @@ Using the Arduino IDE's built in Library Manager, install the following Librarie
 ```
 
 ---
-
 
 > `extras/ESP32/ESP32.ino`
 

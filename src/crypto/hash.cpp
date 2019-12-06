@@ -13,9 +13,9 @@
 
 #include "interfaces/identities.hpp"
 
-#include "bcl/Ripemd160.hpp"
-#include "bcl/Sha256.hpp"
-#include "bcl/Sha256Hash.hpp"
+#include "Ripemd160.hpp"    // BCL Crypto Lib
+#include "Sha256.hpp"
+#include "Sha256Hash.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -37,7 +37,7 @@ auto Hash::sha256(const uint8_t *inputBytes, const size_t &size) -> Hash32 {
     auto result = bcl::Sha256::getHash(inputBytes, size);
 
     Hash32 hash32 {};
-    std::move(result.value, result.value + HASH_32_LEN, hash32.begin());
+    std::copy_n(result.value, HASH_32_LEN, hash32.begin());
 
     return hash32;
 }
