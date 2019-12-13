@@ -23,7 +23,7 @@ namespace identities {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constructs a Wif object using a PrivateKey and Wif Version-byte.
-Wif::Wif(const PrivateKeyBytes &privateKeyBytes, const uint8_t &version)
+Wif::Wif(const PrivateKeyBytes &privateKeyBytes, uint8_t version)
         : privateKeyBytes_(privateKeyBytes), version_(version) {}
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ auto Wif::toString() const -> std::string {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Returns a Wif object from a Passphrase and Wif Version-byte.
-auto Wif::fromPassphrase(const char *passphrase, const uint8_t &version) -> Wif {
+auto Wif::fromPassphrase(const char *passphrase, uint8_t version) -> Wif {
     return { Keys::PrivateKey::fromPassphrase(passphrase), version };
 }
 

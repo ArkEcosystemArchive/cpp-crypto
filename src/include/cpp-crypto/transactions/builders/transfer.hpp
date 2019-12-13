@@ -35,14 +35,14 @@ class Transfer : public Common<Transfer> {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Amount
-    Transfer &amount(const uint64_t &amount) {
+    Transfer &amount(uint64_t amount) {
         this->transaction.data.asset.transfer.amount = amount;
         return *this;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Expiration
-    Transfer &expiration(const uint32_t &expiration) {
+    Transfer &expiration(uint32_t expiration) {
         this->transaction.data.asset.transfer.expiration = expiration;
         return *this;
     }

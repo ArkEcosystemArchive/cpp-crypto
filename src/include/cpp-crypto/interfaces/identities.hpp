@@ -40,7 +40,7 @@ struct PubkeyHashPair {
     PubkeyHash      pubkeyHash  { };
 
     PubkeyHashPair() = default;
-    PubkeyHashPair(const uint8_t &version, const PubkeyHash &pubkeyHash)
+    PubkeyHashPair(uint8_t version, const PubkeyHash &pubkeyHash)
         : version(version) {
         std::move(pubkeyHash.begin(),
                   pubkeyHash.end(),

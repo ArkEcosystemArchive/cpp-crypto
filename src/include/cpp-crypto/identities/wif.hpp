@@ -22,7 +22,7 @@ namespace identities {
 class Wif {
   public:
     ////////////////////////////////////////////////////////////////////////////
-    Wif(const PrivateKeyBytes &privateKeyBytes, const uint8_t &version);
+    Wif(const PrivateKeyBytes &privateKeyBytes, uint8_t version);
     explicit Wif(const char *wif);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ class Wif {
     std::string toString() const;
 
     ////////////////////////////////////////////////////////////////////////////
-    static Wif fromPassphrase(const char *passphrase, const uint8_t &version);
+    static Wif fromPassphrase(const char *passphrase, uint8_t version);
 
   private:
     ////////////////////////////////////////////////////////////////////////////

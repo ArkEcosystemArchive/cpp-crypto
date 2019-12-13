@@ -10,6 +10,7 @@
 #ifndef ARK_IDENTITIES_ADDRESS_HPP
 #define ARK_IDENTITIES_ADDRESS_HPP
 
+#include <cstdbool>
 #include <string>
 
 #include "interfaces/identities.hpp"
@@ -22,7 +23,7 @@ namespace identities {
 class Address {
   public:
     ////////////////////////////////////////////////////////////////////////////
-    Address(const PubkeyHash &pubkeyHash, const uint8_t &version);
+    Address(const PubkeyHash &pubkeyHash, uint8_t version);
     explicit Address(const char *addressString);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -34,16 +35,16 @@ class Address {
 
     ////////////////////////////////////////////////////////////////////////////
     static Address fromPassphrase(const char *passphrase,
-                                  const uint8_t &version);
+                                  uint8_t version);
 
     static Address fromPublicKey(const uint8_t *publicKeyBytes,
-                                 const uint8_t &version);
+                                 uint8_t version);
 
     static Address fromPrivateKey(const uint8_t *privateKeyBytes,
-                                  const uint8_t &version);
+                                  uint8_t version);
 
     ////////////////////////////////////////////////////////////////////////////
-    static bool validate(const Address& address, const uint8_t &version);
+    static bool validate(const Address& address, uint8_t version);
 
   private:
     ////////////////////////////////////////////////////////////////////////////

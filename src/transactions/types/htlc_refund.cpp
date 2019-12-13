@@ -35,9 +35,10 @@ namespace transactions {
 // Internals:
 //
 // Lock Transaction Id - 32 Bytes:
-// - std::copy_n(buffer, HASH_32_LEN, refund->id.begin());
+// - std::copy_n(buffer, 32, refund->id.begin());
 // ---
-auto HtlcRefund::Deserialize(HtlcRefund *refund, const uint8_t *buffer) -> size_t {
+auto HtlcRefund::Deserialize(HtlcRefund *refund, const uint8_t *buffer)
+        -> size_t {
     refund->id = {};
     std::copy_n(buffer, HASH_32_LEN, refund->id.begin());           // 32 Bytes
 
@@ -59,7 +60,8 @@ auto HtlcRefund::Deserialize(HtlcRefund *refund, const uint8_t *buffer) -> size_
 // - std::copy(refund.id.begin(), refund.id.end(), buffer);
 //
 // ---
-auto HtlcRefund::Serialize(const HtlcRefund &refund, uint8_t *buffer) -> size_t {
+auto HtlcRefund::Serialize(const HtlcRefund &refund, uint8_t *buffer)
+        -> size_t {
     std::copy(refund.id.begin(), refund.id.end(), buffer);          // 32 Bytes
 
     return HASH_32_LEN;

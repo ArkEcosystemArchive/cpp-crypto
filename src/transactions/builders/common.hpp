@@ -36,7 +36,7 @@ template<class T> class Common {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Version
-    T &version(const uint8_t &version) {
+    T &version(uint8_t version) {
         this->transaction.data.version = version;
         return reinterpret_cast<T&>(*this);
     }
@@ -48,35 +48,35 @@ template<class T> class Common {
     // - Mainnet: 23
     //
     // ---
-    T &network(const uint8_t &network) {
+    T &network(uint8_t network) {
         this->transaction.data.network = network;
         return reinterpret_cast<T&>(*this);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // TypeGroup
-    T &typeGroup(const uint16_t typeGroup) {
+    T &typeGroup(uint16_t typeGroup) {
         this->transaction.data.typeGroup = typeGroup;
         return reinterpret_cast<T&>(*this);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Transaction Type
-    T &type(const uint16_t type) {
+    T &type(uint16_t type) {
         this->transaction.data.type = type;
         return reinterpret_cast<T&>(*this);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Nonce - v2 Only
-    T &nonce(const uint64_t nonce) {
+    T &nonce(uint64_t nonce) {
         this->transaction.data.nonce = nonce;
         return reinterpret_cast<T&>(*this);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Timestamp - v1 Only
-    T &timestamp(const uint32_t timestamp) {
+    T &timestamp(uint32_t timestamp) {
         this->transaction.data.timestamp = timestamp;
         return reinterpret_cast<T&>(*this);
     }
@@ -100,7 +100,7 @@ template<class T> class Common {
 
     ////////////////////////////////////////////////////////////////////////////
     // Fee
-    T &fee(const uint64_t fee) {
+    T &fee(uint64_t fee) {
         this->transaction.data.fee = fee;
         return reinterpret_cast<T&>(*this);
     }

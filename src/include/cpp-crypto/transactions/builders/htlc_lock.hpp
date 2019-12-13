@@ -34,7 +34,7 @@ class HtlcLock : public Common<HtlcLock> {
   public:
     ////////////////////////////////////////////////////////////////////////////
     // Amount
-    HtlcLock &amount(const uint64_t &amount) {
+    HtlcLock &amount(uint64_t amount) {
         this->transaction.data.asset.htlcLock.amount = amount;
         return *this;
     }
@@ -51,14 +51,14 @@ class HtlcLock : public Common<HtlcLock> {
 
     ////////////////////////////////////////////////////////////////////////////
     // Expiration Type
-    HtlcLock &expirationType(const uint8_t &expirationType) {
+    HtlcLock &expirationType(uint8_t expirationType) {
         this->transaction.data.asset.htlcLock.expirationType = expirationType;
         return *this;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Expiration
-    HtlcLock &expiration(const uint32_t &expiration) {
+    HtlcLock &expiration(uint32_t expiration) {
         this->transaction.data.asset.htlcLock.expiration = expiration;
         return *this;
     }

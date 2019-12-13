@@ -35,7 +35,7 @@ class MultiPayment : public Common<MultiPayment> {
     // - Should correspond to the 'Amounts' and 'Addresses' builder inputs counts.
     //
     // ---
-    MultiPayment &n_payments(const uint16_t &n_payments) {
+    MultiPayment &n_payments(uint16_t n_payments) {
         this->transaction.data.asset.multiPayment.n_payments = n_payments;
         return *this;
     }

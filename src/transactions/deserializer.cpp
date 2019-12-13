@@ -258,11 +258,13 @@ auto Deserializer::deserialize(TransactionData *data,
     size_t assetOffset = 0UL;
 
     // Use v2 or v1, otherwise return with no changes to the Tx Data.
-    if (buffer.at(VERSION_OFFSET) == 0x02) {
+    // v2
+    if (buffer.at(VERSION_OFFSET) == TRANSACTION_VERSION_TYPE_2) {
         deserializeCommon(data, buffer);
         assetOffset = VF_OFFSET + data->vendorField.size();
     }
-    else if(buffer.at(VERSION_OFFSET) == 0x01) {
+    // v1
+    else if(buffer.at(VERSION_OFFSET) == TRANSACTION_VERSION_TYPE_1) {
         deserializeCommonV1(data, buffer);
         assetOffset = v1::VF_OFFSET + data->vendorField.size();
     }

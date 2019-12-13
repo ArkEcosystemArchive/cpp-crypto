@@ -31,11 +31,10 @@ struct Base58 {
 
     ////////////////////////////////////////////////////////////////////////////
     static std::string parsePubkeyHash(const uint8_t *pubkeyHash,
-                                       const uint8_t &version);
+                                       uint8_t version);
 
     ////////////////////////////////////////////////////////////////////////////
-    static std::string getWif(const uint8_t *privateKeyBytes,
-                              const uint8_t &version);
+    static std::string getWif(const uint8_t *privateKeyBytes, uint8_t version);
 
     ////////////////////////////////////////////////////////////////////////////
     static PrivateKeyBytes parseWif(const char *wif, uint8_t *outVersion);

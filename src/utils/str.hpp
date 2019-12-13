@@ -49,7 +49,7 @@ inline const std::vector<uint8_t> StringToBytes(const std::string& str) {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Convert an Unsigned Integer to its string representation.
-inline const std::string UintToString(const uint64_t &amount) {
+inline const std::string UintToString(uint64_t amount) {
     if (amount == 0ULL) {
         return "0";
     }

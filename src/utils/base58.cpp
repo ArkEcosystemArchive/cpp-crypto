@@ -109,7 +109,7 @@ auto Base58::parseAddressHash(const AddressHash &addressHash) -> std::string {
 ////////////////////////////////////////////////////////////////////////////////
 // Returns a formatted Address string.
 // Expects a 20-byte Ripemd160 Address hash a Network version-byte.
-auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, const uint8_t &version)
+auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, uint8_t version)
         -> std::string {
     std::string out(ADDRESS_STR_LEN, '\0');
     bcl::Base58Check::pubkeyHashToBase58Check(pubkeyHash, version, &out[0]);
@@ -118,7 +118,7 @@ auto Base58::parsePubkeyHash(const uint8_t *pubkeyHash, const uint8_t &version)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Returns a Wif string from PrivateKey-bytes and a Wif version-byte.
-auto Base58::getWif(const uint8_t *privateKeyBytes, const uint8_t &version)
+auto Base58::getWif(const uint8_t *privateKeyBytes, uint8_t version)
         -> std::string {
     std::string out(WIF_STRING_LEN, '\0');
     bcl::Base58Check::privateKeyToBase58Check(bcl::Uint256(privateKeyBytes),

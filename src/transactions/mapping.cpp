@@ -322,8 +322,8 @@ static auto GetCommonJsonCapacity(
 // - Htlc Refund
 //
 // ---
-static auto GetAssetJsonCapacity(const uint16_t &type,
-                                 const size_t &n_payments = 0UL) -> size_t {
+static auto GetAssetJsonCapacity(uint16_t type, const size_t &n_payments = 0UL)
+        -> size_t {
     switch(type) {
         // Transfer
         case TRANSFER_TYPE:
@@ -487,7 +487,7 @@ static void AddCommonJson(DynamicJsonDocument &jsonDoc,
 // - Htlc Refund
 //
 // ---
-static void AddAssetToJson(const uint16_t &type,
+static void AddAssetToJson(uint16_t type,
                            DynamicJsonDocument &jsonDoc,
                            const std::map<std::string, std::string> &map) {
     switch (type) {
