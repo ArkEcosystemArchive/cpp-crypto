@@ -25,8 +25,8 @@ TEST(crypto_message, sign) {
     Message message;
     message.sign(fixtures::MessageString, fixtures::Passphrase);
 
+    const auto signatureString = BytesToHex(message.signature);
+
     ASSERT_STREQ(fixtures::MessageSignatureString,
-                 BytesToHex(message.signature.begin(),
-                            message.signature.begin() +
-                            2U + message.signature.at(1)).c_str());
+                 signatureString.c_str());
 }

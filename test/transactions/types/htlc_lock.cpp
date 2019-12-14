@@ -72,27 +72,29 @@ TEST(transactions_htlc_lock, serialize_ecdsa) {
     data.type           = TYPE_8_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
-              fixtures::PublicKeyBytes.end(),
-              data.senderPublicKey.begin());
+    std::copy_n(fixtures::PublicKeyBytes.begin(),
+                PUBLICKEY_COMPRESSED_LEN,
+                data.senderPublicKey.begin());
 
     data.fee            = TYPE_8_FEE;
 
     data.asset.htlcLock.amount = TYPE_8_AMOUNT;
 
-    std::move(TYPE_8_SECRET_HASH, TYPE_8_SECRET_HASH + HASH_32_LEN, data.asset.htlcLock.secretHash.begin());
-
+    std::copy_n(TYPE_8_SECRET_HASH,
+                HASH_32_LEN,
+                data.asset.htlcLock.secretHash.begin());
 
     data.asset.htlcLock.expirationType   = TYPE_8_EXPIRATION_TYPE;
     data.asset.htlcLock.expiration       = TYPE_8_EXPIRATION_VALUE;
 
-    std::move(TYPE_8_RECIPIENT,
-              TYPE_8_RECIPIENT + ADDRESS_HASH_LEN,
-              data.asset.htlcLock.recipientId.begin());
+    std::copy_n(TYPE_8_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                data.asset.htlcLock.recipientId.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_8_SIGNATURE,
-                          TYPE_8_SIGNATURE + sizeof(TYPE_8_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_8_SIGNATURE));
+    std::copy_n(TYPE_8_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_8_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -105,16 +107,16 @@ TEST(transactions_htlc_lock, add_to_map) {
 
     lock.amount             = TYPE_8_AMOUNT;
 
-    std::move(TYPE_8_SECRET_HASH,
-              TYPE_8_SECRET_HASH + HASH_32_LEN,
-              lock.secretHash.begin());
+    std::copy_n(TYPE_8_SECRET_HASH,
+                HASH_32_LEN,
+                lock.secretHash.begin());
 
     lock.expirationType     = TYPE_8_EXPIRATION_TYPE;
     lock.expiration         = TYPE_8_EXPIRATION_VALUE;
 
-    std::move(TYPE_8_RECIPIENT,
-              TYPE_8_RECIPIENT + ADDRESS_HASH_LEN,
-              lock.recipientId.begin());
+    std::copy_n(TYPE_8_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                lock.recipientId.begin());
 
     std::map<std::string, std::string> lockMap;
 

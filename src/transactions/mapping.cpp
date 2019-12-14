@@ -30,40 +30,40 @@ namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Common Constants
-const auto KEY_VERSION_LABEL    = "version";
-const auto KEY_VERSION_SIZE     = strlen(KEY_VERSION_LABEL);
+constexpr auto KEY_VERSION_LABEL    = "version";
+const auto KEY_VERSION_SIZE         = strlen(KEY_VERSION_LABEL);
 
-const auto KEY_NETWORK_LABEL    = "network";
-const auto KEY_NETWORK_SIZE     = strlen(KEY_NETWORK_LABEL);
+constexpr auto KEY_NETWORK_LABEL    = "network";
+const auto KEY_NETWORK_SIZE         = strlen(KEY_NETWORK_LABEL);
 
-const auto KEY_TYPEGROUP_LABEL  = "typeGroup";
-const auto KEY_TYPEGROUP_SIZE   = strlen(KEY_TYPEGROUP_LABEL);
+constexpr auto KEY_TYPEGROUP_LABEL  = "typeGroup";
+const auto KEY_TYPEGROUP_SIZE       = strlen(KEY_TYPEGROUP_LABEL);
 
-const auto KEY_TYPE_LABEL       = "type";
-const auto KEY_TYPE_SIZE        = strlen(KEY_TYPE_LABEL);
+constexpr auto KEY_TYPE_LABEL       = "type";
+const auto KEY_TYPE_SIZE            = strlen(KEY_TYPE_LABEL);
 
-const auto KEY_NONCE_LABEL      = "nonce";
-const auto KEY_NONCE_SIZE       = strlen(KEY_NONCE_LABEL);
+constexpr auto KEY_NONCE_LABEL      = "nonce";
+const auto KEY_NONCE_SIZE           = strlen(KEY_NONCE_LABEL);
 
-const auto KEY_TIMESTAMP_LABEL  = "timestamp";
-const auto KEY_TIMESTAMP_SIZE   = strlen(KEY_TIMESTAMP_LABEL);
+constexpr auto KEY_TIMESTAMP_LABEL  = "timestamp";
+const auto KEY_TIMESTAMP_SIZE       = strlen(KEY_TIMESTAMP_LABEL);
 
-const auto KEY_SENDER_PUBLICKEY_LABEL   = "senderPublicKey";
-const auto KEY_SENDER_PUBLICKEY_SIZE    = strlen(KEY_SENDER_PUBLICKEY_LABEL);
+constexpr auto KEY_SENDER_PUBLICKEY_LABEL   = "senderPublicKey";
+const auto KEY_SENDER_PUBLICKEY_SIZE        = strlen(KEY_SENDER_PUBLICKEY_LABEL);
 
-const auto KEY_FEE_LABEL        = "fee";
+constexpr auto KEY_FEE_LABEL    = "fee";
 const auto KEY_FEE_SIZE         = strlen(KEY_FEE_LABEL);
 
-const auto KEY_VENDORFIELD_LABEL        = "vendorField";
+constexpr auto KEY_VENDORFIELD_LABEL    = "vendorField";
 const auto KEY_VENDORFIELD_SIZE         = strlen(KEY_VENDORFIELD_LABEL);
 
-const auto KEY_SIGNATURE_LABEL  = "signature";
-const auto KEY_SIGNATURE_SIZE   = strlen(KEY_SIGNATURE_LABEL);
+constexpr auto KEY_SIGNATURE_LABEL      = "signature";
+const auto KEY_SIGNATURE_SIZE           = strlen(KEY_SIGNATURE_LABEL);
 
-const auto KEY_SECOND_SIGNATURE_LABEL   = "secondSignature";
-const auto KEY_SECOND_SIGNATURE_SIZE    = strlen(KEY_SECOND_SIGNATURE_LABEL);
+constexpr auto KEY_SECOND_SIGNATURE_LABEL   = "secondSignature";
+const auto KEY_SECOND_SIGNATURE_SIZE        = strlen(KEY_SECOND_SIGNATURE_LABEL);
 
-const auto KEY_ID_LABEL         = "id";
+constexpr auto KEY_ID_LABEL     = "id";
 const auto KEY_ID_SIZE          = strlen(KEY_ID_LABEL);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -207,13 +207,13 @@ static void AddAssetMap(std::map<std::string, std::string> &map,
 static void AddCommonExtrasMap(std::map<std::string, std::string> &map,
                                const TransactionData &data) {
     // Signature
-    if (!data.signature.empty()) {
+    if (!data.signature.empty() && data.signature.at(1) != 0U) {
         map.emplace(KEY_SIGNATURE_LABEL,
                     BytesToHex(data.signature));
     }
 
     // Second Signature
-    if (!data.secondSignature.empty()) {
+    if (!data.secondSignature.empty() && data.secondSignature.at(1) != 0U) {
         map.emplace(KEY_SECOND_SIGNATURE_LABEL,
                     BytesToHex(data.secondSignature));
     }

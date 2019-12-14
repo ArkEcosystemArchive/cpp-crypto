@@ -70,13 +70,13 @@ auto HtlcRefund::Serialize(const HtlcRefund &refund, uint8_t *buffer)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-const auto OBJECT_HTLC_REFUND_LABEL = "refund";
-const auto OBJECT_HTLC_REFUND_SIZE  = strlen(OBJECT_HTLC_REFUND_LABEL);
+constexpr auto OBJECT_HTLC_REFUND_LABEL = "refund";
+const auto OBJECT_HTLC_REFUND_SIZE      = strlen(OBJECT_HTLC_REFUND_LABEL);
 
-const auto KEY_REFUND_TX_ID_LABEL   = "lockTransactionId";
-const auto KEY_REFUND_TX_ID_SIZE    = strlen(KEY_REFUND_TX_ID_LABEL);
+constexpr auto KEY_REFUND_TX_ID_LABEL   = "lockTransactionId";
+const auto KEY_REFUND_TX_ID_SIZE        = strlen(KEY_REFUND_TX_ID_LABEL);
 
-const auto HTLC_JSON_OBJECT_SIZE = 1U;
+constexpr auto HTLC_JSON_OBJECT_SIZE = 1U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Htlc Refund Asset data to a Transaction Map.

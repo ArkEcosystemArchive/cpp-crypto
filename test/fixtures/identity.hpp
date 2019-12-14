@@ -48,20 +48,20 @@ constexpr auto SecondPassphrase     = "this is a top secret passphrase too";
 // ARK Identities: Byte Arrays
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::array<uint8_t, PRIVATEKEY_BYTE_LEN> PrivateKeyBytes = {
+constexpr std::array<uint8_t, PRIVATEKEY_BYTE_LEN> PrivateKeyBytes = {
     { 216, 131, 156, 36, 50, 191, 208, 166, 126, 241, 10, 128, 75, 169, 145, 234,
       187, 161, 159, 21, 74, 61, 112, 121, 23, 104, 29, 69, 130, 42, 87, 18 }};
 
 ////////////////////////////////////////////////////////////////////////////////
 // PublicKeyBytes
-const std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN> PublicKeyBytes = {
+constexpr std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN> PublicKeyBytes = {
     {   3, 65, 81, 163, 236, 70, 181, 103, 10, 104, 43, 10, 99, 57, 79, 134, 53,
       135, 209, 188, 151, 72, 59, 27, 108, 112, 235, 88, 231, 240, 174, 209,
       146 }};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Uncompressed PublicKey Bytes
-const std::array<uint8_t, PUBLICKEY_UNCOMPRESSED_LEN> PublicKeyUncompressedBytes = {
+constexpr std::array<uint8_t, PUBLICKEY_UNCOMPRESSED_LEN> PublicKeyUncompressedBytes = {
     {  65, 81, 163, 236, 70, 181, 103, 10, 104, 43, 10, 99, 57, 79, 134, 53, 135,
       209, 188, 151, 72, 59, 27, 108, 112, 235, 88, 231, 240, 174, 209, 146, 250,
        41, 206, 0, 251, 142, 217, 47, 52, 246, 140, 0, 24, 241, 45, 91, 104, 193,
@@ -69,21 +69,21 @@ const std::array<uint8_t, PUBLICKEY_UNCOMPRESSED_LEN> PublicKeyUncompressedBytes
 
 ////////////////////////////////////////////////////////////////////////////////
 // RIPEMD160 Hash bytes
-const std::array<uint8_t, HASH_20_LEN> AddressBytes = {
+constexpr std::array<uint8_t, HASH_20_LEN> AddressBytes = {
     {  9, 149, 117, 2, 7, 236, 175, 12, 207, 37, 28, 18, 101, 185, 42, 216, 79,
       85, 54, 98  }};
 
 ////////////////////////////////////////////////////////////////////////////////
 // RIPEMD160 Hash bytes
-const std::array<uint8_t, 31> PassphraseBytes = {{
+constexpr std::array<uint8_t, 31> PassphraseBytes = {{
     116, 104, 105, 115,  32, 105, 115, 32,  97,  32, 116, 111, 112, 32, 115,
     101,  99, 114, 101, 116,  32, 112, 97, 115, 115, 112, 104, 114, 97, 115, 101
 }};
 
 ////////////////////////////////////////////////////////////////////////////////
 // ARK Identities: Base58 Versions
-const uint8_t AddressVersion  = 0x1E;  // Base58: 'D' character
-const uint8_t WifVersion      = 0xaa;  // Base58: 'S' character
+constexpr uint8_t AddressVersion  = 0x1E;  // Base58: 'D' character
+constexpr uint8_t WifVersion      = 0xaa;  // Base58: 'S' character
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,8 +103,8 @@ constexpr auto WifString        = "SGq4xLgZKCGxslbjmwnBrWcT4C1ADFEermj846KC97FSv
 
 ////////////////////////////////////////////////////////////////////////////////
 // Empty arrays
-const std::array<uint8_t, PRIVATEKEY_BYTE_LEN>          PrivateKeyBytes = {{}};
-const std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN>     PublicKeyBytes = {{}};
+constexpr std::array<uint8_t, PRIVATEKEY_BYTE_LEN>          PrivateKeyBytes = {{}};
+constexpr std::array<uint8_t, PUBLICKEY_COMPRESSED_LEN>     PublicKeyBytes = {{}};
 
 }  // namespace invalid
 }  // fixtures

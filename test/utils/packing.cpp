@@ -17,14 +17,14 @@
 #include "test_helpers.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-const uint16_t U16  = 1U;
-const uint32_t U32  = 1UL;
-const uint64_t U64  = 1ULL;
+constexpr uint16_t U16  = 1U;
+constexpr uint32_t U32  = 1UL;
+constexpr uint64_t U64  = 1ULL;
 
-const std::array<uint8_t, sizeof(uint16_t)> Packed2LE   = { 1U, 0U };
-const std::array<uint8_t, sizeof(uint32_t)> Packed4LE   = { 1U, 0U, 0U, 0U };
-const std::array<uint8_t, sizeof(uint64_t)> Packed8LE   = { 1U, 0U, 0U, 0U,
-                                                            0U, 0U, 0U, 0U };
+constexpr std::array<uint8_t, sizeof(uint16_t)> Packed2LE   = { 1U, 0U };
+constexpr std::array<uint8_t, sizeof(uint32_t)> Packed4LE   = { 1U, 0U, 0U, 0U };
+constexpr std::array<uint8_t, sizeof(uint64_t)> Packed8LE   = { 1U, 0U, 0U, 0U,
+                                                                0U, 0U, 0U, 0U };
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(utils_packing, pack_2_le) {

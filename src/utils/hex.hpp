@@ -20,7 +20,7 @@
 // Bytes to Hex
 template <typename T>
 inline std::string BytesToHex(const T itbegin, const T itend) {
-    static const char hexmap[16] = {
+    const char hexmap[16] = {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
         'a', 'b', 'c', 'd', 'e', 'f'
     };
@@ -45,16 +45,16 @@ template <typename T> inline std::string BytesToHex(const T& vch) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr size_t HEX_TABLE_LEN = 256U;
+constexpr size_t HEX_TABLE_LEN = 256U;
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr std::array<int8_t, HEX_TABLE_LEN> HexTable = {{
+constexpr std::array<int8_t, HEX_TABLE_LEN> HexTable = {{
     #include "utils/hex.table"
 }};
 
 ////////////////////////////////////////////////////////////////////////////////
 inline int8_t HexDigit(char c) {
-  return HexTable[static_cast<uint8_t>(c)];
+  return HexTable[static_cast<int8_t>(c)];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -65,20 +65,13 @@ inline std::vector<uint8_t> HexToBytes(const char* psz) {
     for (;;) {
         while (isspace(*psz) != 0) { psz++; };
 
-        auto c = HexDigit(*psz++);
-        if (c == static_cast<int8_t>(-1)) {
-            break;
-        };
+        auto a = HexDigit(*psz++);
+        if (a < 0) { break; }
 
-        int8_t n = (c << 4);
-        c = HexDigit(*psz++);
-        if (c == static_cast<int8_t>(-1)) {
-            break;
-        };
+        auto b = HexDigit(*psz++);
+        if (b < 0) { break; }
 
-        n |= c;
-
-        vch.push_back(n);
+        vch.push_back(b |= a << 4);
     }
 
     return vch;
@@ -99,21 +92,22 @@ inline std::vector<uint8_t> HexToBytes(const char* psz) {
 // auto publicKeyFromHex = HexToBytesArray<33>(my_publickey_hex_string);
 template<size_t SIZE = HASH_32_LEN>
 inline std::array<uint8_t, SIZE> HexToBytesArray(const char *psz) {
-    if (psz == nullptr) { return std::array<uint8_t, SIZE>();; };
+    if (psz == nullptr) { return std::array<uint8_t, SIZE>(); };
 
-    std::array<uint8_t, SIZE> arr;
+    std::array<uint8_t, SIZE> arr {};
     for (auto &e : arr) {
         while (isspace(*psz) != 0) { psz++; };
 
-        auto a = HexTable[ static_cast<int8_t>(*psz++) ] << 4;
-        auto b = HexTable[ static_cast<int8_t>(*psz++) ];
+        auto a = HexDigit(*psz++);
+        if (a < 0) { return {}; }
 
-        if ((a | b) < 0) { return std::array<uint8_t, SIZE>(); };
+        auto b = HexDigit(*psz++);
+        if (b < 0) { return {}; }
 
-        e = a |= b;
-    };
+        e = b |= a << 4;
+    }
 
     return arr;
-};
+}
 
 #endif

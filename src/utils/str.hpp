@@ -18,10 +18,10 @@
 #include "interfaces/constants.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-static const size_t ALPHANUM_TABLE_LEN = 128U;
+constexpr size_t ALPHANUM_TABLE_LEN = 128U;
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
+constexpr std::array<int8_t, ALPHANUM_TABLE_LEN> AlphaNumericTable = {{
     #include "utils/str.table"
 }};
 

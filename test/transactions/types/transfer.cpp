@@ -102,7 +102,7 @@ TEST(transactions_transfer, serialize_ecdsa) {
     data.type           = TYPE_0_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -111,13 +111,14 @@ TEST(transactions_transfer, serialize_ecdsa) {
     data.asset.transfer.amount      = TYPE_0_AMOUNT;
     data.asset.transfer.expiration  = TYPE_0_EXPIRATION;
 
-    std::move(TYPE_0_RECIPIENT,
-              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              data.asset.transfer.recipientId.begin());
+    std::copy_n(TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                data.asset.transfer.recipientId.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_0_SIGNATURE,
-                          TYPE_0_SIGNATURE + sizeof(TYPE_0_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_0_SIGNATURE));
+    std::copy_n(TYPE_0_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_0_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -133,7 +134,7 @@ TEST(transactions_transfer, serialize_vendorfield_ecdsa) {
     data.type           = TYPE_0_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -146,13 +147,14 @@ TEST(transactions_transfer, serialize_vendorfield_ecdsa) {
     data.asset.transfer.amount       = TYPE_0_AMOUNT;
     data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    std::move(TYPE_0_RECIPIENT,
-              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              data.asset.transfer.recipientId.begin());
+    std::copy_n(TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                data.asset.transfer.recipientId.begin());
 
-    data.signature.insert(data.signature.begin(),
-                         TYPE_0_VF_SIGNATURE,
-                         TYPE_0_VF_SIGNATURE + sizeof(TYPE_0_VF_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_0_VF_SIGNATURE));
+    std::copy_n(TYPE_0_VF_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_0_VF_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -166,9 +168,9 @@ TEST(transactions_transfer, add_to_map) {
     transfer.amount         = TYPE_0_AMOUNT;
     transfer.expiration     = TYPE_0_EXPIRATION;
 
-    std::move(TYPE_0_RECIPIENT,
-              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              transfer.recipientId.begin());
+    std::copy_n(TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                transfer.recipientId.begin());
 
     std::map<std::string, std::string> transferMap;
 

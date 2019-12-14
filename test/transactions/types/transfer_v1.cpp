@@ -99,17 +99,18 @@ TEST(transactions_transfer_v1, serialize) {
 
     data.asset.transfer.amount = v1::TYPE_0_AMOUNT;
 
-    std::move(v1::TYPE_0_RECIPIENT,
-              v1::TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              data.asset.transfer.recipientId.begin());
+    std::copy_n(v1::TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                data.asset.transfer.recipientId.begin());
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          v1::TYPE_0_SIGNATURE,
-                          v1::TYPE_0_SIGNATURE + sizeof(v1::TYPE_0_SIGNATURE));
+    data.signature.resize(sizeof(v1::TYPE_0_SIGNATURE));
+    std::copy_n(v1::TYPE_0_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(v1::TYPE_0_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -128,11 +129,11 @@ TEST(transactions_transfer_v1, serialize_vendorfield) {
 
     data.asset.transfer.amount = v1::TYPE_0_AMOUNT;
 
-    std::move(v1::TYPE_0_RECIPIENT,
+    std::copy(v1::TYPE_0_RECIPIENT,
               v1::TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
               data.asset.transfer.recipientId.begin());
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -140,10 +141,10 @@ TEST(transactions_transfer_v1, serialize_vendorfield) {
                            v1::TYPE_0_VF,
                            v1::TYPE_0_VF + sizeof(v1::TYPE_0_VF));
 
-    data.signature.insert(
-            data.signature.begin(),
-            v1::TYPE_0_VF_SIGNATURE,
-            v1::TYPE_0_VF_SIGNATURE + sizeof(v1::TYPE_0_VF_SIGNATURE));
+    data.signature.resize(sizeof(v1::TYPE_0_VF_SIGNATURE));
+    std::copy_n(v1::TYPE_0_VF_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(v1::TYPE_0_BYTES_VF.data(),
                           Serializer::serialize(data).data(),

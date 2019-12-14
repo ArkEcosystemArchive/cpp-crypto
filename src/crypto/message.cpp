@@ -28,17 +28,17 @@ namespace Ark {
 namespace Crypto {
 
 ////////////////////////////////////////////////////////////////////////////////
-const auto MESSAGE_KEY      = "message";
-const auto PUBLICKEY_KEY    = "publickey";
-const auto SIGNATURE_KEY    = "signature";
+constexpr auto MESSAGE_KEY      = "message";
+constexpr auto PUBLICKEY_KEY    = "publickey";
+constexpr auto SIGNATURE_KEY    = "signature";
 
-constexpr uint8_t MAGIC_JSON_SIZE       = 120U;
-constexpr uint8_t MAGIC_JSON_OBJ_SIZE   = 3U;
+constexpr size_t MAGIC_JSON_SIZE       = 120;
+constexpr size_t MAGIC_JSON_OBJ_SIZE   = 3;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Create an empty Message object for building and signing.
 Message::Message() : publicKey() {
-        signature.reserve(SIGNATURE_ECDSA_MAX);
+        signature.resize(SIGNATURE_ECDSA_MAX);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,9 +50,10 @@ Message::Message(std::string message,
                 PUBLICKEY_COMPRESSED_LEN,
                 this->publicKey.begin());
 
-    this->signature.insert(this->signature.begin(),
-                           signature,
-                           signature + signature[1] + 2U);
+    this->signature.resize(signature[1] == 0U ? 0U : 2U + signature[1]);
+    std::copy_n(signature,
+                this->signature.size(),
+                this->signature.begin());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

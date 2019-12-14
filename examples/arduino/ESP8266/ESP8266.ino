@@ -61,8 +61,8 @@ using namespace Ark::Crypto::transactions;
 ////////////////////////////////////////////////////////////////////////////////
 // Sketch Constants
 
-static const auto Passphrase        = "this is a top secret passphrase";
-static const auto WifByte           = 0xaa;  // Devnet
+constexpr auto Passphrase   = "this is a top secret passphrase";
+constexpr auto WifByte      = 0xaa;  // Devnet
 
 ////////////////////////////////////////////////////////////////////////////////
 // Create a PrivateKey using a 12-word Passphrase.

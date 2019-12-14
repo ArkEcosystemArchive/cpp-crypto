@@ -62,7 +62,7 @@ TEST(transactions_ipfs, serialize_ecdsa) {
     data.type               = TYPE_5_TYPE;
     data.nonce              = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -72,9 +72,10 @@ TEST(transactions_ipfs, serialize_ecdsa) {
                                TYPE_5_DAG,
                                TYPE_5_DAG + sizeof(TYPE_5_DAG));
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_5_SIGNATURE,
-                          TYPE_5_SIGNATURE + sizeof(TYPE_5_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_5_SIGNATURE));
+    std::copy_n(TYPE_5_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_5_BYTES.data(),
                           Serializer::serialize(data).data(),

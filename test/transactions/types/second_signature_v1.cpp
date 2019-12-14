@@ -59,17 +59,18 @@ TEST(transactions_v1, serialize_second_signature_registration) {
     data.fee            = v1::TYPE_1_FEE;
     data.timestamp      = v1::TYPE_1_TIMESTAMP;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
-    std::move(v1::TYPE_1_SECOND_PUBLICKEY,
-              v1::TYPE_1_SECOND_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
-              data.asset.secondSignature.publicKey.begin());
+    std::copy_n(v1::TYPE_1_SECOND_PUBLICKEY,
+                PUBLICKEY_COMPRESSED_LEN,
+                data.asset.secondSignature.publicKey.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          v1::TYPE_1_SIGNATURE,
-                          v1::TYPE_1_SIGNATURE + sizeof(v1::TYPE_1_SIGNATURE));
+    data.signature.resize(sizeof(v1::TYPE_1_SIGNATURE));
+    std::copy_n(v1::TYPE_1_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(v1::TYPE_1_BYTES.data(),
                           Serializer::serialize(data).data(),

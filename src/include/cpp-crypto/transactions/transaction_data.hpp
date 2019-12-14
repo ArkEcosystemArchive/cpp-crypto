@@ -48,7 +48,10 @@ struct TransactionData {
     std::vector<uint8_t>    signature;
     std::vector<uint8_t>    secondSignature;
 
-    TransactionData() = default;
+    TransactionData() {
+        signature.resize(SIGNATURE_ECDSA_MAX);
+        secondSignature.resize(SIGNATURE_ECDSA_MAX);
+    };
 };
 
 

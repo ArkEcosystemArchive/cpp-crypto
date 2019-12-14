@@ -32,9 +32,9 @@ auto Keys::fromPassphrase(const char *passphrase) -> KeyPair {
 // Returns KeyPair from PrivateKey bytes.
 auto Keys::fromPrivateKey(const uint8_t *privateKeyBytes) -> KeyPair {
     PrivateKeyBytes privateKey {};
-    std::move(privateKeyBytes,
-              privateKeyBytes + PRIVATEKEY_BYTE_LEN,
-              privateKey.begin());
+    std::copy_n(privateKeyBytes,
+                PRIVATEKEY_BYTE_LEN,
+                privateKey.begin());
 
     return { privateKey, PublicKey::fromPrivateKey(privateKeyBytes) };
 }

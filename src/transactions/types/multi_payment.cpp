@@ -164,24 +164,24 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-const auto KEY_PAYMENTS_LABEL   = "payments";
-const auto KEY_PAYMENTS_SIZE    = strlen(KEY_PAYMENTS_LABEL);
+constexpr auto KEY_PAYMENTS_LABEL   = "payments";
+const auto KEY_PAYMENTS_SIZE        = strlen(KEY_PAYMENTS_LABEL);
 
-const auto KEY_N_PAYMENTS_SIZE    = strlen(KEY_N_PAYMENTS_LABEL);
+const auto KEY_N_PAYMENTS_SIZE      = strlen(KEY_N_PAYMENTS_LABEL);
 
-const auto KEY_AMOUNTS_LABEL   = "amounts";
-const auto KEY_AMOUNTS_SIZE    = strlen(KEY_AMOUNTS_LABEL);
+constexpr auto KEY_AMOUNTS_LABEL    = "amounts";
+const auto KEY_AMOUNTS_SIZE         = strlen(KEY_AMOUNTS_LABEL);
 
-const auto KEY_ADDRESSES_LABEL   = "addresses";
-const auto KEY_ADDRESSES_SIZE    = strlen(KEY_ADDRESSES_LABEL);
+constexpr auto KEY_ADDRESSES_LABEL  = "addresses";
+const auto KEY_ADDRESSES_SIZE       = strlen(KEY_ADDRESSES_LABEL);
 
-const auto KEY_AMOUNT_LABEL   = "amount";
-const auto KEY_AMOUNT_SIZE    = strlen(KEY_AMOUNT_LABEL);
+constexpr auto KEY_AMOUNT_LABEL     = "amount";
+const auto KEY_AMOUNT_SIZE          = strlen(KEY_AMOUNT_LABEL);
 
-const auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
-const auto KEY_RECIPIENT_ID_SIZE    = strlen(KEY_RECIPIENT_ID_LABEL);
+constexpr auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
+const auto KEY_RECIPIENT_ID_SIZE        = strlen(KEY_RECIPIENT_ID_LABEL);
 
-const auto MULTIPAYMENT_JSON_OBJECT_SIZE = 2U;
+constexpr auto MULTIPAYMENT_JSON_OBJECT_SIZE = 2U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Join Array and Vectors of a given 'T' to a comma separated string.

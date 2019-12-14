@@ -18,15 +18,15 @@ using namespace Ark::Crypto::managers;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-static const FeePolicy CustomFeePolicy {
+static FeePolicy CustomFeePolicy {
     900000000ULL, 800000000ULL, 700000000ULL, 600000000ULL, 500000000ULL,
     400000000ULL, 300000000ULL, 200000000ULL, 100000000ULL, 0ULL
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-static constexpr const uint8_t InBounds         = 5U;
-static constexpr const uint8_t OutOfBounds      = 11;
-static constexpr const uint64_t CustomFee       = 1000ULL;
+constexpr uint8_t InBounds      = 5U;
+constexpr uint8_t OutOfBounds   = 11;
+constexpr uint64_t CustomFee    = 1000ULL;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(managers_fee_manager, get) {

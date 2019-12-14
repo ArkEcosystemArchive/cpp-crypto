@@ -24,9 +24,9 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-const uint8_t VOTE_LIMIT    = 1U;
-const uint8_t VOTE_LEN      = 1U + PUBLICKEY_COMPRESSED_LEN;
-const uint8_t VOTES_LEN     = VOTE_LIMIT * VOTE_LEN;
+constexpr uint8_t VOTE_LIMIT    = 1U;
+constexpr uint8_t VOTE_LEN      = 1U + PUBLICKEY_COMPRESSED_LEN;
+constexpr uint8_t VOTES_LEN     = VOTE_LIMIT * VOTE_LEN;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 3 - Vote

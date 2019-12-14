@@ -56,7 +56,9 @@ namespace transactions {
 // - pack8LE(&buffer[NONCE_OFFSET], &transaction.nonce);
 //
 // SenderPublicKey - 33 Bytes:
-// - buffer.insert(buffer.begin() + 17, transaction.senderPublicKey.begin(), transaction.senderPublicKey.end());
+// - buffer.insert(buffer.begin() + 17,
+//                 transaction.senderPublicKey.begin(),
+//                 transaction.senderPublicKey.end());
 //
 // Fee - 8 bytes
 // - pack8LE(&buffer[FEE_OFFSET], &transaction.fee);
@@ -65,7 +67,9 @@ namespace transactions {
 // - buffer.at(58) = transaction.vendorField.size();
 //
 // VendorField - 0 <=> 255 Bytes:
-// - buffer.insert(buffer.begin() + 59, transaction.vendorField.begin(), transaction.vendorField.end());
+// - buffer.insert(buffer.begin() + 59,
+//                 transaction.vendorField.begin(),
+//                 transaction.vendorField.end());
 //
 // ---
 static void serializeCommon(const TransactionData &transaction,
@@ -119,7 +123,9 @@ static void serializeCommon(const TransactionData &transaction,
 // - pack4LE(&buffer.at(v1::TIMESTAMP_OFFSET), &transaction.timestamp);
 //
 // SenderPublicKey - 33 Bytes:
-// - buffer.insert(buffer.begin() + 8, transaction.senderPublicKey.begin(), transaction.senderPublicKey.end());
+// - buffer.insert(buffer.begin() + 8,
+//                 transaction.senderPublicKey.begin(),
+//                 transaction.senderPublicKey.end());
 //
 // Fee - 8 bytes
 // - pack8LE(&buffer.at(v1::FEE_OFFSET), &transaction.fee);
@@ -128,7 +134,9 @@ static void serializeCommon(const TransactionData &transaction,
 // - buffer.at(49) = transaction.vendorField.size();
 //
 // VendorField - 0 <=> 255 Bytes:
-// - buffer.insert(buffer.begin() + 50, transaction.vendorField.begin(), transaction.vendorField.end());
+// - buffer.insert(buffer.begin() + 50,
+//                 transaction.vendorField.begin(),
+//                 transaction.vendorField.end());
 //
 // ---
 static void serializeCommonV1(const TransactionData &transaction,
@@ -164,33 +172,40 @@ static auto serializeAsset(const TransactionData &transaction,
                            std::vector<uint8_t> &buffer,
                            const size_t &offset) -> size_t {
     switch (transaction.type) {
+        // Transfer
         case TRANSFER_TYPE:
             return Transfer::Serialize(
                     transaction.asset.transfer,
                     &buffer.at(offset));
 
+        // Second Signature
         case SECOND_SIGNATURE_TYPE:
             return SecondSignature::Serialize(
                     transaction.asset.secondSignature,
                     &buffer.at(offset));
 
+        // Delegate Registration
         case DELEGATE_REGISTRATION_TYPE:
             return DelegateRegistration::Serialize(
                     transaction.asset.delegateRegistration,
                      &buffer.at(offset));
 
+        // Vote
         case VOTE_TYPE:
             return Vote::Serialize(
                     transaction.asset.vote,
                     &buffer.at(offset));
 
+        // // MultiSignature
         // case MULTI_SIGNATURE_TYPE:  // TODO
 
+        // Ipfs
         case IPFS_TYPE:
             return Ipfs::Serialize(
                     transaction.asset.ipfs,
                     &buffer.at(offset));
 
+        // MultiPayment
         case MULTI_PAYMENT_TYPE:
             return MultiPayment::Serialize(
                     transaction.asset.multiPayment,
@@ -201,16 +216,19 @@ static auto serializeAsset(const TransactionData &transaction,
         // No Asset Needed. Return Default of '0'.
         // case DELEGATE_RESIGNATION_TYPE:
 
+        // Htlc Lock
         case HTLC_LOCK_TYPE:
             return HtlcLock::Serialize(
                     transaction.asset.htlcLock,
                     &buffer.at(offset));
 
+        // Htlc Claim
         case HTLC_CLAIM_TYPE:
             return HtlcClaim::Serialize(
                     transaction.asset.htlcClaim,
                     &buffer.at(offset));
 
+        // Htlc Refund
         case HTLC_REFUND_TYPE:
             return HtlcRefund::Serialize(
                     transaction.asset.htlcRefund,
@@ -223,9 +241,10 @@ static auto serializeAsset(const TransactionData &transaction,
 ////////////////////////////////////////////////////////////////////////////////
 static auto serializeSignatures(const TransactionData &data,
                                 std::vector<uint8_t> &buffer,
-                                const size_t offset,
+                                const size_t &offset,
                                 const SerializerOptions &options) -> size_t {
     if (!options.excludeSignature &&
+        data.signature.at(0) != 0 &&
         data.signature.size() >= SIGNATURE_ECDSA_MIN &&
         data.signature.size() <= SIGNATURE_ECDSA_MAX) {
         buffer.insert(buffer.begin() + offset,
@@ -235,6 +254,7 @@ static auto serializeSignatures(const TransactionData &data,
     else { return 0UL; }
 
     if (!options.excludeSecondSignature &&
+        data.secondSignature.at(0) != 0 &&
         data.secondSignature.size() >= SIGNATURE_ECDSA_MIN &&
         data.secondSignature.size() <= SIGNATURE_ECDSA_MAX) {
         buffer.insert(buffer.begin() + offset + data.signature.size(),

@@ -64,7 +64,7 @@ TEST(transactions_vote, serialize_ecdsa) {
     data.type           = TYPE_3_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -72,13 +72,12 @@ TEST(transactions_vote, serialize_ecdsa) {
 
     data.asset.vote.count = 1U;
 
-    std::move(TYPE_3_VOTE,
-              TYPE_3_VOTE + VOTE_LEN,
-              data.asset.vote.votes.begin());
+    std::copy_n(TYPE_3_VOTE, VOTE_LEN, data.asset.vote.votes.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_3_SIGNATURE,
-                          TYPE_3_SIGNATURE + sizeof(TYPE_3_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_3_SIGNATURE));
+    std::copy_n(TYPE_3_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_3_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -91,7 +90,7 @@ TEST(transactions_vote, add_to_map) {
 
     vote.count = TYPE_3_VOTE_COUNT;
 
-    std::move(TYPE_3_VOTE, TYPE_3_VOTE + VOTE_LEN, vote.votes.begin());
+    std::copy_n(TYPE_3_VOTE, VOTE_LEN, vote.votes.begin());
 
     std::map<std::string, std::string> voteMap;
 

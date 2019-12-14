@@ -79,11 +79,11 @@ auto Vote::Serialize(const Vote &vote, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-const auto KEY_VOTE_LABEL   = "vote";
-const auto KEY_VOTE_SIZE    = strlen(KEY_VOTE_LABEL);
+constexpr auto KEY_VOTE_LABEL   = "vote";
+const auto KEY_VOTE_SIZE        = strlen(KEY_VOTE_LABEL);
 
-const auto KEY_VOTES_LABEL  = "votes";
-const auto KEY_VOTES_SIZE    = strlen(KEY_VOTES_LABEL);
+constexpr auto KEY_VOTES_LABEL  = "votes";
+const auto KEY_VOTES_SIZE       = strlen(KEY_VOTES_LABEL);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Vote Asset data to a Transaction Map.

@@ -6,6 +6,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  **/
+
 #include "crypto/curve.hpp"
 
 #include <algorithm>
@@ -69,17 +70,14 @@ auto Curve::Ecdsa::sign(const uint8_t *hash32,
     bcl::Uint256 r;
     bcl::Uint256 s;
     bcl::Ecdsa::sign(bcl::Uint256(privateKeyBytes),
-                          bcl::Sha256Hash(hash32, HASH_32_LEN),
-                          bcl::Uint256(nonce32.data()),
-                          r, s);
+                     bcl::Sha256Hash(hash32, HASH_32_LEN),
+                     bcl::Uint256(nonce32.data()),
+                     r, s);
 
     // Copy the big-endian bytes into and R/S element buffer.
     std::array<uint8_t, HASH_64_LEN> rsBuffer;
     r.getBigEndianBytes(&rsBuffer[0]);
     s.getBigEndianBytes(&rsBuffer[HASH_32_LEN]);
-
-    // Make enough room for a valid signature.
-    outSignature->resize(SIGNATURE_ECDSA_MAX);
 
     // Encode R & S Elements into a BIP66-encoded signature.
     const auto success = bip66::encode(

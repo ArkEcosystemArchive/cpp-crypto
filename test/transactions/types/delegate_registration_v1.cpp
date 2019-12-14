@@ -21,6 +21,8 @@
 
 #include "test_helpers.h"
 
+#include "utils/hex.hpp"
+
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
@@ -65,26 +67,29 @@ TEST(transactions_delegate_registration_v1, serialize) {
     data.fee             = v1::TYPE_2_FEE;
     data.timestamp       = v1::TYPE_2_TIMESTAMP;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.asset.delegateRegistration.length = v1::TYPE_2_USERNAME_LENGTH;
 
-    std::move(v1::TYPE_2_USERNAME,
-              v1::TYPE_2_USERNAME + v1::TYPE_2_USERNAME_LENGTH,
-              data.asset.delegateRegistration.username.begin());
+    std::copy_n(v1::TYPE_2_USERNAME,
+                v1::TYPE_2_USERNAME_LENGTH,
+                data.asset.delegateRegistration.username.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          v1::TYPE_2_SIGNATURE,
-                          v1::TYPE_2_SIGNATURE + sizeof(v1::TYPE_2_SIGNATURE));
+    data.signature.resize(sizeof(v1::TYPE_2_SIGNATURE));
+    std::copy_n(v1::TYPE_2_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
-    data.secondSignature.insert(
-        data.secondSignature.begin(),
-        v1::TYPE_2_SECOND_SIG,
-        v1::TYPE_2_SECOND_SIG + sizeof(v1::TYPE_2_SECOND_SIG));
+    data.secondSignature.resize(sizeof(v1::TYPE_2_SECOND_SIG));
+    std::copy_n(v1::TYPE_2_SECOND_SIG,
+                data.secondSignature.size(),
+                data.secondSignature.begin());
+
+    const auto serialized = Serializer::serialize(data);
 
     ASSERT_TRUE(array_cmp(v1::TYPE_2_BYTES.data(),
-                          Serializer::serialize(data).data(),
-                          v1::TYPE_2_BYTES.size()));
+                          serialized.data(),
+                          serialized.size()));
 }

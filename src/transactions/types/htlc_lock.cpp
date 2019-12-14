@@ -146,26 +146,26 @@ auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-const auto OBJECT_HTLC_LOCK_LABEL       = "lock";
-const auto OBJECT_HTLC_LOCK_SIZE        = strlen(OBJECT_HTLC_LOCK_LABEL) - 1U;
+constexpr auto OBJECT_HTLC_LOCK_LABEL       = "lock";
+const auto OBJECT_HTLC_LOCK_SIZE            = strlen(OBJECT_HTLC_LOCK_LABEL) - 1U;
 
-const auto OBJECT_HTLC_LOCK_TYPE_LABEL      = "type";
+constexpr auto OBJECT_HTLC_LOCK_TYPE_LABEL  = "type";
 const auto OBJECT_HTLC_LOCK_VALUE_LABEL     = "value";
 
-const auto KEY_AMOUNT_LABEL             = "amount";
-const auto KEY_AMOUNT_SIZE              = strlen(KEY_AMOUNT_LABEL);
+constexpr auto KEY_AMOUNT_LABEL             = "amount";
+const auto KEY_AMOUNT_SIZE                  = strlen(KEY_AMOUNT_LABEL);
 
-const auto KEY_SECRET_HASH_LABEL        = "secretHash";
-const auto KEY_SECRET_HASH_SIZE         = strlen(KEY_SECRET_HASH_LABEL);
+constexpr auto KEY_SECRET_HASH_LABEL        = "secretHash";
+const auto KEY_SECRET_HASH_SIZE             = strlen(KEY_SECRET_HASH_LABEL);
 
-const auto KEY_EXPIRATION_TYPE_LABEL    = "expirationType";
-const auto KEY_EXPIRATION_TYPE_SIZE     = strlen(KEY_EXPIRATION_TYPE_LABEL);
+constexpr auto KEY_EXPIRATION_TYPE_LABEL    = "expirationType";
+const auto KEY_EXPIRATION_TYPE_SIZE         = strlen(KEY_EXPIRATION_TYPE_LABEL);
 
-const auto KEY_EXPIRATION_LABEL         = "expiration";
-const auto KEY_EXPIRATION_SIZE          = strlen(KEY_EXPIRATION_LABEL);
+constexpr auto KEY_EXPIRATION_LABEL         = "expiration";
+const auto KEY_EXPIRATION_SIZE              = strlen(KEY_EXPIRATION_LABEL);
 
-const auto KEY_RECIPIENT_ID_LABEL       = "recipientId";
-const auto KEY_RECIPIENT_ID_SIZE        = strlen(KEY_RECIPIENT_ID_LABEL);
+constexpr auto KEY_RECIPIENT_ID_LABEL       = "recipientId";
+const auto KEY_RECIPIENT_ID_SIZE            = strlen(KEY_RECIPIENT_ID_LABEL);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Htlc Lock Asset data to a Transaction Map.

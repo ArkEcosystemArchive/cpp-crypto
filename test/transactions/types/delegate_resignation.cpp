@@ -58,15 +58,16 @@ TEST(transactions_delegate_resignation, serialize_ecdsa) {
     data.type           = TYPE_7_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.fee            = TYPE_7_FEE;
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_7_SIGNATURE,
-                          TYPE_7_SIGNATURE + sizeof(TYPE_7_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_7_SIGNATURE));
+    std::copy_n(TYPE_7_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_7_BYTES.data(),
                           Serializer::serialize(data).data(),

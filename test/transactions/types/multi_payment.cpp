@@ -80,7 +80,7 @@ TEST(transactions_multi_payment, serialize_ecdsa) {
     data.type           = TYPE_6_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -100,16 +100,17 @@ TEST(transactions_multi_payment, serialize_ecdsa) {
 
         data.asset.multiPayment.addresses.at(i).at(0) = TYPE_6_BYTES[offset];
 
-        std::move(&TYPE_6_BYTES[offset + 1U],
-                  &TYPE_6_BYTES[offset + 1U] + HASH_20_LEN,
-                  &data.asset.multiPayment.addresses.at(i).at(1));
+        std::copy_n(&TYPE_6_BYTES[offset + 1U],
+                    HASH_20_LEN,
+                    &data.asset.multiPayment.addresses.at(i).at(1));
 
         offset += ADDRESS_HASH_LEN;
     }
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_6_SIGNATURE,
-                          TYPE_6_SIGNATURE + sizeof(TYPE_6_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_6_SIGNATURE));
+    std::copy_n(TYPE_6_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_6_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -123,7 +124,7 @@ TEST(transactions_multi_payment, invalid_len) {
     // Invalid MultiPayment on Deserialization.
     MultiPayment::Deserialize(
             &payments,
-            reinterpret_cast<const uint8_t *>(""));
+            reinterpret_cast<const uint8_t *>("badlen"));
 
     ASSERT_EQ(0UL, payments.n_payments);
 

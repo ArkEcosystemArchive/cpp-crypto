@@ -21,6 +21,8 @@ using namespace Ark::Crypto;
 ////////////////////////////////////////////////////////////////////////////////
 TEST(crypto_curve, ecdsa_sign) {
     std::vector<uint8_t> signature = {};
+    signature.resize(SIGNATURE_ECDSA_MAX);
+
     ASSERT_TRUE(Curve::Ecdsa::sign(fixtures::MessageSha256Bytes.data(),
                                    fixtures::PrivateKeyBytes.data(),
                                    &signature));

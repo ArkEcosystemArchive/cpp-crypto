@@ -53,14 +53,12 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
 
     const auto keys = identities::Keys::fromPassphrase(passphrase.c_str());
 
-    std::move(keys.publicKey.begin(),
+    std::copy(keys.publicKey.begin(),
               keys.publicKey.end(),
               this->data.senderPublicKey.begin());
 
     const auto serialized = this->toBytes({ true, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
-
-    this->data.signature.reserve(SIGNATURE_ECDSA_MAX);
 
     return Curve::Ecdsa::sign(hash32.data(),
                               keys.privateKey.data(),
@@ -70,7 +68,8 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
 ////////////////////////////////////////////////////////////////////////////////
 // Sign the Transaction using a Second Passphrase.
 auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
-    if (this->data.signature.empty() || secondPassphrase.empty()) {
+    if (this->data.signature.empty() || this->data.signature.at(0) == 0 ||
+        secondPassphrase.empty()) {
         return false;
     }
 
@@ -79,8 +78,6 @@ auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
     const auto serialized = this->toBytes({ false, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
-    this->data.secondSignature.reserve(SIGNATURE_ECDSA_MAX);
-    
     return Curve::Ecdsa::sign(hash32.data(),
                               keys.privateKey.data(),
                               &this->data.secondSignature);

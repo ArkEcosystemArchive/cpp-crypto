@@ -14,19 +14,19 @@
 #include <cstring>
 
 ////////////////////////////////////////////////////////////////////////////////
-const uint8_t U1_MAX        = 0xFF;
-const uint16_t U2_MAX       = 0xFFFF;
-const uint32_t U4_MAX       = 0xFFFFFFFF;
-const uint64_t U8_MAX       = 0xFFFFFFFFFFFFFFFF;
+constexpr uint8_t U1_MAX        = 0xFF;
+constexpr uint16_t U2_MAX       = 0xFFFF;
+constexpr uint32_t U4_MAX       = 0xFFFFFFFF;
+constexpr uint64_t U8_MAX       = 0xFFFFFFFFFFFFFFFF;
 
-const auto U1_SIZE        = sizeof(uint8_t);
-const auto U2_SIZE        = sizeof(uint16_t);
-const auto U4_SIZE        = sizeof(uint32_t);
-const auto U8_SIZE        = sizeof(uint64_t);
+constexpr auto U1_SIZE        = sizeof(uint8_t);
+constexpr auto U2_SIZE        = sizeof(uint16_t);
+constexpr auto U4_SIZE        = sizeof(uint32_t);
+constexpr auto U8_SIZE        = sizeof(uint64_t);
 
-const uint16_t U1_SHIFT     = 8U;
-const uint32_t U2_SHIFT     = 16U;
-const uint64_t U4_SHIFT     = 32U;
+constexpr uint16_t U1_SHIFT     = 8U;
+constexpr uint32_t U2_SHIFT     = 16U;
+constexpr uint64_t U4_SHIFT     = 32U;
 
 ////////////////////////////////////////////////////////////////////////////////
 #define pack2LE(dst, src) memcpy (dst, src, U2_SIZE)

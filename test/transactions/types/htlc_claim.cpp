@@ -66,24 +66,25 @@ TEST(transactions_htlc_claim, serialize_ecdsa) {
     data.type           = TYPE_9_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.fee            = TYPE_9_FEE;
 
-    std::move(TYPE_9_LOCK_TX_ID,
-              TYPE_9_LOCK_TX_ID + HASH_32_LEN,
-              data.asset.htlcClaim.id.begin());
+    std::copy_n(TYPE_9_LOCK_TX_ID,
+                HASH_32_LEN,
+                data.asset.htlcClaim.id.begin());
 
 
-    std::move(TYPE_9_UNLOCK_SECRET,
-              TYPE_9_UNLOCK_SECRET + HASH_32_LEN,
-              data.asset.htlcClaim.secret.begin());
+    std::copy_n(TYPE_9_UNLOCK_SECRET,
+                HASH_32_LEN,
+                data.asset.htlcClaim.secret.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_9_SIGNATURE,
-                          TYPE_9_SIGNATURE + sizeof(TYPE_9_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_9_SIGNATURE));
+    std::copy_n(TYPE_9_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_9_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -94,13 +95,9 @@ TEST(transactions_htlc_claim, serialize_ecdsa) {
 TEST(transactions_htlc_claim, add_to_map) {
     HtlcClaim claim;
 
-    std::move(TYPE_9_LOCK_TX_ID,
-              TYPE_9_LOCK_TX_ID + HASH_32_LEN,
-              claim.id.begin());
+    std::copy_n(TYPE_9_LOCK_TX_ID, HASH_32_LEN, claim.id.begin());
 
-    std::move(TYPE_9_UNLOCK_SECRET,
-              TYPE_9_UNLOCK_SECRET + HASH_32_LEN,
-              claim.secret.begin());
+    std::copy_n(TYPE_9_UNLOCK_SECRET, HASH_32_LEN, claim.secret.begin());
 
     std::map<std::string, std::string> claimMap;
 

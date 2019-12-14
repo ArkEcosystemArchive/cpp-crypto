@@ -22,8 +22,8 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-const uint8_t USERNAME_MIN      = 3U;
-const uint8_t USERNAME_MAX      = 20U;
+constexpr uint8_t USERNAME_MIN      = 3U;
+constexpr uint8_t USERNAME_MAX      = 20U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 2 - Delegate Registration

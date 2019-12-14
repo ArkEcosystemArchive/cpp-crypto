@@ -74,11 +74,11 @@ auto SecondSignature::Serialize(const SecondSignature &registration,
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-const auto KEY_SIGNATURE_LABEL      = "signature";
-const auto KEY_SIGNATURE_SIZE       = strlen(KEY_SIGNATURE_LABEL);
+constexpr auto KEY_SIGNATURE_LABEL      = "signature";
+const auto KEY_SIGNATURE_SIZE           = strlen(KEY_SIGNATURE_LABEL);
 
-const auto KEY_PUBLICKEY_LABEL      = "publicKey";
-const auto KEY_PUBLICKEY_SIZE       = strlen(KEY_PUBLICKEY_LABEL);
+constexpr auto KEY_PUBLICKEY_LABEL      = "publicKey";
+const auto KEY_PUBLICKEY_SIZE           = strlen(KEY_PUBLICKEY_LABEL);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add SecondSignature Asset data to a Transaction Map.

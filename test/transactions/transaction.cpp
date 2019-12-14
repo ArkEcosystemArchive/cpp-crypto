@@ -54,7 +54,7 @@ TEST(transactions_transaction, get_id) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               transaction.data.senderPublicKey.begin());
 
@@ -63,14 +63,14 @@ TEST(transactions_transaction, get_id) {
     transaction.data.asset.transfer.amount       = TYPE_0_AMOUNT;
     transaction.data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    std::move(TYPE_0_RECIPIENT,
-              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              transaction.data.asset.transfer.recipientId.begin());
+    std::copy_n(TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                transaction.data.asset.transfer.recipientId.begin());
 
-    transaction.data.signature.insert(
-            transaction.data.signature.begin(),
-            TYPE_0_SIGNATURE,
-            TYPE_0_SIGNATURE + sizeof(TYPE_0_SIGNATURE));
+    transaction.data.signature.resize(sizeof(TYPE_0_SIGNATURE));
+    std::copy_n(TYPE_0_SIGNATURE,
+                sizeof(TYPE_0_SIGNATURE),
+                transaction.data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_0_TX_ID,
                           transaction.getId().data(),
@@ -88,7 +88,7 @@ TEST(transactions_transaction, sign) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               transaction.data.senderPublicKey.begin());
 
@@ -97,9 +97,9 @@ TEST(transactions_transaction, sign) {
     transaction.data.asset.transfer.amount       = TYPE_0_AMOUNT;
     transaction.data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    std::move(TYPE_0_RECIPIENT,
-              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              transaction.data.asset.transfer.recipientId.begin());
+    std::copy_n(TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                transaction.data.asset.transfer.recipientId.begin());
 
     // Test with an Empty Passphrase.
     transaction.sign("");
@@ -127,7 +127,7 @@ TEST(transactions_transaction, sign_second) {
     transaction.data.type                        = TYPE_0_TYPE;
     transaction.data.nonce                       = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               transaction.data.senderPublicKey.begin());
 
@@ -135,9 +135,9 @@ TEST(transactions_transaction, sign_second) {
     transaction.data.asset.transfer.amount       = TYPE_0_AMOUNT;
     transaction.data.asset.transfer.expiration   = TYPE_0_EXPIRATION;
 
-    std::move(TYPE_0_RECIPIENT,
-              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              transaction.data.asset.transfer.recipientId.begin());
+    std::copy_n(TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                transaction.data.asset.transfer.recipientId.begin());
 
     ASSERT_TRUE(transaction.sign(fixtures::Passphrase));
 

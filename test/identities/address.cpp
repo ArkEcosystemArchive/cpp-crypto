@@ -75,8 +75,8 @@ TEST(identities_address, from_passphrase) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_address, from_publickey) {
-    auto publicKey = Keys::fromPassphrase(fixtures::Passphrase).publicKey.data();
-    const auto address = Address::fromPublicKey(publicKey,
+    auto publicKey = Keys::fromPassphrase(fixtures::Passphrase).publicKey;
+    const auto address = Address::fromPublicKey(publicKey.data(),
                                                 fixtures::AddressVersion);
 
     ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
@@ -85,8 +85,9 @@ TEST(identities_address, from_publickey) {
 ////////////////////////////////////////////////////////////////////////////////
 TEST(identities_address, from_privatekey) {
     auto privateKey = Keys::fromPassphrase(
-                fixtures::Passphrase).privateKey.data();
-    auto address = Address::fromPrivateKey(privateKey, fixtures::AddressVersion);
+                fixtures::Passphrase).privateKey;
+    auto address = Address::fromPrivateKey(privateKey.data(),
+                                           fixtures::AddressVersion);
 
     ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
 }

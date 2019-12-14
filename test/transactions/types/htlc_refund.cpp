@@ -62,19 +62,20 @@ TEST(transactions_htlc_refund, serialize_ecdsa) {
     data.type           = TYPE_10_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.fee            = TYPE_10_FEE;
 
-    std::move(TYPE_10_LOCK_TX_ID,
-              TYPE_10_LOCK_TX_ID + HASH_32_LEN,
-              data.asset.htlcRefund.id.begin());
+    std::copy_n(TYPE_10_LOCK_TX_ID,
+                HASH_32_LEN,
+                data.asset.htlcRefund.id.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_10_SIGNATURE,
-                          TYPE_10_SIGNATURE + sizeof(TYPE_10_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_10_SIGNATURE));
+    std::copy_n(TYPE_10_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_10_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -85,9 +86,7 @@ TEST(transactions_htlc_refund, serialize_ecdsa) {
 TEST(transactions_htlc_refund, add_to_map) {
     HtlcRefund refund;
 
-    std::move(TYPE_10_LOCK_TX_ID,
-              TYPE_10_LOCK_TX_ID + HASH_32_LEN,
-              refund.id.begin());
+    std::copy_n(TYPE_10_LOCK_TX_ID, HASH_32_LEN, refund.id.begin());
 
     std::map<std::string, std::string> refundMap;
 

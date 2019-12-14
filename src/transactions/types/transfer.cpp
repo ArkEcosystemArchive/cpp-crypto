@@ -96,14 +96,14 @@ auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constantsconst auto KEY_AMOUNT_LABEL         = "amount";
-const auto KEY_AMOUNT_LABEL         = "amount";
-const auto KEY_AMOUNT_SIZE          = strlen(KEY_AMOUNT_LABEL);
+constexpr auto KEY_AMOUNT_LABEL         = "amount";
+const auto KEY_AMOUNT_SIZE              = strlen(KEY_AMOUNT_LABEL);
 
-const auto KEY_EXPIRATION_LABEL     = "expiration";
-const auto KEY_EXPIRATION_SIZE      = strlen(KEY_EXPIRATION_LABEL);
+constexpr auto KEY_EXPIRATION_LABEL     = "expiration";
+const auto KEY_EXPIRATION_SIZE          = strlen(KEY_EXPIRATION_LABEL);
 
-const auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
-const auto KEY_RECIPIENT_ID_SIZE    = strlen(KEY_RECIPIENT_ID_LABEL);
+constexpr auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
+const auto KEY_RECIPIENT_ID_SIZE        = strlen(KEY_RECIPIENT_ID_LABEL);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Transfer Asset data to a Transaction Map.

@@ -26,9 +26,9 @@ namespace Crypto {
 namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
-const uint16_t MULTI_PAYMENT_NETWORK_LIMIT = 100UL;
+constexpr uint16_t MULTI_PAYMENT_NETWORK_LIMIT = 100UL;
 
-const auto KEY_N_PAYMENTS_LABEL = "n_payments";
+constexpr auto KEY_N_PAYMENTS_LABEL = "n_payments";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 6 - MultiPayment

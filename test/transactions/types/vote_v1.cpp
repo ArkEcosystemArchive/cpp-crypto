@@ -65,24 +65,23 @@ TEST(transactions_vote_v1, serialize) {
     data.fee            = v1::TYPE_3_FEE;
     data.timestamp      = v1::TYPE_3_TIMESTAMP;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.asset.vote.count = 1U;
 
-    std::move(v1::TYPE_3_VOTE,
-              v1::TYPE_3_VOTE + VOTES_LEN,
-              data.asset.vote.votes.begin());
+    std::copy_n(v1::TYPE_3_VOTE, VOTES_LEN, data.asset.vote.votes.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          v1::TYPE_3_SIGNATURE,
-                          v1::TYPE_3_SIGNATURE + sizeof(v1::TYPE_3_SIGNATURE));
+    data.signature.resize(sizeof(v1::TYPE_3_SIGNATURE));
+    std::copy_n(v1::TYPE_3_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
-    data.secondSignature.insert(
-        data.secondSignature.begin(),
-        v1::TYPE_3_SECOND_SIG,
-        v1::TYPE_3_SECOND_SIG + sizeof(v1::TYPE_3_SECOND_SIG));
+    data.secondSignature.resize(sizeof(v1::TYPE_3_SECOND_SIG));
+    std::copy_n(v1::TYPE_3_SECOND_SIG,
+                data.secondSignature.size(),
+                data.secondSignature.begin());
 
     ASSERT_TRUE(array_cmp(v1::TYPE_3_BYTES.data(),
                           Serializer::serialize(data).data(),

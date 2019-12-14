@@ -64,7 +64,7 @@ TEST(transactions_delegate_registration, serialize_ecdsa) {
     data.type           = TYPE_2_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -72,13 +72,14 @@ TEST(transactions_delegate_registration, serialize_ecdsa) {
 
     data.asset.delegateRegistration.length = TYPE_2_USERNAME_LENGTH;
 
-    std::move(TYPE_2_USERNAME,
-              TYPE_2_USERNAME + TYPE_2_USERNAME_LENGTH,
-              data.asset.delegateRegistration.username.begin());
+    std::copy_n(TYPE_2_USERNAME,
+                TYPE_2_USERNAME_LENGTH,
+                data.asset.delegateRegistration.username.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_2_SIGNATURE,
-                          TYPE_2_SIGNATURE + sizeof(TYPE_2_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_2_SIGNATURE));
+    std::copy_n(TYPE_2_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_2_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -109,9 +110,9 @@ TEST(transactions_delegate_registration, add_to_map) {
 
     delegateRegistration.length = TYPE_2_USERNAME_LENGTH;
 
-    std::move(TYPE_2_USERNAME,
-              TYPE_2_USERNAME + TYPE_2_USERNAME_LENGTH,
-              delegateRegistration.username.begin());
+    std::copy_n(TYPE_2_USERNAME,
+                TYPE_2_USERNAME_LENGTH,
+                delegateRegistration.username.begin());
 
     std::map<std::string, std::string> delegateRegistrationMap;
 

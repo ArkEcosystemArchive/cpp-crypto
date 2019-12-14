@@ -63,19 +63,20 @@ TEST(transactions_second_signature, serialize_ecdsa) {
     data.type           = TYPE_1_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
     data.fee            = TYPE_1_FEE;
 
-    std::move(TYPE_1_SECOND_PUBLICKEY,
-              TYPE_1_SECOND_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
-              data.asset.secondSignature.publicKey.begin());
+    std::copy_n(TYPE_1_SECOND_PUBLICKEY,
+                PUBLICKEY_COMPRESSED_LEN,
+                data.asset.secondSignature.publicKey.begin());
 
-    data.signature.insert(data.signature.begin(),
-                          TYPE_1_SIGNATURE,
-                          TYPE_1_SIGNATURE + sizeof(TYPE_1_SIGNATURE));
+    data.signature.resize(sizeof(TYPE_1_SIGNATURE));
+    std::copy_n(TYPE_1_SIGNATURE,
+                data.signature.size(),
+                data.signature.begin());
 
     ASSERT_TRUE(array_cmp(TYPE_1_BYTES.data(),
                           Serializer::serialize(data).data(),
@@ -86,9 +87,9 @@ TEST(transactions_second_signature, serialize_ecdsa) {
 TEST(transactions_second_signature, add_to_map) {
     SecondSignature secondSignature;
 
-    std::move(TYPE_1_SECOND_PUBLICKEY,
-              TYPE_1_SECOND_PUBLICKEY + PUBLICKEY_COMPRESSED_LEN,
-              secondSignature.publicKey.begin());
+    std::copy_n(TYPE_1_SECOND_PUBLICKEY,
+                PUBLICKEY_COMPRESSED_LEN,
+                secondSignature.publicKey.begin());
 
     std::map<std::string, std::string> secondSignatureMap;
 

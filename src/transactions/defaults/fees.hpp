@@ -18,17 +18,17 @@ namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Default Transaction Fees
-static const uint64_t TRANSFER_FEE                  = 10000000ULL;
-static const uint64_t SECOND_SIGNATURE_FEE          = 500000000ULL;
-static const uint64_t DELEGATE_REGISTRATION_FEE     = 2500000000ULL;
-static const uint64_t VOTE_FEE                      = 100000000ULL;
-static const uint64_t MULTI_SIGNATURE_FEE           = 500000000ULL;
-static const uint64_t IPFS_FEE                      = 500000000ULL;
-static const uint64_t MULTI_PAYMENT_FEE             = 10000000ULL;
-static const uint64_t DELEGATE_RESIGNATION_FEE      = 2500000000ULL;
-static const uint64_t HTLC_LOCK_FEE                 = 10000000ULL;
-static const uint64_t HTLC_CLAIM_FEE                = 0ULL;
-static const uint64_t HTLC_REFUND_FEE               = 0ULL;
+constexpr uint64_t TRANSFER_FEE                 = 10000000ULL;
+constexpr uint64_t SECOND_SIGNATURE_FEE         = 500000000ULL;
+constexpr uint64_t DELEGATE_REGISTRATION_FEE    = 2500000000ULL;
+constexpr uint64_t VOTE_FEE                     = 100000000ULL;
+constexpr uint64_t MULTI_SIGNATURE_FEE          = 500000000ULL;
+constexpr uint64_t IPFS_FEE                     = 500000000ULL;
+constexpr uint64_t MULTI_PAYMENT_FEE            = 10000000ULL;
+constexpr uint64_t DELEGATE_RESIGNATION_FEE     = 2500000000ULL;
+constexpr uint64_t HTLC_LOCK_FEE                = 10000000ULL;
+constexpr uint64_t HTLC_CLAIM_FEE               = 0ULL;
+constexpr uint64_t HTLC_REFUND_FEE              = 0ULL;
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Default Fee Policy

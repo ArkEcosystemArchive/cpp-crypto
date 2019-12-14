@@ -82,14 +82,14 @@ auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-const auto OBJECT_HTLC_CLAIM_LABEL  = "claim";
-const auto OBJECT_HTLC_CLAIM_SIZE   = strlen(OBJECT_HTLC_CLAIM_LABEL);
+constexpr auto OBJECT_HTLC_CLAIM_LABEL  = "claim";
+const auto OBJECT_HTLC_CLAIM_SIZE       = strlen(OBJECT_HTLC_CLAIM_LABEL);
 
-const auto KEY_CLAIM_TX_ID_LABEL    = "lockTransactionId";
-const auto KEY_CLAIM_TX_ID_SIZE     = strlen(KEY_CLAIM_TX_ID_LABEL);
+constexpr auto KEY_CLAIM_TX_ID_LABEL    = "lockTransactionId";
+const auto KEY_CLAIM_TX_ID_SIZE         = strlen(KEY_CLAIM_TX_ID_LABEL);
 
-const auto KEY_CLAIM_SECRET_LABEL   = "unlockSecret";
-const auto KEY_CLAIM_SECRET_SIZE    = strlen(KEY_CLAIM_SECRET_LABEL);
+constexpr auto KEY_CLAIM_SECRET_LABEL   = "unlockSecret";
+const auto KEY_CLAIM_SECRET_SIZE        = strlen(KEY_CLAIM_SECRET_LABEL);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Htlc Claim Asset data to a Transaction Map.

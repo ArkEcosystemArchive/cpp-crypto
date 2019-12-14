@@ -22,7 +22,7 @@ using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-static const FeePolicy CustomFeePolicy = {
+const FeePolicy CustomFeePolicy = {
     900000000ULL, 800000000ULL, 700000000ULL, 600000000ULL, 500000000ULL,
     400000000ULL, 300000000ULL, 200000000ULL, 100000000ULL, 0ULL
 };

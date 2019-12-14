@@ -132,22 +132,20 @@ template<class T> class Common {
     ////////////////////////////////////////////////////////////////////////////
     // Signature
     T &signature(const uint8_t *signature, const size_t &length) {
-        this->transaction.data.signature.insert(
-            this->transaction.data.signature.begin(),
-            signature,
-            signature + length);
-
+        this->transaction.data.signature.resize(length);
+        std::copy_n(signature,
+                    length,
+                    this->transaction.data.signature.begin());
         return reinterpret_cast<T&>(*this);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Second Signature
     T &secondSignature(const uint8_t *secondSignature, const size_t &length) {
-        this->transaction.data.secondSignature.insert(
-            this->transaction.data.secondSignature.begin(),
-            secondSignature,
-            secondSignature + length);
-
+        this->transaction.data.signature.resize(length);
+        std::copy_n(secondSignature,
+                    length,
+                    this->transaction.data.signature.begin());
         return reinterpret_cast<T&>(*this);
     }
 
@@ -180,7 +178,7 @@ template<class T> class Common {
 
         // Use the configuration network version if it's different.
         if (this->transaction.data.network == Devnet.version &&
-            config.getNetwork().version != Devnet.version) {        
+            config.getNetwork().version != Devnet.version) {
             this->transaction.data.network = config.getNetwork().version;
         }
 

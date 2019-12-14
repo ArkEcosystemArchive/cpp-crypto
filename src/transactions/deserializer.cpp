@@ -63,7 +63,9 @@ namespace transactions {
 // - buffer.at(58);
 //
 // VendorField - 0 - 255 Bytes:
-// - data->vendorField.insert(data->vendorField.begin(), &buffer.at(59), &buffer.at(59 + data->vendorField.size()));
+// - data->vendorField.insert(data->vendorField.begin(),
+//                            &buffer.at(59),
+//                            &buffer.at(59 + data->vendorField.size()));
 //
 // ---
 static void deserializeCommon(TransactionData *data,
@@ -82,7 +84,7 @@ static void deserializeCommon(TransactionData *data,
                 PUBLICKEY_COMPRESSED_LEN,
                 data->senderPublicKey.begin());
 
-    data->fee           = unpack8LE(buffer, FEE_OFFSET);           // 8 Bytes
+    data->fee           = unpack8LE(buffer, FEE_OFFSET);            // 8 Bytes
 
     if (buffer.at(VF_LEN_OFFSET) != 0U) {
         data->vendorField.insert(                           // 0 <=> 255 Bytes
@@ -126,7 +128,9 @@ static void deserializeCommon(TransactionData *data,
 // - buffer.at(49)
 //
 // VendorField - 0 - 255 Bytes:
-// - data->vendorField.insert(data->vendorField.begin(), &buffer.at(50), &buffer.at(50 + buffer.at(49)));
+// - data->vendorField.insert(data->vendorField.begin(),
+//                            &buffer.at(50),
+//                            &buffer.at(50 + buffer.at(49)));
 //
 // ---
 static void deserializeCommonV1(TransactionData *data,
@@ -139,7 +143,7 @@ static void deserializeCommonV1(TransactionData *data,
 
     data->timestamp     = unpack4LE(buffer, v1::TIMESTAMP_OFFSET);  // 4 Bytes
 
-    std::copy_n(&buffer.at(v1::SENDER_PUBLICKEY_OFFSET),              // 33 Bytes
+    std::copy_n(&buffer.at(v1::SENDER_PUBLICKEY_OFFSET),            // 33 Bytes
                 PUBLICKEY_COMPRESSED_LEN,
                 data->senderPublicKey.begin());
 
@@ -225,24 +229,24 @@ static auto deserializeAsset(TransactionData *transaction,
 
 ////////////////////////////////////////////////////////////////////////////////
 static void deserializeSignatures(TransactionData *transaction,
-                                  const uint8_t *buffer) {
-    uint8_t signatureLength = buffer[1] + 2U;
+                                  const uint8_t *buffer,
+                                  const size_t &size) {
+    size_t signatureLength = buffer[1] == 0U ? 0U : 2U + buffer[1];
     if (signatureLength >= SIGNATURE_ECDSA_MIN &&
         signatureLength <= SIGNATURE_ECDSA_MAX) {
-        transaction->signature.reserve(SIGNATURE_ECDSA_MAX);
-        transaction->signature.insert(transaction->signature.begin(),
-                                      buffer,
-                                      buffer + signatureLength);
+        transaction->signature.resize(signatureLength);
+        std::copy_n(buffer,
+                    transaction->signature.size(),
+                    transaction->signature.begin());
     }
 
-    uint8_t secondSignatureLength = buffer[signatureLength + 1U] + 2U;
+    size_t secondSignatureLength = size - signatureLength;
     if (secondSignatureLength >= SIGNATURE_ECDSA_MIN &&
         secondSignatureLength <= SIGNATURE_ECDSA_MAX) {
-        transaction->secondSignature.reserve(SIGNATURE_ECDSA_MAX);
-        transaction->secondSignature.insert(
-                transaction->secondSignature.begin(),
-                buffer + signatureLength,
-                buffer + signatureLength + secondSignatureLength);
+        transaction->secondSignature.resize(secondSignatureLength);
+        std::copy_n(buffer + signatureLength,
+                    transaction->secondSignature.size(),
+                    transaction->secondSignature.begin());
     }
 }
 
@@ -272,7 +276,9 @@ auto Deserializer::deserialize(TransactionData *data,
 
     size_t assetSize = deserializeAsset(data, buffer, assetOffset);
 
-    deserializeSignatures(data, &buffer[assetOffset + assetSize]);
+    deserializeSignatures(data,
+                          &buffer.at(assetOffset + assetSize),
+                          buffer.size() - assetOffset - assetSize);
 
     return true;
 }

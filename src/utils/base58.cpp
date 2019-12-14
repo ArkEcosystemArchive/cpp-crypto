@@ -44,7 +44,7 @@ auto Base58::checkEncode(const uint8_t *data, const size_t &length)
 
     size_t j;
     size_t startAt;
-    size_t zeroCount = 0;
+    int zeroCount = 0;
 
     if (length > tmp.size()) {
         return {};
@@ -75,7 +75,7 @@ auto Base58::checkEncode(const uint8_t *data, const size_t &length)
         buffer.at(--j) = (uint8_t)BASE58ALPHABET.at(remainder);
     }
 
-    while (zeroCount-- > 0U) {
+    while (zeroCount-- > 0) {
         buffer.at(--j) = BASE58ALPHABET.at(0);
     }
 
@@ -149,8 +149,10 @@ auto Base58::parseWif(const char *wif, uint8_t* outVersion) -> PrivateKeyBytes {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static const size_t BASE58_TABLE_LEN = 128U;
-static const std::array<int8_t, BASE58_TABLE_LEN> Base58Table = {{
+constexpr size_t BASE58_TABLE_LEN = 128U;
+
+////////////////////////////////////////////////////////////////////////////////
+constexpr std::array<int8_t, BASE58_TABLE_LEN> Base58Table = {{
   #include "base58.table"
 }};
 

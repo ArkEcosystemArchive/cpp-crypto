@@ -42,7 +42,7 @@ struct PubkeyHashPair {
     PubkeyHashPair() = default;
     PubkeyHashPair(uint8_t version, const PubkeyHash &pubkeyHash)
         : version(version) {
-        std::move(pubkeyHash.begin(),
+        std::copy(pubkeyHash.begin(),
                   pubkeyHash.end(),
                   this->pubkeyHash.begin());
     }
@@ -74,11 +74,11 @@ struct KeyPair {
     ////////////////////////////////////////////////////////////////////////////
     KeyPair() = default;
     KeyPair(const PrivateKeyBytes &privateKey, const PublicKeyBytes &publicKey) {
-        std::move(privateKey.begin(),
+        std::copy(privateKey.begin(),
                   privateKey.end(),
                   this->privateKey.begin());
 
-        std::move(publicKey.begin(),
+        std::copy(publicKey.begin(),
                   publicKey.end(),
                   this->publicKey.begin());
     }

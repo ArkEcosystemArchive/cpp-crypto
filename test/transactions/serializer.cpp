@@ -40,7 +40,7 @@ TEST(transactions_serializer, serialize_invalid_version) {
     data.type           = TYPE_0_TYPE;
     data.nonce          = COMMON_NONCE;
 
-    std::move(fixtures::PublicKeyBytes.begin(),
+    std::copy(fixtures::PublicKeyBytes.begin(),
               fixtures::PublicKeyBytes.end(),
               data.senderPublicKey.begin());
 
@@ -49,9 +49,9 @@ TEST(transactions_serializer, serialize_invalid_version) {
     data.asset.transfer.amount      = TYPE_0_AMOUNT;
     data.asset.transfer.expiration  = TYPE_0_EXPIRATION;
 
-    std::move(TYPE_0_RECIPIENT,
-              TYPE_0_RECIPIENT + ADDRESS_HASH_LEN,
-              data.asset.transfer.recipientId.begin());
+    std::copy_n(TYPE_0_RECIPIENT,
+                ADDRESS_HASH_LEN,
+                data.asset.transfer.recipientId.begin());
 
     data.signature.insert(data.signature.begin(),
                           TYPE_0_SIGNATURE,
