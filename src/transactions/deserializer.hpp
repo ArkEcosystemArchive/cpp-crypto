@@ -10,7 +10,6 @@
 #ifndef ARK_TRANSACTIONS_DESERIALIZER_HPP
 #define ARK_TRANSACTIONS_DESERIALIZER_HPP
 
-#include <cstdbool>
 #include <cstdint>
 #include <vector>
 

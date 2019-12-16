@@ -9,7 +9,6 @@
 
 #include "identities/address.hpp"
 
-#include <cstdbool>
 #include <string>
 
 #include "interfaces/identities.hpp"

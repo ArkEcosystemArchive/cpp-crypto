@@ -10,7 +10,6 @@
 #include "transactions/deserializer.hpp"
 
 #include <algorithm>
-#include <cstdbool>
 #include <cstdint>
 #include <vector>
 

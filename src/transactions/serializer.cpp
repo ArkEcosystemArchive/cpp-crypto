@@ -9,7 +9,6 @@
 
 #include "transactions/serializer.hpp"
 
-#include <cstdbool>
 #include <cstdint>
 #include <cstring>
 #include <vector>

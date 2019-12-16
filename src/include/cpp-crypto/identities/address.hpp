@@ -10,7 +10,6 @@
 #ifndef ARK_IDENTITIES_ADDRESS_HPP
 #define ARK_IDENTITIES_ADDRESS_HPP
 
-#include <cstdbool>
 #include <string>
 
 #include "interfaces/identities.hpp"

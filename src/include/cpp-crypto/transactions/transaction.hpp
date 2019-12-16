@@ -10,7 +10,6 @@
 #ifndef ARK_TRANSACTION_HPP
 #define ARK_TRANSACTION_HPP
 
-#include <cstdbool>
 #include <cstdint>
 #include <map>
 #include <string>

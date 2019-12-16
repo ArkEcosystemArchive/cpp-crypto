@@ -10,7 +10,6 @@
 #include "transactions/transaction.hpp"
 
 #include <algorithm>
-#include <cstdbool>
 #include <cstddef>
 #include <cstdint>
 #include <map>
