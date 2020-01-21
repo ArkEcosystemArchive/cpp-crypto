@@ -50,7 +50,7 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
         return false;
     }
 
-    const auto keys = identities::Keys::fromPassphrase(passphrase.c_str());
+    auto keys = identities::Keys::fromPassphrase(passphrase.c_str());
 
     std::copy(keys.publicKey.begin(),
               keys.publicKey.end(),
@@ -62,6 +62,8 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
     const auto success = Curve::Ecdsa::sign(hash32.data(),
                                             keys.privateKey.data(),
                                             &this->data.signature);
+
+    memset(&keys, 0, sizeof(keys));
 
     if (success) {
         std::copy_n(this->getId().begin(), HASH_32_LEN, this->data.id.begin());
@@ -78,14 +80,18 @@ auto Transaction::secondSign(const std::string &secondPassphrase) -> bool {
         return false;
     }
 
-    const auto keys = identities::Keys::fromPassphrase(secondPassphrase.c_str());
+    auto keys = identities::Keys::fromPassphrase(secondPassphrase.c_str());
 
     const auto serialized = this->toBytes({ false, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
-    return Curve::Ecdsa::sign(hash32.data(),
-                              keys.privateKey.data(),
-                              &this->data.secondSignature);
+    const auto success = Curve::Ecdsa::sign(hash32.data(),
+                                            keys.privateKey.data(),
+                                            &this->data.secondSignature);
+
+    memset(&keys, 0, sizeof(keys));
+
+    return success;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
