@@ -32,18 +32,20 @@ struct TransactionData {
     uint8_t                 network     { Devnet.version };
 
     uint32_t                typeGroup   { TRANSACTION_DEFAULT_TYPEGROUP };  // v2
-    uint16_t                type        { 0U };  // v1: 1 Byte | v2: 2 Bytes 
+    uint16_t                type        { 0U };     // v1: 1 Byte | v2: 2 Bytes 
 
     uint64_t                nonce       { 0ULL };   // v2 only
     uint32_t                timestamp   { 0UL };    // v1 only
 
-    PublicKeyBytes          senderPublicKey {};
+    PublicKeyBytes          senderPublicKey { };
 
     uint64_t                fee         { 0ULL };
 
     std::vector<uint8_t>    vendorField;
 
     Asset                   asset;
+
+    Hash32                  id { };
 
     std::vector<uint8_t>    signature;
     std::vector<uint8_t>    secondSignature;

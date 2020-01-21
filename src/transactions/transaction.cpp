@@ -59,9 +59,15 @@ auto Transaction::sign(const std::string &passphrase) -> bool {
     const auto serialized = this->toBytes({ true, true });
     const auto hash32 = Hash::sha256(serialized.data(), serialized.size());
 
-    return Curve::Ecdsa::sign(hash32.data(),
-                              keys.privateKey.data(),
-                              &this->data.signature);
+    const auto success = Curve::Ecdsa::sign(hash32.data(),
+                                            keys.privateKey.data(),
+                                            &this->data.signature);
+
+    if (success) {
+        std::copy_n(this->getId().begin(), HASH_32_LEN, this->data.id.begin());
+    }
+
+    return success;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -111,13 +117,26 @@ auto Transaction::secondVerify(const uint8_t *secondPublicKey) const -> bool {
 ////////////////////////////////////////////////////////////////////////////////
 // Deserialize the given Hex string via AIP11.
 auto Transaction::deserialize(const std::vector<uint8_t> &serialized) -> bool {
-    return Deserializer::deserialize(&this->data, serialized);
+    if (!Deserializer::deserialize(&this->data, serialized)) {
+        return false;
+    }
+
+    std::copy_n(this->getId().begin(), HASH_32_LEN, this->data.id.begin());
+
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Serialize the object via AIP11.
 auto Transaction::serialize() -> std::vector<uint8_t> {
-    return Serializer::serialize(this->data);
+    const auto serialized = Serializer::serialize(this->data);
+    if (serialized.empty()) {
+        return {};
+    }
+
+    std::copy_n(this->getId().begin(), HASH_32_LEN, this->data.id.begin());
+
+    return serialized;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,12 +156,7 @@ auto Transaction::toBytes(const SerializerOptions &options) const
 //
 // --
 auto Transaction::toMap() const -> std::map<std::string, std::string> {
-    std::map<std::string, std::string> map = Mapping::getMap(this->data);
-
-    // Add the Transaction Id
-    map["id"] = BytesToHex(this->getId());
-
-    return map;
+    return Mapping::getMap(this->data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

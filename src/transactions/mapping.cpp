@@ -206,6 +206,9 @@ static void AddAssetMap(std::map<std::string, std::string> &map,
 // ---
 static void AddCommonExtrasMap(std::map<std::string, std::string> &map,
                                const TransactionData &data) {
+    // Transaction Id
+    map.emplace(KEY_ID_LABEL, BytesToHex(data.id));
+
     // Signature
     if (!data.signature.empty() && data.signature.at(1) != 0U) {
         map.emplace(KEY_SIGNATURE_LABEL,

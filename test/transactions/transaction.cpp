@@ -168,6 +168,15 @@ TEST(transactions_transaction, deserialize) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+TEST(transactions_transaction, deserialize_invalid) {
+    const uint8_t badSerialized[] = { 0xFF, 0x0a };
+    Transaction transaction;
+
+    ASSERT_FALSE(transaction.deserialize(
+            { badSerialized, badSerialized + sizeof(badSerialized) }));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_transaction, serialize) {
     Transaction transaction;
 
@@ -176,6 +185,16 @@ TEST(transactions_transaction, serialize) {
     ASSERT_TRUE(array_cmp(TYPE_0_BYTES.data(),
                           transaction.serialize().data(),
                           TYPE_0_BYTES.size()));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(transactions_transaction, serialize_invalid) {
+    const auto badVersion = 0x0a;
+    Transaction transaction;
+
+    transaction.data.version = badVersion;
+
+    ASSERT_TRUE(transaction.serialize().empty());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
