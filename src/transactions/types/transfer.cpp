@@ -95,7 +95,7 @@ auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> size_t {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-// Map/Json Constantsconst auto KEY_AMOUNT_LABEL         = "amount";
+// Map/Json Constants
 constexpr auto KEY_AMOUNT_LABEL         = "amount";
 const auto KEY_AMOUNT_SIZE              = strlen(KEY_AMOUNT_LABEL);
 
