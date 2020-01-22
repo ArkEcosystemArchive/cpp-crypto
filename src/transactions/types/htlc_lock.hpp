@@ -31,11 +31,11 @@ constexpr size_t HTLC_LOCK_SIZE = 66U;
 // Type 8 - Htlc Lock
 struct HtlcLock {
     ////////////////////////////////////////////////////////////////////////////
-    uint64_t                                amount              { 0ULL };
-    std::array<uint8_t, HASH_32_LEN>        secretHash          { };
-    uint8_t                                 expirationType      { 0U };
-    uint32_t                                expiration          { 0UL };
-    AddressHash                             recipientId         { };
+    uint64_t        amount          { 0ULL };
+    Hash32          secretHash      { };
+    uint8_t         expirationType  { 0U };
+    uint32_t        expiration      { 0UL };
+    AddressHash     recipientId     { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(HtlcLock *lock, const uint8_t *buffer);

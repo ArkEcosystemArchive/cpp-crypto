@@ -16,6 +16,7 @@
 #include <string>
 
 #include "interfaces/constants.h"
+#include "interfaces/identities.hpp"
 
 #include "utils/json.h"
 
@@ -27,7 +28,7 @@ namespace transactions {
 // Type 10 - Htlc Refund
 struct HtlcRefund {
     ////////////////////////////////////////////////////////////////////////////
-    std::array<uint8_t, HASH_32_LEN> id { };
+    Hash32 id { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(HtlcRefund *refund, const uint8_t *buffer);

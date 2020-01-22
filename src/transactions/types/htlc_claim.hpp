@@ -16,6 +16,7 @@
 #include <string>
 
 #include "interfaces/constants.h"
+#include "interfaces/identities.hpp"
 
 #include "utils/json.h"
 
@@ -27,8 +28,8 @@ namespace transactions {
 // Type 9 - Htlc Claim
 struct HtlcClaim {
     ////////////////////////////////////////////////////////////////////////////
-    std::array<uint8_t, HASH_32_LEN>    id      { };
-    std::array<uint8_t, HASH_32_LEN>    secret  { };
+    Hash32      id      { };
+    Hash32      secret  { };
 
     ////////////////////////////////////////////////////////////////////////////
     static size_t Deserialize(HtlcClaim *claim, const uint8_t *buffer);
