@@ -79,11 +79,17 @@ set(TRANSACTIONS_SERDE_SOURCE
     transactions/serializer.cpp
 )
 
+# Mapping
+set(TRANSACTIONS_MAPPING_SOURCE
+    transactions/mapping/json.cpp
+    transactions/mapping/mapping.cpp
+)
+
 # Transaction Source Files
 set(TRANSACTIONS_SOURCE
     ${TRANSACTIONS_TYPES_SOURCE}
     ${TRANSACTIONS_SERDE_SOURCE}
-    transactions/mapping.cpp
+    ${TRANSACTIONS_MAPPING_SOURCE}
     transactions/transaction.cpp
 )
 

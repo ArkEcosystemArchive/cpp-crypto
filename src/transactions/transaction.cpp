@@ -28,7 +28,8 @@
 
 #include "transactions/transaction_data.hpp"
 
-#include "transactions/mapping.hpp"
+#include "transactions/mapping/json.hpp"
+#include "transactions/mapping/mapping.hpp"
 
 #include "utils/hex.hpp"
 
@@ -162,13 +163,13 @@ auto Transaction::toBytes(const SerializerOptions &options) const
 //
 // --
 auto Transaction::toMap() const -> std::map<std::string, std::string> {
-    return Mapping::getMap(this->data);
+    return Mapping::fromTransactionData(this->data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Turn the Transaction into a JSON string using `toMap()` as the source.
 auto Transaction::toJson() const -> std::string {
-    return Mapping::toJson(this->toMap());
+    return Json::fromTransactionMap(this->toMap());
 }
 
 }  // namespace transactions
