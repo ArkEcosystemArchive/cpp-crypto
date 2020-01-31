@@ -12,11 +12,15 @@
 
 #include "common/configuration.hpp"
 #include "common/network.hpp"
+
 #include "crypto/message.hpp"
+
 #include "identities/address.hpp"
 #include "identities/privatekey.hpp"
 #include "identities/publickey.hpp"
 #include "identities/wif.hpp"
-#include "transactions/builder.h"
+
+#include "transactions/builders/transfer.hpp"
+#include "transactions/transaction.hpp"
 
 #endif

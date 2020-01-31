@@ -1,3 +1,11 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
@@ -7,15 +15,16 @@
 
 #include "fixtures/identity.hpp"
 #include "fixtures/message.hpp"
-#include "utils/hex.hpp"
-using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
-TEST(crypto, message_verify) {
-  Message message(tMessageString,
-                  tPublicKeyBytes,
-                  { tMessageSignatureBytes.begin(),
-                    tMessageSignatureBytes.end() });
-  ASSERT_TRUE(message.verify());
+#include "utils/hex.hpp"
+
+using namespace Ark::Crypto;
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(crypto_message, verify) {
+    Message message(fixtures::MessageString,
+                    fixtures::PublicKeyBytes.data(),
+                    fixtures::MessageSignatureBytes.data());
+
+    ASSERT_TRUE(message.verify());
 }

@@ -16,26 +16,10 @@ include(${CMAKE_SOURCE_DIR}/cmake/External.cmake)
 # ------------------------------------------------------------------------------
 
 set(INTERNAL_LIBRARY_SOURCE_DIRS
-    ${PROJECT_SOURCE_DIR}/lib/bcl
-    ${PROJECT_SOURCE_DIR}/lib/rfc6979)
+    ${PROJECT_SOURCE_DIR}/lib/rfc6979
+)
 
 include_directories(${INTERNAL_LIBRARY_SOURCE_DIRS})
-
-# ------------------------------------------------------------------------------
-
-set(BCL_SOURCE
-    lib/bcl/Base58Check.cpp
-    lib/bcl/CurvePoint.cpp
-    lib/bcl/Ecdsa.cpp
-    lib/bcl/FieldInt.cpp
-    lib/bcl/Ripemd160.cpp
-    lib/bcl/Sha256Hash.cpp
-    lib/bcl/Sha256.cpp
-    lib/bcl/Sha512.cpp
-    lib/bcl/Uint256.cpp
-    lib/bcl/Utils.cpp)
-
-set(INTERNAL_LIBRARY_SOURCE ${BCL_SOURCE})
 
 # ------------------------------------------------------------------------------
 
@@ -48,7 +32,8 @@ set(INTERNAL_LIBRARY_SOURCE ${BCL_SOURCE})
 
 set(COMMON_SOURCE
     common/configuration.cpp
-    common/network.cpp)
+    common/network.cpp
+)
 
 # ------------------------------------------------------------------------------
 # Crypto
@@ -57,7 +42,8 @@ set(CRYPTO_SOURCE
     crypto/curve.cpp
     crypto/hash.cpp
     crypto/message.cpp
-    crypto/slot.cpp)
+    crypto/slot.cpp
+)
 
 # ------------------------------------------------------------------------------
 # Identities
@@ -67,24 +53,45 @@ set(IDENTITIES_SOURCE
     identities/keys.cpp
     identities/privatekey.cpp
     identities/publickey.cpp
-    identities/wif.cpp)
-
-# ------------------------------------------------------------------------------
-# Managers
-
-set(MANAGERS_SOURCE
-    managers/fee_manager.cpp
-    managers/network_manager.cpp
+    identities/wif.cpp
 )
 
 # ------------------------------------------------------------------------------
 # Transactions
 
-set(TRANSACTIONS_SOURCE
-    transactions/builder.cpp
+# Types
+set(TRANSACTIONS_TYPES_SOURCE
+    transactions/types/transfer.cpp
+    transactions/types/second_signature.cpp
+    transactions/types/delegate_registration.cpp
+    transactions/types/vote.cpp
+    # transactions/types/multi_signature.cpp
+    transactions/types/ipfs.cpp
+    transactions/types/multi_payment.cpp
+    transactions/types/htlc_lock.cpp
+    transactions/types/htlc_claim.cpp
+    transactions/types/htlc_refund.cpp
+)
+
+# Serialization/Deserialization
+set(TRANSACTIONS_SERDE_SOURCE
     transactions/deserializer.cpp
     transactions/serializer.cpp
-    transactions/transaction.cpp)
+)
+
+# Mapping
+set(TRANSACTIONS_MAPPING_SOURCE
+    transactions/mapping/json.cpp
+    transactions/mapping/mapping.cpp
+)
+
+# Transaction Source Files
+set(TRANSACTIONS_SOURCE
+    ${TRANSACTIONS_TYPES_SOURCE}
+    ${TRANSACTIONS_SERDE_SOURCE}
+    ${TRANSACTIONS_MAPPING_SOURCE}
+    transactions/transaction.cpp
+)
 
 # ------------------------------------------------------------------------------
 # Utils
@@ -94,13 +101,13 @@ set(UTILS_SOURCE utils/base58.cpp)
 # ------------------------------------------------------------------------------
 # ARK C++ Crypto Library Source
 
-set(ARK_SOURCE
+set(ARK_LIBRARY_SOURCE
     ${COMMON_SOURCE}
     ${CRYPTO_SOURCE}
     ${IDENTITIES_SOURCE}
-    ${MANAGERS_SOURCE}
     ${TRANSACTIONS_SOURCE}
-    ${UTILS_SOURCE})
+    ${UTILS_SOURCE}
+)
 
 # ------------------------------------------------------------------------------
 
@@ -111,7 +118,8 @@ set(ARK_SOURCE
 add_library(${PROJECT_NAME} STATIC
             ${EXTERNAL_LIBRARY_SOURCE}
             ${INTERNAL_LIBRARY_SOURCE}
-            ${ARK_SOURCE})
+            ${ARK_LIBRARY_SOURCE}
+)
 
 # ------------------------------------------------------------------------------
 
@@ -122,7 +130,8 @@ add_library(${PROJECT_NAME} STATIC
 set(ARK_CPP_CRYPTO_INCLUDE_DIRS
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
-    ${PROJECT_SOURCE_DIR}/lib/)
+    ${PROJECT_SOURCE_DIR}/lib/
+)
 
 include_directories(${ARK_CPP_CRYPTO_INCLUDE_DIRS})
 

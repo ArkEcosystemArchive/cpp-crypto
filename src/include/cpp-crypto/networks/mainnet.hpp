@@ -7,14 +7,15 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef NETWORKS_MAINNET_HPP
-#define NETWORKS_MAINNET_HPP
+#ifndef ARK_NETWORKS_MAINNET_HPP
+#define ARK_NETWORKS_MAINNET_HPP
 
 #include "common/network.hpp"
 
 namespace Ark {
 namespace Crypto {
 
+////////////////////////////////////////////////////////////////////////////////
 // Mainnet
 // ARK Public Network
 const Network Mainnet {

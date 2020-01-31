@@ -1,5 +1,5 @@
 /**
- * This file is part of Ark Cpp Crypto.
+ * This file is part of Ark C++ Crypto.
  *
  * (c) Ark Ecosystem <info@ark.io>
  *
@@ -7,189 +7,204 @@
  * file that was distributed with this source code.
  **/
 
-/**
- * ESP32 Cpp-Crypto Usage Example Sketch
- *
- * This sketch covers how to use the Cpp-Crypto library.
- * It allows your ESP32 use Ark Ecosystem cryptographic protocols.
- */
+////////////////////////////////////////////////////////////////////////////////
+// ESP32 C++ Crypto Usage Example Sketch
+//
+// This sketch covers how to use the C++ Crypto library.
+// It allows your ESP32 use Ark Ecosystem cryptographic protocols.
 
- /**
- * NOTE: At the time of this writing, the Cpp-Crypto library requires running the 'ARDUINO_IDE.sh' bash script located in the 'extras' folder.
- * This converts our library to be compatible with the Arduino IDE.
- */
+////////////////////////////////////////////////////////////////////////////////
+// NOTE:
+//
+// If this Repo was Cloned, run the 'ARDUINO_IDE.sh' script first.
+// It's in the 'extras/' folder and extends compatability to the Arduino IDE.
 
-/****************************************/
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// This is where you include the 'arkCrypto.h' header.
+// This allows your project to use Ark C++ Crypto.
+// This header is empty and is just to force the inclusion
+// of the library into the Arduino sketch
 
-/**
- * This is where you include the 'arkCrypto.h' header.
- * This allows your project to use Ark Cpp-Crypto.
- * This header is empty and is just to force the inclusion
- * of the library into the Arduino sketch
- */
 #include <arkCrypto.h>
-/**/
 
-/**
- * This is a helper header that includes all the required Ark
- * headers required for this sketch.
-*/
+////////////////////////////////////////////////////////////////////////////////
+// This is a helper header that includes all the required Ark
+// headers required for this sketch.
+
 #include "arkCrypto_esp32.h"
-using namespace Ark::Crypto;
-using namespace Ark::Crypto::identities;
-using namespace Ark::Crypto::Transactions;
 
-/**
- * This is a small hex helper header included in ARK Cpp-Crypto
- */
+////////////////////////////////////////////////////////////////////////////////
+// Misc ARK C++ Crypto headers
+
+#include "networks/devnet.hpp"
+
 #include "utils/hex.hpp"
-/**/
+#include "utils/str.hpp"
+
+////////////////////////////////////////////////////////////////////////////////
+// The Main Arduino Header
 
 #include <Arduino.h>
 
-/****************************************/
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Namespaces
 
-void checkCrypto() {
+using namespace Ark::Crypto;
+using namespace Ark::Crypto::identities;
+using namespace Ark::Crypto::transactions;
 
-  /**
-   * Create a BridgeChain transaction, tailored for your custom network.
-   */
-  static const Network MyBridgechainNetwork = {
-    "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df",
-    1, 0x53, 0xaa,
-    "2019-04-12T13:00:00.000Z"
-  };
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Sketch Constants
 
-  const Configuration MyBridgechainConfiguration(MyBridgechainNetwork);
+constexpr auto Passphrase           = "this is a top secret passphrase";
+constexpr auto SecondPassphrase     = "this is a top secret passphrase too";
+constexpr auto MessageText          = "Hello World";
 
-  auto myBridgechainTransaction = Builder::buildTransfer(
-          "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
-          100000000ULL,
-          "this is a custom bridgechain transaction",
-          "this is a top secret passphrase",
-          "this is a top secret passphrase too",
-          MyBridgechainConfiguration);
+constexpr auto WifByte = 0xaa;  // Devnet
 
-    Serial.print("\nBridgechain Transaction: ");
-    Serial.println(myBridgechainTransaction.toJson().c_str());
+////////////////////////////////////////////////////////////////////////////////
+// Create a PrivateKey using a 12-word Passphrase.
+//
+// Given the passphrase "this is a top secret passphrase",
+// the computed PrivateKey is:
+// - "d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712".
+//
+// ---
+void createPrivateKey() {
+    const auto privateKey           = PrivateKey::fromPassphrase(Passphrase);
+    const auto privateKeyString     = privateKey.toString();
 
-  /**/
+    printf("\n\nPrivateKey from Passphrase: %s\n\n", privateKeyString.c_str());
+}
 
-  /********************/
+////////////////////////////////////////////////////////////////////////////////
+// Create a Wif(Wallet Import Format) PrivateKey.
+//
+// Uses a 12-word Passphrase and a Network Wif-byte.
+//
+// Given the passphrase "this is a top secret passphrase",
+// and the Network byte 0xaa(Devnet),
+// the computed Wif is: "SGq4xLgZKCGxs7bjmwnBrWcT4C1ADFEermj846KC97FSv1WFD1dA".
+//
+// --- 
+void createWif() {
+    const auto wif          = Wif::fromPassphrase(Passphrase, WifByte);
+    const auto wifString    = wif.toString();
 
-  /**
-   * This is how you can check the default 'Network' "Transaction 'Fees' by type.
-   * In this example, it should return a 'uint64_t' integer of '10000000' as the default 'Fee' for a 'Transaction' of 'Type' '0'.
-   */
-    Configuration config;
-    unsigned long typeZeroTransactionFee = config.getFee(0);
-    Serial.print("\nType 0 default Transaction Fee: ");
-    Serial.println(typeZeroTransactionFee); // The response is a 'uint64_t' integer.
+    printf("\n\nWIF from Passphrase: %s\n\n", wifString.c_str());
+}
 
-  /**/
+////////////////////////////////////////////////////////////////////////////////
+// Create a PublicKey using a 12-word Passphrase.
+//
+// Given the passphrase "this is a top secret passphrase",
+// the computed PublicKey is:
+// - "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192".
+//
+// ---
+void createPublicKey() {
+    const auto publicKey            = PublicKey::fromPassphrase(Passphrase);
+    const auto publicKeyString      = publicKey.toString();
 
-  /********************/
+    printf("\n\nPublicKey from Passphrase: %s\n\n", publicKeyString.c_str());
+}
 
-  /**
-   * The following methods allows you to create an ARK address.
-   * This is done by passing a 12-word 'Passphrase' and the 'Network' 'Version' "byte".
-   * The 'Version" "byte" is a BASE58 P2PKH byte. Ark Devnet is '0x1E'; Ark Mainnet is '0x17'.
-   *
-   * Given the passphrase "this is a top secret passphrase",
-   * and the 'Devnet' 'Version' byte (0x1E); the ARK Address should be "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib"
-   */
-  const auto passphrase = "this is a top secret passphrase";
-  const uint8_t networkVersion = 0x1E;
+////////////////////////////////////////////////////////////////////////////////
+// Create a Wallet Address using a 12-word Passphrase and a Network Version.
+//
+// - Ark Devnet is '0x1E'
+// - Ark Mainnet is '0x17'.
+//
+// Given the passphrase "this is a top secret passphrase" using Devnet(0x1E),
+// the computed ARK Address is:
+// -  "D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib"
+//
+// ---
+void createAddress() {
+    const auto address = Address::fromPassphrase(Passphrase, Devnet.version);
+    const auto addressString = address.toString();
 
-  Address arkAddress = Address::fromPassphrase(passphrase, networkVersion);
-    Serial.print("\nARK Address: ");
-    Serial.println(arkAddress.toString().c_str()); // The 'Address' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
-  /**/
+    printf("\n\nARK Address: %s\n\n", addressString.c_str());
+}
 
+////////////////////////////////////////////////////////////////////////////////
+// Check the Transactions Fees
+// ---
+void checkFees() {
+    Configuration cfg;
 
-  /********************/
+    auto i = 0;
+    for (auto &fee : cfg.getPolicy()) {
+        printf("\n\nType %d fee: %s\n", i, UintToString(fee).c_str());
+        ++i;
+    }
 
-  /**
-   * The following methods allows create a 'PrivateKey'.
-   * This is done by passing a 12-word 'Passphrase'.
-   *
-   * Given the passphrase "this is a top secret passphrase",
-   * the 'PrivateKey" should be "d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712".
-   * This is a 'SHA256' of your "Passphrase".
-   */
-  const auto passphrase2 = "this is a top secret passphrase";
-  PrivateKey privateKeyFromPassphrase = PrivateKey::fromPassphrase(passphrase2);
-    Serial.print("\nPrivateKey from Passphrase: ");
-    Serial.println(privateKeyFromPassphrase.toString().c_str()); // The 'PrivateKey' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
-  /**/
+    // or get the Fee by Transaction Type
+    printf("\n\nType 0 default fee: %s\n\n", UintToString(cfg.getFee(0)).c_str());
+}
 
-  /********************/
+////////////////////////////////////////////////////////////////////////////////
+// Sign a Message using a 12-word Passphrase and Verify it.
+//
+// Given the text "Hello World",
+// and the passphrase "this is a top secret passphrase",
+// the computed 'Signature" is:
+// - "304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8".
+//
+// ---
+void signMessage() {
+    Message message;
+    message.sign(MessageText, Passphrase);
 
-  /**
-   * The following methods allows create a 'PublicKey'.
-   * This is done by passing a 12-word 'Passphrase'.
-   *
-   * Given the passphrase "this is a top secret passphrase",
-   * the 'PublicKey" should be "034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192".
-   */
-  const auto passphrase3 = "this is a top secret passphrase";
-  PublicKey publicKeyFromPassphrase = PublicKey::fromPassphrase(passphrase3);
-    Serial.print("\nPublicKey from Passphrase: ");
-    Serial.println(publicKeyFromPassphrase.toString().c_str()); // the 'PublicKey' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
-  /**/
+    const auto signatureString = BytesToHex(message.signature);
+    printf("\n\nSignature from Signed Message: %s\n", signatureString.c_str());
 
-  /********************/
+    const bool isValid = message.verify();
+    printf("\nMessage Signature is valid: %s\n\n", isValid ? "true" : "false");
+}
 
-  /**
-   * The following methods allows create a 'WIF'-style "PrivateKey".
-   * 'WIF' stands for "Wallet Import Format"
-   * This is done by passing a 12-word 'Passphrase' and the 'Network' 'WIF' "byte".
-   * The 'WIF" "byte" is a BASE58 WIF byte. Ark Devnet is '0xaa'; Ark Mainnet is also '0xaa'.
+////////////////////////////////////////////////////////////////////////////////
+// Create a BridgeChain transaction, tailored for a custom network.
+void createBridgechainTransaction() {
 
-   *
-   * Given the passphrase "this is a top secret passphrase",
-   * and the 'Devnet' 'WIF' byte (0xaa);
-   * The 'WIF" should be "SGq4xLgZKCGxs7bjmwnBrWcT4C1ADFEermj846KC97FSv1WFD1dA".
-   */
-  const auto passphrase4 = "this is a top secret passphrase";
-  const uint8_t wifByte = 0xaa;
-  Wif wifFromPassphrase = Wif::fromPassphrase(passphrase4, wifByte);
-    Serial.print("\nWIF from Passphrase: ");
-    Serial.println(wifFromPassphrase.toString().c_str()); // the 'WIF' object is a type. Use 'toString()' to view the output. Arduino requires a 'c_str()' to 'print'.
-  /**/
+    // Custom Bridgechain Network
+    const Network BridgechainNetwork = {
+        "16c891512149d6d3ff1b70e65900936140bf853a4ae79b5515157981dcc706df",
+        1, 0x53, 0xaa,
+        "2019-04-12T13:00:00.000Z"
+    };
 
-  /********************/
+    // Load the Custom Network Configuration
+    const Configuration cfg(BridgechainNetwork);
 
-  /**
-   * The following methods allows you to 'Sign' a text 'Message'.
-   * This is done by passing the text to be signed, and a 12-word 'Passphrase'.
-   *
-   * Given the text "Hello World",
-   * and the passphrase "this is a top secret passphrase",
-   * The 'Signature" should be "304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8".
-   */
-  const auto text = "Hello World";
-  const auto passphrase5 = "this is a top secret passphrase";
-  Ark::Crypto::Message message;
-  message.sign(text, passphrase5);
-    Serial.print("\nSignature from Signed Message: ");
-    Serial.println(BytesToHex(message.signature).c_str());
-  // Additionally, you can verify the message.
-    bool isValid = message.verify();
-    Serial.print("\nSigned Message Signature is Verified: ");
-    Serial.println(isValid);
-  /**/
-};
+    // Use the Transaction Builder to make a transaction.
+    const auto bridgechainTransaction = builder::Transfer()
+            .recipientId("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib")
+            .vendorField("this is a custom bridgechain transaction")
+            .sign(Passphrase)
+            .secondSign(SecondPassphrase)
+            .build(cfg);
 
-/****************************************/
+    // Create and Print the Json representation of the Transaction.
+    const auto transactionJson = bridgechainTransaction.toJson();
+    printf("\n\nBridgechain Transaction: %s\n\n", transactionJson.c_str());
+}
 
-void setup()
-{
-  Serial.begin(115200); // Begin your Serial Connection. This allows you to monitor your boards output.
+////////////////////////////////////////////////////////////////////////////////
+void setup() {
+    Serial.begin(115200);
 
-  checkCrypto(); // Begin Crypto example usage.
-};
+    createPrivateKey();
+    createWif();
+    createPublicKey();
+    createAddress();
+    checkFees();
+    signMessage();
+    createBridgechainTransaction();
+}
 
-/****************************************/
-
-void loop() {}; // We can leave this empty, as we don't want to repeat anything in this example.
+////////////////////////////////////////////////////////////////////////////////
+void loop() {}

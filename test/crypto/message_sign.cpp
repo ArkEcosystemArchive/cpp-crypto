@@ -1,3 +1,11 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
@@ -7,16 +15,18 @@
 
 #include "fixtures/identity.hpp"
 #include "fixtures/message.hpp"
+
 #include "utils/hex.hpp"
+
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
-TEST(crypto, message_sign) {
-  Message message;
-  message.sign(tMessageString, tPassphrase);
+////////////////////////////////////////////////////////////////////////////////
+TEST(crypto_message, sign) {
+    Message message;
+    message.sign(fixtures::MessageString, fixtures::Passphrase);
 
-  ASSERT_STREQ(BytesToHex(message.signature.begin(),
-                          message.signature.end()).c_str(),
-               tSignatureString);
+    const auto signatureString = BytesToHex(message.signature);
+
+    ASSERT_STREQ(fixtures::MessageSignatureString,
+                 signatureString.c_str());
 }

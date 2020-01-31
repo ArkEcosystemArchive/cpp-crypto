@@ -1,64 +1,81 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
-#include "identities/keys.hpp"
 #include "interfaces/identities.hpp"
 
+#include "identities/keys.hpp"
+
 #include "fixtures/identity.hpp"
+
+#include "test_helpers.h"
+
 using namespace Ark::Crypto;
 using namespace Ark::Crypto::identities;
-using namespace Ark::Crypto::fixtures::identity;
 
-TEST(identities, keys_from_passphrase) {
-  auto keys = Keys::fromPassphrase(tPassphrase);
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(keys.privateKey.at(i), tPrivateKeyBytes.at(i));
-  };
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_EQ(keys.publicKey.at(i), tPublicKeyBytes.at(i));
-  };
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_keys, from_passphrase) {
+    auto keys = Keys::fromPassphrase(fixtures::Passphrase);
+
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          keys.privateKey.data(),
+                          PRIVATEKEY_BYTE_LEN));
+
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
+                          keys.publicKey.data(),
+                          PUBLICKEY_COMPRESSED_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_keys, from_privatekey) {
+    auto keys = Keys::fromPrivateKey(fixtures::PrivateKeyBytes.data());
 
-TEST(identities, keys_from_privatekey) {
-  auto keys = Keys::fromPrivateKey(tPrivateKeyBytes.data());
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(keys.privateKey.at(i), tPrivateKeyBytes.at(i));
-  };
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_EQ(keys.publicKey.at(i), tPublicKeyBytes.at(i));
-  };
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          keys.privateKey.data(),
+                          PRIVATEKEY_BYTE_LEN));
+
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
+                          keys.publicKey.data(),
+                          PUBLICKEY_COMPRESSED_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_keys, from_wif) {
+    auto keys = Keys::fromWif(fixtures::WifString);
 
-TEST(identities, keys_from_wif) {
-  auto keys = Keys::fromWif(tWifString);
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(keys.privateKey.at(i), tPrivateKeyBytes.at(i));
-  };
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_EQ(keys.publicKey.at(i), tPublicKeyBytes.at(i));
-  };
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          keys.privateKey.data(),
+                          PRIVATEKEY_BYTE_LEN));
+
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
+                          keys.publicKey.data(),
+                          PUBLICKEY_COMPRESSED_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_keys, privatekey_from_passphrase) {
+    auto privateKey = Keys::PrivateKey::fromPassphrase(fixtures::Passphrase);
 
-TEST(identities, keys_privatekey_from_passphrase) {
-  auto privateKey = Keys::PrivateKey::fromPassphrase(tPassphrase);
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(privateKey.at(i), tPrivateKeyBytes.at(i));
-  };
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          privateKey.data(),
+                          PRIVATEKEY_BYTE_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_keys, privatekey_from_wif) {
+    uint8_t outVersion;
+    auto privateKey = Keys::PrivateKey::fromWif(fixtures::WifString, &outVersion);
 
-TEST(identities, keys_privatekey_from_wif) {
-  uint8_t outVersion;
-  auto privateKey = Keys::PrivateKey::fromWif(tWifString, &outVersion);
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(privateKey.at(i), tPrivateKeyBytes.at(i));
-  };
-  ASSERT_EQ(outVersion, tWifVersion);
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          privateKey.data(),
+                          PRIVATEKEY_BYTE_LEN));
+
+    ASSERT_EQ(fixtures::WifVersion, outVersion);
 }

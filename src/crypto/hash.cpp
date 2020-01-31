@@ -9,37 +9,37 @@
 
 #include "crypto/hash.hpp"
 
-#include <cstring>
+#include <algorithm>
 
 #include "interfaces/identities.hpp"
 
-#include "bcl/Ripemd160.hpp"
-#include "bcl/Sha256.hpp"
-#include "bcl/Sha256Hash.hpp"
+#include "Ripemd160.hpp"    // BCL Crypto Lib
+#include "Sha256.hpp"
+#include "Sha256Hash.hpp"
 
 namespace Ark {
 namespace Crypto {
 
+////////////////////////////////////////////////////////////////////////////////
 // Returns the RIPEMD160 hash of a publicKey bytes.
 // Expects a 33-byte compressed PublicKey array.
-PubkeyHash Hash::ripemd160(const uint8_t*publicKeyBytes) {
-  PubkeyHash hash20;
-  bcl::Ripemd160::getHash(publicKeyBytes,
-                     PUBLICKEY_COMPRESSED_BYTE_LEN,
-                     hash20.data());
-  return hash20;
+auto Hash::ripemd160(const uint8_t *publicKeyBytes) -> PubkeyHash {
+    PubkeyHash hash20 {};
+    bcl::Ripemd160::getHash(publicKeyBytes,
+                            PUBLICKEY_COMPRESSED_LEN,
+                            hash20.data());
+    return hash20;
 }
 
-/**/
-
+////////////////////////////////////////////////////////////////////////////////
 // Returns a 32-byte SHA256 hash of the input vector.
-Hash32 Hash::sha256(const uint8_t* inputBytes, size_t size) {
-  Hash32 hash32 {};
-  memmove(hash32.data(),
-          bcl::Sha256::getHash(inputBytes, size).value,
-          hash32.size());
+auto Hash::sha256(const uint8_t *inputBytes, const size_t &size) -> Hash32 {
+    auto result = bcl::Sha256::getHash(inputBytes, size);
 
-  return hash32;
+    Hash32 hash32 {};
+    std::copy_n(result.value, HASH_32_LEN, hash32.begin());
+
+    return hash32;
 }
 
 }  // namespace Crypto
