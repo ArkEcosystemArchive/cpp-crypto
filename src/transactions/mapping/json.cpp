@@ -74,6 +74,12 @@ static auto getCommonJsonCapacity(
                             KEY_TIMESTAMP_SIZE + UINT32_MAX_CHARS;
     }
 
+    // Amount
+    if (transactionVersion == TRANSACTION_VERSION_TYPE_2) {
+        commonCapacity += JSON_OBJECT_SIZE(1) +
+                            KEY_AMOUNT_SIZE + UINT64_MAX_CHARS;
+    }
+
     // Vendorfield
     if (map.find(KEY_VENDORFIELD_LABEL) != map.end()) {
         commonCapacity += JSON_OBJECT_SIZE(1) +
@@ -243,6 +249,12 @@ static void mapCommonJson(DynamicJsonDocument &jsonDoc,
 
     // Fee
     jsonDoc[KEY_FEE_LABEL] = map.at(KEY_FEE_LABEL);
+
+    // Amount
+    jsonDoc[KEY_AMOUNT_LABEL] = map.find(KEY_AMOUNT_LABEL) == map.end() &&
+                                transactionVersion == TRANSACTION_VERSION_TYPE_2
+                                        ? "0"
+                                        : map.at(KEY_AMOUNT_LABEL);
 
     // VendorField
     if (map.find(KEY_VENDORFIELD_LABEL) != map.end()) {

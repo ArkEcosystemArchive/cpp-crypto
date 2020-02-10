@@ -175,9 +175,6 @@ const auto KEY_AMOUNTS_SIZE         = strlen(KEY_AMOUNTS_LABEL);
 constexpr auto KEY_ADDRESSES_LABEL  = "addresses";
 const auto KEY_ADDRESSES_SIZE       = strlen(KEY_ADDRESSES_LABEL);
 
-constexpr auto KEY_AMOUNT_LABEL     = "amount";
-const auto KEY_AMOUNT_SIZE          = strlen(KEY_AMOUNT_LABEL);
-
 constexpr auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
 const auto KEY_RECIPIENT_ID_SIZE        = strlen(KEY_RECIPIENT_ID_LABEL);
 

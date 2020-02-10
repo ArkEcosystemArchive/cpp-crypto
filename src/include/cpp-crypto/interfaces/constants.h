@@ -76,6 +76,9 @@ constexpr size_t WIF_STRING_LEN         = 52U;
 constexpr auto KEY_ASSET_LABEL  = "asset";
 const auto KEY_ASSET_SIZE       = strlen(KEY_ASSET_LABEL);
 
+constexpr auto KEY_AMOUNT_LABEL = "amount";
+const auto KEY_AMOUNT_SIZE      = strlen(KEY_AMOUNT_LABEL);
+
 ////////////////////////////////////////////////////////////////////////////////
 // Misc
 constexpr uint8_t BASE_10 = 10U;
