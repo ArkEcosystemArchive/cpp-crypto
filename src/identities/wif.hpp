@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef IDENTITIES_WIF_HPP
-#define IDENTITIES_WIF_HPP
+#ifndef ARK_IDENTITIES_WIF_HPP
+#define ARK_IDENTITIES_WIF_HPP
 
 #include <string>
 
@@ -18,20 +18,25 @@ namespace Ark {
 namespace Crypto {
 namespace identities {
 
+////////////////////////////////////////////////////////////////////////////////
 class Wif {
- public:
-  Wif(const PrivateKeyBytes& privateKeyBytes, uint8_t version);
-  explicit Wif(const char* wif);
+  public:
+    ////////////////////////////////////////////////////////////////////////////
+    Wif(const PrivateKeyBytes &privateKeyBytes, uint8_t version);
+    explicit Wif(const char *wif);
 
-  uint8_t version() const noexcept;
-  PrivateKeyBytes toBytes() const noexcept;
-  std::string toString() const;
+    ////////////////////////////////////////////////////////////////////////////
+    uint8_t version() const noexcept;
+    PrivateKeyBytes toBytes() const noexcept;
+    std::string toString() const;
 
-  static Wif fromPassphrase(const char* passphrase, uint8_t version);
+    ////////////////////////////////////////////////////////////////////////////
+    static Wif fromPassphrase(const char *passphrase, uint8_t version);
 
- private:
-  PrivateKeyBytes privateKeyBytes_;
-  uint8_t version_;
+  private:
+    ////////////////////////////////////////////////////////////////////////////
+    PrivateKeyBytes privateKeyBytes_;
+    uint8_t version_;
 };
 
 }  // namespace identities

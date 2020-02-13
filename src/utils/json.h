@@ -1,6 +1,6 @@
 
-#ifndef JSON_H
-#define JSON_H
+#ifndef ARK_JSON_H
+#define ARK_JSON_H
 
 // ArduinoJson Presets
 #define ARDUINOJSON_USE_LONG_LONG 1
