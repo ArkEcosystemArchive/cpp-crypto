@@ -45,9 +45,6 @@ INCLUDE_COMMON_DIR=${INCLUDE_CPP_CRYPTO_DIR}/common
 SRC_CRYPTO_DIR=${SRC_DIR}/crypto
 INCLUDE_CRYPTO_DIR=${INCLUDE_CPP_CRYPTO_DIR}/crypto
 
-SRC_DEFAULTS_DIR=${SRC_DIR}/defaults
-INCLUDE_DEFAULTS_DIR=${INCLUDE_CPP_CRYPTO_DIR}/defaults
-
 SRC_IDENTITIES_DIR=${SRC_DIR}/identities
 INCLUDE_IDENTITIES_DIR=${INCLUDE_CPP_CRYPTO_DIR}/identities
 
@@ -59,6 +56,9 @@ SRC_NETWORKS_DIR=${SRC_DIR}/networks
 
 INCLUDE_TRANSACTIONS_DIR=${INCLUDE_CPP_CRYPTO_DIR}/transactions
 SRC_TRANSACTIONS_DIR=${SRC_DIR}/transactions
+
+INCLUDE_TRANSACTIONS_BUILDERS_DIR=${INCLUDE_TRANSACTIONS_DIR}/builders
+SRC_TRANSACTIONS_BUILDERS_DIR=${SRC_TRANSACTIONS_DIR}/builders
 
 if [[ $AUTO == '0' ]]; then
 
@@ -108,11 +108,6 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_CRYPTO_DIR}/message.hpp  ${SRC_CRYPTO_DIR}
   mv ${INCLUDE_CRYPTO_DIR}/slot.hpp     ${SRC_CRYPTO_DIR}
 
-  echo -e "Moving 'defaults' headers.\n"
-  mkdir ${SRC_DEFAULTS_DIR}
-  mv ${INCLUDE_DEFAULTS_DIR}/static_fees.hpp        ${SRC_DEFAULTS_DIR}
-  mv ${INCLUDE_DEFAULTS_DIR}/transaction_types.hpp  ${SRC_DEFAULTS_DIR}
-
   echo -e "Moving 'identites' headers.\n"
   mv ${INCLUDE_IDENTITIES_DIR}/address.hpp    ${SRC_IDENTITIES_DIR}
   mv ${INCLUDE_IDENTITIES_DIR}/keys.hpp       ${SRC_IDENTITIES_DIR}
@@ -122,6 +117,7 @@ if [[ -d ${INCLUDE_DIR} ]]; then
 
   echo -e "Moving 'interfaces' headers.\n"
   mkdir ${SRC_INTERFACES_DIR}
+  mv ${INCLUDE_INTERFACES_DIR}/constants.h    ${SRC_INTERFACES_DIR}
   mv ${INCLUDE_INTERFACES_DIR}/identities.hpp ${SRC_INTERFACES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
@@ -131,10 +127,19 @@ if [[ -d ${INCLUDE_DIR} ]]; then
   mv ${INCLUDE_NETWORKS_DIR}/testnet.hpp  ${SRC_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
-  mv ${INCLUDE_TRANSACTIONS_DIR}/builder.h      ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/deserializer.h ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/serializer.h   ${SRC_TRANSACTIONS_DIR}
-  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.h  ${SRC_TRANSACTIONS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/builder.hpp                 ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/transfer.hpp                ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/second_signature.hpp        ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/delegate_registration.hpp   ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/vote.hpp                    ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/ipfs.hpp                    ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/multi_payment.hpp           ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/delegate_resignation.hpp    ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/htlc_lock.hpp               ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/htlc_claim.hpp              ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}/htlc_refund.hpp             ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction_data.hpp                 ${SRC_TRANSACTIONS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.hpp                      ${SRC_TRANSACTIONS_DIR}
 
   echo -e "Backing up, moving, and removing dependencies from the 'src/lib' directory.\n"
   mkdir ${EXTRAS_BACKUP_DIR}
@@ -170,6 +175,7 @@ else
   mkdir ${INCLUDE_INTERFACES_DIR}
   mkdir ${INCLUDE_NETWORKS_DIR}
   mkdir ${INCLUDE_TRANSACTIONS_DIR}
+  mkdir ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
 
   echo -e "Moving 'arkCrypto.h' back to the 'include/cpp-crypto/' directory.\n"
   mv ${SRC_DIR}/arkCrypto.h ${INCLUDE_CPP_CRYPTO_DIR}
@@ -190,12 +196,14 @@ else
 
   echo -e "Moving 'identities' headers.\n"
   mv ${SRC_IDENTITIES_DIR}/address.hpp    ${INCLUDE_IDENTITIES_DIR}
+  mv ${SRC_IDENTITIES_DIR}/keys.hpp       ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/privatekey.hpp ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/publickey.hpp  ${INCLUDE_IDENTITIES_DIR}
   mv ${SRC_IDENTITIES_DIR}/wif.hpp        ${INCLUDE_IDENTITIES_DIR}
 
   echo -e "Moving 'interfaces' headers.\n"
-  mv ${SRC_INTERFACES_DIR}/identities.hpp ${INCLUDE_INTERFACES_DIR}
+  mv ${SRC_INTERFACES_DIR}/constants.h      ${INCLUDE_INTERFACES_DIR}
+  mv ${SRC_INTERFACES_DIR}/identities.hpp   ${INCLUDE_INTERFACES_DIR}
   rm -rf ${SRC_INTERFACES_DIR}
 
   echo -e "Moving 'networks' headers.\n"
@@ -205,10 +213,19 @@ else
   rm -rf ${SRC_NETWORKS_DIR}
 
   echo -e "Moving 'transactions' headers.\n"
-  mv ${SRC_TRANSACTIONS_DIR}/builder.h      ${INCLUDE_TRANSACTIONS_DIR}
-  mv ${SRC_TRANSACTIONS_DIR}/deserializer.h ${INCLUDE_TRANSACTIONS_DIR}
-  mv ${SRC_TRANSACTIONS_DIR}/serializer.h   ${INCLUDE_TRANSACTIONS_DIR}
-  mv ${SRC_TRANSACTIONS_DIR}/transaction.h  ${INCLUDE_TRANSACTIONS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/builder.hpp                 ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/transfer.hpp                ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/second_signature.hpp        ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/delegate_registration.hpp   ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/vote.hpp                    ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/ipfs.hpp                    ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/multi_payment.hpp           ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/delegate_resignation.hpp    ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/htlc_lock.hpp               ${INCLUDE_TRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/htlc_claim.hpp              ${SRC_TINCLUDE_TRANSACTIONS_BUILDERS_DIRRANSACTIONS_BUILDERS_DIR}
+  mv ${SRC_TRANSACTIONS_BUILDERS_DIR}/htlc_refund.hpp             ${SRC_TRANSACTIONS_BUILDERS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction_data.hpp             ${SRC_TRANSACTIONS_DIR}
+  mv ${INCLUDE_TRANSACTIONS_DIR}/transaction.hpp                  ${SRC_TRANSACTIONS_DIR}
 
   echo -e "Restoring the 'lib' directory.\n"
   mkdir ${SRC_LIB_DIR}

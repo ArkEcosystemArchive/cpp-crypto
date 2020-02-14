@@ -7,14 +7,15 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef NETWORKS_TESTNET_HPP
-#define NETWORKS_TESTNET_HPP
+#ifndef ARK_NETWORKS_TESTNET_HPP
+#define ARK_NETWORKS_TESTNET_HPP
 
 #include "common/network.hpp"
 
 namespace Ark {
 namespace Crypto {
 
+////////////////////////////////////////////////////////////////////////////////
 // Testnet
 // ARK Test Network
 const Network Testnet {
