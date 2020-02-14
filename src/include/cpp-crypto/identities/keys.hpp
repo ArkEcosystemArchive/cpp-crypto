@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef IDENTITIES_KEYS_HPP
-#define IDENTITIES_KEYS_HPP
+#ifndef ARK_IDENTITIES_KEYS_HPP
+#define ARK_IDENTITIES_KEYS_HPP
 
 #include "interfaces/identities.hpp"
 
@@ -16,19 +16,22 @@ namespace Ark {
 namespace Crypto {
 namespace identities {
 
+////////////////////////////////////////////////////////////////////////////////
 struct Keys {
-  static KeyPair fromPassphrase(const char* passphrase);
-  static KeyPair fromPrivateKey(const uint8_t* privateKeyBytes);
-  static KeyPair fromWif(const char* wif);
+    static KeyPair fromPassphrase(const char *passphrase);
+    static KeyPair fromPrivateKey(const uint8_t *privateKeyBytes);
+    static KeyPair fromWif(const char *wif);
 
-  struct PrivateKey {
-    static PrivateKeyBytes fromPassphrase(const char* passphrase);
-    static PrivateKeyBytes fromWif(const char* wif, uint8_t* outVersion);
-  };
+    ////////////////////////////////////////////////////////////////////////////
+    struct PrivateKey {
+        static PrivateKeyBytes fromPassphrase(const char *passphrase);
+        static PrivateKeyBytes fromWif(const char *wif, uint8_t *outVersion);
+    };
 
-  struct PublicKey {
-    static PublicKeyBytes fromPrivateKey(const uint8_t* privateKeyBytes);
-  };
+    ////////////////////////////////////////////////////////////////////////////
+    struct PublicKey {
+        static PublicKeyBytes fromPrivateKey(const uint8_t *privateKeyBytes);
+    };
 };
 
 }  // namespace identities

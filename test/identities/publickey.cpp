@@ -1,72 +1,81 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "identities/publickey.hpp"
 
 #include "fixtures/identity.hpp"
-using namespace fixtures::identity;
 
-TEST(identities, publickey_construct_bytes) {
-  PublicKey publicKey(tPublicKeyBytes);
-  const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
-  };}
+#include "test_helpers.h"
 
-/**/
+using namespace Ark::Crypto;
+using namespace Ark::Crypto::identities;
 
-TEST(identities, publickey_to_bytes) {
-  auto publicKey = PublicKey::fromHex(tPublicKeyHex);
-  const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
-  };
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_publickey, construct_bytes) {
+    PublicKey publicKey(fixtures::PublicKeyBytes);
+
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
+                          publicKey.toBytes().data(),
+                          PUBLICKEY_COMPRESSED_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_publickey, to_bytes) {
+    auto publicKey = PublicKey::fromHex(fixtures::PublicKeyHex);
 
-TEST(identities, publickey_to_string) {
-  PublicKey publicKey(tPublicKeyBytes);
-  const auto publicKeyString = publicKey.toString();
-  ASSERT_STREQ(publicKeyString.c_str(), tPublicKeyHex);
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
+                          publicKey.toBytes().data(),
+                          PUBLICKEY_COMPRESSED_LEN));
 }
 
-/**/
-
-TEST(identities, publickey_from_passphrase) {
-  auto publicKey = PublicKey::fromPassphrase(tPassphrase);
-  const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
-  };
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_publickey, to_string) {
+    PublicKey publicKey(fixtures::PublicKeyBytes);
+    ASSERT_STREQ(fixtures::PublicKeyHex, publicKey.toString().c_str());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_publickey, from_passphrase) {
+    auto publicKey = PublicKey::fromPassphrase(fixtures::Passphrase);
+    const auto publicKeyBytes = publicKey.toBytes();
 
-TEST(identities, publickey_from_hex) {
-  auto publicKey = PublicKey::fromHex(tPublicKeyHex);
-  const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_EQ(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
-  };
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
+                          publicKeyBytes.data(),
+                          PUBLICKEY_COMPRESSED_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_publickey, from_hex) {
+    auto publicKey = PublicKey::fromHex(fixtures::PublicKeyHex);
+    const auto publicKeyBytes = publicKey.toBytes();
 
-TEST(identities, publickey_from_hex_invalid_chars) {
-  auto publicKey = PublicKey::fromHex(invalid::tPublicKeyHex);
-  const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_NE(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
-  };
+    ASSERT_TRUE(array_cmp(fixtures::PublicKeyBytes.data(),
+                          publicKeyBytes.data(),
+                          PUBLICKEY_COMPRESSED_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_publickey, from_hex_invalid_chars) {
+    const auto publicKey = PublicKey::fromHex(fixtures::invalid::PublicKeyHex);
 
-TEST(identities, publickey_from_hex_invalid_length) {
-  auto publicKey = PublicKey::fromHex(&tPublicKeyHex[1]);
-  const auto publicKeyBytes = publicKey.toBytes();
-  for (auto i = 0U; i < PUBLICKEY_COMPRESSED_BYTE_LEN; i++) {
-    ASSERT_NE(publicKeyBytes.at(i), tPublicKeyBytes.at(i));
-  };
+    for (auto &e : publicKey.toBytes()) {
+        ASSERT_EQ(0U, e);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_publickey, from_hex_invalid_length) {
+    const auto publicKey = PublicKey::fromHex(&fixtures::PublicKeyHex[1]);
+
+    for (auto &e : publicKey.toBytes()) {
+        ASSERT_EQ(0U, e);
+    }
 }

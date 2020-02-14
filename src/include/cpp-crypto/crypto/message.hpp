@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef CRYPTO_MESSAGE_HPP
-#define CRYPTO_MESSAGE_HPP
+#ifndef ARK_CRYPTO_MESSAGE_HPP
+#define ARK_CRYPTO_MESSAGE_HPP
 
 #include <map>
 #include <string>
@@ -19,23 +19,35 @@
 namespace Ark {
 namespace Crypto {
 
+////////////////////////////////////////////////////////////////////////////////
+// Message Class
 class Message {
- public:
-  std::string message;
-  PublicKeyBytes publicKey;
-  std::vector<uint8_t> signature;
+  public:
+    ////////////////////////////////////////////////////////////////////////////
+    std::string             message;
+    PublicKeyBytes          publicKey;
+    std::vector<uint8_t>    signature;
 
-  Message();
-  Message(std::string message,
-          const PublicKeyBytes& publicKeyBytes,
-          std::vector<uint8_t> signature);
+    ////////////////////////////////////////////////////////////////////////////
+    Message();
+    Message(std::string message,
+            const uint8_t *publicKeyBytes,
+            const uint8_t *signature);
 
-  bool sign(const std::string& message, const std::string& passphrase);
-  bool verify() const;
+    ////////////////////////////////////////////////////////////////////////////
+    bool sign(const std::string &message, const std::string &passphrase);
 
-  std::map<std::string, std::string> toArray() const;
-  std::string toJson() const;
+    ////////////////////////////////////////////////////////////////////////////
+    bool verify() const;
+
+    ////////////////////////////////////////////////////////////////////////////
+    std::map<std::string, std::string> toMap() const;
+
+    ////////////////////////////////////////////////////////////////////////////
+    std::string toJson() const;
 };
+
+////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace Crypto
 }  // namespace Ark

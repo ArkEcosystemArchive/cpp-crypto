@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2020-02-13
+
+## [1.0.0-arduino] - 2020-02-13
+
+### Changed
+-   break up unit tests to support platforms with limited RAM ([#172])
+-   removed use of monolithic `arkCrypto.h` header ([#190])
+
+### Added
+-   added AIP-11 support for Core v.2.6 Transactions ([#198])
+
+### Fixed
+-   fixed `transaction::to_array` tests on ESP8266 ([#178])
+-   fixed `transaction::to_json` tests on ESP8266 ([#180])
+
 ## [0.7.0] - 2019-10-08
 
 ## [0.7.0-arduino] - 2019-10-08
@@ -121,5 +136,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#121]: https://github.com/ArkEcosystem/cpp-crypto/pull/121
 [#133]: https://github.com/ArkEcosystem/cpp-crypto/pull/133
 [#156]: https://github.com/ArkEcosystem/cpp-crypto/pull/156
+[0.7.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0...0.7.0
 [0.7.0-arduino]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0-arduino...0.7.0-arduino
-[0.7.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.6.0-arduino...0.7.0
+[#172]: https://github.com/ArkEcosystem/cpp-crypto/pull/172
+[#178]: https://github.com/ArkEcosystem/cpp-crypto/pull/178
+[#180]: https://github.com/ArkEcosystem/cpp-crypto/pull/180
+[#190]: https://github.com/ArkEcosystem/cpp-crypto/pull/190
+[#198]: https://github.com/ArkEcosystem/cpp-crypto/pull/198
+[1.0.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0-arduino...1.0.0
+[1.0.0-arduino]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0-arduino...1.0.0-arduino

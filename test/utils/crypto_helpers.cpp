@@ -1,30 +1,38 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
-
-#include "utils/crypto_helpers.h"
 
 #include <cstdint>
 #include <vector>
 
-TEST(utils, pack_unpack) {
-  std::vector<uint8_t> packBuffer;
-  const uint8_t packValue = 23U;
-  pack(packBuffer, packValue);
+#include "utils/crypto_helpers.h"
 
-  uint8_t unpackValue;
-  unpack(&unpackValue, &packBuffer[0]);
-  ASSERT_EQ(packValue, unpackValue);
+////////////////////////////////////////////////////////////////////////////////
+TEST(utils_crypto_helpers, unpack) {
+    std::vector<uint8_t> packBuffer;
+    const uint8_t packValue = 23U;
+    pack(packBuffer, packValue);
+
+    uint8_t unpackValue;
+    unpack(&unpackValue, &packBuffer[0]);
+    ASSERT_EQ(packValue, unpackValue);
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(utils_crypto_helpers, join) {
+    const auto strBuffer = "123";
+    std::vector<std::string> vstr(3);
+    vstr.at(0) = strBuffer[0];
+    vstr.at(1) = strBuffer[1];
+    vstr.at(2) = strBuffer[2];
 
-TEST(utils, join) {
-  const auto strBuffer = "123";
-  std::vector<std::string> vstr(3);
-  vstr[0] = strBuffer[0];
-  vstr[1] = strBuffer[1];
-  vstr[2] = strBuffer[2];
-
-  std::string joined = join(vstr);
-  ASSERT_STREQ(joined.c_str(), strBuffer);
+    std::string joined = join(vstr);
+    ASSERT_STREQ(strBuffer, joined.c_str());
 }

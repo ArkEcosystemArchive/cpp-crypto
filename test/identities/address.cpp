@@ -1,98 +1,105 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "identities/address.hpp"
+#include "identities/keys.hpp"
 
 #include "fixtures/identity.hpp"
-using namespace fixtures::identity;
 
-TEST(identities, address_construct_bytes) {
-  Address address(tAddressBytes, tAddressVersion);
-  ASSERT_TRUE(Address::validate(address, tAddressVersion));
+#include "test_helpers.h"
+
+using namespace Ark::Crypto;
+using namespace Ark::Crypto::identities;
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, construct_bytes) {
+    Address address(fixtures::AddressBytes, fixtures::AddressVersion);
+    ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
-
-TEST(identities, address_construct_string) {
-  Address address(tAddressString);
-  ASSERT_TRUE(Address::validate(address, tAddressVersion));
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, construct_string) {
+    Address address(fixtures::AddressString);
+    ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
-
-TEST(identities, address_construct_string_invalid_chars) {
-  Address address(invalid::tAddressString);
-  ASSERT_FALSE(Address::validate(address, tAddressVersion));
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address,construct_string_invalid_chars) {
+    Address address(fixtures::invalid::AddressString);
+    ASSERT_FALSE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
-
-TEST(identities, address_construct_string_invalid_length) {
-  Address address(&tAddressString[1]);
-  ASSERT_FALSE(Address::validate(address, tAddressVersion));
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, construct_string_invalid_length) {
+    Address address(&fixtures::AddressString[1]);
+    ASSERT_FALSE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
-
-TEST(identities, address_get_version) {
-  Address address(tAddressString);
-  auto version = address.version();
-  ASSERT_EQ(version, tAddressVersion);
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, get_version) {
+    Address address(fixtures::AddressString);
+    ASSERT_EQ(fixtures::AddressVersion, address.version());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, to_bytes) {
+    Address address(fixtures::AddressString);
 
-TEST(identities, address_to_bytes) {
-  Address address(tAddressString);
-  auto addressBytes = address.toBytes();
-  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
-    ASSERT_EQ(addressBytes.at(i), tAddressBytes.at(i));
-  };
-  auto version = address.version();
-  ASSERT_EQ(version, tAddressVersion);
+    ASSERT_TRUE(array_cmp(fixtures::AddressBytes.data(),
+                          address.toBytes().data(),
+                          HASH_20_LEN));
+
+    ASSERT_EQ(fixtures::AddressVersion, address.version());
 }
 
-/**/
-
-TEST(identities, address_to_string) {
-  Address address(tAddressBytes, tAddressVersion);
-  auto addressString = address.toString();
-  ASSERT_STREQ(addressString.c_str(), tAddressString);
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, to_string) {
+    Address address(fixtures::AddressBytes, fixtures::AddressVersion);
+    ASSERT_STREQ(fixtures::AddressString, address.toString().c_str());
 }
 
-/**/
-
-TEST(identities, address_from_passphrase) {
-  auto address = Address::fromPassphrase(tPassphrase, tAddressVersion);
-  ASSERT_TRUE(Address::validate(address, tAddressVersion));
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, from_passphrase) {
+    auto address = Address::fromPassphrase(fixtures::Passphrase,
+                                           fixtures::AddressVersion);
+    ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, from_publickey) {
+    auto publicKey = Keys::fromPassphrase(fixtures::Passphrase).publicKey;
+    const auto address = Address::fromPublicKey(publicKey.data(),
+                                                fixtures::AddressVersion);
 
-TEST(identities, address_from_publickey) {
-  auto publicKey = Keys::fromPassphrase(tPassphrase).publicKey.data();
-  Address address = Address::fromPublicKey(publicKey, tAddressVersion);
-  ASSERT_TRUE(Address::validate(address, tAddressVersion));
+    ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, from_privatekey) {
+    auto privateKey = Keys::fromPassphrase(
+                fixtures::Passphrase).privateKey;
+    auto address = Address::fromPrivateKey(privateKey.data(),
+                                           fixtures::AddressVersion);
 
-TEST(identities, address_from_privatekey) {
-  auto privateKey = Keys::fromPassphrase(tPassphrase).privateKey.data();
-  auto address = Address::fromPrivateKey(privateKey, tAddressVersion);
-  ASSERT_TRUE(Address::validate(address, tAddressVersion));
+    ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
-
-TEST(identities, address_validate) {
-  Address address(tAddressString);
-  ASSERT_TRUE(Address::validate(address, tAddressVersion));
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, validate) {
+    Address address(fixtures::AddressString);
+    ASSERT_TRUE(Address::validate(address, fixtures::AddressVersion));
 }
 
-/**/
-
-TEST(identities, address_validate_invalid) {
-  Address address(invalid::tAddressString);
-  ASSERT_FALSE(Address::validate(address, tAddressVersion));
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_address, validate_invalid) {
+    Address address(fixtures::invalid::AddressString);
+    ASSERT_FALSE(Address::validate(address, fixtures::AddressVersion));
 }

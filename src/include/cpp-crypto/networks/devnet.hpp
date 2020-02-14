@@ -7,14 +7,15 @@
  * file that was distributed with this source code.
  **/
 
-#ifndef NETWORKS_DEVNET_HPP
-#define NETWORKS_DEVNET_HPP
+#ifndef ARK_NETWORKS_DEVNET_HPP
+#define ARK_NETWORKS_DEVNET_HPP
 
 #include "common/network.hpp"
 
 namespace Ark {
 namespace Crypto {
 
+////////////////////////////////////////////////////////////////////////////////
 // Devnet
 // Default ARK Development Network
 const Network Devnet {

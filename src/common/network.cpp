@@ -14,24 +14,26 @@
 namespace Ark {
 namespace Crypto {
 
-bool Network::operator==(const Network& other) const {
-  bool numbersMatch = (this->slip44 == other.slip44) &&
-                      (this->wif == other.wif) &&
-                      (this->version == other.version);
-  bool stringsMatch = (this->nethash == other.nethash) &&
-                      (this->epoch == other.epoch);
-  return numbersMatch && stringsMatch;
+////////////////////////////////////////////////////////////////////////////////
+auto Network::operator==(const Network& other) const -> bool {
+    bool numbersMatch = (this->slip44 == other.slip44) &&
+                        (this->wif == other.wif) &&
+                        (this->version == other.version);
+    bool stringsMatch = (this->nethash == other.nethash) &&
+                        (this->epoch == other.epoch);
+
+    return numbersMatch && stringsMatch;
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+auto Network::operator!=(const Network& other) const -> bool {
+    bool numbersMatch = (this->slip44 != other.slip44) ||
+                        (this->wif != other.wif) ||
+                        (this->version != other.version);
+    bool stringsMatch = (this->nethash != other.nethash) ||
+                        (this->epoch != other.epoch);
 
-bool Network::operator!=(const Network& other) const {
-  bool numbersMatch = (this->slip44 != other.slip44) ||
-                      (this->wif != other.wif) ||
-                      (this->version != other.version);
-  bool stringsMatch = (this->nethash != other.nethash) ||
-                      (this->epoch != other.epoch);
-  return numbersMatch || stringsMatch;
+    return numbersMatch || stringsMatch;
 }
 
 }  // namespace Crypto

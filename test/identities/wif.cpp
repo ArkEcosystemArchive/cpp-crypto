@@ -1,75 +1,88 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "identities/wif.hpp"
 
 #include "fixtures/identity.hpp"
-using namespace fixtures::identity;
 
-TEST(identities, wif_construct_bytes) {
-  Wif wif(tPrivateKeyBytes, tWifVersion);
-  const auto wifBytes = wif.toBytes();
-  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
-    ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
-  };
-  ASSERT_EQ(wif.version(), tWifVersion);
+#include "test_helpers.h"
+
+using namespace Ark::Crypto;
+using namespace Ark::Crypto::identities;
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_wif, construct_bytes) {
+    Wif wif(fixtures::PrivateKeyBytes, fixtures::WifVersion);
+
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          wif.toBytes().data(),
+                          HASH_20_LEN));
+
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_wif, construct_string) {
+    Wif wif(fixtures::WifString);
 
-TEST(identities, wif_construct_string) {
-  Wif wif(tWifString);
-  const auto wifBytes = wif.toBytes();
-  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
-    ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
-  };
-  ASSERT_EQ(wif.version(), tWifVersion);
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          wif.toBytes().data(),
+                          HASH_20_LEN));
+
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_wif, construct_string_invlaid) {
+    Wif wif(fixtures::invalid::WifString);
 
-TEST(identities, wif_construct_string_invlaid) {
-  Wif wif(invalid::tWifString);
-  const auto wifBytes = wif.toBytes();
-  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
-    ASSERT_EQ(wifBytes.at(i), 0);
-  };
-  ASSERT_EQ(wif.version(), 0);
+    for (auto &e : wif.toBytes()) {
+        ASSERT_EQ(0U, e);
+    }
+
+    ASSERT_EQ(0U, wif.version());
 }
 
-/**/
-
-TEST(identities, wif_get_version) {
-  Wif wif(tWifString);
-  ASSERT_EQ(wif.version(), tWifVersion);
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_wif, get_version) {
+    Wif wif(fixtures::WifString);
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_wif, to_bytes) {
+    Wif wif(fixtures::WifString);
 
-TEST(identities, wif_to_bytes) {
-  Wif wif(tWifString);
-  const auto wifBytes = wif.toBytes();
-  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
-    ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
-  };
-  ASSERT_EQ(wif.version(), tWifVersion);
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          wif.toBytes().data(),
+                          HASH_20_LEN));
+
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_wif, to_string) {
+    Wif wif(fixtures::PrivateKeyBytes, fixtures::WifVersion);
 
-TEST(identities, wif_to_string) {
-  Wif wif(tPrivateKeyBytes, tWifVersion);
-  const auto wifString = wif.toString();
-  ASSERT_STREQ(wifString.c_str(), tWifString);
-  ASSERT_EQ(wif.version(), tWifVersion);
+    ASSERT_STREQ(fixtures::WifString, wif.toString().c_str());
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_wif, from_passphrase) {
+    Wif wif = Wif::fromPassphrase(fixtures::Passphrase, fixtures::WifVersion);
 
-TEST(identities, wif_from_passphrase) {
-  Wif wif = Wif::fromPassphrase(tPassphrase, tWifVersion);
-  const auto wifBytes = wif.toBytes();
-  for (auto i = 0U; i < HASH_20_BYTE_LEN; i++) {
-    ASSERT_EQ(wifBytes.at(i), tPrivateKeyBytes.at(i));
-  };
-  ASSERT_EQ(wif.version(), tWifVersion);
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          wif.toBytes().data(),
+                          HASH_20_LEN));
+
+    ASSERT_EQ(fixtures::WifVersion, wif.version());
 }

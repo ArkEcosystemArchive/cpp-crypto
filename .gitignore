@@ -12,7 +12,8 @@
 /include/uECC
 /lib/
 /bin/
-build
+./build
+./extern
 /src/ark_cpp_crypto.vcxproj.filters
 /src/ark_cpp_crypto.vcxproj
 /src/ark_cpp_crypto.sln

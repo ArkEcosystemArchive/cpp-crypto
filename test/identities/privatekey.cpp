@@ -1,69 +1,72 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
-#include <arkCrypto.h>
+#include "identities/privatekey.hpp"
 
 #include "fixtures/identity.hpp"
-using namespace fixtures::identity;
 
-TEST(identities, privatekey_construct_bytes) {
-  PrivateKey privateKey(tPrivateKeyBytes);
-  const auto privateKeyString = privateKey.toString();
-  ASSERT_STREQ(privateKeyString.c_str(), tPrivateKeyHex);
+#include "test_helpers.h"
+
+using namespace Ark::Crypto;
+using namespace Ark::Crypto::identities;
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_privatekey, construct_bytes) {
+    PrivateKey privateKey(fixtures::PrivateKeyBytes);    
+    ASSERT_STREQ(fixtures::PrivateKeyHex, privateKey.toString().c_str());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_privatekey, to_bytes) {
+    auto privateKey = PrivateKey::fromHex(fixtures::PrivateKeyHex);
 
-TEST(identities, privatekey_to_bytes) {
-  auto privateKey = PrivateKey::fromHex(tPrivateKeyHex);
-  const auto privateKeyBytes = privateKey.toBytes();
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(privateKeyBytes.at(i), tPrivateKeyBytes.at(i));
-  };
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          privateKey.toBytes().data(),
+                          PRIVATEKEY_BYTE_LEN));
 }
 
-/**/
-
-TEST(identities, privatekey_to_string) {
-  PrivateKey privateKey(tPrivateKeyBytes);
-  const auto privateKeyString = privateKey.toString();
-  ASSERT_STREQ(privateKeyString.c_str(), tPrivateKeyHex);
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_privatekey, to_string) {
+    PrivateKey privateKey(fixtures::PrivateKeyBytes);
+    ASSERT_STREQ(fixtures::PrivateKeyHex, privateKey.toString().c_str());
 }
 
-/**/
-
-TEST(identities, privatekey_from_passphrase) {
-  PrivateKey privateKey = PrivateKey::fromPassphrase(tPassphrase);
-  const auto privateKeyString = privateKey.toString();
-  ASSERT_STREQ(privateKeyString.c_str(), tPrivateKeyHex);
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_privatekey, from_passphrase) {
+    PrivateKey privateKey = PrivateKey::fromPassphrase(fixtures::Passphrase);
+    ASSERT_STREQ(fixtures::PrivateKeyHex, privateKey.toString().c_str());
 }
 
-/**/
-
-TEST(identities, privatekey_from_hex) {
-  auto privateKey = PrivateKey::fromHex(tPrivateKeyHex);
-  const auto privateKeyBytes = privateKey.toBytes();
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(privateKeyBytes.at(i), tPrivateKeyBytes.at(i));
-  };
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_privatekey, from_hex) {
+    auto privateKey = PrivateKey::fromHex(fixtures::PrivateKeyHex);
+    ASSERT_TRUE(array_cmp(fixtures::PrivateKeyBytes.data(),
+                          privateKey.toBytes().data(),
+                          PRIVATEKEY_BYTE_LEN));
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_privatekey, from_hex_invalid_chars) {
+    auto privateKey = PrivateKey::fromHex(fixtures::invalid::PrivateKeyHex);
 
-TEST(identities, privatekey_from_hex_invalid_chars) {
-  auto privateKey = PrivateKey::fromHex(invalid::tPrivateKeyHex);
-  const auto privateKeyBytes = privateKey.toBytes();
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(privateKeyBytes.at(i), 0);
-  };
+    for (auto &e : privateKey.toBytes()) {
+        ASSERT_EQ(0U, e);
+    }
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(identities_privatekey, from_hex_invalid_length) {
+    auto privateKey = PrivateKey::fromHex(&fixtures::PrivateKeyHex[1]);
 
-TEST(identities, privatekey_from_hex_invalid_length) {
-  auto privateKey = PrivateKey::fromHex(&tPrivateKeyHex[1]);
-  const auto privateKeyBytes = privateKey.toBytes();
-  for (auto i = 0U; i < PRIVATEKEY_BYTE_LEN; i++) {
-    ASSERT_EQ(privateKeyBytes.at(i), 0);
-  };
+    for (auto &e : privateKey.toBytes()) {
+        ASSERT_EQ(0U, e);
+    }
 }

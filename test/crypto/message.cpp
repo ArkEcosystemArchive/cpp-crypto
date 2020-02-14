@@ -1,3 +1,11 @@
+/**
+ * This file is part of Ark Cpp Crypto.
+ *
+ * (c) Ark Ecosystem <info@ark.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 
 #include "gtest/gtest.h"
 
@@ -7,46 +15,26 @@
 
 #include "fixtures/identity.hpp"
 #include "fixtures/message.hpp"
+
 #include "utils/hex.hpp"
+
 using namespace Ark::Crypto;
-using namespace fixtures::identity;
-using namespace fixtures::message;
 
-TEST(crypto, message_sign) {
-  Message message;
-  message.sign(tMessageString, tPassphrase);
+////////////////////////////////////////////////////////////////////////////////
+TEST(crypto_message, to_map) {
+    Message message;
+    message.sign(fixtures::MessageString, fixtures::Passphrase);
+    auto map = message.toMap();
 
-  ASSERT_STREQ(BytesToHex(message.signature.begin(),
-                          message.signature.end()).c_str(),
-               tSignatureString);
+    ASSERT_STREQ(fixtures::MessageString,           map["message"].c_str());
+    ASSERT_STREQ(fixtures::PublicKeyHex,            map["publickey"].c_str());
+    ASSERT_STREQ(fixtures::MessageSignatureString,  map["signature"].c_str());
 }
 
-/**/
+////////////////////////////////////////////////////////////////////////////////
+TEST(crypto_message, to_json) {
+    Message message;
+    message.sign(fixtures::MessageString, fixtures::Passphrase);
 
-TEST(crypto, message_verify) {
-  Message message(tMessageString,
-                  tPublicKeyBytes,
-                  { tMessageSignatureBytes.begin(),
-                    tMessageSignatureBytes.end() });
-  ASSERT_TRUE(message.verify());
-}
-
-/**/
-
-TEST(crypto, message_to_array) {
-  Message message;
-  message.sign(tMessageString, tPassphrase);
-  auto messageArray = message.toArray();
-
-  ASSERT_STREQ(tMessageString, messageArray["message"].c_str());
-  ASSERT_STREQ(tPublicKeyHex, messageArray["publickey"].c_str());
-  ASSERT_STREQ(tSignatureString, messageArray["signature"].c_str());
-}
-
-/**/
-
-TEST(crypto, message_to_json) {
-  Message message;
-  message.sign(tMessageString, tPassphrase);
-  ASSERT_STREQ(message.toJson().c_str(), tMessageJsonString);
+    ASSERT_STREQ(fixtures::MessageJsonString, message.toJson().c_str());
 }
