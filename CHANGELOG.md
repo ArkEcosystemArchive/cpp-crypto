@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+-   added Delegate Resignation Builder and Tests ([#208])
+
 ## [1.0.0] - 2020-02-13
 
 ## [1.0.0-arduino] - 2020-02-13
@@ -145,3 +150,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#198]: https://github.com/ArkEcosystem/cpp-crypto/pull/198
 [1.0.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0-arduino...1.0.0
 [1.0.0-arduino]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0-arduino...1.0.0-arduino
+[1.0.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0-arduino...1.0.0
+[#208]: https://github.com/ArkEcosystem/cpp-crypto/pull/208
+[unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/1.0.0-arduino...develop
