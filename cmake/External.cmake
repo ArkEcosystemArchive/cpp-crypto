@@ -4,7 +4,7 @@
 # ------------------------------------------------------------------------------
 
 # Copy the configuration
-configure_file(${CMAKE_SOURCE_DIR}/cmake/extern/ArduinoJson.txt.in
+configure_file(${CMAKE_INSTALL_PREFIX}/cmake/extern/ArduinoJson.txt.in
                ${EXTERNAL_LIBRARY_DIR}/arduinojson/CMakeLists.txt)
 
 # Configure the Cmake build
@@ -38,7 +38,7 @@ include_directories(${ARDUINO_JSON_SOURCE_DIR})
 # ------------------------------------------------------------------------------
 
 # Copy the configuration
-configure_file(${CMAKE_SOURCE_DIR}/cmake/extern/BCL.txt.in
+configure_file(${CMAKE_INSTALL_PREFIX}/cmake/extern/BCL.txt.in
                ${EXTERNAL_LIBRARY_DIR}/bcl/CMakeLists.txt)
 
 # Configure the Cmake build
@@ -81,7 +81,7 @@ include_directories(${EXTERNAL_LIBRARY_DIR}/bcl/src/src)
 # ------------------------------------------------------------------------------
 
 # Copy the configuration
-configure_file(${CMAKE_SOURCE_DIR}/cmake/extern/BIP66.txt.in
+configure_file(${CMAKE_INSTALL_PREFIX}/cmake/extern/BIP66.txt.in
                ${EXTERNAL_LIBRARY_DIR}/bip66/CMakeLists.txt)
 
 # Configure the Cmake build
@@ -115,7 +115,7 @@ include_directories(${EXTERNAL_LIBRARY_DIR}/bip66/src/)
 # ------------------------------------------------------------------------------
 
 # Copy the configuration
-configure_file(${CMAKE_SOURCE_DIR}/cmake/extern/uECC.txt.in
+configure_file(${CMAKE_INSTALL_PREFIX}/cmake/extern/uECC.txt.in
                ${EXTERNAL_LIBRARY_DIR}/uecc/CMakeLists.txt)
 
 # Configure the Cmake build
@@ -157,5 +157,9 @@ set(EXTERNAL_LIBRARY_SOURCE
     ${BIP66_SOURCE}
     ${UECC_SOURCE}
     CACHE INTERNAL "External Lib Binary Files")
+
+set(EXTERNAL_LIBRARY_INCLUDE
+    ${ARDUINO_JSON_SOURCE_DIR}
+    CACHE INTERNAL "External Lib Include Dirs")
 
 # ------------------------------------------------------------------------------
