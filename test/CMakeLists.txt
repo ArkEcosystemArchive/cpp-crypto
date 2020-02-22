@@ -99,6 +99,7 @@ set(TRANSACTIONS_BUILDERS_TEST_SOURCE
     ${PROJECT_SOURCE_DIR}/transactions/builders/vote.cpp
     ${PROJECT_SOURCE_DIR}/transactions/builders/ipfs.cpp
     ${PROJECT_SOURCE_DIR}/transactions/builders/multi_payment.cpp
+    ${PROJECT_SOURCE_DIR}/transactions/builders/delegate_resignation.cpp
     ${PROJECT_SOURCE_DIR}/transactions/builders/htlc_lock.cpp
     ${PROJECT_SOURCE_DIR}/transactions/builders/htlc_claim.cpp
     ${PROJECT_SOURCE_DIR}/transactions/builders/htlc_refund.cpp
