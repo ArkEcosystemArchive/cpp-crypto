@@ -271,7 +271,7 @@ TEST(transactions_transaction, to_map_to_json) {  // NOLINT
     Transaction htlcClaimTx;
     htlcClaimTx.deserialize(TYPE_9_BYTES);
     const auto htlcClaimJson = htlcClaimTx.toJson();
-    const std::string htlcClaimResponse = R"({"version":2,"network":23,"typeGroup":1,"type":9,"nonce":"1","senderPublicKey":"034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192","fee":"0","amount":"0","asset":{"claim":{"lockTransactionId":"50f301306d8da58d62332ce3a361d9fd4a01b0a89ca914517b685e2d3714e24e","unlockSecret":"f5ea877a311ced90cf4524cb489e972f"}},"id":"88b21734d289fa48801b2fed39e23b89f021df4670e8d43e703b776e5a5333a8","signature":"3045022100d47a071dadebfae4e9115f35ae29429d0ada7bcb1668dc9babde9613108ecc8302201d97dd366a8816f81581dc5be46f3a859b66e48532c80fb7fa19da63dfc3c01f"})";
+    const std::string htlcClaimResponse = R"({"version":2,"network":23,"typeGroup":1,"type":9,"nonce":"1","senderPublicKey":"034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192","fee":"0","amount":"0","asset":{"claim":{"lockTransactionId":"50f301306d8da58d62332ce3a361d9fd4a01b0a89ca914517b685e2d3714e24e","unlockSecret":"580fde2946477f24b288890faea69fa120a14cfa5ea4a9819508331a034d9585"}},"id":"fd9fb83d2d46483717825f8a5cafede9284125fa6cfcf717d3957c643448b959","signature":"304502210089b94f5807aec470848271b6b29890dc77f217c803d0e3b99c4be472191f8891022048f309f6f795e272aac60574847ef654bbd1387b55efea49730326588139b9f4"})";
     ASSERT_STREQ(htlcClaimResponse.c_str(), htlcClaimJson.c_str());
 
     Transaction htlcRefundTx;
