@@ -99,9 +99,7 @@ void HtlcClaim::addToMap(const HtlcClaim &claim,
     map.emplace(KEY_CLAIM_TX_ID_LABEL, BytesToHex(claim.id));
 
     // Secret
-    std::string secret(claim.secret.size(), '\0');
-    secret.insert(secret.begin(), claim.secret.begin(), claim.secret.end());    
-    map.emplace(KEY_CLAIM_SECRET_LABEL, secret);
+    map.emplace(KEY_CLAIM_SECRET_LABEL, BytesToHex(claim.secret));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
