@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <map>
 #include <numeric>  // std::accumulate
@@ -164,19 +165,19 @@ auto MultiPayment::Serialize(const MultiPayment &payments,
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-constexpr auto KEY_PAYMENTS_LABEL   = "payments";
-const auto KEY_PAYMENTS_SIZE        = strlen(KEY_PAYMENTS_LABEL);
+constexpr auto KEY_PAYMENTS_LABEL       = "payments";
+constexpr size_t KEY_PAYMENTS_SIZE      = 8;
 
-const auto KEY_N_PAYMENTS_SIZE      = strlen(KEY_N_PAYMENTS_LABEL);
+constexpr size_t KEY_N_PAYMENTS_SIZE    = 9;
 
-constexpr auto KEY_AMOUNTS_LABEL    = "amounts";
-const auto KEY_AMOUNTS_SIZE         = strlen(KEY_AMOUNTS_LABEL);
+constexpr auto KEY_AMOUNTS_LABEL        = "amounts";
+constexpr size_t KEY_AMOUNTS_SIZE       = 7;
 
-constexpr auto KEY_ADDRESSES_LABEL  = "addresses";
-const auto KEY_ADDRESSES_SIZE       = strlen(KEY_ADDRESSES_LABEL);
+constexpr auto KEY_ADDRESSES_LABEL      = "addresses";
+constexpr size_t KEY_ADDRESSES_SIZE     = 9;
 
 constexpr auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
-const auto KEY_RECIPIENT_ID_SIZE        = strlen(KEY_RECIPIENT_ID_LABEL);
+constexpr size_t KEY_RECIPIENT_ID_SIZE  = 11;
 
 constexpr auto MULTIPAYMENT_JSON_OBJECT_SIZE = 2U;
 

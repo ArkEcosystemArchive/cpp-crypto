@@ -10,9 +10,9 @@
 #include "transactions/types/second_signature.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <map>
-#include <string>
 
 #include "interfaces/constants.h"
 
@@ -75,10 +75,10 @@ auto SecondSignature::Serialize(const SecondSignature &registration,
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
 constexpr auto KEY_SIGNATURE_LABEL      = "signature";
-const auto KEY_SIGNATURE_SIZE           = strlen(KEY_SIGNATURE_LABEL);
+constexpr size_t KEY_SIGNATURE_SIZE     = 9;
 
 constexpr auto KEY_PUBLICKEY_LABEL      = "publicKey";
-const auto KEY_PUBLICKEY_SIZE           = strlen(KEY_PUBLICKEY_LABEL);
+constexpr size_t KEY_PUBLICKEY_SIZE     = 9;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add SecondSignature Asset data to a Transaction Map.
