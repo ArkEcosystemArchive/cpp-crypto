@@ -7,7 +7,7 @@ project(ark_cpp_crypto C CXX)
 # External Libraries
 # ------------------------------------------------------------------------------
 
-include(${CMAKE_SOURCE_DIR}/cmake/External.cmake)
+include(${CMAKE_INSTALL_PREFIX}/cmake/External.cmake)
 
 # ------------------------------------------------------------------------------
 
@@ -128,6 +128,7 @@ add_library(${PROJECT_NAME} STATIC
 # ------------------------------------------------------------------------------
 
 set(ARK_CPP_CRYPTO_INCLUDE_DIRS
+    ${EXTERNAL_LIBRARY_INCLUDE}
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include/cpp-crypto
     ${PROJECT_SOURCE_DIR}/lib/
