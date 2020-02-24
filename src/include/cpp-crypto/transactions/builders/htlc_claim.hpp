@@ -50,8 +50,9 @@ class HtlcClaim : public Common<HtlcClaim> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    HtlcClaim() {
+    HtlcClaim(const Configuration &config = {}) {
         this->transaction.data.type = HTLC_CLAIM_TYPE;
+        this->configure(config);
     }
 };
 

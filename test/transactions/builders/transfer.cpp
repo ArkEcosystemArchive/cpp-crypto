@@ -115,14 +115,14 @@ TEST(transactions_builder, transfer_sign_configuration) {
         65, 29,  252, 105, 181, 76,  127, 233, 1,  233, 29,
         90, 154, 183, 131, 136, 100, 94,  36,  39, 234 };
 
-    auto transaction = builder::Transfer()
+    auto transaction = builder::Transfer(radiansCfg)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)
         .recipientId(radiansRecipient.data())
-        .build(radiansCfg);
+        .build();
 
     transaction.sign(fixtures::Passphrase);
 
