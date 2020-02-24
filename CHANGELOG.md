@@ -10,14 +10,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 -   added Delegate Resignation Builder ([#208])
 
+### Changed
+-   improved transaction builder ([#217])
+
 ## [1.0.0-arduino] - 2020-02-13
+
+### Added
+-   added AIP-11 support for Core v.2.6 Transactions ([#198])
 
 ### Changed
 -   removed use of monolithic `arkCrypto.h` header ([#190])
 -   break up unit tests to support platforms with limited RAM ([#172])
-
-### Added
--   added AIP-11 support for Core v.2.6 Transactions ([#198])
 
 ### Fixed
 -   fixed `transaction::to_json` tests on ESP8266 ([#180])
@@ -112,4 +115,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [1.0.0-arduino]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0-arduino...1.0.0-arduino
 [1.0.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0-arduino...1.0.0
 [#208]: https://github.com/ArkEcosystem/cpp-crypto/pull/208
+[#217]: https://github.com/ArkEcosystem/cpp-crypto/pull/217
 [unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/1.0.0-arduino...develop
