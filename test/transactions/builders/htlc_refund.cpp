@@ -27,7 +27,6 @@ TEST(transactions_builders, htlc_refund) {
     const auto transaction = builder::HtlcRefund(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_10_FEE)
         .lockTransactionId(TYPE_10_LOCK_TX_ID)
         .signature(TYPE_10_SIGNATURE, sizeof(TYPE_10_SIGNATURE))
         .build();

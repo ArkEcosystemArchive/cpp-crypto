@@ -28,7 +28,6 @@ TEST(transactions_builders, delegate_registration) {
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME, sizeof(TYPE_2_USERNAME))
-        .fee(TYPE_2_FEE)
         .signature(TYPE_2_SIGNATURE, sizeof(TYPE_2_SIGNATURE))
         .build();
 
@@ -41,7 +40,6 @@ TEST(transactions_builders, delegate_registration_string) {
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME_STRING)
-        .fee(TYPE_2_FEE)
         .signature(TYPE_2_SIGNATURE, sizeof(TYPE_2_SIGNATURE))
         .build();
 

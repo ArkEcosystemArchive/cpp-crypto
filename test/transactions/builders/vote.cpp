@@ -25,10 +25,8 @@ using namespace Ark::Crypto::transactions;
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, vote) {
     const auto transaction = builder::Vote(Mainnet)
-        .type(TYPE_3_TYPE)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_3_FEE)
         .votes(TYPE_3_VOTE)
         .signature(TYPE_3_SIGNATURE, sizeof(TYPE_3_SIGNATURE))
         .build();

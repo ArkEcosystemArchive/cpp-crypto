@@ -26,7 +26,6 @@ This project is still under development. This page will get more content as the 
 ```cpp
 // Default Configuration is Devnet
 const auto transaction = builder::Transfer()
-        .type(0)
         .nonce(1)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .vendorField("this is a devnet transaction")
@@ -41,14 +40,12 @@ const auto transaction = builder::Transfer()
 ### Mainnet
 
 ```cpp
-// Also pass the Network as a builder argument
+// Also pass the Network as a builder constructor argument
 
 #include "networks/mainnet.hpp"
 
 const auto transaction = builder::Transfer(Mainnet)
-        .type(0)
         .nonce(1)
-        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .vendorField("this is a devnet transaction")
         .amount(100000000ULL)
         .expiration(0)
@@ -79,9 +76,7 @@ const uint8_t radiansRecipient[] = {
     90, 154, 183, 131, 136, 100, 94,  36,  39, 234 };
 
 auto transaction = builder::Transfer(radiansCfg)
-        .type(0)
         .nonce(1)
-        .senderPublicKey(senderPublicKeyBytes.data())
         .vendorField("this is a Radians transaction")
         .amount(100000000ULL)
         .expiration(0)
@@ -108,9 +103,7 @@ const FeePolicy customFees = {
 const Configuration customCfg(Radians, MyCustomFees);
 
 auto transaction = builder::Transfer(customCfg)
-        .type(0)
         .nonce(1)
-        .senderPublicKey(senderPublicKeyBytes.data())
         .vendorField("this is a Radians transaction")
         .amount(100000000ULL)
         .expiration(0)

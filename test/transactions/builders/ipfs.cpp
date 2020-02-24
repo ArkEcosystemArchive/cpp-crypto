@@ -27,7 +27,6 @@ TEST(transactions_builders, ipfs) {
     const auto transaction = builder::Ipfs(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_5_FEE)
         .ipfs(TYPE_5_DAG, sizeof(TYPE_5_DAG))
         .signature(TYPE_5_SIGNATURE, sizeof(TYPE_5_SIGNATURE))
         .build();

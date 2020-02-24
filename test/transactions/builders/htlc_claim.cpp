@@ -27,7 +27,6 @@ TEST(transactions_builders, htlc_claim) {
     const auto transaction = builder::HtlcClaim(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_9_FEE)
         .lockTransactionId(TYPE_9_LOCK_TX_ID)
         .unlockSecret(TYPE_9_UNLOCK_SECRET)
         .signature(TYPE_9_SIGNATURE, sizeof(TYPE_9_SIGNATURE))

@@ -27,7 +27,6 @@ TEST(transactions_builders, second_signature) {
     const auto transaction = builder::SecondSignature(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_1_FEE)
         .publicKey(TYPE_1_SECOND_PUBLICKEY)
         .signature(TYPE_1_SIGNATURE, sizeof(TYPE_1_SIGNATURE))
         .build();
