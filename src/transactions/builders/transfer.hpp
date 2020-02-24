@@ -72,8 +72,9 @@ class Transfer : public Common<Transfer> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    Transfer() {
+    Transfer(const Configuration &config = {}) {
         this->transaction.data.type = TRANSFER_TYPE;
+        this->configure(config);
     }
 };
 

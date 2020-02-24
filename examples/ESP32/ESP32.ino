@@ -181,12 +181,12 @@ void createBridgechainTransaction() {
     const Configuration cfg(BridgechainNetwork);
 
     // Use the Transaction Builder to make a transaction.
-    const auto bridgechainTransaction = builder::Transfer()
+    const auto bridgechainTransaction = builder::Transfer(cfg)
             .recipientId("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib")
             .vendorField("this is a custom bridgechain transaction")
             .sign(Passphrase)
             .secondSign(SecondPassphrase)
-            .build(cfg);
+            .build();
 
     // Create and Print the Json representation of the Transaction.
     const auto transactionJson = bridgechainTransaction.toJson();
