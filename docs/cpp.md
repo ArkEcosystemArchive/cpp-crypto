@@ -41,10 +41,11 @@ const auto transaction = builder::Transfer()
 ### Mainnet
 
 ```cpp
-// Use the Configuration Class to create a Mainnet Transaction
-const Configuration mainnetCfg(Mainnet);
+// Also pass the Network as a builder argument
 
-const auto transaction = builder::Transfer(mainnetCfg)
+#include "networks/mainnet.hpp"
+
+const auto transaction = builder::Transfer(Mainnet)
         .type(0)
         .nonce(1)
         .senderPublicKey(fixtures::PublicKeyBytes.data())

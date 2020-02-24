@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/transfer.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -27,8 +28,7 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, transfer_address_hash) {
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_0_FEE)
@@ -72,8 +72,7 @@ TEST(transactions_builder, transfer_address_string) {
         TYPE_0_SIGNATURE + sizeof(TYPE_0_SIGNATURE)
     };
 
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_0_FEE)
@@ -88,8 +87,7 @@ TEST(transactions_builder, transfer_address_string) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builder, transfer_sign) {
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
@@ -131,8 +129,7 @@ TEST(transactions_builder, transfer_sign_configuration) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builder, transfer_sign_vendorfield_second_signature) {
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .fee(TYPE_0_FEE)
         .vendorField(fixtures::MessageString)

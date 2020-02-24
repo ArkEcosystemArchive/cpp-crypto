@@ -24,8 +24,8 @@ class Configuration : public managers::NetworkManager,
     ////////////////////////////////////////////////////////////////////////////
     // Default initialization: ARK Devnet w/StaticFees
     Configuration() = default;
-    explicit Configuration(const Network &network);
-    explicit Configuration(const FeePolicy &policy);
+    Configuration(const Network &network);
+    Configuration(const FeePolicy &policy);
     Configuration(const Network &network, const FeePolicy &policy);
 
     ////////////////////////////////////////////////////////////////////////////

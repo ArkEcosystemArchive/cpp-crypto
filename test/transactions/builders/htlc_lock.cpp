@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/htlc_lock.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -23,8 +24,7 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, htlc_lock) {
-    const auto transaction = builder::HtlcLock()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::HtlcLock(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_8_FEE)
@@ -41,8 +41,7 @@ TEST(transactions_builders, htlc_lock) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, htlc_lock_string) {
-    const auto transaction = builder::HtlcLock()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::HtlcLock(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .fee(TYPE_8_FEE)
