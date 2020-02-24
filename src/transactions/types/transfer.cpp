@@ -10,10 +10,9 @@
 #include "transactions/types/transfer.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
-#include <cstring>
 #include <map>
-#include <string>
 
 #include "interfaces/constants.h"
 
@@ -97,13 +96,13 @@ auto Transfer::Serialize(const Transfer &transfer, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
 constexpr auto KEY_AMOUNT_LABEL         = "amount";
-const auto KEY_AMOUNT_SIZE              = strlen(KEY_AMOUNT_LABEL);
+constexpr size_t KEY_AMOUNT_SIZE        = 6;
 
 constexpr auto KEY_EXPIRATION_LABEL     = "expiration";
-const auto KEY_EXPIRATION_SIZE          = strlen(KEY_EXPIRATION_LABEL);
+constexpr size_t KEY_EXPIRATION_SIZE    = 10;
 
 constexpr auto KEY_RECIPIENT_ID_LABEL   = "recipientId";
-const auto KEY_RECIPIENT_ID_SIZE        = strlen(KEY_RECIPIENT_ID_LABEL);
+constexpr size_t KEY_RECIPIENT_ID_SIZE  = 11;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Transfer Asset data to a Transaction Map.

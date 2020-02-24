@@ -10,9 +10,9 @@
 #include "transactions/types/ipfs.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <map>
-#include <string>
 
 #include "interfaces/constants.h"
 
@@ -84,7 +84,7 @@ auto Ipfs::Serialize(const Ipfs &ipfs, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
 constexpr auto KEY_IPFS_LABEL   = "ipfs";
-const auto KEY_IPFS_SIZE        = strlen(KEY_IPFS_LABEL);
+constexpr size_t KEY_IPFS_SIZE  = 4;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Ipfs Asset data to a Transaction Map.
