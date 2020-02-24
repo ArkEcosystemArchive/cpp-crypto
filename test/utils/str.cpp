@@ -37,3 +37,23 @@ TEST(utils_str, string_to_bytes) {
 
     ASSERT_EQ(passphraseBytes.size(), PassphraseLength);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(utils_str, uint_to_string) {
+    const uint64_t amount = 100000000ULL;
+    const auto target = "100000000";
+
+    const auto result = UintToString(amount);
+
+    ASSERT_STREQ(result.c_str(), target);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+TEST(utils_str, uint_to_string_zero) {
+    const uint64_t amount = 0ULL;
+    const auto target = "0";
+
+    const auto result = UintToString(amount);
+
+    ASSERT_STREQ(result.c_str(), target);
+}
