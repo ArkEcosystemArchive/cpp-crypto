@@ -10,6 +10,7 @@
 #include "transactions/types/htlc_lock.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <map>
 #include <string>
@@ -146,26 +147,26 @@ auto HtlcLock::Serialize(const HtlcLock &lock, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-constexpr auto OBJECT_HTLC_LOCK_LABEL       = "lock";
-const auto OBJECT_HTLC_LOCK_SIZE            = strlen(OBJECT_HTLC_LOCK_LABEL) - 1U;
+constexpr auto OBJECT_HTLC_LOCK_LABEL           = "lock";
+constexpr size_t OBJECT_HTLC_LOCK_SIZE          = 4;
 
-constexpr auto OBJECT_HTLC_LOCK_TYPE_LABEL  = "type";
-const auto OBJECT_HTLC_LOCK_VALUE_LABEL     = "value";
+constexpr auto OBJECT_HTLC_LOCK_TYPE_LABEL      = "type";
+constexpr auto OBJECT_HTLC_LOCK_VALUE_LABEL     = "value";
 
-constexpr auto KEY_AMOUNT_LABEL             = "amount";
-const auto KEY_AMOUNT_SIZE                  = strlen(KEY_AMOUNT_LABEL);
+constexpr auto KEY_AMOUNT_LABEL                 = "amount";
+constexpr size_t KEY_AMOUNT_SIZE                = 6;
 
-constexpr auto KEY_SECRET_HASH_LABEL        = "secretHash";
-const auto KEY_SECRET_HASH_SIZE             = strlen(KEY_SECRET_HASH_LABEL);
+constexpr auto KEY_SECRET_HASH_LABEL            = "secretHash";
+constexpr size_t KEY_SECRET_HASH_SIZE           = 10;
 
-constexpr auto KEY_EXPIRATION_TYPE_LABEL    = "expirationType";
-const auto KEY_EXPIRATION_TYPE_SIZE         = strlen(KEY_EXPIRATION_TYPE_LABEL);
+constexpr auto KEY_EXPIRATION_TYPE_LABEL        = "expirationType";
+constexpr size_t KEY_EXPIRATION_TYPE_SIZE       = 14;
 
-constexpr auto KEY_EXPIRATION_LABEL         = "expiration";
-const auto KEY_EXPIRATION_SIZE              = strlen(KEY_EXPIRATION_LABEL);
+constexpr auto KEY_EXPIRATION_LABEL             = "expiration";
+constexpr size_t KEY_EXPIRATION_SIZE            = 10;
 
-constexpr auto KEY_RECIPIENT_ID_LABEL       = "recipientId";
-const auto KEY_RECIPIENT_ID_SIZE            = strlen(KEY_RECIPIENT_ID_LABEL);
+constexpr auto KEY_RECIPIENT_ID_LABEL           = "recipientId";
+constexpr size_t KEY_RECIPIENT_ID_SIZE          = 11;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Htlc Lock Asset data to a Transaction Map.

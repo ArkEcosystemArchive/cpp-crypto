@@ -66,11 +66,6 @@ TEST(transactions_builders, transfer_address_hash) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builder, transfer_address_string) {
-    const std::vector<uint8_t> signature = {
-        TYPE_0_SIGNATURE,
-        TYPE_0_SIGNATURE + sizeof(TYPE_0_SIGNATURE)
-    };
-
     const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())

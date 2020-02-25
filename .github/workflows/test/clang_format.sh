@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
 
 grep -nr '\s$' src test .gitignore 2>&1 > /dev/null
 if $?; then
