@@ -63,8 +63,9 @@ class DelegateRegistration : public Common<DelegateRegistration> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    DelegateRegistration() {
+    DelegateRegistration(const Configuration &config = {}) {
         this->transaction.data.type = DELEGATE_REGISTRATION_TYPE;
+        this->configure(config);
     }
 };
 
