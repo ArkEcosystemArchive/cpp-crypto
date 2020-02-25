@@ -8,12 +8,10 @@
 #endif
 
 void optimize_for_testing() {
-
 #ifdef ESP8266
   WiFi.forceSleepBegin(); // turn off WiFi to save power and processing time
   delay(1);               // give WiFi time to power down
 #endif
-
 }
 
 #endif

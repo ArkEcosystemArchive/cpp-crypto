@@ -11,7 +11,6 @@
 #define ARK_INTERFACES_CONSTANTS_H
 
 #include <cstddef>
-#include <cstring>
 
 #include "utils/platform.h"
 
@@ -73,11 +72,11 @@ constexpr size_t WIF_STRING_LEN         = 52U;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-constexpr auto KEY_ASSET_LABEL  = "asset";
-const auto KEY_ASSET_SIZE       = strlen(KEY_ASSET_LABEL);
+constexpr auto KEY_ASSET_LABEL      = "asset";
+constexpr size_t KEY_ASSET_SIZE     = 5;
 
-constexpr auto KEY_AMOUNT_LABEL = "amount";
-const auto KEY_AMOUNT_SIZE      = strlen(KEY_AMOUNT_LABEL);
+constexpr auto KEY_AMOUNT_LABEL     = "amount";
+constexpr size_t KEY_AMOUNT_SIZE    = 6;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Misc
