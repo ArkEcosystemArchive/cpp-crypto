@@ -10,9 +10,9 @@
 #include "transactions/types/vote.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <map>
-#include <string>
 
 #include "interfaces/constants.h"
 
@@ -79,11 +79,11 @@ auto Vote::Serialize(const Vote &vote, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-constexpr auto KEY_VOTE_LABEL   = "vote";
-const auto KEY_VOTE_SIZE        = strlen(KEY_VOTE_LABEL);
+constexpr auto KEY_VOTE_LABEL       = "vote";
+constexpr size_t KEY_VOTE_SIZE      = 4;
 
-constexpr auto KEY_VOTES_LABEL  = "votes";
-const auto KEY_VOTES_SIZE       = strlen(KEY_VOTES_LABEL);
+constexpr auto KEY_VOTES_LABEL      = "votes";
+constexpr size_t KEY_VOTES_SIZE     = 5;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Vote Asset data to a Transaction Map.

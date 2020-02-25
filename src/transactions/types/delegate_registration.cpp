@@ -10,9 +10,9 @@
 #include "transactions/types/delegate_registration.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <map>
-#include <string>
 
 #include "utils/json.h"
 #include "utils/str.hpp"
@@ -92,10 +92,10 @@ auto DelegateRegistration::Serialize(const DelegateRegistration &registration,
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
 constexpr auto OBJECT_DELEGATE_LABEL    = "delegate";
-const auto KEY_DELEGATE_SIZE            = strlen(OBJECT_DELEGATE_LABEL);
+constexpr size_t KEY_DELEGATE_SIZE      = 8;
 
 constexpr auto KEY_USERNAME_LABEL       = "username";
-const auto KEY_USERNAME_SIZE            = strlen(KEY_USERNAME_LABEL);
+constexpr size_t KEY_USERNAME_SIZE      = 8;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Delegate Registration Asset data to a Transaction Map.
