@@ -24,8 +24,9 @@ class DelegateResignation;
 ////////////////////////////////////////////////////////////////////////////////
 class DelegateResignation : public Common<DelegateResignation> {
   public:
-    DelegateResignation() {
+    DelegateResignation(const Configuration &config = {}) {
         this->transaction.data.type = DELEGATE_RESIGNATION_TYPE;
+        this->configure(config);
     }
 };
 

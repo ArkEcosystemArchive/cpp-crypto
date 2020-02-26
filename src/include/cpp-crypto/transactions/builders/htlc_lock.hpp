@@ -88,8 +88,9 @@ class HtlcLock : public Common<HtlcLock> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    HtlcLock() {
+    HtlcLock(const Configuration &config = {}) {
         this->transaction.data.type = HTLC_LOCK_TYPE;
+        this->configure(config);
     }
 };
 

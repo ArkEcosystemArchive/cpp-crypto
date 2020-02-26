@@ -25,8 +25,6 @@ using namespace Ark::Crypto::transactions;
 TEST(transactions_builders, delegate_resignation) {
     auto transaction = builder::DelegateResignation()
         .nonce(COMMON_NONCE)
-        .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_2_FEE)
         .sign(fixtures::Passphrase)
         .build();
 

@@ -26,7 +26,6 @@ This project is still under development. This page will get more content as the 
 ```cpp
 // Default Configuration is Devnet
 const auto transaction = builder::Transfer()
-        .type(0)
         .nonce(1)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .vendorField("this is a devnet transaction")
@@ -41,20 +40,19 @@ const auto transaction = builder::Transfer()
 ### Mainnet
 
 ```cpp
-// Use the Configuration Class to create a Mainnet Transaction
-const Configuration mainnetCfg(Mainnet);
+// Also pass the Network as a builder constructor argument
 
-const auto transaction = builder::Transfer()
-        .type(0)
+#include "networks/mainnet.hpp"
+
+const auto transaction = builder::Transfer(Mainnet)
         .nonce(1)
-        .senderPublicKey(fixtures::PublicKeyBytes.data())
         .vendorField("this is a devnet transaction")
         .amount(100000000ULL)
         .expiration(0)
         .recipientId("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib")
         .sign("this is a top secret passphrase")
         .secondSign("this is a top secret passphrase too")
-        .build(mainnetCfg);
+        .build();
 ```
 
 ### BridgeChain Transaction
@@ -77,17 +75,15 @@ const uint8_t radiansRecipient[] = {
     65, 29,  252, 105, 181, 76,  127, 233, 1,  233, 29,
     90, 154, 183, 131, 136, 100, 94,  36,  39, 234 };
 
-auto transaction = builder::Transfer()
-        .type(0)
+auto transaction = builder::Transfer(radiansCfg)
         .nonce(1)
-        .senderPublicKey(senderPublicKeyBytes.data())
         .vendorField("this is a Radians transaction")
         .amount(100000000ULL)
         .expiration(0)
         .recipientId(radiansRecipient)
         .sign("this is a top secret passphrase")
         .secondSign("this is a top secret passphrase too")
-        .build(radiansCfg);
+        .build();
 ```
 
 ### With custom Fees
@@ -106,17 +102,15 @@ const FeePolicy customFees = {
 
 const Configuration customCfg(Radians, MyCustomFees);
 
-auto transaction = builder::Transfer()
-        .type(0)
+auto transaction = builder::Transfer(customCfg)
         .nonce(1)
-        .senderPublicKey(senderPublicKeyBytes.data())
         .vendorField("this is a Radians transaction")
         .amount(100000000ULL)
         .expiration(0)
         .recipientId(radiansRecipient)
         .sign("this is a top secret passphrase")
         .secondSign("this is a top secret passphrase too")
-        .build(customCfg);
+        .build();
 ```
 
 ### Sign a Transactions
@@ -539,12 +533,12 @@ void createBridgechainTransaction() {
     const Configuration cfg(BridgechainNetwork);
 
     // Use the Transaction Builder to make a transaction.
-    const auto bridgechainTransaction = builder::Transfer()
+    const auto bridgechainTransaction = builder::Transfer(cfg)
             .recipientId("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib")
             .vendorField("this is a custom bridgechain transaction")
             .sign(Passphrase)
             .secondSign(SecondPassphrase)
-            .build(cfg);
+            .build();
 
     // Create and Print the Json representation of the Transaction.
     const auto transactionJson = bridgechainTransaction.toJson();

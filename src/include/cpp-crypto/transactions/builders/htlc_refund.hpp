@@ -40,8 +40,9 @@ class HtlcRefund : public Common<HtlcRefund> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    HtlcRefund() {
+    HtlcRefund(const Configuration &config = {}) {
         this->transaction.data.type = HTLC_REFUND_TYPE;
+        this->configure(config);
     }
 };
 
