@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/vote.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -23,12 +24,9 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, vote) {
-    const auto transaction = builder::Vote()
-        .network(COMMON_MAINNET)
-        .type(TYPE_3_TYPE)
+    const auto transaction = builder::Vote(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_3_FEE)
         .votes(TYPE_3_VOTE)
         .signature(TYPE_3_SIGNATURE, sizeof(TYPE_3_SIGNATURE))
         .build();

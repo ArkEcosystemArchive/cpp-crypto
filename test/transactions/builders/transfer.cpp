@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/transfer.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -27,11 +28,9 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, transfer_address_hash) {
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)
         .recipientId(TYPE_0_RECIPIENT)
@@ -67,11 +66,9 @@ TEST(transactions_builders, transfer_address_hash) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builder, transfer_address_string) {
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)
         .recipientId(TYPE_0_RECIPIENT_ID_STRING)
@@ -83,8 +80,7 @@ TEST(transactions_builder, transfer_address_string) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builder, transfer_sign) {
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
         .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
@@ -110,14 +106,13 @@ TEST(transactions_builder, transfer_sign_configuration) {
         65, 29,  252, 105, 181, 76,  127, 233, 1,  233, 29,
         90, 154, 183, 131, 136, 100, 94,  36,  39, 234 };
 
-    auto transaction = builder::Transfer()
+    auto transaction = builder::Transfer(radiansCfg)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_0_FEE)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)
         .recipientId(radiansRecipient.data())
-        .build(radiansCfg);
+        .build();
 
     transaction.sign(fixtures::Passphrase);
 
@@ -126,10 +121,8 @@ TEST(transactions_builder, transfer_sign_configuration) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builder, transfer_sign_vendorfield_second_signature) {
-    const auto transaction = builder::Transfer()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Transfer(Mainnet)
         .nonce(COMMON_NONCE)
-        .fee(TYPE_0_FEE)
         .vendorField(fixtures::MessageString)
         .amount(TYPE_0_AMOUNT)
         .expiration(TYPE_0_EXPIRATION)

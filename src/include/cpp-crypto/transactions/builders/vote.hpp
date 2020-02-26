@@ -42,8 +42,9 @@ class Vote : public Common<Vote> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    Vote() {
+    Vote(const Configuration &config = {}) {
         this->transaction.data.type = VOTE_TYPE;
+        this->configure(config);
     }
 };
 

@@ -164,28 +164,19 @@ template<class T> class Common {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Build
-    // 
-    // If calling 'builder::sign()' before calling 'build()',
-    // ensure the Fees and Network are properly configured first.
-    //
-    // ---
-    Transaction &build(const Configuration &config = {}) {
-        // if the transaction fee is the default of '0', use the config fees.
-        if (this->transaction.data.fee == 0ULL) {
-            this->transaction.data.fee = config.getFee(this->transaction.data.type);
-        }
-
-        // Use the configuration network version if it's different.
-        if (this->transaction.data.network == Devnet.version &&
-            config.getNetwork().version != Devnet.version) {
-            this->transaction.data.network = config.getNetwork().version;
-        }
-
+    // Finish the build pattern
+    // !! should always be the last call !!
+    Transaction &build() {
         return this->transaction;
     }
 
   protected:
+    ////////////////////////////////////////////////////////////////////////////
+    void configure(const Configuration &config) {
+        this->transaction.data.fee = config.getFee(this->transaction.data.type);
+        this->transaction.data.network = config.getNetwork().version;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     Transaction transaction;
 };

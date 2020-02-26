@@ -67,8 +67,9 @@ class MultiPayment : public Common<MultiPayment> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    MultiPayment() {
+    MultiPayment(const Configuration &config = {}) {
         this->transaction.data.type = MULTI_PAYMENT_TYPE;
+        this->configure(config);
     }
 };
 

@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/htlc_refund.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -23,11 +24,9 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, htlc_refund) {
-    const auto transaction = builder::HtlcRefund()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::HtlcRefund(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_10_FEE)
         .lockTransactionId(TYPE_10_LOCK_TX_ID)
         .signature(TYPE_10_SIGNATURE, sizeof(TYPE_10_SIGNATURE))
         .build();
