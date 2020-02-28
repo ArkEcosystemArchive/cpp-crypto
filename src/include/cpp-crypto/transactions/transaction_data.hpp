@@ -26,7 +26,7 @@ namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Transaction Data Model
-struct TransactionData {
+struct TransactionData {  // LCOV_EXCL_START
     uint8_t                 header      { TRANSACTION_DEFAULT_HEADER };
     uint8_t                 version     { TRANSACTION_VERSION_TYPE_2 };
     uint8_t                 network     { Devnet.version };
@@ -54,7 +54,7 @@ struct TransactionData {
         signature.resize(SIGNATURE_ECDSA_MAX);
         secondSignature.resize(SIGNATURE_ECDSA_MAX);
     };
-};
+};  // LCOV_EXCL_STOP
 
 
 }  // namespace transactions
