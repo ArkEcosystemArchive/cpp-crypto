@@ -30,7 +30,7 @@ constexpr size_t TRANSACTION_TYPE_TRANSFER_SIZE = 33UL;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 0 - Transfer
-struct Transfer {
+struct Transfer {  // LCOV_EXCL_LINE
     ////////////////////////////////////////////////////////////////////////////
     uint64_t        amount      { 0ULL };
     uint32_t        expiration  { 0UL };
@@ -53,9 +53,6 @@ struct Transfer {
     ////////////////////////////////////////////////////////////////////////////
     static void addToJson(DynamicJsonDocument &jsonDoc,
                           const std::map<std::string, std::string> &map);
-
-    ////////////////////////////////////////////////////////////////////////////
-    Transfer() = default;
 };
 
 }  // namespace transactions

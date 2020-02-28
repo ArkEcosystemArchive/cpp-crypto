@@ -30,7 +30,7 @@ constexpr uint8_t VOTES_LEN     = VOTE_LIMIT * VOTE_LEN;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 3 - Vote
-struct Vote {
+struct Vote {  // LCOV_EXCL_LINE
     ////////////////////////////////////////////////////////////////////////////
     uint8_t                             count   { 0U };
     std::array<uint8_t, VOTES_LEN>      votes   { };            // (1 + 33)N
@@ -52,9 +52,6 @@ struct Vote {
     ////////////////////////////////////////////////////////////////////////////
     static void addToJson(DynamicJsonDocument &jsonDoc,
                           const std::map<std::string, std::string> &map);
-
-    ////////////////////////////////////////////////////////////////////////////
-    Vote() = default;
 };
 
 }  // namespace transactions

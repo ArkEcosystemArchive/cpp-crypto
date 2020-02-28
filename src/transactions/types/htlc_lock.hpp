@@ -29,7 +29,7 @@ constexpr size_t HTLC_LOCK_SIZE = 66U;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Type 8 - Htlc Lock
-struct HtlcLock {
+struct HtlcLock {  // LCOV_EXCL_LINE
     ////////////////////////////////////////////////////////////////////////////
     uint64_t        amount          { 0ULL };
     Hash32          secretHash      { };
@@ -54,9 +54,6 @@ struct HtlcLock {
     ////////////////////////////////////////////////////////////////////////////
     static void addToJson(DynamicJsonDocument &jsonDoc,
                           const std::map<std::string, std::string> &map);
-
-    ////////////////////////////////////////////////////////////////////////////
-    HtlcLock() = default;
 };
 
 }  // namespace transactions

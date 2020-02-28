@@ -17,7 +17,7 @@ namespace transactions {
 ////////////////////////////////////////////////////////////////////////////////
 // Type 7 - Delegate Resignation
 // No Asset data needed.
-struct DelegateResignation {};
+struct DelegateResignation {};  // LCOV_EXCL_LINE
 
 }  // namespace transactions
 }  // namespace Crypto
