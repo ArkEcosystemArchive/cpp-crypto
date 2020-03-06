@@ -5,13 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.0] - 2020-03-06
 
 ### Added
 -   added Delegate Resignation Builder and Tests ([#207])
 
 ### Changed
 -   improved transaction builder ([#215])
+-   improved building as a project dependency ([#206])
+
+### Fixed
+-   make htlc claim secret a 32-byte hash ([#212])
 
 ## [1.0.0] - 2020-02-13
 
@@ -137,6 +141,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#190]: https://github.com/ArkEcosystem/cpp-crypto/pull/190
 [#198]: https://github.com/ArkEcosystem/cpp-crypto/pull/198
 [1.0.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/0.7.0...1.0.0
+[#206]: https://github.com/ArkEcosystem/cpp-crypto/pull/206
 [#207]: https://github.com/ArkEcosystem/cpp-crypto/pull/207
+[#212]: https://github.com/ArkEcosystem/cpp-crypto/pull/212
 [#215]: https://github.com/ArkEcosystem/cpp-crypto/pull/215
-[unreleased]: https://github.com/ArkEcosystem/cpp-crypto/compare/1.0.0...develop
+[1.1.0]: https://github.com/ArkEcosystem/cpp-crypto/compare/1.0.0...1.1.0
