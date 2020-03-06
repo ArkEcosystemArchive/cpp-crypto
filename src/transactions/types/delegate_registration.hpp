@@ -32,7 +32,7 @@ constexpr uint8_t USERNAME_MAX      = 20U;
 // Max Length: 20
 //
 // ---
-struct DelegateRegistration {
+struct DelegateRegistration {  // LCOV_EXCL_LINE
     ////////////////////////////////////////////////////////////////////////////
     uint8_t                                 length      { 0U };
     std::array<uint8_t, USERNAME_MAX>       username    { };
@@ -55,9 +55,6 @@ struct DelegateRegistration {
     ////////////////////////////////////////////////////////////////////////////
     static void addToJson(DynamicJsonDocument &jsonDoc,
                           const std::map<std::string, std::string> &map);
-
-    ////////////////////////////////////////////////////////////////////////////
-    DelegateRegistration() = default;
 };
 
 }  // namespace transactions
