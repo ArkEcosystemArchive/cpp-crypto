@@ -42,8 +42,9 @@ class SecondSignature : public Common<SecondSignature> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    SecondSignature() {
+    SecondSignature(const Configuration &config = {}) {
         this->transaction.data.type = SECOND_SIGNATURE_TYPE;
+        this->configure(config);
     }
 };
 

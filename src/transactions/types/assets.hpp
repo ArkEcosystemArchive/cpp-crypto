@@ -30,7 +30,7 @@ namespace transactions {
 
 ////////////////////////////////////////////////////////////////////////////////
 // AIP-11 Transaction Assets
-struct Asset {
+struct Asset {  // LCOV_EXCL_START
     Transfer                    transfer;               // Type 0
     SecondSignature             secondSignature;        // Type 1
     DelegateRegistration        delegateRegistration;   // Type 2
@@ -42,7 +42,7 @@ struct Asset {
     HtlcLock                    htlcLock;               // Type 8
     HtlcClaim                   htlcClaim;              // Type 9
     HtlcRefund                  htlcRefund;             // Type 10
-};
+};  // LCOV_EXCL_STOP
 
 }  // namespace transactions
 }  // namespace Crypto

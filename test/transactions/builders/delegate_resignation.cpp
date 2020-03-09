@@ -9,13 +9,12 @@
 
 #include "gtest/gtest.h"
 
-#include "transactions/builders/vote.hpp"
-#include "networks/mainnet.hpp"
+#include "transactions/builders/delegate_resignation.hpp"
 
 #include "interfaces/constants.h"
 
 #include "fixtures/identity.hpp"
-#include "transactions/types/fixtures/vote.hpp"
+#include "transactions/types/fixtures/delegate_registration.hpp"
 
 #include "test_helpers.h"
 
@@ -23,12 +22,10 @@ using namespace Ark::Crypto;
 using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST(transactions_builders, vote) {
-    const auto transaction = builder::Vote(Mainnet)
+TEST(transactions_builders, delegate_resignation) {
+    auto transaction = builder::DelegateResignation()
         .nonce(COMMON_NONCE)
-        .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .votes(TYPE_3_VOTE)
-        .signature(TYPE_3_SIGNATURE, sizeof(TYPE_3_SIGNATURE))
+        .sign(fixtures::Passphrase)
         .build();
 
     ASSERT_TRUE(transaction.verify());

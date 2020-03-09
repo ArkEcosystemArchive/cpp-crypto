@@ -10,9 +10,9 @@
 #include "transactions/types/htlc_refund.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <map>
-#include <string>
 
 #include "interfaces/constants.h"
 
@@ -70,11 +70,11 @@ auto HtlcRefund::Serialize(const HtlcRefund &refund, uint8_t *buffer)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-constexpr auto OBJECT_HTLC_REFUND_LABEL = "refund";
-const auto OBJECT_HTLC_REFUND_SIZE      = strlen(OBJECT_HTLC_REFUND_LABEL);
+constexpr auto OBJECT_HTLC_REFUND_LABEL     = "refund";
+constexpr size_t OBJECT_HTLC_REFUND_SIZE    = 6;
 
-constexpr auto KEY_REFUND_TX_ID_LABEL   = "lockTransactionId";
-const auto KEY_REFUND_TX_ID_SIZE        = strlen(KEY_REFUND_TX_ID_LABEL);
+constexpr auto KEY_REFUND_TX_ID_LABEL       = "lockTransactionId";
+constexpr size_t KEY_REFUND_TX_ID_SIZE      = 17;
 
 constexpr auto HTLC_JSON_OBJECT_SIZE = 1U;
 

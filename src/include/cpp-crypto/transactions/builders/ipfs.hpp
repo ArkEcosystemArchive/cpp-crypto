@@ -40,8 +40,9 @@ class Ipfs : public Common<Ipfs> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    Ipfs() {
+    Ipfs(const Configuration &config = {}) {
         this->transaction.data.type = IPFS_TYPE;
+        this->configure(config);
     }
 };
 

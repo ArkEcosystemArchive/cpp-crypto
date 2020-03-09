@@ -17,6 +17,7 @@
 // #include "transactions/builders/multi_signature.hpp"
 #include "transactions/builders/ipfs.hpp"
 #include "transactions/builders/multi_payment.hpp"
+#include "transactions/builders/delegate_resignation.hpp"
 #include "transactions/builders/htlc_lock.hpp"
 #include "transactions/builders/htlc_claim.hpp"
 #include "transactions/builders/htlc_refund.hpp"

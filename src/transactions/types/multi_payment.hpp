@@ -44,7 +44,7 @@ constexpr auto KEY_N_PAYMENTS_LABEL = "n_payments";
 // Particularly in embedded environments.
 //
 // ---
-struct MultiPayment {
+struct MultiPayment {  // LCOV_EXCL_LINE
     ////////////////////////////////////////////////////////////////////////////
     // Network Limit: 100
     uint16_t n_payments { 0U };
@@ -77,9 +77,6 @@ struct MultiPayment {
     ////////////////////////////////////////////////////////////////////////////
     static void addToJson(DynamicJsonDocument &jsonDoc,
                           const std::map<std::string, std::string> &map);
-
-    ////////////////////////////////////////////////////////////////////////////
-    MultiPayment() = default;
 };
 
 }  // namespace transactions

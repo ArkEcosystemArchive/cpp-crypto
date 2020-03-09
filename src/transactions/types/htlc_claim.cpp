@@ -10,9 +10,9 @@
 #include "transactions/types/htlc_claim.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <map>
-#include <string>
 
 #include "interfaces/constants.h"
 
@@ -82,14 +82,14 @@ auto HtlcClaim::Serialize(const HtlcClaim &claim, uint8_t *buffer) -> size_t {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Map/Json Constants
-constexpr auto OBJECT_HTLC_CLAIM_LABEL  = "claim";
-const auto OBJECT_HTLC_CLAIM_SIZE       = strlen(OBJECT_HTLC_CLAIM_LABEL);
+constexpr auto OBJECT_HTLC_CLAIM_LABEL      = "claim";
+constexpr size_t OBJECT_HTLC_CLAIM_SIZE     = 5;
 
-constexpr auto KEY_CLAIM_TX_ID_LABEL    = "lockTransactionId";
-const auto KEY_CLAIM_TX_ID_SIZE         = strlen(KEY_CLAIM_TX_ID_LABEL);
+constexpr auto KEY_CLAIM_TX_ID_LABEL        = "lockTransactionId";
+constexpr size_t KEY_CLAIM_TX_ID_SIZE       = 17;
 
-constexpr auto KEY_CLAIM_SECRET_LABEL   = "unlockSecret";
-const auto KEY_CLAIM_SECRET_SIZE        = strlen(KEY_CLAIM_SECRET_LABEL);
+constexpr auto KEY_CLAIM_SECRET_LABEL       = "unlockSecret";
+constexpr size_t KEY_CLAIM_SECRET_SIZE      = 11;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Htlc Claim Asset data to a Transaction Map.
@@ -99,9 +99,7 @@ void HtlcClaim::addToMap(const HtlcClaim &claim,
     map.emplace(KEY_CLAIM_TX_ID_LABEL, BytesToHex(claim.id));
 
     // Secret
-    std::string secret(claim.secret.size(), '\0');
-    secret.insert(secret.begin(), claim.secret.begin(), claim.secret.end());    
-    map.emplace(KEY_CLAIM_SECRET_LABEL, secret);
+    map.emplace(KEY_CLAIM_SECRET_LABEL, BytesToHex(claim.secret));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

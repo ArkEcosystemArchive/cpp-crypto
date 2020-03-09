@@ -30,7 +30,6 @@ TEST(transactions_builders, multi_payment) {
     const auto transaction = builder::MultiPayment()
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_6_FEE)
         .n_payments(TYPE_6_N_PAYMENTS)
         .amounts(TYPE_6_AMOUNTS)
         .addresses(TYPE_6_ADDRESSES)

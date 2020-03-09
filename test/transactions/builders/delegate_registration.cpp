@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/delegate_registration.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -23,12 +24,10 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, delegate_registration) {
-    const auto transaction = builder::DelegateRegistration()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::DelegateRegistration(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME, sizeof(TYPE_2_USERNAME))
-        .fee(TYPE_2_FEE)
         .signature(TYPE_2_SIGNATURE, sizeof(TYPE_2_SIGNATURE))
         .build();
 
@@ -37,12 +36,10 @@ TEST(transactions_builders, delegate_registration) {
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, delegate_registration_string) {
-    const auto transaction = builder::DelegateRegistration()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::DelegateRegistration(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
         .username(TYPE_2_USERNAME_STRING)
-        .fee(TYPE_2_FEE)
         .signature(TYPE_2_SIGNATURE, sizeof(TYPE_2_SIGNATURE))
         .build();
 

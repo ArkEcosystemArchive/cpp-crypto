@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/second_signature.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -23,11 +24,9 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, second_signature) {
-    const auto transaction = builder::SecondSignature()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::SecondSignature(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_1_FEE)
         .publicKey(TYPE_1_SECOND_PUBLICKEY)
         .signature(TYPE_1_SIGNATURE, sizeof(TYPE_1_SIGNATURE))
         .build();

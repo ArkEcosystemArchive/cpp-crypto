@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "transactions/builders/ipfs.hpp"
+#include "networks/mainnet.hpp"
 
 #include "interfaces/constants.h"
 
@@ -23,11 +24,9 @@ using namespace Ark::Crypto::transactions;
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST(transactions_builders, ipfs) {
-    const auto transaction = builder::Ipfs()
-        .network(COMMON_MAINNET)
+    const auto transaction = builder::Ipfs(Mainnet)
         .nonce(COMMON_NONCE)
         .senderPublicKey(fixtures::PublicKeyBytes.data())
-        .fee(TYPE_5_FEE)
         .ipfs(TYPE_5_DAG, sizeof(TYPE_5_DAG))
         .signature(TYPE_5_SIGNATURE, sizeof(TYPE_5_SIGNATURE))
         .build();
