@@ -100,7 +100,7 @@ jobs:
         run: ./build/test/ark_cpp_crypto_tests
 
   windows:
-    runs-on: windows-2016
+    runs-on: windows-latest
     strategy:
       matrix:
         build: [Debug, Release]
