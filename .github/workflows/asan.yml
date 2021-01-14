@@ -1,0 +1,24 @@
+name: Sanitizers
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'develop'
+  pull_request:
+    types: [ready_for_review, synchronize, opened]
+
+jobs:
+  asan:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - run: COMPILER=clang++
+      - name: Build
+        run: |
+          mkdir build && cd build
+          cmake -DUNIT_TEST=ON -DENABLE_SANITIZERS=ON ..
+          cmake --build .
+      - name: Run Sanitization Checks
+        run: ./build/test/ark_cpp_crypto_tests
