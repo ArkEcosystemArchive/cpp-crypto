@@ -100,7 +100,7 @@ jobs:
         run: ./build/test/ark_cpp_crypto_tests
 
   windows:
-    runs-on: windows-2016
+    runs-on: windows-latest
     strategy:
       matrix:
         build: [Debug, Release]
@@ -108,12 +108,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Setup MSBuild.exe
-        uses: warrenbuckley/Setup-MSBuild@v1
+        uses: microsoft/setup-msbuild@v1.0.2
       - name: CMake
-        run: cmake -D UNIT_TEST=ON -G "Visual Studio 15 2017 Win64" .
-      - name: Build Solution
-        shell: cmd
-        run: msbuild "%GITHUB_WORKSPACE%\ark_cpp_crypto.sln"
-      - name: Run Tests
-        shell: cmd
-        run: "%GITHUB_WORKSPACE%\\test\\Debug\\ark_cpp_crypto_tests.exe"
+        run: cmake -D UNIT_TEST=ON -G "Visual Studio 16 2019" .
+      - name: Build and Run Tests
+        run: |
+          msbuild '${{ github.workspace }}\ark_cpp_crypto.sln'
+          '${{ github.workspace }}\test\Debug\ark_cpp_crypto_tests.exe'
