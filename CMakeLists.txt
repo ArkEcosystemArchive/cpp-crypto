@@ -66,6 +66,27 @@ endif()
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
+# ASAN
+# ------------------------------------------------------------------------------
+
+option(ENABLE_SANITIZERS "Enable Sanitization Checks" OFF)
+
+if(ENABLE_SANITIZERS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+        -fsanitize=address,undefined,float-divide-by-zero,unsigned-integer-overflow \
+        -fno-sanitize-recover=all \
+        -fno-optimize-sibling-calls \
+        -fsanitize-address-use-after-scope \
+        -fno-omit-frame-pointer \
+        -fsanitize-blacklist=${PROJECT_SOURCE_DIR}/asan_blacklist.txt \
+        -g -O0"
+        CACHE STRING "Flags used by the compiler during AddressSanitizer builds."
+        FORCE)
+endif()
+
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
 # Add the ARK C++ Crypto Library Subdirectory
 # ------------------------------------------------------------------------------
 
